@@ -12,12 +12,12 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     public class Application : Adw.Application {
         private Logger logger;
         private SettingsManager settings;
-        private AppTemplate.Window? main_window;
+        private Draughts.Window? main_window;
 
         public Application() {
             Object(
@@ -33,10 +33,10 @@ namespace AppTemplate {
 
             var window = active_window;
             if (window == null) {
-                main_window = new AppTemplate.Window(this);
+                main_window = new Draughts.Window(this);
                 window = main_window;
             } else {
-                main_window = window as AppTemplate.Window;
+                main_window = window as Draughts.Window;
             }
 
             window.present();
@@ -66,7 +66,7 @@ namespace AppTemplate {
 
             var about_action = new SimpleAction(Constants.ACTION_ABOUT, null);
             about_action.activate.connect(() => {
-                AppTemplateAboutDialog.show(active_window);
+                DraughtsAboutDialog.show(active_window);
             });
             add_action(about_action);
             const string[] about_accels = {"<primary>F1", null};
@@ -78,15 +78,23 @@ namespace AppTemplate {
             const string[] preferences_accels = {"<primary>comma", null};
             set_accels_for_action("app.preferences", preferences_accels);
 
-            var new_window_action = new SimpleAction("new-window", null);
-            new_window_action.activate.connect(() => {
-                var new_window = new AppTemplate.Window(this);
-                new_window.present();
-                logger.info("New window created");
-            });
-            add_action(new_window_action);
-            const string[] new_window_accels = {"<primary>n", null};
-            set_accels_for_action("app.new-window", new_window_accels);
+            var new_game_action = new SimpleAction("new-game", null);
+            new_game_action.activate.connect(start_new_game);
+            add_action(new_game_action);
+            const string[] new_game_accels = {"<primary>n", null};
+            set_accels_for_action("app.new-game", new_game_accels);
+
+            var reset_game_action = new SimpleAction("reset-game", null);
+            reset_game_action.activate.connect(reset_game);
+            add_action(reset_game_action);
+            const string[] reset_game_accels = {"<primary>r", null};
+            set_accels_for_action("app.reset-game", reset_game_accels);
+
+            var scores_action = new SimpleAction("scores", null);
+            scores_action.activate.connect(show_scores);
+            add_action(scores_action);
+            const string[] scores_accels = {"<primary>s", null};
+            set_accels_for_action("app.scores", scores_accels);
 
             const string[] help_accels = {"<primary>question", null};
             set_accels_for_action("win.show-help-overlay", help_accels);
@@ -97,15 +105,99 @@ namespace AppTemplate {
             const string[] fullscreen_accels = {"F11", null};
             set_accels_for_action("win.toggle-fullscreen", fullscreen_accels);
 
+            // Initialize saved settings values
+            string saved_game_rules = settings.get_game_rules();
+            if (saved_game_rules == "") {
+                saved_game_rules = Constants.DEFAULT_GAME_RULES;
+                settings.set_game_rules(saved_game_rules);
+            }
+
+            string saved_board_theme = settings.get_board_theme();
+            if (saved_board_theme == "") {
+                saved_board_theme = Constants.DEFAULT_BOARD_THEME;
+                settings.set_board_theme(saved_board_theme);
+            }
+
+            // Game rules radio action
+            var game_rules_action = new SimpleAction.stateful("game-rules-radio", VariantType.STRING, new Variant.string(saved_game_rules));
+            game_rules_action.activate.connect(on_game_rules_changed);
+            add_action(game_rules_action);
+
+            // Board theme radio action
+            var board_theme_action = new SimpleAction.stateful("board-theme-radio", VariantType.STRING, new Variant.string(saved_board_theme));
+            board_theme_action.activate.connect(on_board_theme_changed);
+            add_action(board_theme_action);
+
+
             logger.debug("Application actions configured");
         }
 
 
         private void show_preferences() {
             logger.debug("Preferences action triggered");
-            var preferences_dialog = new AppTemplate.Preferences();
+            var preferences_dialog = new Draughts.Preferences();
             preferences_dialog.show_preferences(active_window);
         }
+
+        private void start_new_game() {
+            logger.info("New game action triggered");
+            if (main_window != null) {
+                main_window.start_new_game();
+            }
+        }
+
+        private void reset_game() {
+            logger.info("Reset game action triggered");
+            if (main_window != null) {
+                main_window.reset_game();
+            }
+        }
+
+        private void show_scores() {
+            logger.info("Scores action triggered");
+            if (main_window != null) {
+                main_window.show_scores();
+            }
+        }
+
+        private void on_game_rules_changed(SimpleAction action, Variant? parameter) {
+            if (parameter == null) return;
+
+            string rules = parameter.get_string();
+            logger.info("Game rules changed to: %s", rules);
+
+            // Update action state
+            action.set_state(parameter);
+
+            if (main_window != null) {
+                main_window.set_game_rules(rules);
+            }
+
+            // Save to settings
+            if (settings != null) {
+                settings.set_game_rules(rules);
+            }
+        }
+
+        private void on_board_theme_changed(SimpleAction action, Variant? parameter) {
+            if (parameter == null) return;
+
+            string theme = parameter.get_string();
+            logger.info("Board theme changed to: %s", theme);
+
+            // Update action state
+            action.set_state(parameter);
+
+            if (main_window != null) {
+                main_window.set_board_theme(theme);
+            }
+
+            // Save to settings
+            if (settings != null) {
+                settings.set_board_theme(theme);
+            }
+        }
+
 
         private void check_and_show_whats_new() {
             // Check if this is a new version and show release notes automatically
@@ -114,7 +206,7 @@ namespace AppTemplate {
                 Timeout.add(Constants.WHATS_NEW_DELAY, () => {
                     if (main_window != null && !main_window.in_destruction()) {
                         logger.info("Showing automatic release notes for new version");
-                        AppTemplateAboutDialog.show_with_release_notes(main_window);
+                        DraughtsAboutDialog.show_with_release_notes(main_window);
                     }
                     return false;
                 });

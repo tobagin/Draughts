@@ -1,5 +1,5 @@
 # Source files
-app_template_sources = [
+draughts_sources = [
   'Main.vala',
   'Application.vala',
   'Window.vala',
@@ -10,19 +10,20 @@ app_template_sources = [
   'dialogs/About.vala',
   'dialogs/KeyboardShortcuts.vala',
   'dialogs/Preferences.vala',
+  'widgets/DraughtsBoard.vala',
 ]
 
 # Generated configuration and resources
-app_template_sources += [
+draughts_sources += [
   meson.project_build_root() / 'Config.vala'
 ]
 
 # Add compiled resources
-app_template_sources += app_resources
+draughts_sources += app_resources
 
 # Main executable
-app_template_exe = executable('app-template',
-  app_template_sources,
+draughts_exe = executable('draughts',
+  draughts_sources,
   dependencies: [
     gtk4_dep,
     libadwaita_dep,

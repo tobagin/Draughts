@@ -52,5 +52,23 @@
       <summary>Show What's New dialog</summary>
       <description>Display release notes when the application is updated to a new version</description>
     </key>
+
+    <key name="board-size" type="i">
+      <default>8</default>
+      <summary>Board size</summary>
+      <description>The size of the game board (8x8, 10x10, or 12x12)</description>
+    </key>
+
+    <key name="game-rules" type="s">
+      <default>"checkers"</default>
+      <summary>Game rules variant</summary>
+      <description>The rules variant to use for the draughts game</description>
+    </key>
+
+    <key name="board-theme" type="s">
+      <default>"classic"</default>
+      <summary>Board theme</summary>
+      <description>The visual theme for the game board</description>
+    </key>
   </schema>
 </schemalist>

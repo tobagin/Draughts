@@ -13,6 +13,6 @@
  */
 
 int main(string[] args) {
-    var app = new AppTemplate.Application();
+    var app = new Draughts.Application();
     return app.run(args);
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>@ID@</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>@NAME@</name>
+  <summary>A classic draughts game built with GTK4/LibAdwaita</summary>
+  <description>
+    <p>
+      A classic draughts (draughts) board game implemented with modern GNOME technologies.
+      Built using GTK4, LibAdwaita, and Blueprint for a native GNOME experience.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Classic 8x8 draughts gameplay</li>
+      <li>Modern GTK4 and LibAdwaita design</li>
+      <li>Smooth animations and transitions</li>
+      <li>Save and load game states</li>
+      <li>Undo/redo functionality</li>
+      <li>Multiple difficulty levels</li>
+    </ul>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/tobagin/app_template/main/data/screenshots/main.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/tobagin/draughts</url>
+  <url type="bugtracker">https://github.com/tobagin/draughts/issues</url>
+  <developer_name>Thiago Fernandes</developer_name>
+  <launchable type="desktop-id">@ID@.desktop</launchable>
+  <provides>
+    <binary>draughts</binary>
+  </provides>
+  <releases>
+    <release version="@VERSION@" date="2025-09-22">
+      <description>
+        <p>Initial release of Draughts</p>
+        <ul>
+          <li>Classic draughts gameplay</li>
+          <li>Modern GTK4/LibAdwaita interface</li>
+          <li>Game state management</li>
+          <li>Board animation system</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+</component>

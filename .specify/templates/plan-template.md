@@ -47,7 +47,31 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### GNOME Native Design Compliance
+- [ ] Feature design follows GNOME Human Interface Guidelines
+- [ ] LibAdwaita widgets are used where appropriate
+- [ ] Accessibility requirements are considered from design phase
+- [ ] Responsive/adaptive behavior is planned
+
+### Game Logic Integrity
+- [ ] Game rules are mathematically correct for target draughts variant
+- [ ] Clear separation between game logic and UI presentation
+- [ ] Board state validation approach is defined
+
+### Build-First Development
+- [ ] Changes will not break existing development/production builds
+- [ ] Flatpak packaging compatibility maintained
+- [ ] Dependencies are available in GNOME Platform runtime
+
+### Test-Driven Quality
+- [ ] Test strategy includes game logic validation
+- [ ] UI interaction testing approach defined
+- [ ] Accessibility testing plan included
+
+### Technical Standards Compliance
+- [ ] Vala coding conventions will be followed
+- [ ] Performance requirements considered (100ms move calculation, 60fps UI)
+- [ ] GSettings schema changes properly planned
 
 ## Project Structure
 
@@ -145,7 +169,8 @@ ios/ or android/
    - Quickstart test = story validation steps
 
 5. **Update agent file incrementally** (O(1) operation):
-   - Run `.specify/scripts/bash/update-agent-context.sh claude` for your AI assistant
+   - Run `.specify/scripts/bash/update-agent-context.sh claude`
+     **IMPORTANT**: Execute it exactly as specified above. Do not add or remove any arguments.
    - If exists: Add only NEW tech from current plan
    - Preserve manual additions between markers
    - Update recent changes (keep last 3)
@@ -208,4 +233,4 @@ ios/ or android/
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v2.1.1 - See `/memory/constitution.md`*
+*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*

@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     [Compact]
     public class Constants {
@@ -35,6 +35,16 @@ namespace AppTemplate {
         public const string MAIN_WINDOW_ICON = "preferences-system-symbolic";
         public const string MENU_BUTTON_ICON = "open-menu-symbolic";
         public const string DEFAULT_THEME_SCHEME = "default";
+
+        // Game Settings
+        public const string SETTINGS_BOARD_SIZE = "board-size";
+        public const string SETTINGS_GAME_RULES = "game-rules";
+        public const string SETTINGS_BOARD_THEME = "board-theme";
+
+        // Game Defaults
+        public const int DEFAULT_BOARD_SIZE = 8;
+        public const string DEFAULT_GAME_RULES = "checkers";
+        public const string DEFAULT_BOARD_THEME = "classic";
 
         // Action Names
         public const string ACTION_QUIT = "quit";

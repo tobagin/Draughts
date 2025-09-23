@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Karere build script
+# Draughts build script
 # Usage: ./build.sh [--dev]
 
 set -e
@@ -33,12 +33,12 @@ done
 
 # Set manifest based on build type
 if [ "$BUILD_TYPE" = "dev" ]; then
-    MANIFEST="packaging/io.github.tobagin.AppTemplate.Devel.yml"
-    APP_ID="io.github.tobagin.AppTemplate.Devel"
+    MANIFEST="packaging/io.github.tobagin.Draughts.Devel.yml"
+    APP_ID="io.github.tobagin.Draughts.Devel"
     echo "Building development version..."
 else
-    MANIFEST="packaging/io.github.tobagin.AppTemplate.yml"
-    APP_ID="io.github.tobagin.AppTemplate"
+    MANIFEST="packaging/io.github.tobagin.Draughts.yml"
+    APP_ID="io.github.tobagin.Draughts"
     echo "Building production version..."
 fi
 

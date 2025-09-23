@@ -12,11 +12,11 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     public class ResourceManager : GLib.Object {
         private static ResourceManager? instance;
-        private AppTemplate.Logger logger;
+        private Draughts.Logger logger;
         private HashTable<string, Bytes> resource_cache;
         private string resource_base_path;
 
@@ -32,9 +32,9 @@ namespace AppTemplate {
             resource_cache = new HashTable<string, Bytes> (str_hash, str_equal);
 
 #if DEVELOPMENT
-            resource_base_path = "/io/github/tobagin/AppTemplate/Devel";
+            resource_base_path = "/io/github/tobagin/Draughts/Devel";
 #else
-            resource_base_path = "/io/github/tobagin/AppTemplate";
+            resource_base_path = "/io/github/tobagin/Draughts";
 #endif
 
             logger.debug ("ResourceManager initialized with base path: %s", resource_base_path);

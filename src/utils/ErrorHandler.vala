@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     public enum ErrorSeverity {
         INFO,
@@ -23,7 +23,7 @@ namespace AppTemplate {
 
     public class ErrorHandler : GLib.Object {
         private static ErrorHandler? instance;
-        private AppTemplate.Logger logger;
+        private Draughts.Logger logger;
         private weak Gtk.Window? main_window;
         private weak Adw.ToastOverlay? toast_overlay;
 

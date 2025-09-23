@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     public enum ColorScheme {
         DEFAULT = 0,
@@ -23,7 +23,7 @@ namespace AppTemplate {
     public class SettingsManager : GLib.Object {
         private static SettingsManager? instance;
         private GLib.Settings settings;
-        private AppTemplate.Logger logger;
+        private Draughts.Logger logger;
 
         public signal void theme_changed (ColorScheme scheme);
 
@@ -142,6 +142,31 @@ namespace AppTemplate {
 
         public void bind (string key, GLib.Object object, string property, SettingsBindFlags flags = SettingsBindFlags.DEFAULT) {
             settings.bind (key, object, property, flags);
+        }
+
+        // Game settings management
+        public int get_board_size () {
+            return settings.get_int (Constants.SETTINGS_BOARD_SIZE);
+        }
+
+        public void set_board_size (int size) {
+            settings.set_int (Constants.SETTINGS_BOARD_SIZE, size);
+        }
+
+        public string get_game_rules () {
+            return settings.get_string (Constants.SETTINGS_GAME_RULES);
+        }
+
+        public void set_game_rules (string rules) {
+            settings.set_string (Constants.SETTINGS_GAME_RULES, rules);
+        }
+
+        public string get_board_theme () {
+            return settings.get_string (Constants.SETTINGS_BOARD_THEME);
+        }
+
+        public void set_board_theme (string theme) {
+            settings.set_string (Constants.SETTINGS_BOARD_THEME, theme);
         }
     }
 }

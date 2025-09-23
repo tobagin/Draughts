@@ -1,4 +1,4 @@
-project('gnome-app-template', 'vala', 'c',
+project('draughts', 'vala', 'c',
   version : '0.1.0',
   license : 'GPL-3.0+',
   meson_version : '>= 1.9.0'
@@ -11,11 +11,11 @@ fs = import('fs')
 
 # Project information
 if get_option('profile') == 'development'
-  project_name = 'App Template (Dev)'
-  project_id = 'io.github.tobagin.AppTemplate.Devel'
+  project_name = 'Draughts (Dev)'
+  project_id = 'io.github.tobagin.Draughts.Devel'
 else
-  project_name = 'App Template'
-  project_id = 'io.github.tobagin.AppTemplate'
+  project_name = 'Draughts'
+  project_id = 'io.github.tobagin.Draughts'
 endif
 
 # Dependencies

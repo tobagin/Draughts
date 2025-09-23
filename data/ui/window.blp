@@ -1,13 +1,14 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $AppTemplateWindow : Adw.ApplicationWindow {
+template $DraughtsWindow : Adw.ApplicationWindow {
   Gtk.Box {
     orientation: vertical;
     
     Adw.HeaderBar header_bar {
-      title-widget: Adw.WindowTitle {
-        title: _("App Template");
+      title-widget: Adw.WindowTitle window_title {
+        title: _("Draughts");
+        subtitle: _("Checkers/Anglo-American Draughts");
       };
 
       [end]
@@ -21,29 +22,188 @@ template $AppTemplateWindow : Adw.ApplicationWindow {
     Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
-      child: Adw.StatusPage welcome_status {
-        icon-name: "preferences-system-symbolic";
-        title: _("Welcome to App Template");
-        description: _("A modern GTK4 application template for GNOME development");
-
-        child: Gtk.Box {
-          orientation: vertical;
-          spacing: 12;
-          halign: center;
-
-          Gtk.Button about_button {
-            label: _("About");
-            styles ["pill", "suggested-action"]
-            halign: center;
-            action-name: "app.about";
-          }
-        };
+      child: Gtk.Box board_container {
+        orientation: vertical;
+        spacing: 12;
+        margin-top: 12;
+        margin-bottom: 12;
+        margin-start: 12;
+        margin-end: 12;
+        halign: fill;
+        valign: fill;
+        hexpand: true;
+        vexpand: true;
       };
     }
   }
 }
 
 menu primary_menu {
+  section {
+    item {
+      label: _("_New Game");
+      action: "app.new-game";
+      accel: "<primary>n";
+    }
+
+    item {
+      label: _("_Reset Game");
+      action: "app.reset-game";
+      accel: "<primary>r";
+    }
+
+    item {
+      label: _("_Scores");
+      action: "app.scores";
+      accel: "<primary>s";
+    }
+  }
+
+  section {
+    submenu {
+      label: _("Game _Rules");
+
+      section {
+        item {
+          label: _("Checkers/Anglo-American Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "checkers";
+        }
+
+        item {
+          label: _("Brazilian Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "brazilian";
+        }
+
+        item {
+          label: _("Italian Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "italian";
+        }
+
+        item {
+          label: _("Spanish Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "spanish";
+        }
+
+        item {
+          label: _("Czech Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "czech";
+        }
+
+        item {
+          label: _("Thai Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "thai";
+        }
+
+        item {
+          label: _("German Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "german";
+        }
+
+        item {
+          label: _("Swedish Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "swedish";
+        }
+
+        item {
+          label: _("Russian Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "russian";
+        }
+
+        item {
+          label: _("Pool Checkers (8×8)");
+          action: "app.game-rules-radio";
+          target: "pool";
+        }
+
+        item {
+          label: _("Graeco-Turkish Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "graeco-turkish";
+        }
+
+        item {
+          label: _("Armenian Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "armenian";
+        }
+
+        item {
+          label: _("Gothic Draughts (8×8)");
+          action: "app.game-rules-radio";
+          target: "gothic";
+        }
+      }
+
+      section {
+        item {
+          label: _("International Draughts (10×10)");
+          action: "app.game-rules-radio";
+          target: "international";
+        }
+
+        item {
+          label: _("Frisian Draughts (10×10)");
+          action: "app.game-rules-radio";
+          target: "frisian";
+        }
+      }
+
+      section {
+        item {
+          label: _("Canadian Draughts (12×12)");
+          action: "app.game-rules-radio";
+          target: "canadian";
+        }
+      }
+    }
+
+
+    submenu {
+      label: _("_Appearance");
+
+      section {
+        item {
+          label: _("Classic Brown/Beige");
+          action: "app.board-theme-radio";
+          target: "classic";
+        }
+
+        item {
+          label: _("Wood Light/Dark");
+          action: "app.board-theme-radio";
+          target: "wood";
+        }
+
+        item {
+          label: _("Green/White");
+          action: "app.board-theme-radio";
+          target: "green";
+        }
+
+        item {
+          label: _("Blue/Gray");
+          action: "app.board-theme-radio";
+          target: "blue";
+        }
+
+        item {
+          label: _("High Contrast");
+          action: "app.board-theme-radio";
+          target: "contrast";
+        }
+      }
+    }
+  }
+
   section {
     item {
       label: _("_Preferences");
@@ -60,7 +220,7 @@ menu primary_menu {
     }
 
     item {
-      label: _("_About App Template");
+      label: _("_About Draughts");
       action: "app.about";
     }
   }

@@ -1,17 +1,14 @@
-app-id: io.github.tobagin.AppTemplate.Devel
+app-id: io.github.tobagin.Draughts
 runtime: org.gnome.Platform
 runtime-version: '49'
 sdk: org.gnome.Sdk
-command: app-template
+command: draughts
 
 finish-args:
   - --share=ipc
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
-  # Development permissions
-  - --share=network
-  - --filesystem=host
 
 modules:
   - name: blueprint-compiler
@@ -24,10 +21,12 @@ modules:
         tag: v0.18.0
         commit: 07c9c9df9cd1b6b4454ecba21ee58211e9144a4b
 
-  - name: gnome-app-template
+  - name: draughts
     buildsystem: meson
     config-opts:
-      - -Dprofile=development
+      - -Dprofile=default
     sources:
-      - type: dir
-        path: ..
+      - type: git
+        url: https://github.com/tobagin/draughts.git
+        tag: v0.1.0
+        commit: 0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c

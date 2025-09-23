@@ -15,12 +15,12 @@
 using Gtk;
 using Adw;
 
-namespace AppTemplate {
+namespace Draughts {
 
 #if DEVELOPMENT
-    [GtkTemplate (ui = "/io/github/tobagin/AppTemplate/Devel/preferences.ui")]
+    [GtkTemplate (ui = "/io/github/tobagin/Draughts/Devel/preferences.ui")]
 #else
-    [GtkTemplate (ui = "/io/github/tobagin/AppTemplate/preferences.ui")]
+    [GtkTemplate (ui = "/io/github/tobagin/Draughts/preferences.ui")]
 #endif
     public class Preferences : Adw.PreferencesDialog {
     [GtkChild]
@@ -29,7 +29,7 @@ namespace AppTemplate {
     private unowned Adw.SwitchRow whats_new_row;
 
     private SettingsManager settings_manager;
-    private AppTemplate.Logger logger;
+    private Draughts.Logger logger;
 
     public Preferences () {
         Object ();

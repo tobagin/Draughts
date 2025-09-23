@@ -12,10 +12,10 @@
  * GNU General Public License for more details.
  */
 
-public class AppTemplateAboutDialog : GLib.Object {
+public class DraughtsAboutDialog : GLib.Object {
 
     public static void show(Gtk.Window? parent) {
-        var logger = AppTemplate.Logger.get_default();
+        var logger = Draughts.Logger.get_default();
         logger.debug("About action activated");
         
         var developers = new string[] { "Thiago Fernandes", null };
@@ -36,9 +36,9 @@ public class AppTemplateAboutDialog : GLib.Object {
             designers = designers,
             artists = artists,
             license_type = Gtk.License.GPL_3_0,
-            website = "https://tobagin.github.io/apps/AppTemplate",
-            issue_url = "https://github.com/tobagin/AppTemplate/issues",
-            support_url = "https://github.com/tobagin/AppTemplate/discussions",
+            website = "https://tobagin.github.io/apps/Draughts",
+            issue_url = "https://github.com/tobagin/draughts/issues",
+            support_url = "https://github.com/tobagin/draughts/discussions",
             comments = comments
         };
 
@@ -61,7 +61,7 @@ public class AppTemplateAboutDialog : GLib.Object {
         about.set_translator_credits("Thiago Fernandes");
         
         // Add Source link
-        about.add_link("Source", "https://github.com/tobagin/AppTemplate");
+        about.add_link("Source", "https://github.com/tobagin/draughts");
 
         if (parent != null && !parent.in_destruction()) {
             about.present(parent);
@@ -71,17 +71,17 @@ public class AppTemplateAboutDialog : GLib.Object {
     public static void show_with_release_notes(Gtk.Window? parent) {
         // Open the about dialog first (regular method)
         show(parent);
-        AppTemplate.Logger.get_default().debug("About dialog opened, preparing automatic navigation");
+        Draughts.Logger.get_default().debug("About dialog opened, preparing automatic navigation");
         
         // Wait for the dialog to appear and be fully rendered
-        Timeout.add(AppTemplate.Constants.WHATS_NEW_DELAY, () => {
-            AppTemplate.Logger.get_default().debug("Starting automatic navigation to release notes");
+        Timeout.add(Draughts.Constants.WHATS_NEW_DELAY, () => {
+            Draughts.Logger.get_default().debug("Starting automatic navigation to release notes");
             simulate_tab_navigation();
             
             // Simulate Enter key press after another delay to open release notes
-            Timeout.add(AppTemplate.Constants.DIALOG_ANIMATION_DELAY, () => {
+            Timeout.add(Draughts.Constants.DIALOG_ANIMATION_DELAY, () => {
                 simulate_enter_activation();
-                AppTemplate.Logger.get_default().info("Automatic navigation to release notes completed");
+                Draughts.Logger.get_default().info("Automatic navigation to release notes completed");
                 return false;
             });
             return false;
@@ -129,7 +129,7 @@ public class AppTemplateAboutDialog : GLib.Object {
             }
         } catch (Error e) {
             // If we can't load release notes from metainfo, that's okay
-            AppTemplate.Logger.get_default().warning("Could not load release notes from metainfo: %s", e.message);
+            Draughts.Logger.get_default().warning("Could not load release notes from metainfo: %s", e.message);
         }
     }
     
@@ -183,7 +183,7 @@ public class AppTemplateAboutDialog : GLib.Object {
                 }
             }
         } catch (Error e) {
-            AppTemplate.Logger.get_default().warning("Could not load release notes from metainfo: %s", e.message);
+            Draughts.Logger.get_default().warning("Could not load release notes from metainfo: %s", e.message);
         }
         
         return "";
@@ -195,19 +195,19 @@ public class AppTemplateAboutDialog : GLib.Object {
         if (app != null) {
             var focused_window = app.get_active_window();
             if (focused_window != null) {
-                AppTemplate.Logger.get_default().debug("Attempting tab navigation on window: %s", focused_window.get_type().name());
+                Draughts.Logger.get_default().debug("Attempting tab navigation on window: %s", focused_window.get_type().name());
                 
                 // Try multiple approaches to navigate to the release notes button
                 var success = focused_window.child_focus(Gtk.DirectionType.TAB_FORWARD);
                 if (success) {
-                    AppTemplate.Logger.get_default().debug("Tab navigation successful");
+                    Draughts.Logger.get_default().debug("Tab navigation successful");
                 } else {
-                    AppTemplate.Logger.get_default().debug("Tab navigation failed - focus might need manual adjustment");
+                    Draughts.Logger.get_default().debug("Tab navigation failed - focus might need manual adjustment");
                     // For LibAdwaita dialogs, the focus should automatically navigate
                     // to the appropriate elements when tabbing
                 }
             } else {
-                AppTemplate.Logger.get_default().warning("No focused window for tab navigation");
+                Draughts.Logger.get_default().warning("No focused window for tab navigation");
             }
         }
     }
@@ -220,19 +220,19 @@ public class AppTemplateAboutDialog : GLib.Object {
             if (focused_window != null) {
                 // Get the focused widget within the active window
                 var focused_widget = focused_window.get_focus();
-                AppTemplate.Logger.get_default().debug("Attempting enter activation on widget: %s", 
+                Draughts.Logger.get_default().debug("Attempting enter activation on widget: %s", 
                            focused_widget != null ? focused_widget.get_type().name() : "null");
                 
                 if (focused_widget != null) {
                     // If it's a button, click it
                     if (focused_widget is Gtk.Button) {
                         ((Gtk.Button)focused_widget).activate();
-                        AppTemplate.Logger.get_default().debug("Enter activation simulated on Button");
+                        Draughts.Logger.get_default().debug("Enter activation simulated on Button");
                     }
                     // For other widgets, try to activate the default action
                     else {
                         focused_widget.activate_default();
-                        AppTemplate.Logger.get_default().debug("Enter activation simulated on widget: %s", focused_widget.get_type().name());
+                        Draughts.Logger.get_default().debug("Enter activation simulated on widget: %s", focused_widget.get_type().name());
                     }
                 } else {
                     // Try to activate the default widget of the window
@@ -240,14 +240,14 @@ public class AppTemplateAboutDialog : GLib.Object {
                         var default_widget = ((Gtk.Window)focused_window).get_default_widget();
                         if (default_widget != null) {
                             default_widget.activate();
-                            AppTemplate.Logger.get_default().debug("Activated default widget: %s", default_widget.get_type().name());
+                            Draughts.Logger.get_default().debug("Activated default widget: %s", default_widget.get_type().name());
                         } else {
-                            AppTemplate.Logger.get_default().debug("No default widget found in window");
+                            Draughts.Logger.get_default().debug("No default widget found in window");
                         }
                     }
                 }
             } else {
-                AppTemplate.Logger.get_default().warning("No active window for enter activation");
+                Draughts.Logger.get_default().warning("No active window for enter activation");
             }
         }
     }

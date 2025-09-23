@@ -1,0 +1,196 @@
+/* Draughts Board Styles */
+
+/* Make the entire board square and responsive */
+grid.draughts-board {
+  min-width: 200px;
+  min-height: 200px;
+}
+
+.draughts-light-square {
+  background: white;
+  border: 1px solid #d4b896;
+}
+
+.draughts-dark-square {
+  background: #8B4513;
+  border: 1px solid #654321;
+}
+
+.draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f5f5f5;
+}
+
+.draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #A0522D;
+}
+
+button.draughts-red-piece {
+  background-image: url("red-checker.png");
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: #ff0000;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+button.draughts-black-piece {
+  background-image: url("black-checker.png");
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: #000000;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+button.draughts-red-king {
+  background-image: url("red-king.png");
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: #ff0000;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+button.draughts-black-king {
+  background-image: url("black-king.png");
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: #000000;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Remove default button styling for board squares */
+.draughts-light-square,
+.draughts-dark-square {
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  font-family: monospace;
+  min-height: 25px;
+  min-width: 25px;
+}
+
+.draughts-light-square:focus,
+.draughts-dark-square:focus {
+  outline: 2px solid #3584e4;
+  outline-offset: -2px;
+}
+
+/* Selection and move highlighting */
+.draughts-selected {
+  box-shadow: inset 0 0 0 3px #3584e4;
+}
+
+.draughts-valid-move {
+  box-shadow: inset 0 0 0 2px #26a269;
+}
+
+.draughts-capture-move {
+  box-shadow: inset 0 0 0 2px #c01c28;
+}
+
+/* Board Theme Variants */
+
+/* Classic Brown/Beige Theme (default) */
+.draughts-board-classic .draughts-light-square {
+  background: #f0d9b5;
+  border: 1px solid #d4b896;
+}
+
+.draughts-board-classic .draughts-dark-square {
+  background: #8B4513;
+  border: 1px solid #654321;
+}
+
+.draughts-board-classic .draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f5e6d3;
+}
+
+.draughts-board-classic .draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #A0522D;
+}
+
+/* Wood Light/Dark Theme */
+.draughts-board-wood .draughts-light-square {
+  background: #deb887;
+  border: 1px solid #d2691e;
+}
+
+.draughts-board-wood .draughts-dark-square {
+  background: #8b4513;
+  border: 1px solid #654321;
+}
+
+.draughts-board-wood .draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f0e68c;
+}
+
+.draughts-board-wood .draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #a0522d;
+}
+
+/* Green/White Theme */
+.draughts-board-green .draughts-light-square {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+.draughts-board-green .draughts-dark-square {
+  background: #769656;
+  border: 1px solid #4d6b3a;
+}
+
+.draughts-board-green .draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f5f5f5;
+}
+
+.draughts-board-green .draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #8fad6a;
+}
+
+/* Blue/Gray Theme */
+.draughts-board-blue .draughts-light-square {
+  background: #e8e8e8;
+  border: 1px solid #d0d0d0;
+}
+
+.draughts-board-blue .draughts-dark-square {
+  background: #4682b4;
+  border: 1px solid #2e5984;
+}
+
+.draughts-board-blue .draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f0f0f0;
+}
+
+.draughts-board-blue .draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #5a9bd4;
+}
+
+/* High Contrast Theme */
+.draughts-board-contrast .draughts-light-square {
+  background: #ffffff;
+  border: 2px solid #000000;
+}
+
+.draughts-board-contrast .draughts-dark-square {
+  background: #000000;
+  border: 2px solid #ffffff;
+}
+
+.draughts-board-contrast .draughts-light-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #f0f0f0;
+}
+
+.draughts-board-contrast .draughts-dark-square:hover:not(.draughts-red-piece):not(.draughts-black-piece):not(.draughts-red-king):not(.draughts-black-king) {
+  background: #333333;
+}

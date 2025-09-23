@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  */
 
-namespace AppTemplate {
+namespace Draughts {
 
     public class Logger : GLib.Object {
         private static Once<Logger> _once = Once<Logger>();
