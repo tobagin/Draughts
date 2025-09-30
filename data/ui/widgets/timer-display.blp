@@ -1,0 +1,77 @@
+using Gtk 4.0;
+
+template $DraughtsTimerDisplay : Gtk.Box {
+  orientation: vertical;
+  spacing: 12;
+
+  Gtk.Box timer_container {
+    orientation: horizontal;
+    spacing: 12;
+    homogeneous: true;
+
+    // Red player timer
+    Gtk.Box red_timer_box {
+      orientation: vertical;
+      spacing: 6;
+      halign: center;
+
+      Gtk.Label red_player_label {
+        label: _("Red Player");
+        halign: center;
+        styles ["heading"]
+      }
+
+      Gtk.Label red_time_label {
+        label: "5:00";
+        halign: center;
+        styles ["title-1", "monospace"]
+      }
+
+      Gtk.ProgressBar red_time_progress {
+        fraction: 1.0;
+        show-text: false;
+      }
+    }
+
+    // Black player timer
+    Gtk.Box black_timer_box {
+      orientation: vertical;
+      spacing: 6;
+      halign: center;
+
+      Gtk.Label black_player_label {
+        label: _("Black Player");
+        halign: center;
+        styles ["heading"]
+      }
+
+      Gtk.Label black_time_label {
+        label: "5:00";
+        halign: center;
+        styles ["title-1", "monospace"]
+      }
+
+      Gtk.ProgressBar black_time_progress {
+        fraction: 1.0;
+        show-text: false;
+      }
+    }
+  }
+
+  Gtk.Box timer_info {
+    orientation: horizontal;
+    spacing: 12;
+    halign: center;
+
+    Gtk.Label game_duration_label {
+      label: _("Game duration: 0:00");
+      styles ["caption"]
+    }
+
+    Gtk.Button timer_settings_button {
+      icon-name: "preferences-system-symbolic";
+      tooltip-text: _("Timer settings");
+      styles ["flat"]
+    }
+  }
+}

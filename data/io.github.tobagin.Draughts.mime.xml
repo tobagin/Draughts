@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-pdn">
+    <comment>Portable Draughts Notation</comment>
+    <comment xml:lang="en">Portable Draughts Notation game file</comment>
+    <icon name="io.github.tobagin.Draughts"/>
+    <glob pattern="*.pdn"/>
+    <glob pattern="*.PDN"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="[Event "/>
+      <match type="string" offset="0" value="[Site "/>
+      <match type="string" offset="0" value="[Date "/>
+      <match type="string" offset="0" value="[White "/>
+      <match type="string" offset="0" value="[Black "/>
+    </magic>
+  </mime-type>
+</mime-info>

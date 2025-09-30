@@ -4,20 +4,32 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>@NAME@</name>
-  <summary>A classic draughts game built with GTK4/LibAdwaita</summary>
+  <summary>Play draughts (checkers) with 16 international variants and AI opponents</summary>
   <description>
     <p>
-      A classic draughts (draughts) board game implemented with modern GNOME technologies.
-      Built using GTK4, LibAdwaita, and Blueprint for a native GNOME experience.
+      Draughts is a comprehensive checkers/draughts game featuring 16 international game variants,
+      multiple AI difficulty levels, and a beautiful modern interface built with GTK4 and LibAdwaita.
+      Whether you're a casual player or a serious competitor, Draughts offers engaging gameplay
+      for players of all skill levels.
     </p>
-    <p>Features:</p>
+    <p>Game Features:</p>
     <ul>
-      <li>Classic 8x8 draughts gameplay</li>
-      <li>Modern GTK4 and LibAdwaita design</li>
-      <li>Smooth animations and transitions</li>
-      <li>Save and load game states</li>
-      <li>Undo/redo functionality</li>
-      <li>Multiple difficulty levels</li>
+      <li>16 international draughts variants including American Checkers, International Draughts, Russian, Brazilian, and more</li>
+      <li>10 AI difficulty levels from Beginner to Grandmaster</li>
+      <li>Human vs Human, Human vs AI, and AI vs AI gameplay modes</li>
+      <li>Complete move history with undo/redo support</li>
+      <li>PDN (Portable Draughts Notation) export for game analysis</li>
+      <li>Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)</li>
+      <li>Timer modes: countdown, Fischer increment, and Bronstein delay</li>
+    </ul>
+    <p>Accessibility and Polish:</p>
+    <ul>
+      <li>Sound effects for moves, captures, and game events</li>
+      <li>Keyboard navigation and screen reader support</li>
+      <li>High contrast mode for better visibility</li>
+      <li>Smooth animations and visual feedback</li>
+      <li>Game history browser with replay functionality</li>
+      <li>Comprehensive rules documentation for each variant</li>
     </ul>
   </description>
   <screenshots>
@@ -27,20 +39,85 @@
   </screenshots>
   <url type="homepage">https://github.com/tobagin/draughts</url>
   <url type="bugtracker">https://github.com/tobagin/draughts/issues</url>
+  <url type="help">https://github.com/tobagin/draughts/wiki</url>
+  <url type="donation">https://github.com/sponsors/tobagin</url>
+
   <developer_name>Thiago Fernandes</developer_name>
+
   <launchable type="desktop-id">@ID@.desktop</launchable>
+
   <provides>
     <binary>draughts</binary>
+    <mediatype>application/x-pdn</mediatype>
   </provides>
+
+  <categories>
+    <category>Game</category>
+    <category>BoardGame</category>
+    <category>StrategyGame</category>
+  </categories>
+
+  <keywords>
+    <keyword>checkers</keyword>
+    <keyword>draughts</keyword>
+    <keyword>board game</keyword>
+    <keyword>strategy</keyword>
+    <keyword>dama</keyword>
+    <keyword>AI</keyword>
+    <keyword>puzzle</keyword>
+    <keyword>international</keyword>
+    <keyword>american</keyword>
+    <keyword>russian</keyword>
+    <keyword>brazilian</keyword>
+  </keywords>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
   <releases>
-    <release version="@VERSION@" date="2025-09-22">
+    <release version="@VERSION@" date="2025-09-30">
       <description>
-        <p>Initial release of Draughts</p>
+        <p>First stable release of Draughts - A comprehensive draughts/checkers game</p>
         <ul>
-          <li>Classic draughts gameplay</li>
-          <li>Modern GTK4/LibAdwaita interface</li>
-          <li>Game state management</li>
-          <li>Board animation system</li>
+          <li>16 international game variants: American Checkers, International, Russian, Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, Armenian, Gothic, Frisian, and Canadian</li>
+          <li>10 AI difficulty levels from Beginner to Grandmaster with intelligent move evaluation</li>
+          <li>Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI</li>
+          <li>Complete sound effects system with audio feedback for moves, captures, and game events</li>
+          <li>PDN (Portable Draughts Notation) export for game analysis and sharing</li>
+          <li>Four piece styles: Plastic, Wood, Metal, and Bottle Cap</li>
+          <li>Five board themes: Classic, Wood, Green, Blue, and High Contrast</li>
+          <li>Full move history with unlimited undo/redo support</li>
+          <li>Smooth animations and visual feedback for all game actions</li>
+          <li>Keyboard navigation and screen reader accessibility support</li>
+          <li>Comprehensive rules documentation for each variant</li>
+          <li>Modern GTK4/LibAdwaita interface with adaptive design</li>
+          <li>Dark mode support following system theme</li>
         </ul>
       </description>
     </release>

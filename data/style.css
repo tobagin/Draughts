@@ -98,6 +98,11 @@ button.draughts-black-king {
   box-shadow: inset 0 0 0 2px #c01c28;
 }
 
+.draughts-playable {
+  box-shadow: inset 0 0 0 1px #f9c74f;
+  opacity: 0.9;
+}
+
 /* Board Theme Variants */
 
 /* Classic Brown/Beige Theme (default) */

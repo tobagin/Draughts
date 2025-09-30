@@ -42,9 +42,16 @@ namespace Draughts {
             window.present();
             logger.info("Application activated");
 
-            // Check if we should show What's New dialog after a delay to ensure GTK is ready
+            // Show dialogs after a delay to ensure GTK is ready
             Idle.add(() => {
-                check_and_show_whats_new();
+                // Show welcome dialog first if needed
+                if (settings.is_first_run() || settings.get_show_welcome()) {
+                    WelcomeDialog.show_if_needed(window);
+                }
+                // Then check for What's New
+                else {
+                    check_and_show_whats_new();
+                }
                 return false;
             });
         }
@@ -55,6 +62,25 @@ namespace Draughts {
             settings = SettingsManager.get_instance();
             setup_actions();
             logger.info("Application started");
+        }
+
+        public override void open(File[] files, string hint) {
+            base.open(files, hint);
+
+            // Activate the application window first
+            activate();
+
+            // Try to open the first file
+            if (files.length > 0) {
+                var file = files[0];
+                logger.info("Opening file: %s", file.get_path());
+
+                if (main_window != null) {
+                    main_window.open_pdn_file(file);
+                } else {
+                    logger.warning("Main window not available to open file");
+                }
+            }
         }
 
         private void setup_actions() {
@@ -90,20 +116,38 @@ namespace Draughts {
             const string[] reset_game_accels = {"<primary>r", null};
             set_accels_for_action("app.reset-game", reset_game_accels);
 
-            var scores_action = new SimpleAction("scores", null);
-            scores_action.activate.connect(show_scores);
-            add_action(scores_action);
-            const string[] scores_accels = {"<primary>s", null};
-            set_accels_for_action("app.scores", scores_accels);
+            // Help dialog (F1)
+            var help_action = new SimpleAction("help", null);
+            help_action.activate.connect(() => {
+                HelpDialog.show_dialog(active_window);
+            });
+            add_action(help_action);
+            const string[] help_accels = {"F1", null};
+            set_accels_for_action("app.help", help_accels);
 
-            const string[] help_accels = {"<primary>question", null};
-            set_accels_for_action("win.show-help-overlay", help_accels);
+            // Welcome dialog
+            var welcome_action = new SimpleAction("welcome", null);
+            welcome_action.activate.connect(() => {
+                WelcomeDialog.show_dialog(active_window);
+            });
+            add_action(welcome_action);
+
+            // Keyboard shortcuts overlay
+            const string[] shortcuts_accels = {"<primary>question", null};
+            set_accels_for_action("win.show-help-overlay", shortcuts_accels);
 
             const string[] close_window_accels = {"<primary>w", null};
             set_accels_for_action("win.close-window", close_window_accels);
 
             const string[] fullscreen_accels = {"F11", null};
             set_accels_for_action("win.toggle-fullscreen", fullscreen_accels);
+
+            // Undo and Redo accelerators
+            const string[] undo_accels = {"<Ctrl>z", null};
+            set_accels_for_action("win.undo-move", undo_accels);
+
+            const string[] redo_accels = {"<Ctrl><Shift>z", null};
+            set_accels_for_action("win.redo-move", redo_accels);
 
             // Initialize saved settings values
             string saved_game_rules = settings.get_game_rules();
@@ -118,15 +162,14 @@ namespace Draughts {
                 settings.set_board_theme(saved_board_theme);
             }
 
-            // Game rules radio action
-            var game_rules_action = new SimpleAction.stateful("game-rules-radio", VariantType.STRING, new Variant.string(saved_game_rules));
-            game_rules_action.activate.connect(on_game_rules_changed);
-            add_action(game_rules_action);
+            string saved_piece_style = settings.get_piece_style();
+            if (saved_piece_style == "") {
+                saved_piece_style = "plastic"; // Default piece style
+                settings.set_piece_style(saved_piece_style);
+            }
 
-            // Board theme radio action
-            var board_theme_action = new SimpleAction.stateful("board-theme-radio", VariantType.STRING, new Variant.string(saved_board_theme));
-            board_theme_action.activate.connect(on_board_theme_changed);
-            add_action(board_theme_action);
+            AIDifficulty saved_difficulty = settings.get_ai_difficulty();
+
 
 
             logger.debug("Application actions configured");
@@ -136,6 +179,31 @@ namespace Draughts {
         private void show_preferences() {
             logger.debug("Preferences action triggered");
             var preferences_dialog = new Draughts.Preferences();
+
+            // Connect to variant change signal to start new game
+            preferences_dialog.variant_changed_start_new_game.connect(() => {
+                logger.info("Variant changed, starting new game");
+                if (main_window != null) {
+                    main_window.start_new_game();
+                }
+            });
+
+            // Connect to board theme change signal to update board appearance
+            preferences_dialog.board_theme_changed.connect((theme) => {
+                logger.info("Board theme changed to: %s", theme);
+                if (main_window != null) {
+                    main_window.set_board_theme(theme);
+                }
+            });
+
+            // Connect to piece style change signal to update piece appearance
+            preferences_dialog.piece_style_changed.connect((style) => {
+                logger.info("Piece style changed to: %s", style);
+                if (main_window != null) {
+                    main_window.set_piece_theme(style);
+                }
+            });
+
             preferences_dialog.show_preferences(active_window);
         }
 
@@ -153,50 +221,7 @@ namespace Draughts {
             }
         }
 
-        private void show_scores() {
-            logger.info("Scores action triggered");
-            if (main_window != null) {
-                main_window.show_scores();
-            }
-        }
 
-        private void on_game_rules_changed(SimpleAction action, Variant? parameter) {
-            if (parameter == null) return;
-
-            string rules = parameter.get_string();
-            logger.info("Game rules changed to: %s", rules);
-
-            // Update action state
-            action.set_state(parameter);
-
-            if (main_window != null) {
-                main_window.set_game_rules(rules);
-            }
-
-            // Save to settings
-            if (settings != null) {
-                settings.set_game_rules(rules);
-            }
-        }
-
-        private void on_board_theme_changed(SimpleAction action, Variant? parameter) {
-            if (parameter == null) return;
-
-            string theme = parameter.get_string();
-            logger.info("Board theme changed to: %s", theme);
-
-            // Update action state
-            action.set_state(parameter);
-
-            if (main_window != null) {
-                main_window.set_board_theme(theme);
-            }
-
-            // Save to settings
-            if (settings != null) {
-                settings.set_board_theme(theme);
-            }
-        }
 
 
         private void check_and_show_whats_new() {
@@ -291,5 +316,6 @@ namespace Draughts {
 
             return 0; // Versions are equal
         }
+
     }
 }

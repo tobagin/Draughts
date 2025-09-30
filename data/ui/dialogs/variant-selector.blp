@@ -1,0 +1,131 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsVariantSelector : Adw.Window {
+  width-request: 600;
+  height-request: 500;
+  resizable: true;
+  modal: true;
+
+  Gtk.Box {
+    orientation: vertical;
+
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("Select Game Variant");
+      };
+
+      [start]
+      Gtk.Button cancel_button {
+        label: _("Cancel");
+      }
+
+      [end]
+      Gtk.Button select_button {
+        label: _("Select");
+        sensitive: false;
+
+        styles ["suggested-action"]
+      }
+    }
+
+    Adw.ToastOverlay {
+      child: Gtk.Box {
+        orientation: horizontal;
+        spacing: 12;
+        margin-top: 12;
+        margin-bottom: 12;
+        margin-start: 12;
+        margin-end: 12;
+
+        // Variant list
+        Gtk.Box {
+          orientation: vertical;
+          spacing: 6;
+          hexpand: true;
+
+          Gtk.Label {
+            label: _("Choose a draughts variant:");
+            halign: start;
+
+            styles ["heading"]
+          }
+
+          Gtk.ScrolledWindow {
+            hscrollbar-policy: never;
+            vscrollbar-policy: automatic;
+            hexpand: true;
+            vexpand: true;
+
+            Gtk.ListBox variant_list {
+              selection-mode: single;
+              activate-on-single-click: true;
+
+              styles ["boxed-list"]
+            }
+          }
+        }
+
+        // Variant details
+        Gtk.Box {
+          orientation: vertical;
+          spacing: 12;
+          width-request: 250;
+
+          Gtk.Label {
+            label: _("Variant Details");
+            halign: start;
+
+            styles ["heading"]
+          }
+
+          Gtk.ScrolledWindow description_scroll {
+            hscrollbar-policy: never;
+            vscrollbar-policy: automatic;
+            vexpand: true;
+
+            Gtk.Box description_box {
+              orientation: vertical;
+              spacing: 12;
+              margin-top: 6;
+              margin-bottom: 6;
+              margin-start: 6;
+              margin-end: 6;
+
+              Gtk.Label variant_name_label {
+                label: _("Select a variant");
+                halign: start;
+
+                styles ["title-2"]
+              }
+
+              Gtk.Label board_size_label {
+                label: "";
+                halign: start;
+              }
+
+              Gtk.Label piece_count_label {
+                label: "";
+                halign: start;
+              }
+
+              Gtk.Label description_label {
+                label: "";
+                halign: start;
+                wrap: true;
+                xalign: 0;
+              }
+
+              Gtk.Label rules_summary_label {
+                label: "";
+                halign: start;
+                wrap: true;
+                xalign: 0;
+              }
+            }
+          }
+        }
+      };
+    }
+  }
+}

@@ -3,10 +3,43 @@
   <gresource prefix="/@ID_PATH@">
     <file>window.ui</file>
     <file>preferences.ui</file>
+    <file alias="dialogs/help.ui">help.ui</file>
+    <file alias="dialogs/welcome.ui">welcome.ui</file>
+    <file alias="dialogs/variant-selector.ui">variant-selector.ui</file>
+    <file alias="dialogs/variant-rules.ui">variant-rules.ui</file>
+    <file alias="dialogs/game-preferences.ui">game-preferences.ui</file>
+    <file alias="dialogs/game-end.ui">game-end.ui</file>
+    <file alias="dialogs/game-history.ui">game-history.ui</file>
+    <file alias="dialogs/game-replay.ui">game-replay.ui</file>
+    <file alias="dialogs/new-game.ui">new-game.ui</file>
+    <file alias="widgets/game-controls.ui">game-controls.ui</file>
+    <file alias="widgets/timer-display.ui">timer-display.ui</file>
+    <file alias="widgets/move-history.ui">move-history.ui</file>
     <file>style.css</file>
     <file>red-checker.png</file>
     <file>red-king.png</file>
     <file>black-checker.png</file>
     <file>black-king.png</file>
+    <file>red-checker-metal.png</file>
+    <file>red-king-metal.png</file>
+    <file>black-checker-metal.png</file>
+    <file>black-king-metal.png</file>
+    <file>red-checker-wood.png</file>
+    <file>red-king-wood.png</file>
+    <file>black-checker-wood.png</file>
+    <file>black-king-wood.png</file>
+    <file>red-checker-bottle-cap.png</file>
+    <file>red-king-bottle-cap.png</file>
+    <file>black-checker-bottle-cap.png</file>
+    <file>black-king-bottle-cap.png</file>
+    <file>sounds/move.ogg</file>
+    <file>sounds/capture.ogg</file>
+    <file>sounds/king.ogg</file>
+    <file>sounds/game-start.ogg</file>
+    <file>sounds/game-end.ogg</file>
+    <file>sounds/timer-warning.ogg</file>
+    <file>sounds/illegal-move.ogg</file>
+    <file>sounds/undo.ogg</file>
+    <file>sounds/redo.ogg</file>
   </gresource>
 </gresources>

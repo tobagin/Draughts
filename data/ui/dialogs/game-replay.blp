@@ -1,0 +1,292 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsGameReplayDialog : Adw.Dialog {
+  title: _("Game Replay");
+  content-width: 900;
+  content-height: 700;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: bind template.game_title;
+        subtitle: bind template.game_subtitle;
+      };
+
+
+      [end]
+      MenuButton options_button {
+        icon-name: "view-more-symbolic";
+        tooltip-text: _("Replay Options");
+        menu-model: replay_menu;
+      }
+    }
+
+    content: Box {
+      orientation: horizontal;
+      spacing: 12;
+      margin-top: 12;
+      margin-bottom: 12;
+      margin-start: 12;
+      margin-end: 12;
+
+      // Game board area
+      Box board_container {
+        orientation: vertical;
+        spacing: 12;
+        width-request: 500;
+
+        // Board with aspect ratio
+        AspectFrame board_frame {
+          ratio: 1.0;
+          obey-child: false;
+
+          Frame board_frame_inner {
+            styles ["view"]
+
+            // Board will be added programmatically
+            Box board_placeholder {
+              orientation: vertical;
+              valign: center;
+              halign: center;
+
+              Image {
+                icon-name: "view-grid-symbolic";
+                icon-size: large;
+              }
+
+              Label {
+                label: _("Loading board...");
+                margin-top: 12;
+              }
+            }
+          }
+        }
+
+        // Playback controls
+        Box controls_box {
+          orientation: horizontal;
+          spacing: 6;
+          halign: center;
+
+          Button first_button {
+            icon-name: "media-skip-backward-symbolic";
+            tooltip-text: _("Go to Start");
+          }
+
+          Button prev_button {
+            icon-name: "media-seek-backward-symbolic";
+            tooltip-text: _("Previous Move");
+          }
+
+          Button play_pause_button {
+            icon-name: "media-playback-start-symbolic";
+            tooltip-text: _("Play/Pause");
+            styles ["suggested-action"]
+          }
+
+          Button next_button {
+            icon-name: "media-seek-forward-symbolic";
+            tooltip-text: _("Next Move");
+          }
+
+          Button last_button {
+            icon-name: "media-skip-forward-symbolic";
+            tooltip-text: _("Go to End");
+          }
+
+          Separator {
+            margin-start: 12;
+            margin-end: 12;
+          }
+
+          Scale speed_scale {
+            orientation: horizontal;
+            width-request: 100;
+            tooltip-text: _("Playback Speed");
+            adjustment: Adjustment {
+              lower: 0.25;
+              upper: 4.0;
+              value: 1.0;
+              step-increment: 0.25;
+              page-increment: 0.5;
+            };
+          }
+
+          Label {
+            label: _("Speed");
+            margin-start: 6;
+          }
+        }
+
+        // Progress bar
+        Box progress_box {
+          orientation: vertical;
+          spacing: 6;
+
+          Scale move_scale {
+            orientation: horizontal;
+            tooltip-text: _("Move Position");
+            adjustment: Adjustment {
+              lower: 0;
+              upper: 1;
+              value: 0;
+              step-increment: 1;
+              page-increment: 1;
+            };
+          }
+
+          Box position_info {
+            orientation: horizontal;
+
+            Label current_move_label {
+              label: bind template.current_move_text;
+              halign: start;
+            }
+
+            Label {
+              hexpand: true;
+            }
+
+            Label total_moves_label {
+              label: bind template.total_moves_text;
+              halign: end;
+            }
+          }
+        }
+      }
+
+      Separator {
+        orientation: vertical;
+      }
+
+      // Side panel
+      Box side_panel {
+        orientation: vertical;
+        spacing: 12;
+        width-request: 300;
+
+        // Game information
+        Adw.PreferencesGroup info_group {
+          title: _("Game Information");
+
+          Adw.ActionRow players_row {
+            title: bind template.players_text;
+            subtitle: bind template.result_text;
+
+            [prefix]
+            Image {
+              icon-name: "system-users-symbolic";
+            }
+          }
+
+          Adw.ActionRow variant_row {
+            title: _("Variant");
+            subtitle: bind template.variant_text;
+
+            [prefix]
+            Image {
+              icon-name: "applications-games-symbolic";
+            }
+          }
+
+          Adw.ActionRow duration_row {
+            title: _("Game Duration");
+            subtitle: bind template.duration_text;
+
+            [prefix]
+            Image {
+              icon-name: "alarm-symbolic";
+            }
+          }
+        }
+
+        // Current move information
+        Adw.PreferencesGroup move_group {
+          title: _("Current Move");
+
+          Adw.ActionRow move_info_row {
+            title: bind template.move_notation;
+            subtitle: bind template.move_description;
+
+            [prefix]
+            Image {
+              icon-name: "view-list-symbolic";
+            }
+          }
+        }
+
+        // Statistics
+        Adw.PreferencesGroup stats_group {
+          title: _("Game Statistics");
+
+          Adw.ActionRow red_stats_row {
+            title: _("Red Player");
+            subtitle: bind template.red_stats_text;
+
+            [prefix]
+            Image {
+              icon-name: "media-record-symbolic";
+              styles ["red-piece"]
+            }
+          }
+
+          Adw.ActionRow black_stats_row {
+            title: _("Black Player");
+            subtitle: bind template.black_stats_text;
+
+            [prefix]
+            Image {
+              icon-name: "media-record-symbolic";
+              styles ["black-piece"]
+            }
+          }
+        }
+
+        // Move history list
+        Adw.PreferencesGroup history_group {
+          title: _("Move History");
+          description: _("Click a move to jump to that position");
+
+          ScrolledWindow {
+            vexpand: true;
+            hscrollbar-policy: never;
+            height-request: 200;
+
+            ListBox move_history_list {
+              selection-mode: single;
+              styles ["boxed-list"]
+            }
+          }
+        }
+      }
+    };
+  }
+}
+
+menu replay_menu {
+  section {
+    item {
+      label: _("Export Game (PGN)");
+      action: "replay.export";
+    }
+
+    item {
+      label: _("Copy Game Notation");
+      action: "replay.copy";
+    }
+  }
+
+  section {
+    item {
+      label: _("Reset View");
+      action: "replay.reset";
+    }
+
+    item {
+      label: _("Auto-rotate Board");
+      action: "replay.auto-rotate";
+    }
+  }
+}

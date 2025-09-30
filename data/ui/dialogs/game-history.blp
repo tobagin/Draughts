@@ -1,0 +1,134 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsGameHistoryDialog : Adw.Dialog {
+  title: _("Game History");
+  content-width: 800;
+  content-height: 600;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar header_bar {
+      title-widget: Adw.WindowTitle {
+        title: _("Game History");
+        subtitle: bind template.history_subtitle;
+      };
+
+      [start]
+      Button clear_history_button {
+        icon-name: "user-trash-symbolic";
+        tooltip-text: _("Clear History");
+        action-name: "history.clear";
+        styles ["destructive-action"]
+      }
+
+    }
+
+    content: Box {
+      orientation: vertical;
+      spacing: 0;
+
+      // Filter bar
+      Adw.ActionRow filter_row {
+        title: _("Filter Games");
+
+        [suffix]
+        Box {
+          spacing: 12;
+
+          DropDown variant_filter {
+            tooltip-text: _("Filter by variant");
+            valign: center;
+          }
+
+          DropDown result_filter {
+            tooltip-text: _("Filter by result");
+            valign: center;
+          }
+
+          DropDown player_filter {
+            tooltip-text: _("Filter by player type");
+            valign: center;
+          }
+        }
+      }
+
+      Separator {}
+
+      // Statistics summary
+      Adw.ActionRow stats_row {
+        title: bind template.stats_title;
+        subtitle: bind template.stats_subtitle;
+
+        [prefix]
+        Image {
+          icon-name: "io.github.tobagin.Draughts-chckerboard-symbolic";
+          icon-size: large;
+        }
+      }
+
+      Separator {}
+
+      // Game list
+      ScrolledWindow {
+        vexpand: true;
+        hscrollbar-policy: never;
+
+        ListBox game_list {
+          margin-bottom: 12;
+          margin-top: 12;
+          margin-start: 12;
+          margin-end: 12;
+          selection-mode: single;
+          styles ["boxed-list"]
+
+          Adw.StatusPage {
+            icon-name: "io.github.tobagin.Draughts-chckerboard-symbolic";
+            title: _("No Games Found");
+            description: _("Play some games to see them in your history");
+          }
+        }
+      }
+
+      // Bottom toolbar
+      Box bottom_toolbar {
+        orientation: horizontal;
+        spacing: 6;
+        margin-top: 12;
+        margin-bottom: 12;
+        margin-start: 12;
+        margin-end: 12;
+
+        Button replay_button {
+          label: _("Watch Replay");
+          icon-name: "media-playback-start-symbolic";
+          sensitive: false;
+          styles ["suggested-action"]
+        }
+
+        Button {
+          hexpand: true;
+        }
+
+        Button view_details_button {
+          label: _("View Details");
+          sensitive: false;
+        }
+
+        Button export_button {
+          label: _("Export PGN");
+          icon-name: "document-save-symbolic";
+          sensitive: false;
+        }
+
+        Button delete_button {
+          label: _("Delete");
+          icon-name: "user-trash-symbolic";
+          sensitive: false;
+          styles ["destructive-action"]
+        }
+      }
+    };
+  }
+}
+

@@ -42,6 +42,21 @@ namespace Draughts {
             section.add(fullscreen_item);
             shortcuts_window.add(section);
 
+            // Game section
+            var game_section = new Adw.ShortcutsSection("game");
+            game_section.title = "Game Controls";
+
+            var new_game_item = new Adw.ShortcutsItem("New Game", "<Primary>n");
+            var reset_game_item = new Adw.ShortcutsItem("Reset Game", "<Primary>r");
+            var undo_item = new Adw.ShortcutsItem("Undo Move", "<Primary>z");
+            var redo_item = new Adw.ShortcutsItem("Redo Move", "<Primary><Shift>z");
+
+            game_section.add(new_game_item);
+            game_section.add(reset_game_item);
+            game_section.add(undo_item);
+            game_section.add(redo_item);
+            shortcuts_window.add(game_section);
+
             if (parent != null && !parent.in_destruction()) {
                 shortcuts_window.present(parent);
             } else {

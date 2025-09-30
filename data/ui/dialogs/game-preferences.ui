@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraughtsGamePreferences" parent="AdwPreferencesWindow">
+    <property name="title">Draughts Preferences</property>
+    <property name="modal">true</property>
+    <property name="default-width">600</property>
+    <property name="default-height">700</property>
+
+    <!-- Game Settings Page -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="title">Game</property>
+        <property name="icon-name">games-symbolic</property>
+
+        <!-- General Game Settings -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">General</property>
+            <property name="description">Configure basic game behavior and defaults</property>
+
+            <child>
+              <object class="AdwComboRow" id="default_variant_row">
+                <property name="title">Default Variant</property>
+                <property name="subtitle">The draughts variant to use for new games</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwComboRow" id="interaction_mode_row">
+                <property name="title">Interaction Mode</property>
+                <property name="subtitle">How to interact with game pieces</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="show_legal_moves_row">
+                <property name="title">Show Legal Moves</property>
+                <property name="subtitle">Highlight possible moves when selecting a piece</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="animate_moves_row">
+                <property name="title">Animate Moves</property>
+                <property name="subtitle">Show smooth animations when pieces move</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="sound_effects_row">
+                <property name="title">Sound Effects</property>
+                <property name="subtitle">Play sounds for moves, captures, and game events</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- AI Settings Page -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="title">AI Opponent</property>
+        <property name="icon-name">computer-symbolic</property>
+
+        <!-- AI Difficulty -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Difficulty</property>
+            <property name="description">Configure AI opponent strength and behavior</property>
+
+            <child>
+              <object class="AdwComboRow" id="ai_difficulty_row">
+                <property name="title">AI Difficulty</property>
+                <property name="subtitle">Default difficulty level for AI opponents</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSpinRow" id="ai_thinking_time_row">
+                <property name="title">Thinking Time</property>
+                <property name="subtitle">Maximum time AI can spend thinking (seconds)</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">60</property>
+                    <property name="value">5</property>
+                    <property name="step-increment">1</property>
+                    <property name="page-increment">5</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- AI Visual Feedback -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Visual Feedback</property>
+            <property name="description">Control how AI thinking is displayed</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="show_ai_thinking_row">
+                <property name="title">Show AI Thinking</property>
+                <property name="subtitle">Display evaluation hints while AI is thinking</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="ai_progress_indicator_row">
+                <property name="title">Progress Indicator</property>
+                <property name="subtitle">Show progress bar during AI computation</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Timer Settings Page -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="title">Timing</property>
+        <property name="icon-name">clock-symbolic</property>
+
+        <!-- Timer Configuration -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Timer Settings</property>
+            <property name="description">Configure game timing and time controls</property>
+
+            <child>
+              <object class="AdwComboRow" id="default_timer_mode_row">
+                <property name="title">Default Timer Mode</property>
+                <property name="subtitle">Time control system for new games</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSpinRow" id="countdown_minutes_row">
+                <property name="title">Countdown Timer</property>
+                <property name="subtitle">Minutes per player for countdown mode</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">180</property>
+                    <property name="value">15</property>
+                    <property name="step-increment">1</property>
+                    <property name="page-increment">5</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSpinRow" id="fischer_increment_row">
+                <property name="title">Fischer Increment</property>
+                <property name="subtitle">Seconds added per move in Fischer mode</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">60</property>
+                    <property name="value">3</property>
+                    <property name="step-increment">1</property>
+                    <property name="page-increment">5</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSpinRow" id="delay_seconds_row">
+                <property name="title">Delay Timer</property>
+                <property name="subtitle">Delay seconds before countdown starts</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">30</property>
+                    <property name="value">5</property>
+                    <property name="step-increment">1</property>
+                    <property name="page-increment">5</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Timer Feedback -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Timer Feedback</property>
+            <property name="description">Configure timer warnings and notifications</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="timer_warnings_row">
+                <property name="title">Timer Warnings</property>
+                <property name="subtitle">Show warnings when time is running low</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="timer_sounds_row">
+                <property name="title">Timer Sounds</property>
+                <property name="subtitle">Play sounds for timer warnings and expiration</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Display Settings Page -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="title">Display</property>
+        <property name="icon-name">view-grid-symbolic</property>
+
+        <!-- Board Appearance -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Board Appearance</property>
+            <property name="description">Customize the look of the game board</property>
+
+            <child>
+              <object class="AdwComboRow" id="board_theme_row">
+                <property name="title">Board Theme</property>
+                <property name="subtitle">Color scheme for the game board</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwComboRow" id="piece_style_row">
+                <property name="title">Piece Style</property>
+                <property name="subtitle">Visual style for game pieces</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="show_coordinates_row">
+                <property name="title">Show Coordinates</property>
+                <property name="subtitle">Display row and column labels on the board</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="highlight_last_move_row">
+                <property name="title">Highlight Last Move</property>
+                <property name="subtitle">Highlight the squares of the most recent move</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Interface Elements -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Interface</property>
+            <property name="description">Configure interface panels and information display</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="show_move_history_row">
+                <property name="title">Show Move History</property>
+                <property name="subtitle">Display the move history panel by default</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Accessibility Settings Page -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="title">Accessibility</property>
+        <property name="icon-name">applications-accessibility-symbolic</property>
+
+        <!-- Visual Accessibility -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Visual</property>
+            <property name="description">Settings to improve visual accessibility</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="high_contrast_row">
+                <property name="title">High Contrast Mode</property>
+                <property name="subtitle">Use high contrast colors for better visibility</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwSwitchRow" id="large_pieces_row">
+                <property name="title">Large Pieces</property>
+                <property name="subtitle">Display pieces at larger size for better visibility</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Input Accessibility -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Input</property>
+            <property name="description">Settings for keyboard and assistive input</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="keyboard_navigation_row">
+                <property name="title">Keyboard Navigation</property>
+                <property name="subtitle">Enable full keyboard control of the game board</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Screen Reader Support -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Screen Reader</property>
+            <property name="description">Settings for screen reader and audio feedback</property>
+
+            <child>
+              <object class="AdwSwitchRow" id="screen_reader_row">
+                <property name="title">Screen Reader Support</property>
+                <property name="subtitle">Enable enhanced support for screen reading software</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwComboRow" id="move_announcement_row">
+                <property name="title">Move Announcements</property>
+                <property name="subtitle">Level of detail for move descriptions</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraughtsVariantSelector" parent="AdwWindow">
+    <property name="title">Select Draughts Variant</property>
+    <property name="modal">true</property>
+    <property name="default-width">700</property>
+    <property name="default-height">500</property>
+
+    <child>
+      <object class="AdwHeaderBar" id="header_bar">
+        <property name="title-widget">
+          <object class="AdwWindowTitle">
+            <property name="title">Select Draughts Variant</property>
+          </object>
+        </property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+
+        <!-- Variant List -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="width-request">350</property>
+
+            <!-- List Header -->
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">6</property>
+
+                <child>
+                  <object class="GtkLabel">
+                    <property name="text">Available Variants</property>
+                    <property name="halign">start</property>
+                    <style>
+                      <class name="heading"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <!-- Variant List -->
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">6</property>
+                <property name="margin-bottom">12</property>
+
+                <child>
+                  <object class="GtkListBox" id="variant_list">
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Separator -->
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">vertical</property>
+          </object>
+        </child>
+
+        <!-- Description Panel -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="hexpand">true</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">12</property>
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">12</property>
+            <property name="spacing">12</property>
+
+            <!-- Variant Info Header -->
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+
+                <child>
+                  <object class="GtkLabel" id="variant_name_label">
+                    <property name="text">Select a variant</property>
+                    <property name="halign">start</property>
+                    <style>
+                      <class name="title-2"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">24</property>
+
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="text">Board Size</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="caption"/>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel" id="board_size_label">
+                            <property name="text">8 × 8</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="heading"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="text">Pieces</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="caption"/>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel" id="piece_count_label">
+                            <property name="text">12 per player</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="heading"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <!-- Separator -->
+            <child>
+              <object class="GtkSeparator">
+                <property name="orientation">horizontal</property>
+              </object>
+            </child>
+
+            <!-- Description -->
+            <child>
+              <object class="GtkScrolledWindow" id="description_scroll">
+                <property name="vexpand">true</property>
+                <property name="policy">never</property>
+                <property name="vscrollbar-policy">automatic</property>
+
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+
+                    <!-- Description -->
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="text">Description</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="heading"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel" id="description_label">
+                            <property name="text">Select a variant to see its description.</property>
+                            <property name="halign">start</property>
+                            <property name="wrap">true</property>
+                            <property name="wrap-mode">word</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <!-- Rules Summary -->
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="text">Key Rules</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="heading"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel" id="rules_summary_label">
+                            <property name="text">Select a variant to see its rules.</property>
+                            <property name="halign">start</property>
+                            <property name="wrap">true</property>
+                            <property name="wrap-mode">word</property>
+                            <style>
+                              <class name="monospace"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <!-- Action Buttons -->
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <property name="halign">end</property>
+
+                <child>
+                  <object class="GtkButton" id="cancel_button">
+                    <property name="label">Cancel</property>
+                    <property name="action-name">window.close</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkButton" id="select_button">
+                    <property name="label">Select</property>
+                    <property name="sensitive">false</property>
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

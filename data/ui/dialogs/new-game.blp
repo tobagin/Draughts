@@ -1,0 +1,48 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsNewGameDialog : Adw.AlertDialog {
+  heading: _("Start New Game");
+  body: _("Choose the game mode:");
+
+  extra-child: Gtk.Box {
+    orientation: vertical;
+    spacing: 12;
+    margin-top: 12;
+    margin-bottom: 12;
+    margin-start: 20;
+    margin-end: 20;
+
+    Gtk.ListBox {
+      selection-mode: none;
+
+      styles ["boxed-list"]
+
+      Adw.ActionRow human_vs_human_row {
+        title: _("Human vs Human");
+        subtitle: _("Play against another person");
+        activatable: true;
+
+        Gtk.Image {
+          icon-name: "system-users-symbolic";
+          margin-end: 12;
+        }
+      }
+
+      Adw.ActionRow human_vs_ai_row {
+        title: _("Human vs AI");
+        subtitle: _("Play against the computer");
+        activatable: true;
+
+        Gtk.Image {
+          icon-name: "applications-games-symbolic";
+          margin-end: 12;
+        }
+      }
+    }
+  };
+
+  responses [
+    cancel: _("Cancel")
+  ]
+}

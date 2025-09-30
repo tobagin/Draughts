@@ -1,5 +1,5 @@
 project('draughts', 'vala', 'c',
-  version : '0.1.0',
+  version : '1.0.0',
   license : 'GPL-3.0+',
   meson_version : '>= 1.9.0'
 )
@@ -23,6 +23,7 @@ gtk4_dep = dependency('gtk4', version: '>= 4.20')
 libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8')
 glib_dep = dependency('glib-2.0', version: '>= 2.86')
 gio_dep = dependency('gio-2.0', version: '>= 2.86')
+gee_dep = dependency('gee-0.8', version: '>= 0.8')
 
 # Vala compiler requirements
 vala = meson.get_compiler('vala')

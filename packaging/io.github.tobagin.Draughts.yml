@@ -9,6 +9,7 @@ finish-args:
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
+  - --socket=pulseaudio
 
 modules:
   - name: blueprint-compiler
@@ -26,7 +27,5 @@ modules:
     config-opts:
       - -Dprofile=default
     sources:
-      - type: git
-        url: https://github.com/tobagin/draughts.git
-        tag: v0.1.0
-        commit: 0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c
+      - type: dir
+        path: ..

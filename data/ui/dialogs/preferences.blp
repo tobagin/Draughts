@@ -5,31 +5,156 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
   title: _("Preferences");
 
   Adw.PreferencesPage {
-    title: _("General");
-    icon-name: "preferences-system-symbolic";
+    title: _("Appearance");
+    icon-name: "applications-graphics-symbolic";
 
     Adw.PreferencesGroup {
-      title: _("Appearance");
-      description: _("Customize the look and feel of the application");
+      title: _("Application Theme");
+      description: _("Choose the color scheme for the application");
 
       Adw.ComboRow theme_row {
         title: _("Theme");
-        subtitle: _("Choose the application theme");
+        subtitle: _("Light, dark, or follow system preference");
         model: theme_model;
       }
     }
 
+    Adw.PreferencesGroup {
+      title: _("Board Theme");
+      description: _("Customize the appearance of the game board");
+
+      Adw.ComboRow board_theme_row {
+        title: _("Board Colors");
+        subtitle: _("Choose the color scheme for the board");
+        model: board_theme_model;
+      }
+    }
 
     Adw.PreferencesGroup {
-      title: _("Notifications");
-      description: _("Configure application notifications and updates");
+      title: _("Piece Style");
+      description: _("Customize the appearance of game pieces");
+
+      Adw.ComboRow piece_style_row {
+        title: _("Piece Design");
+        subtitle: _("Choose the visual style for pieces");
+        model: piece_style_model;
+      }
+    }
+  }
+
+  Adw.PreferencesPage {
+    title: _("Gameplay");
+    icon-name: "applications-games-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Game Variant");
+      description: _("Select which draughts variant to play");
+
+      Adw.ComboRow game_variant_row {
+        title: _("Variant");
+        subtitle: _("16 international draughts variants available");
+        model: variant_model;
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Artificial Intelligence");
+      description: _("Configure AI opponent difficulty");
+
+      Adw.ComboRow ai_difficulty_row {
+        title: _("AI Difficulty");
+        subtitle: _("From Beginner to Grandmaster");
+        model: ai_difficulty_model;
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Audio");
+      description: _("Configure sound effects during gameplay");
+
+      Adw.SwitchRow sound_effects_row {
+        title: _("Sound Effects");
+        subtitle: _("Play audio feedback for moves, captures, and game events");
+      }
+    }
+  }
+
+  Adw.PreferencesPage {
+    title: _("General");
+    icon-name: "preferences-system-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Startup");
+      description: _("Configure what happens when the application starts");
+
+      Adw.SwitchRow welcome_row {
+        title: _("Show Welcome Screen");
+        subtitle: _("Display welcome dialog on startup");
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Updates");
+      description: _("Configure how the application handles updates");
 
       Adw.SwitchRow whats_new_row {
-        title: _("Show release notes on updates");
+        title: _("Show Release Notes");
         subtitle: _("Display what's new when the application is updated");
       }
     }
   }
+}
+
+StringList variant_model {
+  strings [
+    _("American Checkers (8×8)"),
+    _("International Draughts (10×10)"),
+    _("Russian Draughts (8×8)"),
+    _("Brazilian Draughts (8×8)"),
+    _("Italian Draughts (8×8)"),
+    _("Spanish Draughts (8×8)"),
+    _("Czech Draughts (8×8)"),
+    _("Thai Draughts (8×8)"),
+    _("German Draughts (8×8)"),
+    _("Swedish Draughts (8×8)"),
+    _("Pool Checkers (8×8)"),
+    _("Turkish Draughts (8×8)"),
+    _("Armenian Draughts (8×8)"),
+    _("Gothic Draughts (8×8)"),
+    _("Frisian Draughts (10×10)"),
+    _("Canadian Draughts (12×12)")
+  ]
+}
+
+StringList board_theme_model {
+  strings [
+    _("Classic Brown/Beige"),
+    _("Wood Light/Dark"),
+    _("Green/White"),
+    _("Blue/Gray"),
+    _("High Contrast")
+  ]
+}
+
+StringList piece_style_model {
+  strings [
+    _("Plastic"),
+    _("Wood"),
+    _("Metal"),
+    _("Bottle Cap")
+  ]
+}
+
+StringList ai_difficulty_model {
+  strings [
+    _("Beginner"),
+    _("Easy"),
+    _("Medium"),
+    _("Hard"),
+    _("Expert"),
+    _("Master"),
+    _("Grandmaster")
+  ]
 }
 
 StringList theme_model {
@@ -39,4 +164,3 @@ StringList theme_model {
     _("Dark")
   ]
 }
-

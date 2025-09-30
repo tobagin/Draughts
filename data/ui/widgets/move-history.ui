@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraughtsMoveHistory" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+
+    <!-- Header -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+
+        <child>
+          <object class="GtkLabel">
+            <property name="text">Move History</property>
+            <property name="hexpand">true</property>
+            <property name="halign">start</property>
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkLabel" id="moves_count_label">
+            <property name="text">No moves</property>
+            <style>
+              <class name="caption"/>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Move List -->
+    <child>
+      <object class="GtkScrolledWindow" id="history_scroll">
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+        <property name="min-content-height">200</property>
+        <property name="policy">never</property>
+        <property name="vscrollbar-policy">automatic</property>
+
+        <child>
+          <object class="GtkListView" id="move_list">
+            <property name="single-click-activate">true</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Navigation Controls -->
+    <child>
+      <object class="GtkBox" id="navigation_controls">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="halign">center</property>
+        <property name="homogeneous">true</property>
+        <property name="visible">false</property>
+
+        <child>
+          <object class="GtkButton" id="first_move_button">
+            <property name="icon-name">go-first-symbolic</property>
+            <property name="tooltip-text">First Move (Home)</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="prev_move_button">
+            <property name="icon-name">go-previous-symbolic</property>
+            <property name="tooltip-text">Previous Move (←)</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="next_move_button">
+            <property name="icon-name">go-next-symbolic</property>
+            <property name="tooltip-text">Next Move (→)</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="last_move_button">
+            <property name="icon-name">go-last-symbolic</property>
+            <property name="tooltip-text">Last Move (End)</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Action Buttons -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="halign">center</property>
+
+        <child>
+          <object class="GtkButton" id="export_pgn_button">
+            <property name="label">Export PGN</property>
+            <property name="sensitive">false</property>
+            <property name="tooltip-text">Export game to PGN format</property>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="clear_history_button">
+            <property name="label">Clear</property>
+            <property name="sensitive">false</property>
+            <property name="tooltip-text">Clear move history</property>
+            <style>
+              <class name="flat"/>
+              <class name="destructive-action"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

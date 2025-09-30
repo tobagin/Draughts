@@ -1,0 +1,95 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsVariantRulesDialog : Adw.AlertDialog {
+  heading: _("Game Rules Changed");
+  body: _("You have selected a new draughts variant. Here are the key rules for this variant:");
+
+  extra-child: Gtk.ScrolledWindow {
+    height-request: 400;
+    width-request: 500;
+    vexpand: true;
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 12;
+      margin-top: 12;
+      margin-bottom: 12;
+      margin-start: 12;
+      margin-end: 12;
+
+      Adw.PreferencesGroup variant_info_group {
+        title: _("Variant Information");
+
+        Adw.ActionRow variant_name_row {
+          title: _("Variant Name");
+        }
+
+        Adw.ActionRow board_size_row {
+          title: _("Board Size");
+        }
+
+        Adw.ActionRow piece_count_row {
+          title: _("Starting Pieces per Player");
+        }
+      }
+
+      Adw.PreferencesGroup movement_rules_group {
+        title: _("Movement Rules");
+
+        Adw.ActionRow men_movement_row {
+          title: _("Men Movement");
+        }
+
+        Adw.ActionRow kings_movement_row {
+          title: _("Kings Movement");
+        }
+
+        Adw.ActionRow kings_fly_row {
+          title: _("Kings Can Fly");
+        }
+      }
+
+      Adw.PreferencesGroup capture_rules_group {
+        title: _("Capture Rules");
+
+        Adw.ActionRow men_capture_row {
+          title: _("Men Capture");
+        }
+
+        Adw.ActionRow kings_capture_row {
+          title: _("Kings Capture");
+        }
+
+        Adw.ActionRow mandatory_capture_row {
+          title: _("Mandatory Capture");
+        }
+
+        Adw.ActionRow capture_priority_row {
+          title: _("Capture Priority");
+        }
+
+        Adw.ActionRow multiple_capture_row {
+          title: _("Multiple Captures");
+        }
+      }
+
+      Adw.PreferencesGroup promotion_rules_group {
+        title: _("Promotion Rules");
+
+        Adw.ActionRow promotion_condition_row {
+          title: _("Promotion Condition");
+        }
+
+        Adw.ActionRow promotion_timing_row {
+          title: _("Promotion Timing");
+        }
+      }
+    }
+  };
+
+  responses [
+    continue: _("Continue with New Rules") suggested,
+    cancel: _("Keep Current Variant") destructive,
+  ]
+}

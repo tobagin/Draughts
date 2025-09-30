@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraughtsGameControls" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+
+    <!-- Game Status Section -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <property name="halign">center</property>
+        <child>
+          <object class="GtkLabel" id="game_status_label">
+            <property name="text">Ready to play</property>
+            <style>
+              <class name="title-4"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Current Player Section -->
+    <child>
+      <object class="GtkLabel" id="current_player_label">
+        <property name="text">Red's Turn</property>
+        <style>
+          <class name="subtitle"/>
+        </style>
+      </object>
+    </child>
+
+    <!-- Control Buttons -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="halign">center</property>
+        <property name="homogeneous">true</property>
+
+        <child>
+          <object class="GtkButton" id="new_game_button">
+            <property name="label">New Game</property>
+            <property name="action-name">win.new-game</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="play_pause_button">
+            <property name="icon-name">media-playback-start-symbolic</property>
+            <property name="tooltip-text">Start Game</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="reset_button">
+            <property name="icon-name">view-refresh-symbolic</property>
+            <property name="tooltip-text">Reset Game</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="undo_button">
+            <property name="icon-name">edit-undo-symbolic</property>
+            <property name="tooltip-text">Undo Move</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Game Configuration -->
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <property name="halign">center</property>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="text">Variant:</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkDropDown" id="variant_dropdown">
+                <property name="hexpand">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <property name="halign">center</property>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="text">AI Difficulty:</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkDropDown" id="difficulty_dropdown">
+                <property name="hexpand">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

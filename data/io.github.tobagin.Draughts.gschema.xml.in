@@ -7,6 +7,66 @@
     <value nick="dark" value="2"/>
   </enum>
 
+  <enum id="@ID@.DraughtsVariant">
+    <value nick="american" value="0"/>
+    <value nick="international" value="1"/>
+    <value nick="russian" value="2"/>
+    <value nick="brazilian" value="3"/>
+    <value nick="italian" value="4"/>
+    <value nick="spanish" value="5"/>
+    <value nick="czech" value="6"/>
+    <value nick="thai" value="7"/>
+    <value nick="german" value="8"/>
+    <value nick="swedish" value="9"/>
+    <value nick="pool" value="10"/>
+    <value nick="turkish" value="11"/>
+    <value nick="armenian" value="12"/>
+    <value nick="gothic" value="13"/>
+    <value nick="frisian" value="14"/>
+    <value nick="canadian" value="15"/>
+  </enum>
+
+  <enum id="@ID@.AIDifficulty">
+    <value nick="beginner" value="1"/>
+    <value nick="easy" value="2"/>
+    <value nick="medium" value="3"/>
+    <value nick="novice" value="4"/>
+    <value nick="intermediate" value="5"/>
+    <value nick="hard" value="6"/>
+    <value nick="advanced" value="7"/>
+    <value nick="expert" value="8"/>
+    <value nick="master" value="9"/>
+    <value nick="grandmaster" value="10"/>
+  </enum>
+
+  <enum id="@ID@.TimerMode">
+    <value nick="untimed" value="0"/>
+    <value nick="blitz" value="1"/>
+    <value nick="rapid" value="2"/>
+    <value nick="classical" value="3"/>
+    <value nick="fischer" value="4"/>
+    <value nick="custom" value="5"/>
+  </enum>
+
+  <enum id="@ID@.AnimationSpeed">
+    <value nick="disabled" value="0"/>
+    <value nick="slow" value="1"/>
+    <value nick="normal" value="2"/>
+    <value nick="fast" value="3"/>
+  </enum>
+
+  <enum id="@ID@.InteractionMode">
+    <value nick="click-to-select" value="0"/>
+    <value nick="drag-and-drop" value="1"/>
+  </enum>
+
+  <enum id="@ID@.AnnouncementLevel">
+    <value nick="off" value="0"/>
+    <value nick="move-only" value="1"/>
+    <value nick="move-and-capture" value="2"/>
+    <value nick="full-description" value="3"/>
+  </enum>
+
   <schema id="@ID@" path="/@ID_PATH@/">
     <key name="color-scheme" enum="@ID@.ColorScheme">
       <default>'default'</default>
@@ -53,14 +113,20 @@
       <description>Display release notes when the application is updated to a new version</description>
     </key>
 
+    <key name="show-welcome" type="b">
+      <default>true</default>
+      <summary>Show Welcome dialog on startup</summary>
+      <description>Display the welcome screen when the application starts</description>
+    </key>
+
     <key name="board-size" type="i">
-      <default>8</default>
+      <default>10</default>
       <summary>Board size</summary>
       <description>The size of the game board (8x8, 10x10, or 12x12)</description>
     </key>
 
     <key name="game-rules" type="s">
-      <default>"checkers"</default>
+      <default>"international"</default>
       <summary>Game rules variant</summary>
       <description>The rules variant to use for the draughts game</description>
     </key>
@@ -69,6 +135,235 @@
       <default>"classic"</default>
       <summary>Board theme</summary>
       <description>The visual theme for the game board</description>
+    </key>
+
+    <key name="piece-style" type="s">
+      <default>"plastic"</default>
+      <summary>Piece style</summary>
+      <description>The visual style for the game pieces (plastic, wood, metal, bottle-cap)</description>
+    </key>
+
+    <!-- Game Settings -->
+    <key name="default-variant" enum="@ID@.DraughtsVariant">
+      <default>'international'</default>
+      <summary>Default draughts variant</summary>
+      <description>The default variant to use when starting new games</description>
+    </key>
+
+    <key name="show-legal-moves" type="b">
+      <default>true</default>
+      <summary>Show legal moves</summary>
+      <description>Highlight legal moves when a piece is selected</description>
+    </key>
+
+    <key name="animate-moves" type="b">
+      <default>true</default>
+      <summary>Animate moves</summary>
+      <description>Show smooth animations for piece movements</description>
+    </key>
+
+    <key name="animation-speed" enum="@ID@.AnimationSpeed">
+      <default>'normal'</default>
+      <summary>Animation speed</summary>
+      <description>Speed of piece movement animations</description>
+    </key>
+
+    <key name="sound-effects" type="b">
+      <default>true</default>
+      <summary>Sound effects</summary>
+      <description>Play sound effects for moves and game events</description>
+    </key>
+
+    <key name="interaction-mode" enum="@ID@.InteractionMode">
+      <default>'click-to-select'</default>
+      <summary>Interaction mode</summary>
+      <description>How pieces are moved (click to select or drag and drop)</description>
+    </key>
+
+    <!-- AI Settings -->
+    <key name="ai-difficulty" enum="@ID@.AIDifficulty">
+      <default>'intermediate'</default>
+      <summary>AI difficulty</summary>
+      <description>Current difficulty level for AI opponents</description>
+    </key>
+
+    <key name="default-ai-difficulty" enum="@ID@.AIDifficulty">
+      <default>'intermediate'</default>
+      <summary>Default AI difficulty</summary>
+      <description>Default difficulty level for AI opponents</description>
+    </key>
+
+    <key name="ai-thinking-time" type="i">
+      <default>5</default>
+      <summary>AI thinking time</summary>
+      <description>Maximum time in seconds for AI to calculate moves</description>
+    </key>
+
+    <key name="ai-thinking-time-limit" type="i">
+      <default>5000</default>
+      <summary>AI thinking time limit</summary>
+      <description>Maximum time in milliseconds for AI to calculate moves</description>
+    </key>
+
+    <key name="show-ai-thinking" type="b">
+      <default>false</default>
+      <summary>Show AI thinking</summary>
+      <description>Display progress indicator while AI is calculating</description>
+    </key>
+
+    <key name="ai-progress-indicator" type="b">
+      <default>true</default>
+      <summary>AI progress indicator</summary>
+      <description>Show visual progress while AI is thinking</description>
+    </key>
+
+    <key name="drag-and-drop" type="b">
+      <default>true</default>
+      <summary>Enable drag and drop</summary>
+      <description>Allow dragging pieces to make moves instead of click-to-select</description>
+    </key>
+
+    <!-- Timing Settings -->
+    <key name="default-timer-mode" enum="@ID@.TimerMode">
+      <default>'untimed'</default>
+      <summary>Default timer mode</summary>
+      <description>Default timing mode for new games</description>
+    </key>
+
+    <key name="countdown-minutes" type="i">
+      <default>30</default>
+      <summary>Countdown minutes</summary>
+      <description>Number of minutes for countdown timer</description>
+    </key>
+
+    <key name="fischer-increment" type="i">
+      <default>30</default>
+      <summary>Fischer increment</summary>
+      <description>Seconds added per move in Fischer timing</description>
+    </key>
+
+    <key name="delay-seconds" type="i">
+      <default>5</default>
+      <summary>Delay seconds</summary>
+      <description>Delay in seconds before timer starts</description>
+    </key>
+
+    <key name="timer-warnings" type="b">
+      <default>true</default>
+      <summary>Timer warnings</summary>
+      <description>Show warnings when time is running low</description>
+    </key>
+
+    <key name="timer-sounds" type="b">
+      <default>true</default>
+      <summary>Timer sounds</summary>
+      <description>Play sound effects for timer events</description>
+    </key>
+
+    <key name="timer-warning-time" type="i">
+      <default>30</default>
+      <summary>Timer warning time</summary>
+      <description>Time in seconds before warning about low time</description>
+    </key>
+
+    <key name="timer-sound-alerts" type="b">
+      <default>true</default>
+      <summary>Timer sound alerts</summary>
+      <description>Play sound alerts for time warnings</description>
+    </key>
+
+    <!-- Display Settings -->
+    <key name="show-coordinates" type="b">
+      <default>false</default>
+      <summary>Show coordinates</summary>
+      <description>Display board coordinates (A-H, 1-8)</description>
+    </key>
+
+    <key name="highlight-last-move" type="b">
+      <default>true</default>
+      <summary>Highlight last move</summary>
+      <description>Highlight the squares of the last move made</description>
+    </key>
+
+    <key name="show-move-history" type="b">
+      <default>true</default>
+      <summary>Show move history</summary>
+      <description>Display the history of moves in the game</description>
+    </key>
+
+    <!-- Accessibility Settings -->
+    <key name="high-contrast" type="b">
+      <default>false</default>
+      <summary>High contrast mode</summary>
+      <description>Use high contrast colors for better visibility</description>
+    </key>
+
+    <key name="large-pieces" type="b">
+      <default>false</default>
+      <summary>Large pieces</summary>
+      <description>Use larger piece images for better visibility</description>
+    </key>
+
+    <key name="screen-reader-support" type="b">
+      <default>true</default>
+      <summary>Screen reader support</summary>
+      <description>Enable accessibility features for screen readers</description>
+    </key>
+
+    <key name="keyboard-navigation" type="b">
+      <default>true</default>
+      <summary>Keyboard navigation</summary>
+      <description>Enable keyboard navigation of the game board</description>
+    </key>
+
+    <key name="move-announcement-mode" enum="@ID@.AnnouncementLevel">
+      <default>'move-and-capture'</default>
+      <summary>Move announcement mode</summary>
+      <description>Level of detail for move announcements</description>
+    </key>
+
+    <key name="announce-moves" type="b">
+      <default>true</default>
+      <summary>Announce moves</summary>
+      <description>Announce moves to screen readers</description>
+    </key>
+
+    <key name="keyboard-shortcuts" type="as">
+      <default>["space", "return", "escape"]</default>
+      <summary>Keyboard shortcuts</summary>
+      <description>List of enabled keyboard shortcuts</description>
+    </key>
+
+    <!-- Session Settings -->
+    <key name="autosave-enabled" type="b">
+      <default>true</default>
+      <summary>Autosave enabled</summary>
+      <description>Automatically save game progress</description>
+    </key>
+
+    <key name="autosave-interval" type="i">
+      <default>300</default>
+      <summary>Autosave interval</summary>
+      <description>Interval in seconds between automatic saves</description>
+    </key>
+
+    <key name="restore-session" type="b">
+      <default>true</default>
+      <summary>Restore session</summary>
+      <description>Restore the last game session on startup</description>
+    </key>
+
+    <!-- Statistics -->
+    <key name="games-played" type="i">
+      <default>0</default>
+      <summary>Games played</summary>
+      <description>Total number of games played</description>
+    </key>
+
+    <key name="games-won" type="i">
+      <default>0</default>
+      <summary>Games won</summary>
+      <description>Total number of games won</description>
     </key>
   </schema>
 </schemalist>

@@ -1,0 +1,81 @@
+using Gtk 4.0;
+
+template $DraughtsMoveHistory : Gtk.Box {
+  orientation: vertical;
+  spacing: 6;
+
+  Gtk.Box header {
+    orientation: horizontal;
+    spacing: 6;
+
+    Gtk.Label history_title {
+      label: _("Move History");
+      halign: start;
+      hexpand: true;
+      styles ["heading"]
+    }
+
+    Gtk.Label moves_count_label {
+      label: _("0 moves");
+      halign: end;
+      styles ["caption"]
+    }
+  }
+
+  Gtk.ScrolledWindow history_scroll {
+    hscrollbar-policy: never;
+    vscrollbar-policy: automatic;
+    min-content-height: 200;
+    max-content-height: 300;
+    vexpand: true;
+
+    Gtk.ListView move_list {
+      single-click-activate: true;
+      show-separators: true;
+    }
+  }
+
+  Gtk.Box navigation_controls {
+    orientation: horizontal;
+    spacing: 6;
+    halign: center;
+    homogeneous: true;
+
+    Gtk.Button first_move_button {
+      icon-name: "media-skip-backward-symbolic";
+      tooltip-text: _("Go to first move");
+    }
+
+    Gtk.Button prev_move_button {
+      icon-name: "media-seek-backward-symbolic";
+      tooltip-text: _("Previous move");
+    }
+
+    Gtk.Button next_move_button {
+      icon-name: "media-seek-forward-symbolic";
+      tooltip-text: _("Next move");
+    }
+
+    Gtk.Button last_move_button {
+      icon-name: "media-skip-forward-symbolic";
+      tooltip-text: _("Go to last move");
+    }
+  }
+
+  Gtk.Box action_controls {
+    orientation: horizontal;
+    spacing: 6;
+    halign: center;
+
+    Gtk.Button export_pgn_button {
+      label: _("Export PGN");
+      tooltip-text: _("Export game in PGN format");
+    }
+
+    Gtk.Button clear_history_button {
+      label: _("Clear");
+      tooltip-text: _("Clear move history");
+      styles ["destructive-action"]
+    }
+  }
+}

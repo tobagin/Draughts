@@ -28,6 +28,7 @@ namespace Draughts {
     }
 
     public enum GameState {
+        WAITING,
         PLAYING,
         RED_WINS,
         BLACK_WINS,
@@ -129,21 +130,89 @@ namespace Draughts {
         }
 
         private void load_piece_images() {
-            try {
-                // Load images from resources
-                red_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-checker.png");
-                black_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-checker.png");
-                red_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-king.png");
-                black_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-king.png");
+            // Get the current piece style from settings
+            var settings_manager = SettingsManager.get_instance();
+            string piece_style = settings_manager.get_piece_style();
 
-                logger.info("Successfully loaded piece images from resources");
+            logger.info("Loading piece images with theme: %s", piece_style);
+
+            try {
+                logger.info("About to load themed images for: %s", piece_style);
+                // Load themed images from resources
+                string red_checker_path, black_checker_path, red_king_path, black_king_path;
+
+                if (piece_style == "plastic") {
+                    // Use default plastic images (no suffix)
+                    red_checker_path = "/io/github/tobagin/Draughts/Devel/red-checker.png";
+                    black_checker_path = "/io/github/tobagin/Draughts/Devel/black-checker.png";
+                    red_king_path = "/io/github/tobagin/Draughts/Devel/red-king.png";
+                    black_king_path = "/io/github/tobagin/Draughts/Devel/black-king.png";
+                } else {
+                    // Use themed images with suffix
+                    red_checker_path = @"/io/github/tobagin/Draughts/Devel/red-checker-$(piece_style).png";
+                    black_checker_path = @"/io/github/tobagin/Draughts/Devel/black-checker-$(piece_style).png";
+                    red_king_path = @"/io/github/tobagin/Draughts/Devel/red-king-$(piece_style).png";
+                    black_king_path = @"/io/github/tobagin/Draughts/Devel/black-king-$(piece_style).png";
+                }
+
+                logger.info("Loading textures from paths:");
+                logger.info("  Red checker: %s", red_checker_path);
+                logger.info("  Black checker: %s", black_checker_path);
+                logger.info("  Red king: %s", red_king_path);
+                logger.info("  Black king: %s", black_king_path);
+
+                red_checker_image = Gdk.Texture.from_resource(red_checker_path);
+                black_checker_image = Gdk.Texture.from_resource(black_checker_path);
+                red_king_image = Gdk.Texture.from_resource(red_king_path);
+                black_king_image = Gdk.Texture.from_resource(black_king_path);
+
+                logger.info("Successfully loaded %s piece images from resources", piece_style);
             } catch (Error e) {
                 logger.warning("Failed to load piece images: %s", e.message);
-                red_checker_image = null;
-                black_checker_image = null;
-                red_king_image = null;
-                black_king_image = null;
+                // Fall back to default plastic images
+                try {
+                    red_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-checker.png");
+                    black_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-checker.png");
+                    red_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-king.png");
+                    black_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-king.png");
+                    logger.info("Fell back to plastic piece images");
+                } catch (Error fallback_error) {
+                    logger.error("Failed to load fallback piece images: %s", fallback_error.message);
+                    red_checker_image = null;
+                    black_checker_image = null;
+                    red_king_image = null;
+                    black_king_image = null;
+                }
             }
+        }
+
+        /**
+         * Reload piece images with new theme and update the board display
+         */
+        public void reload_piece_images() {
+            logger.info("reload_piece_images() called - starting piece theme update");
+
+            // Clear existing images to force reload
+            red_checker_image = null;
+            black_checker_image = null;
+            red_king_image = null;
+            black_king_image = null;
+
+            // Load new themed images
+            load_piece_images();
+
+            // Use Idle.add to ensure the refresh happens after any pending operations
+            Idle.add(() => {
+                // Force a complete refresh of the board display
+                // This will re-render all pieces with the new images
+                update_board_display();
+
+                // Force a re-scale to ensure proper sizing
+                rescale_all_pieces();
+
+                logger.info("Piece images reloaded and board updated with new theme");
+                return false;
+            });
         }
 
         private void set_piece_image_size(Gtk.Image image, Gtk.Button button) {
@@ -185,7 +254,7 @@ namespace Draughts {
             });
         }
 
-        private void rescale_all_pieces() {
+        public void rescale_all_pieces() {
             // Rescale all existing piece images
             for (int row = 0; row < board_size; row++) {
                 for (int col = 0; col < board_size; col++) {
@@ -213,15 +282,15 @@ namespace Draughts {
             int board_dimension = (board_width > 0 && board_height > 0) ?
                 int.min(board_width, board_height) : 400; // reasonable fallback
 
-            // Calculate square size and make pieces 80% of that (more generous)
+            // Calculate square size and make pieces 90% of that (still 12.5% larger than before)
             int square_size = board_dimension / board_size;
-            int piece_size = (int)(square_size * 0.8);
+            int piece_size = (int)(square_size * 0.9); // Was 0.8, now 0.9 (12.5% increase)
 
             // Ensure reasonable bounds but allow more scaling
             if (piece_size < 40) {
                 piece_size = 40;  // Reasonable minimum
-            } else if (piece_size > 200) {
-                piece_size = 200; // Allow larger pieces
+            } else if (piece_size > 250) {
+                piece_size = 250; // Allow even larger pieces (increased from 200)
             }
 
             image.set_pixel_size(piece_size);
@@ -330,7 +399,7 @@ namespace Draughts {
             update_board_display();
         }
 
-        private void update_board_display() {
+        public void update_board_display() {
             for (int row = 0; row < board_size; row++) {
                 for (int col = 0; col < board_size; col++) {
                     var button = squares[row, col];
@@ -405,29 +474,8 @@ namespace Draughts {
                 return;
             }
 
-            var clicked_pos = Position(row, col);
-
-            // Check if clicking on a valid move
-            foreach (Move move in valid_moves) {
-                if (move.to.equals(clicked_pos)) {
-                    execute_move(move);
-                    return;
-                }
-            }
-
-            // Check if clicking on own piece to select
-            var piece = board_state[row, col];
-            if (is_player_piece(piece, current_player)) {
-                selected_position = clicked_pos;
-                valid_moves = get_valid_moves_for_piece(clicked_pos);
-                update_board_display();
-                logger.debug(@"Selected piece at ($row, $col), found $(valid_moves.length) valid moves");
-            } else {
-                // Clicked on empty square or opponent piece - deselect
-                selected_position = null;
-                valid_moves = new Move[0];
-                update_board_display();
-            }
+            // Emit signal for the adapter to handle the game logic
+            square_clicked(row, col);
         }
 
         private bool is_player_piece(PieceType piece, Player player) {
@@ -627,7 +675,7 @@ namespace Draughts {
             initialize_game();
         }
 
-        private void set_board_size(int size) {
+        public void set_board_size(int size) {
             if (size < 8 || size > 12 || size % 2 != 0) {
                 logger.warning("Invalid board size %d. Size must be 8, 10, or 12", size);
                 return;
@@ -667,7 +715,7 @@ namespace Draughts {
             logger.info("Game rules changed to: %s with board size %dx%d", rules, new_board_size, new_board_size);
         }
 
-        public int get_board_size() {
+        public int get_widget_board_size() {
             return board_size;
         }
 
@@ -721,6 +769,171 @@ namespace Draughts {
         public void set_board_theme(string theme) {
             logger.info("Setting board theme to: %s", theme);
             apply_board_theme(theme);
+        }
+
+        // Methods for external game state synchronization (used by DraughtsBoardAdapter)
+        public void clear_board() {
+            for (int row = 0; row < board_size; row++) {
+                for (int col = 0; col < board_size; col++) {
+                    board_state[row, col] = PieceType.NONE;
+                }
+            }
+            selected_position = null;
+            valid_moves = new Move[0];
+        }
+
+        public void set_piece_at(int row, int col, PieceType piece) {
+            if (row >= 0 && row < board_size && col >= 0 && col < board_size) {
+                board_state[row, col] = piece;
+            }
+        }
+
+        public PieceType get_piece_at(int row, int col) {
+            if (row >= 0 && row < board_size && col >= 0 && col < board_size) {
+                return board_state[row, col];
+            }
+            return PieceType.NONE;
+        }
+
+        public void set_current_player(Player player) {
+            current_player = player;
+        }
+
+        public Player get_current_player() {
+            return current_player;
+        }
+
+        public void set_game_state(GameState state) {
+            game_state = state;
+        }
+
+        /**
+         * Update board display from DraughtsGameState pieces
+         */
+        public void update_from_draughts_game_state(DraughtsGameState state) {
+            logger.debug(@"DraughtsBoard: Updating board from game state with $(state.pieces.size) pieces, board_size=$(board_size)");
+
+            // Clear the board first
+            for (int row = 0; row < board_size; row++) {
+                for (int col = 0; col < board_size; col++) {
+                    board_state[row, col] = PieceType.NONE;
+                }
+            }
+
+            int red_count = 0, black_count = 0, placed_count = 0;
+
+            // Place pieces from the game state
+            foreach (var piece in state.pieces) {
+                var pos = piece.position;
+                logger.debug(@"DraughtsBoard: Processing piece $(piece.color) $(piece.piece_type) at ($(pos.row),$(pos.col))");
+
+                if (piece.color == PieceColor.RED) red_count++;
+                else if (piece.color == PieceColor.BLACK) black_count++;
+
+                if (pos.row >= 0 && pos.row < board_size && pos.col >= 0 && pos.col < board_size) {
+                    PieceType piece_type = PieceType.NONE;
+
+                    // Convert from DraughtsPieceType and PieceColor to PieceType
+                    if (piece.color == PieceColor.RED) {
+                        piece_type = piece.piece_type == DraughtsPieceType.KING ?
+                                    PieceType.RED_KING : PieceType.RED_REGULAR;
+                    } else if (piece.color == PieceColor.BLACK) {
+                        piece_type = piece.piece_type == DraughtsPieceType.KING ?
+                                    PieceType.BLACK_KING : PieceType.BLACK_REGULAR;
+                    }
+
+                    board_state[pos.row, pos.col] = piece_type;
+                    placed_count++;
+                } else {
+                    logger.debug(@"DraughtsBoard: REJECTED piece at ($(pos.row),$(pos.col)) - out of bounds for board_size=$(board_size)");
+                }
+            }
+
+            logger.debug(@"DraughtsBoard: Piece summary - Red: $(red_count), Black: $(black_count), Placed: $(placed_count)");
+
+            // Update the visual display
+            update_board_display();
+        }
+
+        public GameState get_game_state() {
+            return game_state;
+        }
+
+        public void highlight_square(int row, int col, string highlight_type) {
+            if (row >= 0 && row < board_size && col >= 0 && col < board_size) {
+                var button = squares[row, col];
+
+                // Clear existing highlight classes
+                button.remove_css_class("draughts-selected");
+                button.remove_css_class("draughts-valid-move");
+                button.remove_css_class("draughts-capture-move");
+                button.remove_css_class("draughts-playable");
+
+                // Add appropriate highlight class
+                switch (highlight_type) {
+                    case "selected":
+                        button.add_css_class("draughts-selected");
+                        break;
+                    case "possible":
+                        button.add_css_class("draughts-valid-move");
+                        break;
+                    case "capture":
+                        button.add_css_class("draughts-capture-move");
+                        break;
+                    case "playable":
+                        button.add_css_class("draughts-playable");
+                        break;
+                }
+            }
+        }
+
+        public void clear_highlights() {
+            for (int row = 0; row < board_size; row++) {
+                for (int col = 0; col < board_size; col++) {
+                    var button = squares[row, col];
+                    button.remove_css_class("draughts-selected");
+                    button.remove_css_class("draughts-valid-move");
+                    button.remove_css_class("draughts-capture-move");
+                    button.remove_css_class("draughts-playable");
+                }
+            }
+        }
+
+        // Enable external move handling by exposing square click events
+        public signal void square_clicked(int row, int col);
+
+        // Override the internal click handler to emit the signal
+        private void on_square_clicked_external(int row, int col) {
+            // In external mode, only emit signal - let the adapter handle all logic
+            square_clicked(row, col);
+        }
+
+        public void set_external_mode(bool external) {
+            // Reconnect click handlers based on mode
+            for (int row = 0; row < board_size; row++) {
+                for (int col = 0; col < board_size; col++) {
+                    var button = squares[row, col];
+
+                    // Disconnect existing handlers (can't disconnect specific lambda)
+                    // button.clicked.disconnect(on_square_clicked);
+
+                    if (external) {
+                        // Connect external handler
+                        int captured_row = row;
+                        int captured_col = col;
+                        button.clicked.connect(() => {
+                            square_clicked(captured_row, captured_col);
+                        });
+                    } else {
+                        // Connect internal handler
+                        int captured_row = row;
+                        int captured_col = col;
+                        button.clicked.connect(() => {
+                            on_square_clicked(captured_row, captured_col);
+                        });
+                    }
+                }
+            }
         }
 
         private void apply_board_theme(string theme) {

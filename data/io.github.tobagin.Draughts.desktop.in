@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=@NAME@
 Comment=A classic draughts game built with GTK4/LibAdwaita
-Exec=draughts
+Exec=draughts %F
 Icon=@ID@
 Terminal=false
 Type=Application
@@ -9,3 +9,4 @@ Categories=Game;BoardGame;
 Keywords=draughts;draughts;board;game;strategy;
 StartupNotify=true
 StartupWMClass=@ID@
+MimeType=application/x-pdn;

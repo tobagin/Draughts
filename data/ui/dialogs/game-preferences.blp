@@ -1,0 +1,196 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsGamePreferences : Adw.PreferencesDialog {
+  title: _("Game Preferences");
+  width-request: 600;
+  height-request: 500;
+
+  Adw.PreferencesPage general_page {
+    title: _("General");
+    icon-name: "applications-games-symbolic";
+
+    Adw.PreferencesGroup game_group {
+      title: _("Game Settings");
+
+      Adw.ComboRow default_variant_row {
+        title: _("Default Variant");
+        subtitle: _("Choose the default draughts variant");
+      }
+
+      Adw.SwitchRow show_legal_moves_row {
+        title: _("Show Legal Moves");
+        subtitle: _("Highlight possible moves for selected pieces");
+      }
+
+      Adw.SwitchRow animate_moves_row {
+        title: _("Animate Moves");
+        subtitle: _("Animate piece movements");
+      }
+
+      Adw.SwitchRow sound_effects_row {
+        title: _("Sound Effects");
+        subtitle: _("Play sounds for moves and captures");
+      }
+
+      Adw.ComboRow interaction_mode_row {
+        title: _("Interaction Mode");
+        subtitle: _("Choose how to select and move pieces");
+      }
+    }
+
+    Adw.PreferencesGroup ai_group {
+      title: _("AI Settings");
+
+      Adw.ComboRow ai_difficulty_row {
+        title: _("AI Difficulty");
+        subtitle: _("Set the computer opponent difficulty");
+      }
+
+      Adw.SpinRow ai_thinking_time_row {
+        title: _("AI Thinking Time");
+        subtitle: _("Maximum time for AI to think (seconds)");
+        adjustment: Gtk.Adjustment {
+          lower: 1;
+          upper: 60;
+          step-increment: 1;
+          page-increment: 5;
+          value: 5;
+        };
+      }
+
+      Adw.SwitchRow show_ai_thinking_row {
+        title: _("Show AI Thinking");
+        subtitle: _("Display AI analysis during its turn");
+      }
+
+      Adw.SwitchRow ai_progress_indicator_row {
+        title: _("AI Progress Indicator");
+        subtitle: _("Show progress while AI is thinking");
+      }
+    }
+  }
+
+  Adw.PreferencesPage timer_page {
+    title: _("Timers");
+    icon-name: "alarm-clock-symbolic";
+
+    Adw.PreferencesGroup timer_group {
+      title: _("Timer Settings");
+
+      Adw.ComboRow default_timer_mode_row {
+        title: _("Default Timer Mode");
+        subtitle: _("Choose the default timing method");
+      }
+
+      Adw.SpinRow countdown_minutes_row {
+        title: _("Countdown Time");
+        subtitle: _("Minutes per player for countdown timer");
+        adjustment: Gtk.Adjustment {
+          lower: 1;
+          upper: 60;
+          step-increment: 1;
+          page-increment: 5;
+          value: 5;
+        };
+      }
+
+      Adw.SpinRow fischer_increment_row {
+        title: _("Fischer Increment");
+        subtitle: _("Seconds added per move in Fischer mode");
+        adjustment: Gtk.Adjustment {
+          lower: 0;
+          upper: 60;
+          step-increment: 1;
+          page-increment: 5;
+          value: 2;
+        };
+      }
+
+      Adw.SwitchRow timer_warnings_row {
+        title: _("Timer Warnings");
+        subtitle: _("Show warnings when time is running low");
+      }
+
+      Adw.SpinRow delay_seconds_row {
+        title: _("Delay Time");
+        subtitle: _("Seconds of delay before clock starts");
+        adjustment: Gtk.Adjustment {
+          lower: 0;
+          upper: 30;
+          step-increment: 1;
+          page-increment: 5;
+          value: 0;
+        };
+      }
+
+      Adw.SwitchRow timer_sounds_row {
+        title: _("Timer Sounds");
+        subtitle: _("Play sounds for timer events");
+      }
+    }
+  }
+
+  Adw.PreferencesPage display_page {
+    title: _("Display");
+    icon-name: "preferences-desktop-theme-symbolic";
+
+    Adw.PreferencesGroup appearance_group {
+      title: _("Appearance");
+
+      Adw.ComboRow piece_style_row {
+        title: _("Piece Style");
+        subtitle: _("Choose the visual style for game pieces");
+      }
+
+      Adw.SwitchRow show_coordinates_row {
+        title: _("Show Coordinates");
+        subtitle: _("Display board coordinates (A1, B2, etc.)");
+      }
+
+      Adw.SwitchRow highlight_last_move_row {
+        title: _("Highlight Last Move");
+        subtitle: _("Highlight the most recent move");
+      }
+
+      Adw.SwitchRow show_move_history_row {
+        title: _("Show Move History");
+        subtitle: _("Display the move history panel");
+      }
+
+      Adw.ComboRow board_theme_row {
+        title: _("Board Theme");
+        subtitle: _("Choose the visual style for the game board");
+      }
+    }
+
+    Adw.PreferencesGroup accessibility_group {
+      title: _("Accessibility");
+
+      Adw.SwitchRow high_contrast_row {
+        title: _("High Contrast");
+        subtitle: _("Use high contrast colors");
+      }
+
+      Adw.SwitchRow large_pieces_row {
+        title: _("Large Pieces");
+        subtitle: _("Use larger piece graphics");
+      }
+
+      Adw.SwitchRow keyboard_navigation_row {
+        title: _("Keyboard Navigation");
+        subtitle: _("Enable keyboard control of the board");
+      }
+
+      Adw.ComboRow move_announcement_row {
+        title: _("Move Announcements");
+        subtitle: _("Level of move descriptions for screen readers");
+      }
+
+      Adw.SwitchRow screen_reader_row {
+        title: _("Screen Reader Support");
+        subtitle: _("Enhanced support for screen reader software");
+      }
+    }
+  }
+}

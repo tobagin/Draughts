@@ -4,7 +4,19 @@ ui_files = []
 # Compile Blueprint files to UI files
 blueprint_files = [
   'ui/window.blp',
+  'ui/dialogs/help.blp',
+  'ui/dialogs/welcome.blp',
   'ui/dialogs/preferences.blp',
+  'ui/dialogs/variant-selector.blp',
+  'ui/dialogs/variant-rules.blp',
+  'ui/dialogs/game-preferences.blp',
+  'ui/dialogs/game-end.blp',
+  'ui/dialogs/game-history.blp',
+  'ui/dialogs/game-replay.blp',
+  'ui/dialogs/new-game.blp',
+  'ui/widgets/game-controls.blp',
+  'ui/widgets/timer-display.blp',
+  'ui/widgets/move-history.blp',
 ]
 
 foreach blueprint_file : blueprint_files
@@ -29,7 +41,7 @@ app_resources = gnome.compile_resources(
   'app-resources',
   gresource_xml,
   dependencies: ui_files,
-  source_dir: meson.current_build_dir(),
+  source_dir: [meson.current_build_dir(), meson.current_source_dir()],
   c_name: 'draughts_resources'
 )
 
@@ -51,6 +63,13 @@ desktop_file = configure_file(
   install_dir: get_option('datadir') / 'applications'
 )
 
+# Install MIME type
+install_data(
+  'io.github.tobagin.Draughts.mime.xml',
+  install_dir: get_option('datadir') / 'mime' / 'packages',
+  rename: '@0@.xml'.format(project_id)
+)
+
 # GSchema
 gschema_file = configure_file(
     input: 'io.github.tobagin.Draughts.gschema.xml.in',
@@ -67,9 +86,60 @@ install_data(
 gnome = import('gnome')
 meson.add_install_script('glib-compile-schemas', get_option('prefix') / get_option('datadir') / 'glib-2.0' / 'schemas')
 
+# Install piece images for development
+install_data([
+  'red-checker.png',
+  'red-king.png',
+  'black-checker.png',
+  'black-king.png',
+  'red-checker-metal.png',
+  'red-king-metal.png',
+  'black-checker-metal.png',
+  'black-king-metal.png',
+  'red-checker-wood.png',
+  'red-king-wood.png',
+  'black-checker-wood.png',
+  'black-king-wood.png',
+  'red-checker-bottle-cap.png',
+  'red-king-bottle-cap.png',
+  'black-checker-bottle-cap.png',
+  'black-king-bottle-cap.png'
+], install_dir: get_option('datadir') / 'draughts')
+
+# Install sound effects
+install_data([
+  'sounds/move.ogg',
+  'sounds/capture.ogg',
+  'sounds/king.ogg',
+  'sounds/game-start.ogg',
+  'sounds/game-end.ogg',
+  'sounds/timer-warning.ogg',
+  'sounds/illegal-move.ogg',
+  'sounds/undo.ogg',
+  'sounds/redo.ogg'
+], install_dir: get_option('datadir') / 'draughts' / 'sounds')
+
+# Install UI icons
+install_data([
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-undo-symbolic.svg',
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-redo-symbolic.svg',
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-chckerboard-symbolic.svg',
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-draw-symbolic.svg'
+], install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps')
+
 # Install SVG icon
 install_data(
   '../io.github.tobagin.Draughts.svg',
   install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps',
   rename: '@0@.svg'.format(project_id)
 )
+
+# Install PNG icons in all required sizes
+icon_sizes = ['16x16', '32x32', '48x48', '64x64', '128x128', '256x256', '512x512']
+foreach size : icon_sizes
+  install_data(
+    'icons/hicolor' / size / 'apps' / 'io.github.tobagin.Draughts.png',
+    install_dir: get_option('datadir') / 'icons/hicolor' / size / 'apps',
+    rename: '@0@.png'.format(project_id)
+  )
+endforeach

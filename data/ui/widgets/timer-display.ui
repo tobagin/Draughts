@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="DraughtsTimerDisplay" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">12</property>
+
+    <!-- Timer Container -->
+    <child>
+      <object class="GtkBox" id="timer_container">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">24</property>
+        <property name="halign">center</property>
+        <property name="homogeneous">true</property>
+
+        <!-- Red Player Timer -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+
+            <child>
+              <object class="GtkLabel" id="red_player_label">
+                <property name="text">Red Player</property>
+                <style>
+                  <class name="subtitle"/>
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="red_time_label">
+                <property name="text">--:--</property>
+                <style>
+                  <class name="title-2"/>
+                  <class name="monospace"/>
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkProgressBar" id="red_time_progress">
+                <property name="fraction">1.0</property>
+                <property name="show-text">false</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Black Player Timer -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+
+            <child>
+              <object class="GtkLabel" id="black_player_label">
+                <property name="text">Black Player</property>
+                <style>
+                  <class name="subtitle"/>
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkLabel" id="black_time_label">
+                <property name="text">--:--</property>
+                <style>
+                  <class name="title-2"/>
+                  <class name="monospace"/>
+                </style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkProgressBar" id="black_time_progress">
+                <property name="fraction">1.0</property>
+                <property name="show-text">false</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <!-- Game Duration -->
+    <child>
+      <object class="GtkLabel" id="game_duration_label">
+        <property name="text">Game Duration: --:--</property>
+        <style>
+          <class name="caption"/>
+        </style>
+      </object>
+    </child>
+
+    <!-- Timer Settings Button -->
+    <child>
+      <object class="GtkButton" id="timer_settings_button">
+        <property name="label">Timer Settings</property>
+        <property name="halign">center</property>
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -11,6 +11,20 @@ template $DraughtsWindow : Adw.ApplicationWindow {
         subtitle: _("Checkers/Anglo-American Draughts");
       };
 
+      [start]
+      Gtk.Button undo_button {
+        icon-name: "io.github.tobagin.Draughts-undo-symbolic";
+        tooltip-text: _("Undo Move");
+        action-name: "win.undo-move";
+      }
+
+      [start]
+      Gtk.Button redo_button {
+        icon-name: "io.github.tobagin.Draughts-redo-symbolic";
+        tooltip-text: _("Redo Move");
+        action-name: "win.redo-move";
+      }
+
       [end]
       Gtk.MenuButton menu_button {
         icon-name: "open-menu-symbolic";
@@ -33,6 +47,7 @@ template $DraughtsWindow : Adw.ApplicationWindow {
         valign: fill;
         hexpand: true;
         vexpand: true;
+
       };
     }
   }
@@ -51,158 +66,15 @@ menu primary_menu {
       action: "app.reset-game";
       accel: "<primary>r";
     }
-
-    item {
-      label: _("_Scores");
-      action: "app.scores";
-      accel: "<primary>s";
-    }
   }
-
   section {
-    submenu {
-      label: _("Game _Rules");
-
-      section {
-        item {
-          label: _("Checkers/Anglo-American Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "checkers";
-        }
-
-        item {
-          label: _("Brazilian Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "brazilian";
-        }
-
-        item {
-          label: _("Italian Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "italian";
-        }
-
-        item {
-          label: _("Spanish Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "spanish";
-        }
-
-        item {
-          label: _("Czech Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "czech";
-        }
-
-        item {
-          label: _("Thai Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "thai";
-        }
-
-        item {
-          label: _("German Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "german";
-        }
-
-        item {
-          label: _("Swedish Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "swedish";
-        }
-
-        item {
-          label: _("Russian Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "russian";
-        }
-
-        item {
-          label: _("Pool Checkers (8×8)");
-          action: "app.game-rules-radio";
-          target: "pool";
-        }
-
-        item {
-          label: _("Graeco-Turkish Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "graeco-turkish";
-        }
-
-        item {
-          label: _("Armenian Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "armenian";
-        }
-
-        item {
-          label: _("Gothic Draughts (8×8)");
-          action: "app.game-rules-radio";
-          target: "gothic";
-        }
-      }
-
-      section {
-        item {
-          label: _("International Draughts (10×10)");
-          action: "app.game-rules-radio";
-          target: "international";
-        }
-
-        item {
-          label: _("Frisian Draughts (10×10)");
-          action: "app.game-rules-radio";
-          target: "frisian";
-        }
-      }
-
-      section {
-        item {
-          label: _("Canadian Draughts (12×12)");
-          action: "app.game-rules-radio";
-          target: "canadian";
-        }
-      }
-    }
-
-
-    submenu {
-      label: _("_Appearance");
-
-      section {
-        item {
-          label: _("Classic Brown/Beige");
-          action: "app.board-theme-radio";
-          target: "classic";
-        }
-
-        item {
-          label: _("Wood Light/Dark");
-          action: "app.board-theme-radio";
-          target: "wood";
-        }
-
-        item {
-          label: _("Green/White");
-          action: "app.board-theme-radio";
-          target: "green";
-        }
-
-        item {
-          label: _("Blue/Gray");
-          action: "app.board-theme-radio";
-          target: "blue";
-        }
-
-        item {
-          label: _("High Contrast");
-          action: "app.board-theme-radio";
-          target: "contrast";
-        }
-      }
+    item {
+      label: _("Game _History");
+      action: "win.show-history";
+      accel: "<primary>h";
     }
   }
+
 
   section {
     item {
@@ -213,6 +85,12 @@ menu primary_menu {
   }
 
   section {
+    item {
+      label: _("_Help");
+      action: "app.help";
+      accel: "F1";
+    }
+
     item {
       label: _("_Keyboard Shortcuts");
       action: "win.show-help-overlay";

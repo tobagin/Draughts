@@ -1,0 +1,377 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsHelpDialog : Adw.Window {
+  default-width: 800;
+  default-height: 600;
+  modal: true;
+
+  content: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Help");
+      };
+    }
+
+    content: Adw.ViewStack view_stack {
+      Adw.ViewStackPage {
+        name: "getting-started";
+        title: _("Getting Started");
+        icon-name: "media-playback-start-symbolic";
+
+        child: ScrolledWindow {
+          vexpand: true;
+
+          Box {
+            orientation: vertical;
+            margin-start: 24;
+            margin-end: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            spacing: 18;
+
+            Label {
+              label: _("Getting Started with Draughts");
+              styles ["title-1"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Welcome to Draughts! This guide will help you start playing.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Starting a New Game");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("1. Click the menu button (☰) in the top-right corner\n2. Select 'New Game'\n3. Choose your preferred variant (16 available)\n4. Select game mode (Human vs Human, Human vs AI, or AI vs AI)\n5. For AI games, choose difficulty level (Beginner to Grandmaster)\n6. Click 'Start Game'");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Basic Rules");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("• Pieces move diagonally on dark squares\n• Regular pieces (men) typically move forward only\n• Capture opponent pieces by jumping over them\n• Reach the opposite end to promote to a king\n• Kings can move and capture in more directions\n• Captures are usually mandatory when available\n• Win by capturing all opponent pieces or blocking all moves");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Game Controls");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("• Click a piece to select it\n• Click a highlighted square to move\n• Use Undo/Redo buttons to review moves\n• Access Preferences to customize appearance\n• Export games in PDN format for analysis");
+              wrap: true;
+              xalign: 0;
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "variants";
+        title: _("Variants");
+        icon-name: "view-grid-symbolic";
+
+        child: ScrolledWindow {
+          vexpand: true;
+
+          Box {
+            orientation: vertical;
+            margin-start: 24;
+            margin-end: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            spacing: 18;
+
+            Label {
+              label: _("Game Variants");
+              styles ["title-1"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Draughts includes 16 international variants, each with unique rules:");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("American Checkers (8×8)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Most popular in North America. Men move forward only, kings don't fly. Players choose which capture to make.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("International Draughts (10×10)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Official world championship variant. Flying kings, longest sequence rule. Most complex and strategic.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Russian Draughts (8×8)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Similar to International but on 8×8 board. Flying kings with longest sequence capture rule.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Brazilian Draughts (8×8)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Same rules as International Draughts but played on 8×8 board. Popular in South America.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Italian Draughts (8×8)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Traditional Italian variant. Must capture maximum pieces. Men cannot capture kings.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Spanish Draughts (8×8)");
+              styles ["title-4"]
+              xalign: 0;
+            }
+            Label {
+              label: _("Unique rule: men can capture backwards. Kings don't fly. Popular in Spain and Latin America.");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Other Variants");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("• Czech Draughts (8×8) - Flying kings, longest sequence\n• Thai Draughts (8×8) - Kings don't fly, longest sequence\n• German Draughts (8×8) - Flying kings, similar to Russian\n• Swedish Draughts (10×10) - Scandinavian variant\n• Pool Checkers (8×8) - American variant with optional rules\n• Turkish Draughts (8×8) - Orthogonal movement variant\n• Armenian Draughts (8×8) - Middle Eastern variant\n• Gothic Draughts (8×8) - Medieval European rules\n• Frisian Draughts (10×10) - Dutch regional variant\n• Canadian Draughts (12×12) - Largest board variant");
+              wrap: true;
+              xalign: 0;
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "keyboard";
+        title: _("Keyboard");
+        icon-name: "input-keyboard-symbolic";
+
+        child: ScrolledWindow {
+          vexpand: true;
+
+          Box {
+            orientation: vertical;
+            margin-start: 24;
+            margin-end: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            spacing: 18;
+
+            Label {
+              label: _("Keyboard Shortcuts");
+              styles ["title-1"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Game Controls");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            ListBox {
+              styles ["boxed-list"]
+
+              Adw.ActionRow {
+                title: _("New Game");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>N";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Undo Move");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>Z";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Redo Move");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl><Shift>Z";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Preferences");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>comma";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Keyboard Shortcuts");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>question";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Help");
+
+                [suffix]
+                Label {
+                  label: "F1";
+                  styles ["dim-label", "caption"]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Quit");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>Q";
+                  styles ["dim-label", "caption"]
+                }
+              }
+            }
+
+            Label {
+              label: _("Window Controls");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            ListBox {
+              styles ["boxed-list"]
+
+              Adw.ActionRow {
+                title: _("Close Window");
+
+                [suffix]
+                Label {
+                  label: "<Ctrl>W";
+                  styles ["dim-label", "caption"]
+                }
+              }
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "about";
+        title: _("About");
+        icon-name: "help-about-symbolic";
+
+        child: ScrolledWindow {
+          vexpand: true;
+
+          Box {
+            orientation: vertical;
+            margin-start: 24;
+            margin-end: 24;
+            margin-top: 24;
+            margin-bottom: 24;
+            spacing: 18;
+            halign: center;
+
+            Label {
+              label: _("About Draughts");
+              styles ["title-1"]
+            }
+
+            Label {
+              label: _("A comprehensive draughts/checkers game for GNOME");
+              styles ["title-3"]
+            }
+
+            Label {
+              label: _("Features");
+              styles ["title-3"]
+              xalign: 0;
+            }
+
+            Label {
+              label: _("• 16 international game variants\n• 10 AI difficulty levels\n• Multiple game modes\n• Complete sound effects\n• PDN game export\n• Beautiful themes\n• Accessibility support\n• Modern GTK4/LibAdwaita interface");
+              wrap: true;
+              xalign: 0;
+            }
+
+            Label {
+              label: _("Version 1.0.0");
+              styles ["dim-label"]
+            }
+
+            Label {
+              label: _("Licensed under GPL-3.0+");
+              styles ["dim-label"]
+            }
+          }
+        };
+      }
+    };
+
+    [bottom]
+    Adw.ViewSwitcherBar {
+      stack: view_stack;
+    }
+  };
+}

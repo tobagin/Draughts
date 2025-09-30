@@ -1,0 +1,177 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsGameEndDialog : Adw.AlertDialog {
+  heading: _("Game Complete!");
+
+  extra-child: Gtk.ScrolledWindow {
+    height-request: 400;
+    width-request: 500;
+    vexpand: true;
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 20;
+      margin-top: 20;
+      margin-bottom: 20;
+      margin-start: 20;
+      margin-end: 20;
+
+      // Result section with icon
+      Gtk.Box result_section {
+        orientation: horizontal;
+        spacing: 16;
+        halign: center;
+
+        Gtk.Image result_icon {
+          icon-size: large;
+          pixel-size: 64;
+        }
+
+        Gtk.Box {
+          orientation: vertical;
+          valign: center;
+
+          Gtk.Label result_title {
+            styles ["title-2"]
+            halign: start;
+          }
+
+          Gtk.Label result_subtitle {
+            styles ["dim-label"]
+            halign: start;
+          }
+        }
+      }
+
+      // Statistics section
+      Adw.PreferencesGroup statistics_group {
+        title: _("Game Statistics");
+
+        Adw.ActionRow total_moves_row {
+          title: _("Total Moves");
+          subtitle: _("Number of moves played in the game");
+
+          Gtk.Label total_moves_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow game_duration_row {
+          title: _("Game Duration");
+          subtitle: _("Total time played");
+
+          Gtk.Label game_duration_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+      }
+
+      // Player statistics
+      Adw.PreferencesGroup red_player_group {
+        title: _("Red Player Statistics");
+
+        Adw.ActionRow red_captures_row {
+          title: _("Pieces Captured");
+          subtitle: _("Enemy pieces captured");
+
+          Gtk.Label red_captures_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow red_promotions_row {
+          title: _("Pieces Promoted");
+          subtitle: _("Men promoted to kings");
+
+          Gtk.Label red_promotions_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow red_moves_row {
+          title: _("Moves Made");
+          subtitle: _("Total moves by this player");
+
+          Gtk.Label red_moves_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow red_pieces_remaining_row {
+          title: _("Pieces Remaining");
+          subtitle: _("Pieces left on the board");
+
+          Gtk.Label red_pieces_remaining_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+      }
+
+      Adw.PreferencesGroup black_player_group {
+        title: _("Black Player Statistics");
+
+        Adw.ActionRow black_captures_row {
+          title: _("Pieces Captured");
+          subtitle: _("Enemy pieces captured");
+
+          Gtk.Label black_captures_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow black_promotions_row {
+          title: _("Pieces Promoted");
+          subtitle: _("Men promoted to kings");
+
+          Gtk.Label black_promotions_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow black_moves_row {
+          title: _("Moves Made");
+          subtitle: _("Total moves by this player");
+
+          Gtk.Label black_moves_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+
+        Adw.ActionRow black_pieces_remaining_row {
+          title: _("Pieces Remaining");
+          subtitle: _("Pieces left on the board");
+
+          Gtk.Label black_pieces_remaining_value {
+            styles ["title-4", "numeric"]
+            halign: end;
+            valign: center;
+          }
+        }
+      }
+    }
+  };
+
+  responses [
+    new_game: _("New Game") suggested,
+    close: _("Close") destructive,
+  ]
+}
