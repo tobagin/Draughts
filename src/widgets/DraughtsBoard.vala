@@ -63,10 +63,9 @@ namespace Draughts {
 
     public class DraughtsBoard : Gtk.Box {
         private int board_size;
-        private Gtk.Button[,] squares;
         private PieceType[,] board_state;
         private Logger logger;
-        private Gtk.Grid board_grid;
+        private Gtk.DrawingArea drawing_area;
         private Gtk.AspectFrame aspect_frame;
         private SettingsManager settings_manager;
 
@@ -81,6 +80,24 @@ namespace Draughts {
         private GameState game_state;
         private Position? selected_position;
         private Move[] valid_moves;
+
+        // Drag and drop state
+        private bool is_dragging = false;
+        private int drag_start_row = -1;
+        private int drag_start_col = -1;
+        private double drag_current_x = 0;
+        private double drag_current_y = 0;
+
+        // Hover state
+        private int hover_row = -1;
+        private int hover_col = -1;
+
+        // Board colors (will be set by theme)
+        private Gdk.RGBA light_square_color;
+        private Gdk.RGBA dark_square_color;
+        private Gdk.RGBA selected_color;
+        private Gdk.RGBA valid_move_color;
+        private Gdk.RGBA capture_move_color;
 
         public DraughtsBoard() {
             Object();
@@ -102,8 +119,12 @@ namespace Draughts {
 
             valid_moves = new Move[0];
 
+            // Initialize default colors (will be overridden by theme)
+            initialize_default_colors();
+
             setup_aspect_frame();
-            create_board();
+            create_drawing_area();
+            setup_event_handlers();
             initialize_game();
             string board_theme = settings_manager.get_board_theme();
             if (board_theme == "") {
@@ -215,85 +236,13 @@ namespace Draughts {
             });
         }
 
-        private void set_piece_image_size(Gtk.Image image, Gtk.Button button) {
-            // Schedule the sizing to happen after the widget is fully realized
-            Idle.add(() => {
-                calculate_and_set_piece_size(image);
-                return false;
-            });
-        }
-
-        private void setup_resize_handlers() {
-            // Connect to size allocation changes for responsive scaling
-            board_grid.notify["width"].connect(() => {
-                Idle.add(() => {
-                    rescale_all_pieces();
-                    return false;
-                });
-            });
-
-            board_grid.notify["height"].connect(() => {
-                Idle.add(() => {
-                    rescale_all_pieces();
-                    return false;
-                });
-            });
-
-            aspect_frame.notify["width"].connect(() => {
-                Idle.add(() => {
-                    rescale_all_pieces();
-                    return false;
-                });
-            });
-
-            aspect_frame.notify["height"].connect(() => {
-                Idle.add(() => {
-                    rescale_all_pieces();
-                    return false;
-                });
-            });
-        }
-
-        public void rescale_all_pieces() {
-            // Rescale all existing piece images
-            for (int row = 0; row < board_size; row++) {
-                for (int col = 0; col < board_size; col++) {
-                    var button = squares[row, col];
-                    var child = button.get_child();
-                    if (child != null && child is Gtk.Image) {
-                        calculate_and_set_piece_size((Gtk.Image)child);
-                    }
-                }
-            }
-        }
-
-        private void calculate_and_set_piece_size(Gtk.Image image) {
-            // Get actual board dimensions
-            int board_width = board_grid.get_allocated_width();
-            int board_height = board_grid.get_allocated_height();
-
-            // If dimensions aren't available yet, try to get them from the aspect frame
-            if (board_width <= 0 || board_height <= 0) {
-                board_width = aspect_frame.get_allocated_width();
-                board_height = aspect_frame.get_allocated_height();
-            }
-
-            // Use the smaller dimension to ensure pieces fit properly
-            int board_dimension = (board_width > 0 && board_height > 0) ?
-                int.min(board_width, board_height) : 400; // reasonable fallback
-
-            // Calculate square size and make pieces 90% of that (still 12.5% larger than before)
-            int square_size = board_dimension / board_size;
-            int piece_size = (int)(square_size * 0.9); // Was 0.8, now 0.9 (12.5% increase)
-
-            // Ensure reasonable bounds but allow more scaling
-            if (piece_size < 40) {
-                piece_size = 40;  // Reasonable minimum
-            } else if (piece_size > 250) {
-                piece_size = 250; // Allow even larger pieces (increased from 200)
-            }
-
-            image.set_pixel_size(piece_size);
+        private void initialize_default_colors() {
+            // Classic theme colors
+            light_square_color = { 0.94f, 0.85f, 0.69f, 1.0f }; // Beige
+            dark_square_color = { 0.55f, 0.35f, 0.17f, 1.0f };  // Brown
+            selected_color = { 0.2f, 0.6f, 1.0f, 0.5f };        // Blue highlight
+            valid_move_color = { 0.3f, 0.8f, 0.3f, 0.4f };      // Green highlight
+            capture_move_color = { 1.0f, 0.3f, 0.3f, 0.5f };    // Red highlight
         }
 
         private void setup_aspect_frame() {
@@ -309,14 +258,38 @@ namespace Draughts {
             aspect_frame.set_hexpand(true);
             aspect_frame.set_vexpand(true);
 
-            // Create the grid that will hold the board
-            board_grid = new Gtk.Grid();
-            board_grid.add_css_class("draughts-board");
-            board_grid.set_hexpand(true);
-            board_grid.set_vexpand(true);
-
-            aspect_frame.set_child(board_grid);
             append(aspect_frame);
+        }
+
+        private void create_drawing_area() {
+            // Create drawing area
+            drawing_area = new Gtk.DrawingArea();
+            drawing_area.add_css_class("draughts-board");
+            drawing_area.set_hexpand(true);
+            drawing_area.set_vexpand(true);
+            drawing_area.set_draw_func(on_draw);
+
+            aspect_frame.set_child(drawing_area);
+        }
+
+        private void setup_event_handlers() {
+            // Click gesture
+            var click_gesture = new Gtk.GestureClick();
+            click_gesture.pressed.connect(on_button_press);
+            drawing_area.add_controller(click_gesture);
+
+            // Drag gesture (for drag and drop)
+            var drag_gesture = new Gtk.GestureDrag();
+            drag_gesture.drag_begin.connect(on_drag_begin);
+            drag_gesture.drag_update.connect(on_drag_update);
+            drag_gesture.drag_end.connect(on_drag_end);
+            drawing_area.add_controller(drag_gesture);
+
+            // Motion controller (for hover effects)
+            var motion_controller = new Gtk.EventControllerMotion();
+            motion_controller.motion.connect(on_motion);
+            motion_controller.leave.connect(on_leave);
+            drawing_area.add_controller(motion_controller);
         }
 
         private void create_board() {

@@ -12,6 +12,7 @@ public class Draughts.GameHistoryManager : Object {
     private Gee.ArrayList<GameHistoryRecord> _game_history;
     private string _history_file_path;
     private Logger logger;
+    private SettingsManager settings_manager;
 
     private const int MAX_HISTORY_ENTRIES = 100;
 
@@ -24,6 +25,7 @@ public class Draughts.GameHistoryManager : Object {
 
     private GameHistoryManager() {
         logger = Logger.get_default();
+        settings_manager = SettingsManager.get_instance();
         _game_history = new Gee.ArrayList<GameHistoryRecord>();
         _history_file_path = get_history_file_path();
         load_history();
@@ -54,6 +56,12 @@ public class Draughts.GameHistoryManager : Object {
      * Add a completed game to history
      */
     public void add_game(Game game) {
+        // Check if game history is enabled
+        if (!settings_manager.get_enable_game_history()) {
+            logger.debug("Game history is disabled, not recording game");
+            return;
+        }
+
         if (!game.is_game_over()) {
             logger.warning("Attempted to add incomplete game to history");
             return;

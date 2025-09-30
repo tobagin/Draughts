@@ -51,13 +51,16 @@ namespace Draughts {
         private BoardRenderer renderer;
         private BoardInteractionHandler interaction_handler;
         private TimerDisplay timer_display;
+        private SimpleAction show_history_action;
 
         private Logger logger;
+        private SettingsManager settings_manager;
 
         public Window(Gtk.Application app) {
             Object(application: app);
 
             logger = Logger.get_default();
+            settings_manager = SettingsManager.get_instance();
             set_default_size(900, 700);
             set_size_request(600, 400);
             setup_actions();
@@ -80,14 +83,8 @@ namespace Draughts {
             Timeout.add(200, () => {
                 start_new_game();
 
-                // Add additional delay to rescale pieces after game starts
-                Timeout.add(300, () => {
-                    if (draughts_board != null) {
-                        draughts_board.rescale_all_pieces();
-                        logger.info("Rescaled pieces after auto-start");
-                    }
-                    return false;
-                });
+                // Note: rescale_all_pieces was removed during button-to-canvas refactor
+                // Pieces now scale automatically via DrawingArea
 
                 return false;
             });
@@ -152,11 +149,14 @@ namespace Draughts {
             add_action(redo_move_action);
 
             // History action
-            var show_history_action = new SimpleAction("show-history", null);
+            show_history_action = new SimpleAction("show-history", null);
             show_history_action.activate.connect(() => {
                 show_history_dialog();
             });
             add_action(show_history_action);
+
+            // Update history action enabled state based on setting
+            update_history_action_state();
 
             // Export/Import actions
             var export_pgn_action = new SimpleAction("export-pgn", null);
@@ -729,6 +729,15 @@ namespace Draughts {
             toast_overlay.add_toast(toast);
 
             logger.debug("Move history panel toggled");
+        }
+
+        /**
+         * Update the enabled state of the history action based on settings
+         */
+        private void update_history_action_state() {
+            bool enabled = settings_manager.get_enable_game_history();
+            show_history_action.set_enabled(enabled);
+            logger.debug(@"History action enabled state set to: $enabled");
         }
 
         /**

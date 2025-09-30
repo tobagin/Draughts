@@ -94,6 +94,16 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
+      title: _("Game History");
+      description: _("Configure game history tracking and features");
+
+      Adw.SwitchRow game_history_row {
+        title: _("Enable Game History");
+        subtitle: _("Record game histories and enable history menu");
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Updates");
       description: _("Configure how the application handles updates");
 

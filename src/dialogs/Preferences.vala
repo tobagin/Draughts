@@ -42,6 +42,8 @@ namespace Draughts {
     private unowned Adw.SwitchRow whats_new_row;
     [GtkChild]
     private unowned Adw.SwitchRow sound_effects_row;
+    [GtkChild]
+    private unowned Adw.SwitchRow game_history_row;
 
     private SettingsManager settings_manager;
     private Draughts.Logger logger;
@@ -62,6 +64,7 @@ namespace Draughts {
         setup_welcome_switch ();
         setup_whats_new_switch ();
         setup_sound_effects_switch ();
+        setup_game_history_switch ();
         bind_settings ();
         is_initial_setup = false;
         logger.debug ("Preferences dialog constructed");
@@ -160,6 +163,15 @@ namespace Draughts {
         sound_effects_row.notify["active"].connect (() => {
             settings_manager.set_sound_effects (sound_effects_row.active);
             logger.debug ("Sound Effects preference changed to: %s", sound_effects_row.active.to_string ());
+        });
+    }
+
+    private void setup_game_history_switch () {
+        game_history_row.active = settings_manager.get_enable_game_history ();
+
+        game_history_row.notify["active"].connect (() => {
+            settings_manager.set_enable_game_history (game_history_row.active);
+            logger.debug ("Game History preference changed to: %s", game_history_row.active.to_string ());
         });
     }
 

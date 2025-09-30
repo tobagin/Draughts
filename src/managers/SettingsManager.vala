@@ -438,6 +438,14 @@ namespace Draughts {
             set_games_won(get_games_won() + 1);
         }
 
+        public bool get_enable_game_history() {
+            return settings.get_boolean("enable-game-history");
+        }
+
+        public void set_enable_game_history(bool enabled) {
+            settings.set_boolean("enable-game-history", enabled);
+        }
+
         // Settings Management
         public void reset_to_defaults() {
             var keys = settings.list_keys();

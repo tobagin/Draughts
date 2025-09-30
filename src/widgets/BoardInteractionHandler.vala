@@ -11,6 +11,7 @@ public class Draughts.BoardInteractionHandler : Object {
     private DraughtsBoardAdapter adapter;
     private BoardRenderer renderer;
     private Gtk.Widget widget;
+    private SettingsManager settings_manager;
 
     // Interaction state
     private bool is_dragging = false;
@@ -34,8 +35,30 @@ public class Draughts.BoardInteractionHandler : Object {
         this.adapter = adapter;
         this.renderer = renderer;
         this.widget = widget;
+        this.settings_manager = SettingsManager.get_instance();
+
+        // Set initial interaction mode from settings
+        update_interaction_mode_from_settings();
+
+        // Listen for setting changes
+        settings_manager.bind("drag-and-drop", this, "drag-and-drop-enabled", GLib.SettingsBindFlags.DEFAULT);
+        notify["drag-and-drop-enabled"].connect(() => {
+            update_interaction_mode_from_settings();
+        });
 
         setup_event_handlers();
+    }
+
+    // Property to bind with settings
+    public bool drag_and_drop_enabled { get; set; }
+
+    /**
+     * Update interaction mode based on current setting
+     */
+    private void update_interaction_mode_from_settings() {
+        bool enabled = settings_manager.get_drag_and_drop();
+        current_mode = enabled ? InteractionMode.DRAG_AND_DROP : InteractionMode.CLICK_TO_SELECT;
+        clear_selection();
     }
 
     /**
