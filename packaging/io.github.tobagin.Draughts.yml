@@ -11,6 +11,21 @@ finish-args:
   - --device=dri
   - --socket=pulseaudio
 
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /lib/cmake
+  - /man
+  - /share/doc
+  - /share/gtk-doc
+  - /share/man
+  - /share/pkgconfig
+  - /share/vala
+  - /share/aclocal
+  - /share/devhelp
+  - '*.la'
+  - '*.a'
+
 modules:
   - name: blueprint-compiler
     buildsystem: meson
@@ -27,5 +42,8 @@ modules:
     config-opts:
       - -Dprofile=default
     sources:
-      - type: dir
-        path: ..
+      - type: git
+        url: https://github.com/tobagin/Draughts.git
+        tag: v1.0.0
+        commit: 07c9c9df9cd1b6b4454ecba21ee58211e9144a4b
+

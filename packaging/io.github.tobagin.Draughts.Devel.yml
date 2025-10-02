@@ -14,6 +14,21 @@ finish-args:
   - --share=network
   - --filesystem=host
 
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /lib/cmake
+  - /man
+  - /share/doc
+  - /share/gtk-doc
+  - /share/man
+  - /share/pkgconfig
+  - /share/vala
+  - /share/aclocal
+  - /share/devhelp
+  - '*.la'
+  - '*.a'
+
 modules:
   - name: blueprint-compiler
     buildsystem: meson
