@@ -30,7 +30,7 @@ public class DraughtsAboutDialog : GLib.Object {
         var about = new Adw.AboutDialog() {
             application_name = Config.NAME,
             application_icon = Config.ID,
-            developer_name = "The App Template Team",
+            developer_name = "The Draughts Team",
             version = Config.VERSION,
             developers = developers,
             designers = designers,
