@@ -45,5 +45,5 @@ modules:
       - type: git
         url: https://github.com/tobagin/Draughts.git
         tag: v1.0.0
-        commit: 07c9c9df9cd1b6b4454ecba21ee58211e9144a4b
+        commit: 57cab33a99233e5ec0fc29223a19b337f45fa05a
 

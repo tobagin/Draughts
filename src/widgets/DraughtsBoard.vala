@@ -190,20 +190,22 @@ namespace Draughts {
             try {
                 logger.info("About to load themed images for: %s", piece_style);
                 // Load themed images from resources
+                // Build resource path based on application ID (works for both dev and production)
+                string resource_base = "/" + Config.ID.replace(".", "/");
                 string red_checker_path, black_checker_path, red_king_path, black_king_path;
 
                 if (piece_style == "plastic") {
                     // Use default plastic images (no suffix)
-                    red_checker_path = "/io/github/tobagin/Draughts/Devel/red-checker.png";
-                    black_checker_path = "/io/github/tobagin/Draughts/Devel/black-checker.png";
-                    red_king_path = "/io/github/tobagin/Draughts/Devel/red-king.png";
-                    black_king_path = "/io/github/tobagin/Draughts/Devel/black-king.png";
+                    red_checker_path = @"$(resource_base)/red-checker.png";
+                    black_checker_path = @"$(resource_base)/black-checker.png";
+                    red_king_path = @"$(resource_base)/red-king.png";
+                    black_king_path = @"$(resource_base)/black-king.png";
                 } else {
                     // Use themed images with suffix
-                    red_checker_path = @"/io/github/tobagin/Draughts/Devel/red-checker-$(piece_style).png";
-                    black_checker_path = @"/io/github/tobagin/Draughts/Devel/black-checker-$(piece_style).png";
-                    red_king_path = @"/io/github/tobagin/Draughts/Devel/red-king-$(piece_style).png";
-                    black_king_path = @"/io/github/tobagin/Draughts/Devel/black-king-$(piece_style).png";
+                    red_checker_path = @"$(resource_base)/red-checker-$(piece_style).png";
+                    black_checker_path = @"$(resource_base)/black-checker-$(piece_style).png";
+                    red_king_path = @"$(resource_base)/red-king-$(piece_style).png";
+                    black_king_path = @"$(resource_base)/black-king-$(piece_style).png";
                 }
 
                 logger.info("Loading textures from paths:");
@@ -228,10 +230,11 @@ namespace Draughts {
                 logger.warning("Failed to load piece images: %s", e.message);
                 // Fall back to default plastic images
                 try {
-                    red_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-checker.png");
-                    black_checker_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-checker.png");
-                    red_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/red-king.png");
-                    black_king_image = Gdk.Texture.from_resource("/io/github/tobagin/Draughts/Devel/black-king.png");
+                    string resource_base = "/" + Config.ID.replace(".", "/");
+                    red_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/red-checker.png");
+                    black_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/black-checker.png");
+                    red_king_image = Gdk.Texture.from_resource(@"$(resource_base)/red-king.png");
+                    black_king_image = Gdk.Texture.from_resource(@"$(resource_base)/black-king.png");
 
                     // Convert to Cairo surfaces for fast rendering
                     red_checker_surface = texture_to_cairo_surface(red_checker_image as Gdk.Texture);
