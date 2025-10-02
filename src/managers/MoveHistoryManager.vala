@@ -132,6 +132,42 @@ public class Draughts.MoveHistoryManager : Object {
     }
 
     /**
+     * Get the board state at a specific position in history (for viewing, not modifying)
+     * Position 0 = game start, position N = after N moves
+     * Returns null if position is invalid
+     */
+    public DraughtsGameState? get_state_at_position(int position) {
+        // Position -1 means game start (before any moves)
+        if (position == -1) {
+            if (move_history.size > 0) {
+                return move_history[0].board_state_before;
+            }
+            return null;
+        }
+
+        // Position 0 to N means after that move
+        if (position >= 0 && position < move_history.size) {
+            return move_history[position].board_state_after;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the current position in history
+     */
+    public int get_current_position() {
+        return current_position;
+    }
+
+    /**
+     * Check if we're at the latest position (not viewing history)
+     */
+    public bool is_at_latest_position() {
+        return current_position == move_history.size - 1;
+    }
+
+    /**
      * Clear all history
      */
     public void clear() {

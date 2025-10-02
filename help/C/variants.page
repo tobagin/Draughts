@@ -1,0 +1,105 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic" style="task"
+      id="variants">
+
+  <info>
+    <link type="guide" xref="index#variants"/>
+    <revision pkgversion="1.0" date="2025-01-20" status="final"/>
+
+    <credit type="author">
+      <name>Thiago Fernandes</name>
+    </credit>
+
+    <desc>Learn about the 16 different game variants available.</desc>
+  </info>
+
+  <title>Game Variants</title>
+
+  <p>
+    Draughts supports 16 international variants, each with unique rules and characteristics.
+    You can select your preferred variant when starting a new game.
+  </p>
+
+  <section id="popular-variants">
+    <title>Popular Variants</title>
+
+    <terms>
+      <item>
+        <title>American Checkers (8×8)</title>
+        <p>
+          The most common variant in North America. Played on an 8×8 board with 12 pieces per side.
+          Men can only move forward, kings can move backward. Captures are mandatory.
+        </p>
+      </item>
+
+      <item>
+        <title>International Draughts (10×10)</title>
+        <p>
+          The most widely played variant internationally. Uses a 10×10 board with 20 pieces per side.
+          Kings can move multiple squares (flying kings). Men cannot capture backwards.
+        </p>
+      </item>
+
+      <item>
+        <title>Russian Draughts (8×8)</title>
+        <p>
+          Similar to American Checkers but men CAN capture backwards. Kings can move multiple squares.
+          Very popular in Eastern Europe.
+        </p>
+      </item>
+
+      <item>
+        <title>Brazilian Draughts (8×8)</title>
+        <p>
+          Similar to International Draughts but played on an 8×8 board. Features flying kings
+          and the same capturing rules as International.
+        </p>
+      </item>
+    </terms>
+  </section>
+
+  <section id="other-variants">
+    <title>Other Variants</title>
+
+    <p>
+      Additional variants include:
+    </p>
+
+    <list>
+      <item><p><em>Italian Draughts</em> - Men cannot capture kings, captures backwards are not allowed</p></item>
+      <item><p><em>Spanish Draughts</em> - Similar to Italian with specific capturing priority rules</p></item>
+      <item><p><em>Czech Draughts</em> - Combines elements of Russian and International rules</p></item>
+      <item><p><em>Thai Draughts</em> - Unique rules for promotion and capturing</p></item>
+      <item><p><em>German Draughts</em> - Men can capture backwards</p></item>
+      <item><p><em>Swedish Draughts</em> - Similar to German with specific variations</p></item>
+      <item><p><em>Pool Checkers</em> - American variant with specific tournament rules</p></item>
+      <item><p><em>Turkish Draughts</em> - Pieces move orthogonally instead of diagonally!</p></item>
+      <item><p><em>Armenian Draughts</em> - Features unique capturing mechanics</p></item>
+      <item><p><em>Gothic Draughts</em> - Historical variant with traditional rules</p></item>
+      <item><p><em>Frisian Draughts</em> - Played on 10×10 board with special rules</p></item>
+      <item><p><em>Canadian Draughts</em> - Large 12×12 board with 30 pieces per side</p></item>
+    </list>
+  </section>
+
+  <section id="choosing">
+    <title>Choosing a Variant</title>
+
+    <p>
+      If you're new to Draughts:
+    </p>
+
+    <list>
+      <item><p>Start with <em>American Checkers</em> for simplicity</p></item>
+      <item><p>Try <em>International Draughts</em> for the most popular worldwide variant</p></item>
+      <item><p>Experiment with different variants to find your favorite</p></item>
+    </list>
+
+    <note style="tip">
+      <p>
+        Each variant has its own strategic depth and playing style. The variant you choose
+        is remembered for your next game.
+      </p>
+    </note>
+  </section>
+
+</page>

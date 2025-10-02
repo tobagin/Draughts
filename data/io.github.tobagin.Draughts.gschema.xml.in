@@ -218,9 +218,9 @@
     </key>
 
     <key name="drag-and-drop" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Enable drag and drop</summary>
-      <description>Allow dragging pieces to make moves instead of click-to-select</description>
+      <description>Allow dragging pieces to make moves instead of click-to-select (currently disabled in UI due to performance)</description>
     </key>
 
     <!-- Timing Settings -->
@@ -370,6 +370,49 @@
       <default>true</default>
       <summary>Enable game history</summary>
       <description>Record game histories and enable history features</description>
+    </key>
+
+    <!-- New Game Dialog Settings -->
+    <key name="new-game-opponent-type" type="i">
+      <default>0</default>
+      <summary>Opponent type</summary>
+      <description>Last selected opponent type (0=Human, 1=AI)</description>
+    </key>
+
+    <key name="new-game-human-color" type="i">
+      <default>0</default>
+      <summary>Human player color</summary>
+      <description>Last selected color for human player (0=Red, 1=Black)</description>
+    </key>
+
+    <key name="new-game-ai-difficulty" type="i">
+      <default>1</default>
+      <summary>AI difficulty</summary>
+      <description>Last selected AI difficulty (0=Beginner, 1=Intermediate, 2=Advanced, 3=Expert, 4=Grandmaster)</description>
+    </key>
+
+    <key name="new-game-time-limit-enabled" type="b">
+      <default>false</default>
+      <summary>Time limit enabled</summary>
+      <description>Last selected time limit setting</description>
+    </key>
+
+    <key name="new-game-minutes-per-side" type="i">
+      <default>5</default>
+      <summary>Minutes per side</summary>
+      <description>Last selected minutes per side for time limit</description>
+    </key>
+
+    <key name="new-game-increment-seconds" type="i">
+      <default>0</default>
+      <summary>Increment seconds</summary>
+      <description>Last selected increment seconds for time limit</description>
+    </key>
+
+    <key name="new-game-clock-type" type="i">
+      <default>0</default>
+      <summary>Clock type</summary>
+      <description>Last selected clock type (0=Fischer, 1=Bronstein)</description>
     </key>
   </schema>
 </schemalist>

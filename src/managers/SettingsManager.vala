@@ -446,9 +446,17 @@ namespace Draughts {
             settings.set_boolean("enable-game-history", enabled);
         }
 
+        public bool get_enable_drag_and_drop() {
+            return settings.get_boolean("drag-and-drop");
+        }
+
+        public void set_enable_drag_and_drop(bool enabled) {
+            settings.set_boolean("drag-and-drop", enabled);
+        }
+
         // Settings Management
         public void reset_to_defaults() {
-            var keys = settings.list_keys();
+            string[] keys = settings.settings_schema.list_keys();
             foreach (var key in keys) {
                 settings.reset(key);
             }
@@ -504,7 +512,7 @@ namespace Draughts {
             json_builder.begin_object();
 
             // Export all settings
-            var keys = settings.list_keys();
+            string[] keys = settings.settings_schema.list_keys();
             foreach (var key in keys) {
                 var variant_value = settings.get_value(key);
                 json_builder.set_member_name(key);

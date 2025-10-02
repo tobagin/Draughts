@@ -34,13 +34,47 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/tobagin/app_template/main/data/screenshots/main.png</image>
+      <caption>Main game window with active gameplay</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/main-window.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>New game setup dialog with variant selection</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/new-game.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Active game with piece movement</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/game-playing.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Game paused overlay</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/game-paused.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Game history browser with saved games</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/game-history.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Replay previous games from history</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/replay-game-history.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Preferences with customization options</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/preferences.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Keyboard shortcuts reference</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/keyboard-shortcuts.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>About dialog</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/about.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://github.com/tobagin/draughts</url>
-  <url type="bugtracker">https://github.com/tobagin/draughts/issues</url>
-  <url type="help">https://github.com/tobagin/draughts/wiki</url>
-  <url type="donation">https://github.com/sponsors/tobagin</url>
+  <url type="homepage">https://github.com/tobagin/Dama</url>
+  <url type="bugtracker">https://github.com/tobagin/Dama/issues</url>
+  <url type="help">https://github.com/tobagin/Dama/wiki</url>
+  <url type="vcs-browser">https://github.com/tobagin/Dama</url>
+  <url type="contribute">https://github.com/tobagin/Dama/blob/master/CONTRIBUTING.md</url>
 
   <developer_name>Thiago Fernandes</developer_name>
 
@@ -101,7 +135,7 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="@VERSION@" date="2025-09-30">
+    <release version="@VERSION@" date="2025-10-02">
       <description>
         <p>First stable release of Draughts - A comprehensive draughts/checkers game</p>
         <ul>

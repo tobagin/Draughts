@@ -30,6 +30,12 @@ namespace Draughts {
         private unowned Adw.WindowTitle window_title;
 
         [GtkChild]
+        private unowned Gtk.DropDown move_history_dropdown;
+
+        [GtkChild]
+        private unowned Gtk.StringList move_history_model;
+
+        [GtkChild]
         private unowned Gtk.MenuButton menu_button;
 
         [GtkChild]
@@ -43,8 +49,36 @@ namespace Draughts {
         [GtkChild]
         private unowned Gtk.Button undo_button;
 
+        // Redo button removed from headerbar UI
+        // [GtkChild]
+        // private unowned Gtk.Button redo_button;
+
         [GtkChild]
-        private unowned Gtk.Button redo_button;
+        private unowned Gtk.Button pause_button;
+
+        [GtkChild]
+        private unowned Gtk.Box pause_overlay;
+
+        [GtkChild]
+        private unowned Adw.HeaderBar bottom_bar;
+
+        [GtkChild]
+        private unowned Gtk.Label red_timer_display;
+
+        [GtkChild]
+        private unowned Gtk.Label black_timer_display;
+
+        [GtkChild]
+        private unowned Gtk.Button first_move_button;
+
+        [GtkChild]
+        private unowned Gtk.Button prev_move_button;
+
+        [GtkChild]
+        private unowned Gtk.Button next_move_button;
+
+        [GtkChild]
+        private unowned Gtk.Button last_move_button;
 
         private DraughtsBoard draughts_board;
         private DraughtsBoardAdapter adapter;
@@ -55,6 +89,9 @@ namespace Draughts {
 
         private Logger logger;
         private SettingsManager settings_manager;
+        private bool is_first_move = true;
+        private bool is_paused = false;
+        private bool is_navigating = false;
 
         public Window(Gtk.Application app) {
             Object(application: app);
@@ -72,20 +109,21 @@ namespace Draughts {
             // Ensure template widgets are accessible (suppresses unused warnings)
             assert(header_bar != null);
             assert(window_title != null);
+            assert(move_history_dropdown != null);
+            assert(move_history_model != null);
             assert(menu_button != null);
             assert(toast_overlay != null);
             assert(board_container != null);
             assert(undo_button != null);
-            assert(redo_button != null);
+            // assert(redo_button != null); // Redo button removed from UI
 
-            // Start a new game automatically after initialization
+            // Connect move history dropdown
+            move_history_dropdown.notify["selected"].connect(on_move_history_selected);
+
+            // Board starts empty - show New Game dialog automatically
             // Use a delay to ensure widgets are fully realized and sized
             Timeout.add(200, () => {
-                start_new_game();
-
-                // Note: rescale_all_pieces was removed during button-to-canvas refactor
-                // Pieces now scale automatically via DrawingArea
-
+                show_new_game_dialog();
                 return false;
             });
 
@@ -178,23 +216,36 @@ namespace Draughts {
             // Create the comprehensive game system components
             renderer = new BoardRenderer(8); // Default board size
             adapter = new DraughtsBoardAdapter(draughts_board);
-            interaction_handler = new BoardInteractionHandler(adapter, renderer, draughts_board);
+            // Note: BoardInteractionHandler is not used anymore - DraughtsBoard handles its own interactions
+            // interaction_handler = new BoardInteractionHandler(adapter, renderer, draughts_board);
 
             // Create UI controls
             timer_display = new TimerDisplay();
 
             // Connect timer to window subtitle
             timer_display.timer_updated.connect(on_timer_updated);
+            timer_display.dual_timer_updated.connect(on_dual_timer_updated);
+            timer_display.time_expired.connect(on_time_expired);
 
             // Connect signals
             setup_game_signals();
 
-            // Connect undo/redo buttons
+            // Connect undo button (redo button removed from headerbar UI)
             undo_button.clicked.connect(on_undo_requested);
-            redo_button.clicked.connect(on_redo_requested);
+            // redo_button.clicked.connect(on_redo_requested); // Redo removed from UI
+
+            // Connect pause button
+            pause_button.clicked.connect(on_pause_button_clicked);
+
+            // Connect navigation buttons
+            first_move_button.clicked.connect(on_first_move_clicked);
+            prev_move_button.clicked.connect(on_prev_move_clicked);
+            next_move_button.clicked.connect(on_next_move_clicked);
+            last_move_button.clicked.connect(on_last_move_clicked);
 
             // Initialize button states
             update_undo_redo_buttons();
+            update_navigation_buttons();
 
             logger.debug("Comprehensive game components initialized");
         }
@@ -205,11 +256,11 @@ namespace Draughts {
             adapter.game_finished.connect(on_game_finished);
             adapter.move_made.connect(on_move_made);
 
-            // Interaction handler signals
-            interaction_handler.piece_selected.connect(on_piece_selected);
-            interaction_handler.piece_deselected.connect(on_piece_deselected);
-            interaction_handler.move_attempted.connect(on_move_attempted);
-            interaction_handler.invalid_move_attempted.connect(on_invalid_move_attempted);
+            // Note: Interaction handler signals removed - DraughtsBoard handles its own interactions now
+            // interaction_handler.piece_selected.connect(on_piece_selected);
+            // interaction_handler.piece_deselected.connect(on_piece_deselected);
+            // interaction_handler.move_attempted.connect(on_move_attempted);
+            // interaction_handler.invalid_move_attempted.connect(on_invalid_move_attempted);
 
             // Timer signals
             // Timer display signals - removed since TimerDisplay no longer has these
@@ -243,6 +294,122 @@ namespace Draughts {
                 string display_name = get_rules_display_name(current_rules);
                 window_title.set_subtitle(display_name);
             }
+
+            // Initialize move history dropdown with "Game Start"
+            rebuild_move_history_dropdown();
+        }
+
+        private void rebuild_move_history_dropdown() {
+            is_navigating = true;
+
+            // Clear existing items
+            move_history_model.splice(0, move_history_model.get_n_items(), null);
+
+            // Add "Game Start"
+            move_history_model.append(_("Game Start"));
+
+            if (adapter != null) {
+                var current_game = adapter.get_current_game();
+                if (current_game != null) {
+                    var moves = current_game.get_move_history();
+
+                    for (int i = 0; i < moves.length; i++) {
+                        var move = moves[i];
+                        int move_number = (i / 2) + 1;
+                        bool is_white_move = (i % 2) == 0;
+                        string move_label = format_move_for_dropdown(move, move_number, is_white_move);
+                        move_history_model.append(move_label);
+                    }
+                }
+            }
+
+            // Select the current position
+            int current_position = get_current_move_index();
+            move_history_dropdown.set_selected(current_position);
+
+            is_navigating = false;
+        }
+
+        private string format_move_for_dropdown(DraughtsMove move, int move_number, bool is_white_move) {
+            string move_suffix = is_white_move ? "a" : "b";
+            string piece_moved = get_piece_description(move);
+            string from_square = position_to_notation(move.from_position);
+            string to_square = position_to_notation(move.to_position);
+
+            return @"$(move_number)$(move_suffix). $(piece_moved) moves from $(from_square) to $(to_square)";
+        }
+
+        private string get_piece_description(DraughtsMove move) {
+            // Determine if it's White (Red) or Black based on move index
+            // For now, we'll use the piece color from the move if available
+            // Otherwise default to describing by color
+            return move.is_capture() ? "piece" : "piece";
+        }
+
+        private string position_to_notation(BoardPosition pos) {
+            // Convert to algebraic notation (e.g., "a1", "b2", etc.)
+            char file = (char)('a' + pos.col);
+            int rank = pos.row + 1;
+            return @"$(file)$(rank)";
+        }
+
+        private int get_current_move_index() {
+            if (adapter == null) {
+                return 0;
+            }
+
+            var current_game = adapter.get_current_game();
+            if (current_game == null) {
+                return 0;
+            }
+
+            var moves = current_game.get_move_history();
+            int total_moves = moves.length;
+
+            // Check how many moves we can redo
+            int redo_count = 0;
+            var temp_adapter = adapter;
+            while (temp_adapter.can_redo()) {
+                redo_count++;
+                // We can't actually count without changing state, so we'll track differently
+                break;
+            }
+
+            // Current index is total moves - number of undos (which equals redo count)
+            // Since we don't track undos directly, we'll use the move history length
+            return total_moves - redo_count;
+        }
+
+        private void on_move_history_selected() {
+            if (is_navigating) {
+                return;
+            }
+
+            uint selected = move_history_dropdown.get_selected();
+            navigate_to_move_index((int)selected);
+        }
+
+        private void navigate_to_move_index(int target_index) {
+            if (adapter == null) {
+                return;
+            }
+
+            is_navigating = true;
+
+            // First, go back to the start
+            while (adapter.can_undo()) {
+                adapter.undo_last_move();
+            }
+
+            // Then redo to the target position
+            for (int i = 0; i < target_index && adapter.can_redo(); i++) {
+                adapter.redo_last_move();
+            }
+
+            update_undo_redo_buttons();
+            update_navigation_buttons();
+
+            is_navigating = false;
         }
 
         // Signal handlers for game events
@@ -264,6 +431,13 @@ namespace Draughts {
                 if (window_title != null) {
                     window_title.set_subtitle(variant_obj.display_name);
                 }
+                rebuild_move_history_dropdown();
+
+                // Reset first move flag for timer
+                is_first_move = true;
+
+                // Initialize turn indicator for Red (starting player)
+                update_turn_indicator(PieceColor.RED);
 
                 // Update undo/redo button states (should be disabled for new game)
                 update_undo_redo_buttons();
@@ -276,9 +450,75 @@ namespace Draughts {
             }
         }
 
-        private void on_new_game_requested_with_mode(DraughtsVariant variant, bool is_human_vs_ai) {
+        private void on_new_game_requested_with_configuration(
+            DraughtsVariant variant,
+            bool is_human_vs_ai,
+            PieceColor human_color,
+            int ai_difficulty,
+            bool use_time_limit,
+            int minutes_per_side,
+            int increment_seconds,
+            string clock_type
+        ) {
             if (adapter != null) {
-                adapter.start_new_game_with_mode(variant, is_human_vs_ai);
+                // Configure AI difficulty based on the selection
+                AIDifficulty difficulty;
+                switch (ai_difficulty) {
+                    case 0:
+                        difficulty = AIDifficulty.BEGINNER;
+                        break;
+                    case 1:
+                        difficulty = AIDifficulty.INTERMEDIATE;
+                        break;
+                    case 2:
+                        difficulty = AIDifficulty.ADVANCED;
+                        break;
+                    case 3:
+                        difficulty = AIDifficulty.EXPERT;
+                        break;
+                    case 4:
+                        difficulty = AIDifficulty.GRANDMASTER;
+                        break;
+                    default:
+                        difficulty = AIDifficulty.INTERMEDIATE;
+                        break;
+                }
+
+                // Configure timers if enabled
+                if (use_time_limit && timer_display != null) {
+                    TimeSpan base_time = TimeSpan.SECOND * (minutes_per_side * 60);
+                    TimeSpan increment_time = TimeSpan.SECOND * increment_seconds;
+
+                    Timer red_timer;
+                    Timer black_timer;
+
+                    if (clock_type == "Fischer") {
+                        red_timer = new Timer.fischer(base_time, increment_time);
+                        black_timer = new Timer.fischer(base_time, increment_time);
+                    } else {
+                        // Bronstein uses delay mode
+                        red_timer = new Timer.with_delay(base_time, increment_time);
+                        black_timer = new Timer.with_delay(base_time, increment_time);
+                    }
+
+                    timer_display.set_timers(red_timer, black_timer);
+                } else if (timer_display != null) {
+                    // No time limit - set null timers
+                    timer_display.set_timers(null, null);
+                }
+
+                // Start new game with full configuration
+                adapter.start_new_game_with_configuration(
+                    variant,
+                    is_human_vs_ai,
+                    human_color,
+                    difficulty,
+                    use_time_limit,
+                    minutes_per_side,
+                    increment_seconds,
+                    clock_type
+                );
+
                 var variant_obj = new GameVariant(variant);
 
                 // Update renderer for board size
@@ -294,6 +534,13 @@ namespace Draughts {
                 if (window_title != null) {
                     window_title.set_subtitle(variant_obj.display_name);
                 }
+                rebuild_move_history_dropdown();
+
+                // Reset first move flag for timer
+                is_first_move = true;
+
+                // Initialize turn indicator for Red (starting player)
+                update_turn_indicator(PieceColor.RED);
 
                 // Update undo/redo button states (should be disabled for new game)
                 update_undo_redo_buttons();
@@ -322,6 +569,12 @@ namespace Draughts {
                 adapter.reset_game();
                 timer_display.reset_timers();
 
+                // Reset first move flag
+                is_first_move = true;
+
+                // Initialize turn indicator for Red (starting player)
+                update_turn_indicator(PieceColor.RED);
+
                 var toast = new Adw.Toast("Game reset");
                 toast.set_timeout(2);
                 toast_overlay.add_toast(toast);
@@ -336,6 +589,7 @@ namespace Draughts {
 
                 logger.info("Move undone");
                 update_undo_redo_buttons();
+                update_navigation_buttons();
             }
         }
 
@@ -345,16 +599,172 @@ namespace Draughts {
 
                 logger.info("Move redone");
                 update_undo_redo_buttons();
+                update_navigation_buttons();
             }
+        }
+
+        private void on_pause_button_clicked() {
+            if (is_paused) {
+                resume_game();
+            } else {
+                pause_game();
+            }
+        }
+
+        private void pause_game() {
+            is_paused = true;
+
+            // Show pause overlay
+            pause_overlay.visible = true;
+
+            // Hide pieces on the board
+            if (draughts_board != null) {
+                draughts_board.set_pieces_visible(false);
+            }
+
+            // Pause timer
+            if (timer_display != null) {
+                timer_display.pause_timers();
+            }
+
+            // Update button icon and tooltip
+            pause_button.icon_name = "media-playback-start-symbolic";
+            pause_button.tooltip_text = _("Resume Game");
+
+            logger.info("Game paused");
+        }
+
+        private void resume_game() {
+            is_paused = false;
+
+            // Hide pause overlay
+            pause_overlay.visible = false;
+
+            // Show pieces on the board
+            if (draughts_board != null) {
+                draughts_board.set_pieces_visible(true);
+            }
+
+            // Resume timer
+            if (timer_display != null) {
+                timer_display.resume_timers();
+            }
+
+            // Update button icon and tooltip
+            pause_button.icon_name = "media-playback-pause-symbolic";
+            pause_button.tooltip_text = _("Pause Game");
+
+            logger.info("Game resumed");
         }
 
         private void update_undo_redo_buttons() {
             if (adapter != null) {
                 undo_button.set_sensitive(adapter.can_undo());
-                redo_button.set_sensitive(adapter.can_redo());
+                // redo_button.set_sensitive(adapter.can_redo()); // Redo removed from UI
             } else {
                 undo_button.set_sensitive(false);
-                redo_button.set_sensitive(false);
+                // redo_button.set_sensitive(false); // Redo removed from UI
+            }
+        }
+
+        private void update_navigation_buttons() {
+            if (adapter != null) {
+                // Disable navigation during AI turn
+                if (adapter.is_ai_turn()) {
+                    first_move_button.set_sensitive(false);
+                    prev_move_button.set_sensitive(false);
+                    next_move_button.set_sensitive(false);
+                    last_move_button.set_sensitive(false);
+                    return;
+                }
+
+                int history_size = adapter.get_history_size();
+                int current_pos = adapter.get_current_viewing_position();
+
+                // First/Previous enabled if not at game start
+                bool can_go_back = current_pos > -1;
+                first_move_button.set_sensitive(can_go_back);
+                prev_move_button.set_sensitive(can_go_back);
+
+                // Next/Last enabled if not at current position
+                bool can_go_forward = !adapter.is_at_current_position();
+                next_move_button.set_sensitive(can_go_forward);
+                last_move_button.set_sensitive(can_go_forward);
+            } else {
+                first_move_button.set_sensitive(false);
+                prev_move_button.set_sensitive(false);
+                next_move_button.set_sensitive(false);
+                last_move_button.set_sensitive(false);
+            }
+        }
+
+        private void on_first_move_clicked() {
+            if (adapter != null) {
+                is_navigating = true;
+                // View game start position (position -1)
+                adapter.view_history_at_position(-1);
+                update_undo_redo_buttons();
+                update_navigation_buttons();
+                move_history_dropdown.set_selected(0);
+                is_navigating = false;
+                logger.info("Viewing game start");
+            }
+        }
+
+        private void on_prev_move_clicked() {
+            if (adapter != null) {
+                is_navigating = true;
+                int current_pos = adapter.get_current_viewing_position();
+                if (current_pos > -1) {
+                    adapter.view_history_at_position(current_pos - 1);
+                    update_undo_redo_buttons();
+                    update_navigation_buttons();
+                    uint current = move_history_dropdown.get_selected();
+                    if (current > 0) {
+                        move_history_dropdown.set_selected(current - 1);
+                    }
+                }
+                is_navigating = false;
+                logger.info("Viewing previous move");
+            }
+        }
+
+        private void on_next_move_clicked() {
+            if (adapter != null) {
+                is_navigating = true;
+                int current_viewing_pos = adapter.get_current_viewing_position();
+                int actual_current_pos = adapter.get_actual_current_position();
+
+                // Check if the next position would be the current game position
+                if (current_viewing_pos >= actual_current_pos) {
+                    // Return to current position (enables interaction)
+                    adapter.return_to_current_position();
+                    move_history_dropdown.set_selected(move_history_model.get_n_items() - 1);
+                    logger.info("Returned to current position");
+                } else {
+                    // View next historical position
+                    adapter.view_history_at_position(current_viewing_pos + 1);
+                    uint current = move_history_dropdown.get_selected();
+                    move_history_dropdown.set_selected(current + 1);
+                    logger.info("Viewing next move");
+                }
+
+                update_undo_redo_buttons();
+                update_navigation_buttons();
+                is_navigating = false;
+            }
+        }
+
+        private void on_last_move_clicked() {
+            if (adapter != null) {
+                is_navigating = true;
+                // Return to current game state
+                adapter.return_to_current_position();
+                update_undo_redo_buttons();
+                update_navigation_buttons();
+                move_history_dropdown.set_selected(move_history_model.get_n_items() - 1);
+                is_navigating = false;
+                logger.info("Returned to current position");
             }
         }
 
@@ -386,6 +796,13 @@ namespace Draughts {
         }
 
         private void on_game_state_changed(DraughtsGameState new_state) {
+            // Start timer on first move
+            if (is_first_move && timer_display != null) {
+                timer_display.start_game_timer();
+                is_first_move = false;
+                logger.debug("Started game timer on first move");
+            }
+
             // Update timer display based on active player
             if (timer_display != null) {
                 // Convert PieceColor to Player for timer display
@@ -393,7 +810,14 @@ namespace Draughts {
                 timer_display.set_active_player(player);
             }
 
+            // Update bottom bar turn indicator
+            update_turn_indicator(new_state.active_player);
+
             logger.debug("Game state changed, active player: %s", new_state.active_player.to_string());
+        }
+
+        private void update_turn_indicator(PieceColor active_player) {
+            // Turn indicator removed - no longer displayed
         }
 
         private void on_game_finished(GameStatus result) {
@@ -479,6 +903,12 @@ namespace Draughts {
         private void on_move_made(DraughtsMove move) {
             // Update undo/redo button states
             update_undo_redo_buttons();
+            update_navigation_buttons();
+
+            // Rebuild move history dropdown
+            if (!is_navigating) {
+                rebuild_move_history_dropdown();
+            }
 
             // Update timer display when a move is made
             if (timer_display != null) {
@@ -496,14 +926,57 @@ namespace Draughts {
          * Handle timer updates from TimerDisplay
          */
         private void on_timer_updated(string timer_text) {
-            if (window_title != null) {
-                if (timer_text == "") {
-                    // No timer - show game variant as subtitle
-                    initialize_window_subtitle();
-                } else {
-                    // Show timer in subtitle
-                    window_title.set_subtitle(timer_text);
-                }
+            // Timer label was removed - dual timer displays are used instead
+            // This method is kept for backward compatibility but does nothing
+        }
+
+        /**
+         * Handle time expiration (player ran out of time)
+         */
+        private void on_time_expired(Player player) {
+            logger.info("Time expired for player: %s", player.to_string());
+
+            // Determine the winner (opposite player)
+            string winner_name;
+            string loser_name;
+
+            if (player == Player.RED) {
+                winner_name = "Black";
+                loser_name = "Red";
+            } else {
+                winner_name = "Red";
+                loser_name = "Black";
+            }
+
+            // Stop all timers
+            if (timer_display != null) {
+                timer_display.pause_timers();
+            }
+
+            // Show game over dialog
+            var dialog = new Adw.AlertDialog(
+                _("Time's Up!"),
+                @"$(loser_name) ran out of time.\n$(winner_name) wins!"
+            );
+
+            dialog.add_response("ok", _("OK"));
+            dialog.set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED);
+            dialog.set_default_response("ok");
+
+            dialog.present(this);
+
+            logger.info("Game ended by timeout - %s wins", winner_name);
+        }
+
+        /**
+         * Handle dual timer updates for bottom bar displays
+         */
+        private void on_dual_timer_updated(string red_time, string black_time) {
+            if (red_timer_display != null) {
+                red_timer_display.label = red_time;
+            }
+            if (black_timer_display != null) {
+                black_timer_display.label = black_time;
             }
         }
 
@@ -537,12 +1010,15 @@ namespace Draughts {
 
         private void show_new_game_dialog() {
             var dialog = new NewGameDialog();
-            dialog.game_mode_selected.connect((is_human_vs_ai) => {
-                // Get the currently selected variant from settings
-                var settings_manager = SettingsManager.get_instance();
-                var variant = settings_manager.get_default_variant();
-                logger.info("Starting new game with variant: %s, Human vs AI: %s", variant.to_string(), is_human_vs_ai.to_string());
-                on_new_game_requested_with_mode(variant, is_human_vs_ai);
+            dialog.game_started.connect((variant, is_human_vs_ai, human_color, ai_difficulty, use_time_limit, minutes_per_side, increment_seconds, clock_type) => {
+                logger.info("Starting new game with variant: %s, Human vs AI: %s, Human color: %s, AI difficulty: %d",
+                    variant.to_string(), is_human_vs_ai.to_string(), human_color.to_string(), ai_difficulty);
+                logger.info("Time limit settings: enabled=%s, minutes=%d, increment=%d, clock_type=%s",
+                    use_time_limit.to_string(), minutes_per_side, increment_seconds, clock_type);
+
+                // Start new game with the configuration
+                on_new_game_requested_with_configuration(variant, is_human_vs_ai, human_color, ai_difficulty,
+                    use_time_limit, minutes_per_side, increment_seconds, clock_type);
             });
             dialog.present(this);
         }
@@ -1049,7 +1525,19 @@ namespace Draughts {
 
             if (is_human_vs_ai) {
                 // Restart the game with new AI difficulty
-                on_new_game_requested_with_mode(variant, is_human_vs_ai);
+                // Use default settings for other parameters
+                PieceColor human_color = current_game.red_player.is_human() ? PieceColor.RED : PieceColor.BLACK;
+                int ai_difficulty_index = (int)new_difficulty;
+                on_new_game_requested_with_configuration(
+                    variant,
+                    is_human_vs_ai,
+                    human_color,
+                    ai_difficulty_index,
+                    false, // use_time_limit
+                    5,     // minutes_per_side (default)
+                    0,     // increment_seconds (default)
+                    "Fischer" // clock_type (default)
+                );
                 logger.info("Game restarted with new AI difficulty: %s", new_difficulty.to_string());
             }
         }
@@ -1070,15 +1558,14 @@ namespace Draughts {
                 logger.debug("PDN file loaded, content length: %d", pdn_content.length);
 
                 // Show a dialog informing the user that PDN import is coming
-                var dialog = new Adw.MessageDialog(
-                    this,
+                var dialog = new Adw.AlertDialog(
                     _("PDN Import"),
                     _("PDN file import functionality will be available in a future version.\n\nFile: %s").printf(file.get_basename())
                 );
                 dialog.add_response("ok", _("OK"));
                 dialog.set_default_response("ok");
                 dialog.set_close_response("ok");
-                dialog.present();
+                dialog.present(this);
 
                 // TODO: Parse PDN and load game into replay dialog
 

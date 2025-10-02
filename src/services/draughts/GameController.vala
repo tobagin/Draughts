@@ -38,7 +38,14 @@ public class Draughts.GameController : Object, IGameController {
 
         // Delegate to the Game's make_move method which handles
         // move execution, timers, and state management
-        return current_game.make_move(move);
+        bool success = current_game.make_move(move);
+
+        if (success) {
+            // Emit game state changed signal
+            game_state_changed(current_game.current_state, move);
+        }
+
+        return success;
     }
 
     /**
@@ -49,7 +56,14 @@ public class Draughts.GameController : Object, IGameController {
             return false;
         }
 
-        return current_game.undo_last_move();
+        bool success = current_game.undo_last_move();
+
+        if (success) {
+            // Emit game state changed signal
+            game_state_changed(current_game.current_state, null);
+        }
+
+        return success;
     }
 
     /**
@@ -60,7 +74,14 @@ public class Draughts.GameController : Object, IGameController {
             return false;
         }
 
-        return current_game.redo_last_move();
+        bool success = current_game.redo_last_move();
+
+        if (success) {
+            // Emit game state changed signal
+            game_state_changed(current_game.current_state, null);
+        }
+
+        return success;
     }
 
     /**
@@ -128,5 +149,46 @@ public class Draughts.GameController : Object, IGameController {
 
         // Would need to implement move validation logic
         return false;
+    }
+
+    /**
+     * View history at a specific position without modifying game state
+     * Position -1 = game start, position 0+ = after that move
+     */
+    public DraughtsGameState? view_history_at_position(int position) {
+        if (current_game == null) {
+            return null;
+        }
+        return current_game.view_history_at_position(position);
+    }
+
+    /**
+     * Get the total number of moves in history
+     */
+    public int get_history_size() {
+        if (current_game == null) {
+            return 0;
+        }
+        return current_game.get_history_size();
+    }
+
+    /**
+     * Get current position in history
+     */
+    public int get_history_position() {
+        if (current_game == null) {
+            return -1;
+        }
+        return current_game.get_history_position();
+    }
+
+    /**
+     * Check if we're at the latest position (not viewing history)
+     */
+    public bool is_at_latest_position() {
+        if (current_game == null) {
+            return true;
+        }
+        return current_game.is_at_latest_position();
     }
 }

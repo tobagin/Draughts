@@ -12,6 +12,13 @@
  * GNU General Public License for more details.
  */
 
+// Workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/6135
+// GtkUriLauncher doesn't work with help:// URIs in Flatpak
+namespace Workaround {
+    [CCode (cheader_filename = "gtk/gtk.h", cname = "gtk_show_uri")]
+    extern static void gtk_show_uri (Gtk.Window? parent, string uri, uint32 timestamp);
+}
+
 namespace Draughts {
 
     public class Application : Adw.Application {
@@ -116,10 +123,10 @@ namespace Draughts {
             const string[] reset_game_accels = {"<primary>r", null};
             set_accels_for_action("app.reset-game", reset_game_accels);
 
-            // Help dialog (F1)
+            // Help dialog (F1) - Opens GNOME Help
             var help_action = new SimpleAction("help", null);
             help_action.activate.connect(() => {
-                HelpDialog.show_dialog(active_window);
+                show_help();
             });
             add_action(help_action);
             const string[] help_accels = {"F1", null};
@@ -180,14 +187,6 @@ namespace Draughts {
             logger.debug("Preferences action triggered");
             var preferences_dialog = new Draughts.Preferences();
 
-            // Connect to variant change signal to start new game
-            preferences_dialog.variant_changed_start_new_game.connect(() => {
-                logger.info("Variant changed, starting new game");
-                if (main_window != null) {
-                    main_window.start_new_game();
-                }
-            });
-
             // Connect to board theme change signal to update board appearance
             preferences_dialog.board_theme_changed.connect((theme) => {
                 logger.info("Board theme changed to: %s", theme);
@@ -218,6 +217,32 @@ namespace Draughts {
             logger.info("Reset game action triggered");
             if (main_window != null) {
                 main_window.reset_game();
+            }
+        }
+
+        private void show_help() {
+            logger.debug("Help action triggered");
+
+            // Launch GNOME Help (Yelp) with the application's help
+            // Use the base app ID (without .Devel suffix) which matches the help directory
+            string help_uri = "help:io.github.tobagin.Draughts";
+
+            // Use gtk_show_uri workaround because GtkUriLauncher doesn't work with help:// URIs in Flatpak
+            // See: https://gitlab.gnome.org/GNOME/gtk/-/issues/6135
+            try {
+                Workaround.gtk_show_uri(active_window, help_uri, Gdk.CURRENT_TIME);
+                logger.info("Opened help: %s", help_uri);
+            } catch (Error e) {
+                logger.warning("Failed to open help: %s", e.message);
+
+                // Fallback to showing a simple dialog
+                var dialog = new Adw.AlertDialog(
+                    _("Help"),
+                    _("Help documentation is not yet available.\n\nFor assistance, please visit the project repository.")
+                );
+                dialog.add_response("ok", _("OK"));
+                dialog.set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED);
+                dialog.present(active_window);
             }
         }
 

@@ -1,0 +1,200 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic" style="task"
+      id="timers">
+
+  <info>
+    <link type="guide" xref="index#settings"/>
+    <revision pkgversion="1.0" date="2025-01-20" status="final"/>
+
+    <credit type="author">
+      <name>Thiago Fernandes</name>
+    </credit>
+
+    <desc>Understanding time controls and clock types.</desc>
+  </info>
+
+  <title>Time Controls</title>
+
+  <p>
+    Time controls add excitement and challenge to your games by limiting how long each player
+    can think. You can configure time limits when starting a new game.
+  </p>
+
+  <section id="enabling">
+    <title>Enabling Time Limits</title>
+
+    <steps>
+      <item><p>Start a <gui>New Game</gui></p></item>
+      <item><p>Toggle <gui>Use Time Limit</gui> to ON</p></item>
+      <item><p>Set <gui>Minutes Per Side</gui> (1-180 minutes)</p></item>
+      <item><p>Set <gui>Increment</gui> in seconds (0-60 seconds)</p></item>
+      <item><p>Choose <gui>Clock Type</gui>: Fischer or Bronstein</p></item>
+    </steps>
+
+    <note>
+      <p>
+        Without time limits, the timers display ∞ (infinity) and don't count down.
+      </p>
+    </note>
+  </section>
+
+  <section id="clock-types">
+    <title>Clock Types</title>
+
+    <terms>
+      <item>
+        <title>Fischer</title>
+        <p>
+          After completing a move, the increment is <em>added</em> to your remaining time.
+        </p>
+        <p>
+          <em>Example:</em> With 5 minutes + 3 seconds increment:
+        </p>
+        <list>
+          <item><p>You start with 5:00</p></item>
+          <item><p>You use 10 seconds to make a move (4:50 remaining)</p></item>
+          <item><p>3 seconds are added when you complete the move (4:53 remaining)</p></item>
+        </list>
+        <p>
+          This allows you to accumulate time for later in the game.
+        </p>
+      </item>
+
+      <item>
+        <title>Bronstein (Delay)</title>
+        <p>
+          When your turn starts, there's a delay period before your clock begins counting down.
+        </p>
+        <p>
+          <em>Example:</em> With 5 minutes + 3 seconds delay:
+        </p>
+        <list>
+          <item><p>You start thinking</p></item>
+          <item><p>The first 3 seconds don't count against your time</p></item>
+          <item><p>After 3 seconds, your clock starts counting down</p></item>
+          <item><p>If you move within 3 seconds, no time is deducted</p></item>
+        </list>
+        <p>
+          This guarantees a minimum thinking time per move without accumulating extra time.
+        </p>
+      </item>
+    </terms>
+  </section>
+
+  <section id="timer-display">
+    <title>Timer Display</title>
+
+    <p>
+      The timers are displayed at the bottom-right of the window:
+    </p>
+
+    <list>
+      <item><p><em>Red timer</em> - White background with black text</p></item>
+      <item><p><em>Black timer</em> - Black background with white text</p></item>
+      <item><p>The active player's timer counts down</p></item>
+      <item><p>Format: minutes:seconds (e.g., 4:09, 0:45)</p></item>
+    </list>
+  </section>
+
+  <section id="time-expiration">
+    <title>Running Out of Time</title>
+
+    <p>
+      If a player's time reaches 0:00:
+    </p>
+
+    <list>
+      <item><p>The game immediately ends</p></item>
+      <item><p>A dialog appears: "Time's Up! [Player] ran out of time. [Opponent] wins!"</p></item>
+      <item><p>The opponent is declared the winner by timeout</p></item>
+    </list>
+
+    <note style="important">
+      <p>
+        Make sure to manage your time wisely! Even if you have a winning position,
+        running out of time results in an immediate loss.
+      </p>
+    </note>
+  </section>
+
+  <section id="timer-behavior">
+    <title>Timer Behavior</title>
+
+    <terms>
+      <item>
+        <title>Game Start</title>
+        <p>
+          Timers don't start counting until each player makes their first move.
+        </p>
+      </item>
+
+      <item>
+        <title>During Moves</title>
+        <p>
+          Only the active player's timer counts down. The opponent's timer is paused.
+        </p>
+      </item>
+
+      <item>
+        <title>When Paused</title>
+        <p>
+          Pressing the Pause button stops both timers until you resume.
+        </p>
+      </item>
+
+      <item>
+        <title>Undo/Redo</title>
+        <p>
+          Using undo/redo doesn't affect the timers - time spent thinking is not refunded.
+        </p>
+      </item>
+    </terms>
+  </section>
+
+  <section id="common-settings">
+    <title>Common Time Control Settings</title>
+
+    <table>
+      <thead>
+        <tr>
+          <td><p>Name</p></td>
+          <td><p>Minutes</p></td>
+          <td><p>Increment</p></td>
+          <td><p>Type</p></td>
+          <td><p>Description</p></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><p>Blitz</p></td>
+          <td><p>3</p></td>
+          <td><p>2</p></td>
+          <td><p>Fischer</p></td>
+          <td><p>Fast-paced game</p></td>
+        </tr>
+        <tr>
+          <td><p>Rapid</p></td>
+          <td><p>10</p></td>
+          <td><p>0</p></td>
+          <td><p>Either</p></td>
+          <td><p>Medium speed</p></td>
+        </tr>
+        <tr>
+          <td><p>Standard</p></td>
+          <td><p>15</p></td>
+          <td><p>10</p></td>
+          <td><p>Fischer</p></td>
+          <td><p>Balanced time control</p></td>
+        </tr>
+        <tr>
+          <td><p>Classical</p></td>
+          <td><p>60</p></td>
+          <td><p>30</p></td>
+          <td><p>Fischer</p></td>
+          <td><p>Long, thoughtful games</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</page>

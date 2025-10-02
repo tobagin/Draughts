@@ -1,0 +1,64 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="guide" style="task"
+      id="index">
+
+  <info>
+    <title type="link">Draughts Help</title>
+    <title type="text">Draughts Help</title>
+    <revision pkgversion="1.0" date="2025-01-20" status="final"/>
+
+    <credit type="author">
+      <name>Thiago Fernandes</name>
+      <email>tobagin@example.com</email>
+    </credit>
+
+    <license xmlns:its="http://www.w3.org/2005/11/its" its:version="2.0">
+      <p>
+        This work is licensed under a
+        <link href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License version 3</link>.
+      </p>
+      <p>
+        Draughts is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+      </p>
+      <p>
+        Draughts is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+      </p>
+    </license>
+
+    <desc>Learn how to play Draughts (Checkers) with 16 different international variants.</desc>
+  </info>
+
+  <title>
+    <media type="image" mime="image/png" src="figures/draughts-logo.png" its:translate="no"/>
+    Draughts Help
+  </title>
+
+  <p>
+    Draughts is a classic strategy board game, also known as Checkers in North America.
+    This application supports 16 different international variants with different rules and board sizes.
+  </p>
+
+  <section id="getting-started" style="2column">
+    <title>Getting Started</title>
+  </section>
+
+  <section id="playing" style="2column">
+    <title>Playing the Game</title>
+  </section>
+
+  <section id="variants" style="2column">
+    <title>Game Variants</title>
+  </section>
+
+  <section id="settings" style="2column">
+    <title>Settings and Options</title>
+  </section>
+
+</page>

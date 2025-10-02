@@ -43,45 +43,11 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
   }
 
   Adw.PreferencesPage {
-    title: _("Gameplay");
-    icon-name: "applications-games-symbolic";
-
-    Adw.PreferencesGroup {
-      title: _("Game Variant");
-      description: _("Select which draughts variant to play");
-
-      Adw.ComboRow game_variant_row {
-        title: _("Variant");
-        subtitle: _("16 international draughts variants available");
-        model: variant_model;
-      }
-    }
-
-    Adw.PreferencesGroup {
-      title: _("Artificial Intelligence");
-      description: _("Configure AI opponent difficulty");
-
-      Adw.ComboRow ai_difficulty_row {
-        title: _("AI Difficulty");
-        subtitle: _("From Beginner to Grandmaster");
-        model: ai_difficulty_model;
-      }
-    }
-
-    Adw.PreferencesGroup {
-      title: _("Audio");
-      description: _("Configure sound effects during gameplay");
-
-      Adw.SwitchRow sound_effects_row {
-        title: _("Sound Effects");
-        subtitle: _("Play audio feedback for moves, captures, and game events");
-      }
-    }
-  }
-
-  Adw.PreferencesPage {
     title: _("General");
     icon-name: "preferences-system-symbolic";
+
+    // Audio section removed from preferences - now controlled per-game in New Game dialog
+    // Code maintained for potential future global sound settings
 
     Adw.PreferencesGroup {
       title: _("Startup");
@@ -92,6 +58,9 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
         subtitle: _("Display welcome dialog on startup");
       }
     }
+
+    // Interaction mode removed from UI - defaults to "Click to Move"
+    // Drag and Drop code maintained but hidden due to sluggish performance
 
     Adw.PreferencesGroup {
       title: _("Game History");
@@ -115,27 +84,6 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
   }
 }
 
-StringList variant_model {
-  strings [
-    _("American Checkers (8×8)"),
-    _("International Draughts (10×10)"),
-    _("Russian Draughts (8×8)"),
-    _("Brazilian Draughts (8×8)"),
-    _("Italian Draughts (8×8)"),
-    _("Spanish Draughts (8×8)"),
-    _("Czech Draughts (8×8)"),
-    _("Thai Draughts (8×8)"),
-    _("German Draughts (8×8)"),
-    _("Swedish Draughts (8×8)"),
-    _("Pool Checkers (8×8)"),
-    _("Turkish Draughts (8×8)"),
-    _("Armenian Draughts (8×8)"),
-    _("Gothic Draughts (8×8)"),
-    _("Frisian Draughts (10×10)"),
-    _("Canadian Draughts (12×12)")
-  ]
-}
-
 StringList board_theme_model {
   strings [
     _("Classic Brown/Beige"),
@@ -155,18 +103,6 @@ StringList piece_style_model {
   ]
 }
 
-StringList ai_difficulty_model {
-  strings [
-    _("Beginner"),
-    _("Easy"),
-    _("Medium"),
-    _("Hard"),
-    _("Expert"),
-    _("Master"),
-    _("Grandmaster")
-  ]
-}
-
 StringList theme_model {
   strings [
     _("Follow System"),
@@ -174,3 +110,12 @@ StringList theme_model {
     _("Dark")
   ]
 }
+
+// Interaction style model removed from UI
+// Code kept for future use when drag-and-drop performance is improved
+// StringList interaction_style_model {
+//   strings [
+//     _("Click to Move"),
+//     _("Drag and Drop")
+//   ]
+// }

@@ -8,7 +8,7 @@ template $DraughtsWindow : Adw.ApplicationWindow {
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle window_title {
         title: _("Draughts");
-        subtitle: _("Checkers/Anglo-American Draughts");
+        subtitle: _("American Checkers");
       };
 
       [start]
@@ -19,10 +19,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
       }
 
       [start]
-      Gtk.Button redo_button {
-        icon-name: "io.github.tobagin.Draughts-redo-symbolic";
-        tooltip-text: _("Redo Move");
-        action-name: "win.redo-move";
+      Gtk.Button pause_button {
+        icon-name: "media-playback-pause-symbolic";
+        tooltip-text: _("Pause Game");
       }
 
       [end]
@@ -36,20 +35,129 @@ template $DraughtsWindow : Adw.ApplicationWindow {
     Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
-      child: Gtk.Box board_container {
-        orientation: vertical;
-        spacing: 12;
-        margin-top: 12;
-        margin-bottom: 12;
-        margin-start: 12;
-        margin-end: 12;
-        halign: fill;
-        valign: fill;
-        hexpand: true;
+      child: Gtk.Overlay game_overlay {
         vexpand: true;
+        hexpand: true;
 
+        [overlay]
+        Gtk.Box pause_overlay {
+          orientation: vertical;
+          halign: fill;
+          valign: fill;
+          hexpand: true;
+          vexpand: true;
+          visible: false;
+
+          styles ["pause-overlay"]
+
+          Gtk.Box {
+            orientation: vertical;
+            valign: center;
+            halign: center;
+            vexpand: true;
+            hexpand: true;
+            spacing: 16;
+
+            Gtk.Label paused_label {
+              label: _("Paused");
+              halign: center;
+              valign: center;
+              styles ["paused-text"]
+            }
+
+            Gtk.Label {
+              label: _("Press Play to resume");
+              halign: center;
+              styles ["pause-subtitle"]
+            }
+          }
+        }
+
+        Gtk.Box board_container {
+          orientation: vertical;
+          spacing: 12;
+          margin-top: 12;
+          margin-bottom: 12;
+          margin-start: 12;
+          margin-end: 12;
+          halign: fill;
+          valign: fill;
+          hexpand: true;
+          vexpand: true;
+
+        }
       };
     }
+
+    Adw.HeaderBar bottom_bar {
+      show-end-title-buttons: false;
+
+      [start]
+      Gtk.Box navigation_buttons {
+        orientation: horizontal;
+        spacing: 0;
+        halign: end;
+        hexpand: true;
+
+        styles ["linked"]
+
+        Gtk.Button first_move_button {
+          icon-name: "go-first-symbolic";
+          tooltip-text: _("First Move");
+          valign: fill;
+          halign: fill;
+        }
+
+        Gtk.Button prev_move_button {
+          icon-name: "go-previous-symbolic";
+          tooltip-text: _("Previous Move");
+          valign: fill;
+          halign: fill;
+        }
+
+        Gtk.Button next_move_button {
+          icon-name: "go-next-symbolic";
+          tooltip-text: _("Next Move");
+          valign: fill;
+          halign: fill;
+        }
+
+        Gtk.Button last_move_button {
+          icon-name: "go-last-symbolic";
+          tooltip-text: _("Last Move");
+          valign: fill;
+          halign: fill;
+        }
+      }
+
+      title-widget: Gtk.DropDown move_history_dropdown {
+        model: move_history_model;
+        enable-search: false;
+        tooltip-text: _("Navigate to move");
+        hexpand: true;
+      };
+
+      [end]
+      Gtk.Box timer_box {
+        orientation: horizontal;
+        spacing: 12;
+        halign: end;
+
+        Gtk.Label red_timer_display {
+          label: "5:00";
+          styles ["timer-display", "timer-red"]
+        }
+
+        Gtk.Label black_timer_display {
+          label: "5:00";
+          styles ["timer-display", "timer-black"]
+        }
+      }
+    }
+  }
+
+  Gtk.StringList move_history_model {
+    strings [_("Game Start")]
   }
 }
 

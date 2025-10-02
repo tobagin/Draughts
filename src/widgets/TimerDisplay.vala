@@ -15,9 +15,13 @@ public class Draughts.TimerDisplay : GLib.Object {
     private bool timer_enabled = false;
     private int64 game_start_time = 0;
     private uint timer_update_id = 0;
+    private bool red_timer_started = false;
+    private bool black_timer_started = false;
 
     // Signal for timer updates
     public signal void timer_updated(string subtitle_text);
+    public signal void dual_timer_updated(string red_time, string black_time);
+    public signal void time_expired(Player player);
 
     public TimerDisplay() {
         start_update_timer();
@@ -43,18 +47,14 @@ public class Draughts.TimerDisplay : GLib.Object {
     }
 
     /**
-     * Start the game timer
+     * Start the game timer (but don't actually start counting until first move)
      */
     public void start_game_timer() {
         game_start_time = get_monotonic_time();
+        red_timer_started = false;
+        black_timer_started = false;
 
-        if (red_timer != null) {
-            red_timer.start();
-        }
-        if (black_timer != null) {
-            black_timer.start();
-        }
-
+        // Don't start timers yet - wait for first move of each player
         update_display();
     }
 
@@ -90,18 +90,34 @@ public class Draughts.TimerDisplay : GLib.Object {
      * Switch active timer between players
      */
     public void switch_player() {
-        if (red_timer != null) {
-            red_timer.pause();
-        }
-        if (black_timer != null) {
-            black_timer.pause();
+        // Start the current player's timer on their first move
+        if (current_player == Player.RED && red_timer != null && !red_timer_started) {
+            red_timer.start();
+            red_timer_started = true;
+        } else if (current_player == Player.BLACK && black_timer != null && !black_timer_started) {
+            black_timer.start();
+            black_timer_started = true;
         }
 
+        // Pause current player's timer and add increment (Fischer mode)
+        if (red_timer != null && current_player == Player.RED) {
+            red_timer.pause();
+            // Add Fischer increment after completing the move
+            red_timer.add_increment();
+        }
+        if (black_timer != null && current_player == Player.BLACK) {
+            black_timer.pause();
+            // Add Fischer increment after completing the move
+            black_timer.add_increment();
+        }
+
+        // Switch to the other player
         current_player = (current_player == Player.RED) ? Player.BLACK : Player.RED;
 
-        if (current_player == Player.RED && red_timer != null) {
+        // Resume the new current player's timer (if they've started)
+        if (current_player == Player.RED && red_timer != null && red_timer_started) {
             red_timer.resume();
-        } else if (current_player == Player.BLACK && black_timer != null) {
+        } else if (current_player == Player.BLACK && black_timer != null && black_timer_started) {
             black_timer.resume();
         }
 
@@ -126,13 +142,35 @@ public class Draughts.TimerDisplay : GLib.Object {
      * Update the display (emit signal with subtitle text)
      */
     private void update_display() {
+        string subtitle = "";
+
         if (!timer_enabled) {
-            // No timer - show game variant or nothing
-            timer_updated("");
+            // No configured timers - show infinity symbol
+            if (game_start_time > 0) {
+                int64 elapsed = get_monotonic_time() - game_start_time;
+                subtitle = format_time(elapsed);
+            } else {
+                subtitle = "";
+            }
+            timer_updated(subtitle);
+            // Emit dual timer with infinity symbols (no time limit)
+            dual_timer_updated("∞", "∞");
             return;
         }
 
-        string subtitle = "";
+        // Get individual timer strings
+        string red_time = "--:--";
+        string black_time = "--:--";
+
+        if (red_timer != null) {
+            red_time = format_time(red_timer.get_current_time_remaining());
+        }
+        if (black_timer != null) {
+            black_time = format_time(black_timer.get_current_time_remaining());
+        }
+
+        // Emit dual timer signal
+        dual_timer_updated(red_time, black_time);
 
         if (red_timer != null && black_timer != null) {
             // Both timers - show current player's time
@@ -154,10 +192,44 @@ public class Draughts.TimerDisplay : GLib.Object {
      */
     private string format_time(TimeSpan time_span) {
         int total_seconds = (int)(time_span / TimeSpan.SECOND);
+
+        // Check if time has run out
+        if (total_seconds <= 0) {
+            check_time_expired();
+            return "0:00";
+        }
+
         int minutes = total_seconds / 60;
         int seconds = total_seconds % 60;
 
-        return @"$(minutes):$(seconds.to_string().printf("%02d"))";
+        return @"$(minutes):$(seconds < 10 ? "0" : "")$(seconds)";
+    }
+
+    /**
+     * Check if any timer has expired
+     */
+    private void check_time_expired() {
+        if (!timer_enabled) {
+            return;
+        }
+
+        // Check red timer
+        if (red_timer != null && red_timer_started) {
+            var red_time = red_timer.get_current_time_remaining();
+            if (red_time <= 0) {
+                time_expired(Player.RED);
+                return;
+            }
+        }
+
+        // Check black timer
+        if (black_timer != null && black_timer_started) {
+            var black_time = black_timer.get_current_time_remaining();
+            if (black_time <= 0) {
+                time_expired(Player.BLACK);
+                return;
+            }
+        }
     }
 
     /**
@@ -171,6 +243,9 @@ public class Draughts.TimerDisplay : GLib.Object {
             black_timer.reset();
         }
         current_player = Player.RED;
+        game_start_time = 0;
+        red_timer_started = false;
+        black_timer_started = false;
         update_display();
     }
 

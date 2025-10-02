@@ -126,6 +126,34 @@ public class Draughts.Game : Object {
 
         // Apply the move
         var previous_state = current_state.clone();
+
+        // IMPORTANT: For capture moves that land on promotion row, we need to check
+        // if there are additional captures BEFORE promoting the piece
+        if (move.is_capture() && move.promoted) {
+            // Get the piece before it's promoted
+            var moving_piece = previous_state.get_piece_by_id(move.piece_id);
+            if (moving_piece != null && moving_piece.piece_type == DraughtsPieceType.MAN) {
+                // Temporarily apply the move WITHOUT promotion to check for additional captures
+                var temp_move = move.clone();
+                temp_move.promoted = false;
+                var temp_state = current_state.apply_move(temp_move);
+
+                // Check if the piece (still a MAN) can capture more
+                var moved_piece_temp = temp_state.get_piece_at(move.to_position);
+                if (moved_piece_temp != null) {
+                    temp_state.switch_active_player(); // Switch back to check captures for correct player
+                    var additional_captures = get_capture_moves_for_piece(moved_piece_temp);
+                    if (additional_captures.length > 0) {
+                        // There are additional captures available, delay promotion
+                        move.promoted = false;
+                        var log = Logger.get_default();
+                        log.debug("Delaying promotion: piece at (%d,%d) has additional captures available",
+                              move.to_position.row, move.to_position.col);
+                    }
+                }
+            }
+        }
+
         var new_state = current_state.apply_move(move);
 
         // Detect if piece was promoted to king
@@ -140,9 +168,6 @@ public class Draughts.Game : Object {
 
         current_state = new_state;
         _state_history.add(current_state.clone());
-
-        // Play appropriate sound effect
-        sound_manager.play_move_sound(move, move.is_capture(), is_promotion);
 
         // Add move to history manager for undo/redo functionality
         move_history_manager.add_move(move, previous_state, current_state.clone());
@@ -162,15 +187,39 @@ public class Draughts.Game : Object {
                 if (additional_captures.length > 0) {
                     should_continue_capturing = true;
                     // Keep the active player as the capturing player (don't switch back)
-                    var logger = Logger.get_default();
-                    logger.debug("Sequential capture available: piece at (%d,%d) can continue capturing",
+                    var log = Logger.get_default();
+                    log.debug("Sequential capture available: piece at (%d,%d) can continue capturing",
                           move.to_position.row, move.to_position.col);
                 } else {
                     // No additional captures, switch back to the opponent's turn
                     current_state.switch_active_player();
+
+                    // Check if piece should be promoted now that the sequence has ended
+                    if (moved_piece.piece_type == DraughtsPieceType.MAN) {
+                        bool should_promote = false;
+                        if (moved_piece.color == PieceColor.RED && move.to_position.row == 0) {
+                            // RED promotes at row 0 (black's side)
+                            should_promote = true;
+                        } else if (moved_piece.color == PieceColor.BLACK && move.to_position.row == variant.board_size - 1) {
+                            // BLACK promotes at top row (red's side)
+                            should_promote = true;
+                        }
+
+                        if (should_promote) {
+                            var log = Logger.get_default();
+                            log.debug("Promoting piece at (%d,%d) after multi-capture sequence ended",
+                                  move.to_position.row, move.to_position.col);
+                            moved_piece.promote_to_king();
+                            // Update the is_promotion flag for sound effect
+                            is_promotion = true;
+                        }
+                    }
                 }
             }
         }
+
+        // Play appropriate sound effect (after potential delayed promotion)
+        sound_manager.play_move_sound(move, move.is_capture(), is_promotion);
 
         // Only switch players if not continuing a multi-capture sequence
         if (!should_continue_capturing) {
@@ -317,6 +366,35 @@ public class Draughts.Game : Object {
      */
     public bool can_redo() {
         return move_history_manager.can_redo() && !is_game_over();
+    }
+
+    /**
+     * View history at a specific position without modifying game state
+     * Position -1 = game start, position 0+ = after that move
+     */
+    public DraughtsGameState? view_history_at_position(int position) {
+        return move_history_manager.get_state_at_position(position);
+    }
+
+    /**
+     * Get the total number of moves in history
+     */
+    public int get_history_size() {
+        return move_history_manager.get_history_size();
+    }
+
+    /**
+     * Get current position in history
+     */
+    public int get_history_position() {
+        return move_history_manager.get_current_position();
+    }
+
+    /**
+     * Check if we're at the latest position (not viewing history)
+     */
+    public bool is_at_latest_position() {
+        return move_history_manager.is_at_latest_position();
     }
 
     /**

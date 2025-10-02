@@ -1,0 +1,120 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic" style="task"
+      id="playing">
+
+  <info>
+    <link type="guide" xref="index#playing"/>
+    <revision pkgversion="1.0" date="2025-01-20" status="final"/>
+
+    <credit type="author">
+      <name>Thiago Fernandes</name>
+    </credit>
+
+    <desc>Learn the basic rules and how to make moves.</desc>
+  </info>
+
+  <title>How to Play</title>
+
+  <section id="basic-rules">
+    <title>Basic Rules</title>
+    <p>
+      Draughts is played on a checkered board with pieces that can only move diagonally on dark squares.
+    </p>
+    <list>
+      <item><p><em>Red</em> (or White) always moves first</p></item>
+      <item><p>Regular pieces (men) can only move forward diagonally</p></item>
+      <item><p>Kings can move both forward and backward diagonally</p></item>
+      <item><p>Captures are made by jumping over an opponent's piece</p></item>
+      <item><p>In most variants, captures are mandatory if available</p></item>
+    </list>
+  </section>
+
+  <section id="making-moves">
+    <title>Making Moves</title>
+    <p>
+      To make a move:
+    </p>
+    <steps>
+      <item><p>Click on one of your pieces (pieces that can move will have a blue glow)</p></item>
+      <item><p>Translucent pieces will appear showing where you can move</p></item>
+      <item><p>Click on one of the translucent pieces to complete your move</p></item>
+    </steps>
+    <note style="tip">
+      <p>
+        When you hover over a moveable piece, it will glow gold. Possible moves show as translucent
+        pieces on the destination squares. If a move promotes your piece to a king, a translucent
+        king will be shown.
+      </p>
+    </note>
+  </section>
+
+  <section id="captures">
+    <title>Capturing Pieces</title>
+    <p>
+      Captures are made by jumping over an opponent's piece diagonally. In most variants:
+    </p>
+    <list>
+      <item><p>You must capture if a capture move is available</p></item>
+      <item><p>Multiple captures (chain captures) must be completed if possible</p></item>
+      <item><p>When multiple capture sequences are available, you may choose which one to take</p></item>
+    </list>
+  </section>
+
+  <section id="kings">
+    <title>Becoming a King</title>
+    <p>
+      When a regular piece reaches the opposite end of the board:
+    </p>
+    <list>
+      <item><p>It is promoted to a <em>king</em></p></item>
+      <item><p>Kings can move both forward and backward</p></item>
+      <item><p>In some variants (like International), kings can move multiple squares</p></item>
+      <item><p>Promotion happens immediately when reaching the last row</p></item>
+    </list>
+  </section>
+
+  <section id="keyboard">
+    <title>Keyboard Shortcuts</title>
+    <p>
+      Useful keyboard shortcuts:
+    </p>
+    <terms>
+      <item>
+        <title><keyseq><key>Ctrl</key><key>N</key></keyseq></title>
+        <p>Start a new game</p>
+      </item>
+      <item>
+        <title><keyseq><key>Ctrl</key><key>Z</key></keyseq></title>
+        <p>Undo last move</p>
+      </item>
+      <item>
+        <title><keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq></title>
+        <p>Redo move</p>
+      </item>
+      <item>
+        <title><keyseq><key>F1</key></keyseq></title>
+        <p>Open this help</p>
+      </item>
+      <item>
+        <title><keyseq><key>Ctrl</key><key>?</key></keyseq></title>
+        <p>Show keyboard shortcuts overlay</p>
+      </item>
+    </terms>
+  </section>
+
+  <section id="pause">
+    <title>Pausing the Game</title>
+    <p>
+      Click the <gui>Pause</gui> button in the headerbar to pause the game. While paused:
+    </p>
+    <list>
+      <item><p>All pieces are hidden</p></item>
+      <item><p>Timers are stopped</p></item>
+      <item><p>A "Paused" overlay is displayed</p></item>
+    </list>
+    <p>
+      Click the <gui>Resume</gui> button to continue playing.
+    </p>
+  </section>
+
+</page>

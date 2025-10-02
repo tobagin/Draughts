@@ -1,539 +1,239 @@
-# GNOME Application Template
+# Draughts
 
-A modern, comprehensive GNOME application template built with GTK4, LibAdwaita, and Vala. This template provides a solid foundation for creating native GNOME applications with best practices, modern UI patterns, and complete development infrastructure.
+A comprehensive draughts (checkers) game for GNOME, featuring 16 international variants, AI opponents, and a beautiful modern interface.
 
-## 🚀 Features
+![Main Window](data/screenshots/main-window.png)
 
-### Core Technologies
-- **GTK4** - Modern toolkit for native GNOME applications
-- **LibAdwaita** - Adaptive UI components and GNOME design patterns
-- **Vala** - Object-oriented programming language that compiles to C
-- **Blueprint** - Declarative UI markup language for GTK
-- **Meson** - Modern build system with development/production profiles
-- **Flatpak** - Universal application packaging and distribution
+## Features
 
-### Application Features
-- **Adaptive UI** - Responsive design that works on desktop and mobile
-- **Theme Management** - Light, dark, and system preference support
-- **Settings Persistence** - GSettings integration with schema validation
-- **Internationalization** - Full gettext support for translations
-- **Keyboard Shortcuts** - Complete shortcuts dialog with standard GNOME bindings
-- **About Dialog** - Rich about dialog with release notes and metadata
-- **Preferences Dialog** - Modern preferences UI with theme selection
-- **Window State Management** - Automatic window size and position persistence
-- **"What's New" Feature** - Automatic release notes display on updates (see below for details)
+### Game Variants
+- **16 International Variants**: American Checkers, International Draughts, Russian, Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, Armenian, Gothic, Frisian, and Canadian
+- **Different Board Sizes**: From 8x8 to 10x10 boards depending on variant
+- **Authentic Rules**: Each variant implements official rules including forced captures, flying kings, and variant-specific move patterns
 
-### Development Infrastructure
-- **Professional Logging** - Configurable logging system with multiple levels
-- **Error Handling** - Comprehensive error handling framework
-- **Build Profiles** - Separate development and production configurations
-- **Desktop Integration** - Complete metainfo, desktop files, and icon sets
-- **Flatpak Manifests** - Ready-to-use packaging for Flathub distribution
-- **Documentation** - Comprehensive specs, contracts, and guides
+### Gameplay Modes
+- **Human vs Human**: Play against a friend on the same computer
+- **Human vs AI**: Challenge the computer with 10 difficulty levels (Beginner to Grandmaster)
+- **AI vs AI**: Watch two AI opponents battle each other
+- **Game Replay**: Review and replay any saved game from history
 
-## ✨ What's New Feature
+### AI System
+- **10 Difficulty Levels**: From Beginner (random moves) to Grandmaster (deep strategic analysis)
+- **Intelligent Evaluation**: Position evaluation considers material, king advancement, center control, and mobility
+- **Minimax Algorithm**: Advanced search with alpha-beta pruning
+- **Adaptive Depth**: Higher difficulties search deeper into the game tree
 
-The template includes an intelligent "What's New" system that automatically displays release notes when users update to a new version.
+### Visual Features
+- **Smooth Animations**: Pieces slide smoothly across the board with easing effects
+- **Multiple Themes**: 5 board themes (Classic, Wood, Green, Blue, High Contrast)
+- **Piece Styles**: 4 piece designs (Plastic, Wood, Metal, Bottle Cap)
+- **Visual Feedback**: Highlighted valid moves, captures, and selected pieces
+- **Responsive Design**: Adaptive UI that works on different screen sizes
 
-**How It Works:**
-- **First-run detection**: Uses GSettings to identify fresh installations
-- **Continuous version tracking**: Always tracks the last executed version (regardless of user preference)
-- **Smart comparison**: Only triggers dialog on genuine version updates (not fresh installs)
-- **User preference respect**: Shows dialog only when feature is enabled
-- **No stale notifications**: Users won't see old release notes when re-enabling the feature
+### Game Features
+- **Complete Move History**: Track every move with algebraic notation
+- **Unlimited Undo/Redo**: Go back and forth through the game at any point
+- **Move Navigation**: Jump to any point in the game history
+- **Multi-Jump Support**: Handles complex sequential capture moves
+- **Flying Kings**: Supports long-distance king moves in variants like International Draughts
 
-**Version Detection Logic:**
-```vala
-// Always track version changes, conditionally show dialog
-string last_version = settings.get_string("last-version-ran");
-string current_version = Config.VERSION;
+### Timer System
+- **Multiple Timer Modes**:
+  - Countdown: Fixed time per player
+  - Fischer Increment: Add time after each move
+  - Bronstein Delay: Delay before time starts counting
+- **Visual Indicators**: Clear display of remaining time for both players
+- **Time Pressure Alerts**: Visual feedback when time is running low
 
-// Always update version tracking when version changes
-bool version_changed = (last_version != "" && last_version != current_version);
-if (version_changed) {
-    settings.set_string("last-version-ran", current_version);
-}
+### Audio & Accessibility
+- **Sound Effects**: Audio feedback for moves, captures, king promotions, and game events
+- **Volume Control**: Adjust or mute sound effects
+- **Keyboard Navigation**: Full keyboard support for all game actions
+- **Screen Reader Support**: Accessibility announcements for visually impaired users
+- **High Contrast Mode**: Enhanced visibility for better accessibility
 
-// Only show dialog if user wants it AND version actually changed
-if (version_changed && settings.get_show_whats_new()) {
-    show_whats_new_dialog();
-}
+### Game Management
+- **Game History**: Automatic saving of completed games
+- **Statistics Tracking**: Win/loss records and game statistics
+- **PDN Export**: Export games in Portable Draughts Notation format
+- **Game Replay**: Replay any saved game move by move
+
+## Screenshots
+
+| Main Window | New Game Dialog |
+|------------|-----------------|
+| ![Main Window](data/screenshots/main-window.png) | ![New Game](data/screenshots/new-game.png) |
+
+| Active Gameplay | Game Paused |
+|----------------|-------------|
+| ![Playing](data/screenshots/game-playing.png) | ![Paused](data/screenshots/game-paused.png) |
+
+| Game History | Preferences |
+|--------------|-------------|
+| ![History](data/screenshots/game-history.png) | ![Preferences](data/screenshots/preferences.png) |
+
+## Installation
+
+### Flatpak (Recommended)
+
+```bash
+# Install from Flathub (coming soon)
+flatpak install flathub io.github.tobagin.Draughts
+
+# Run the application
+flatpak run io.github.tobagin.Draughts
 ```
 
-**Release Notes Source:**
-- Release notes are pulled from the `<releases>` section in your `*.metainfo.xml.in` file
-- Supports rich formatting including bullet points, descriptions, and version information
-- Automatically parses AppStream release data for display
+### Building from Source
 
-**Example Metainfo Release Entry:**
-```xml
-<releases>
-  <release version="1.2.0" date="2024-01-15">
-    <description>
-      <p>New features and improvements:</p>
-      <ul>
-        <li>Added dark mode support</li>
-        <li>Improved performance and stability</li>
-        <li>New keyboard shortcuts</li>
-        <li>Better accessibility support</li>
-      </ul>
-    </description>
-  </release>
-</releases>
-```
+#### Requirements
+- Vala >= 0.56
+- GTK4 >= 4.20
+- LibAdwaita >= 1.8
+- Meson >= 1.0
+- Blueprint Compiler >= 0.18
+- Flatpak and Flatpak Builder
 
-**User Experience:**
-- **Fresh installs**: No dialog shown (proper first-run detection)
-- **Version updates**: Dialog appears automatically for returning users
-- **User control**: Can be disabled completely via preferences
-- **One-time display**: Dialog won't show again for the same version
-- **Native design**: Clean GNOME interface following platform guidelines
-
-**Configuration:**
-The "What's New" feature can be controlled through the application preferences:
-
-- **Location**: Preferences → Notifications → "Show release notes on updates"
-- **Default**: Enabled (users see release notes by default)
-- **When Disabled**: Version tracking continues silently (no stale notifications when re-enabled)
-- **Re-enabling**: Shows release notes only for future updates, not missed ones
-
-**How to Access:**
-1. Open the application menu (⋮ button)
-2. Select "Preferences"
-3. Navigate to the "Notifications" section
-4. Toggle "Show release notes on updates"
-
-**Technical Implementation:**
-```xml
-<!-- GSettings Schema -->
-<key name="last-version-ran" type="s">
-  <default>""</default>
-  <summary>Last application version that was run</summary>
-  <description>Tracks the last application version that was executed to detect version changes</description>
-</key>
-
-<key name="show-whats-new" type="b">
-  <default>true</default>
-  <summary>Show What's New dialog</summary>
-  <description>Display release notes when the application is updated to a new version</description>
-</key>
-```
-
-```vala
-// Complete implementation example
-var settings = SettingsManager.get_instance();
-string last_version = settings.get_string("last-version-ran");
-string current_version = Config.VERSION;
-
-// Always track version changes
-bool version_changed = (last_version != "" && last_version != current_version);
-if (version_changed) {
-    settings.set_string("last-version-ran", current_version);
-}
-
-// Show dialog only when appropriate
-if (version_changed &&                         // Genuine update
-    settings.get_show_whats_new() &&           // Feature enabled
-    !settings.is_first_run()) {                // Not fresh install
-    show_whats_new_dialog();
-}
-```
-
-## 📋 Requirements
-
-### Development Dependencies
-- **Vala** >= 0.56
-- **GTK4** >= 4.20
-- **LibAdwaita** >= 1.8
-- **Meson** >= 1.0
-- **Blueprint Compiler** >= 0.18
-- **Flatpak** (for packaging)
-- **Flatpak Builder** (for building packages)
-
-### Runtime Dependencies
-- **GNOME Platform** 49 (or compatible)
-- **GLib** >= 2.86
-- **GIO** >= 2.86
-
-## 🛠️ Building
-
-This template is designed specifically for Flatpak applications. All builds are containerized and self-contained.
-
-### Quick Start
+#### Build Steps
 
 ```bash
 # Clone the repository
-git clone https://github.com/tobagin/AppTemplate.git
-cd AppTemplate
+git clone https://github.com/tobagin/Dama.git
+cd Dama
 
-# Build development version (uses local source)
+# Build development version
 ./scripts/build.sh --dev
 
-# Build production version (uses git source)
-./scripts/build.sh
+# Run the application
+flatpak run io.github.tobagin.Draughts.Devel
 ```
 
-
-## 🏃 Running
-
-All execution happens through Flatpak for consistent, sandboxed environments.
-
-### From Flatpak
-```bash
-# Development version
-flatpak run io.github.tobagin.AppTemplate.Devel
-
-# Production version
-flatpak run io.github.tobagin.AppTemplate
-```
-
-## 📁 Project Structure
-
-```
-app_template/
-|-- data/                          # Application data and resources
-|   |-- icons/                     # Application icons (multiple sizes)
-|   |-- ui/                        # Blueprint UI templates
-|   |   |-- dialogs/               # Dialog templates
-|   |   `-- window.blp             # Main window template
-|   |-- *.desktop.in               # Desktop entry template
-|   |-- *.gschema.xml.in          # GSettings schema template
-|   |-- *.metainfo.xml.in         # AppStream metadata template
-|   `-- meson.build               # Data build configuration
-|-- packaging/                     # Flatpak manifests
-|   |-- *.Devel.yml               # Development manifest
-|   `-- *.yml                     # Production manifest
-|-- po/                           # Internationalization
-|   |-- LINGUAS                   # Supported languages
-|   |-- POTFILES.in              # Translatable files
-|   `-- meson.build              # Translation build config
-|-- scripts/                      # Build and utility scripts
-|   `-- build.sh                 # Universal build script
-|-- specs/                        # Project documentation
-|   `-- 001-this-will-project/   # Feature specifications
-|-- src/                          # Source code
-|   |-- dialogs/                  # Dialog implementations
-|   |-- managers/                 # Application managers
-|   |-- utils/                    # Utility classes
-|   |-- Application.vala          # Main application class
-|   |-- Window.vala              # Main window class
-|   |-- Main.vala                # Application entry point
-|   `-- meson.build              # Source build configuration
-|-- tests/                        # Test framework
-|-- meson.build                   # Root build configuration
-`-- meson_options.txt            # Build options
-```
-
-## ⚙️ Configuration
-
-### Build Profiles
-
-**Development Profile** (`-Dprofile=development`)
-- Debug symbols enabled
-- Additional development tools
-- Separate application ID with `.Devel` suffix
-- Local source builds for rapid iteration
-
-**Production Profile** (default)
-- Optimized builds
-- Release configuration
-- Standard application ID
-- Git source builds for distribution
-
-### Application ID
-
-The template uses a configurable application ID:
-- **Production**: `io.github.tobagin.AppTemplate`
-- **Development**: `io.github.tobagin.AppTemplate.Devel`
-
-Update the application ID in `meson.build` and data templates for your project.
-
-## 🎨 Customization
-
-### Adapting for Your Project
-
-1. **Update Project Configuration**
-   ```bash
-   # Edit meson.build - change from template values:
-   project_name = 'App Template'  # -> 'Your App Name'
-   project_id = 'io.github.tobagin.AppTemplate'  # -> 'io.github.youruser.YourApp'
-   ```
-
-2. **Rename and Edit Data Templates**
-   ```bash
-   # Rename all template files from:
-   data/io.github.tobagin.AppTemplate.desktop.in -> data/io.github.youruser.YourApp.desktop.in
-   data/io.github.tobagin.AppTemplate.metainfo.xml.in -> data/io.github.youruser.YourApp.metainfo.xml.in
-   data/io.github.tobagin.AppTemplate.gschema.xml.in -> data/io.github.youruser.YourApp.gschema.xml.in
-   data/io.github.tobagin.AppTemplate.gresources.xml.in -> data/io.github.youruser.YourApp.gresources.xml.in
-
-   # Update content inside these files with your app details
-   ```
-
-3. **Update Flatpak Manifests**
-   ```bash
-   # Rename manifest files from:
-   packaging/io.github.tobagin.AppTemplate.yml -> packaging/io.github.youruser.YourApp.yml
-   packaging/io.github.tobagin.AppTemplate.Devel.yml -> packaging/io.github.youruser.YourApp.Devel.yml
-
-   # Update application ID inside manifests
-   ```
-
-4. **Replace Icons**
-   ```bash
-   # Replace icons in data/icons/hicolor/
-   # Maintain the same sizes and naming convention
-   ```
-
-### Adding New Features
-
-1. **Create New Dialogs**
-   ```bash
-   # Add Blueprint template
-   data/ui/dialogs/your-dialog.blp
-
-   # Add Vala implementation
-   src/dialogs/YourDialog.vala
-
-   # Update build files
-   ```
-
-2. **Add New Settings**
-   ```xml
-   <!-- Edit data/*.gschema.xml.in -->
-   <key name="your-setting" type="s">
-     <default>'default-value'</default>
-     <summary>Your setting</summary>
-     <description>Description of your setting</description>
-   </key>
-   ```
-
-3. **Extend Preferences**
-   ```vala
-   // Edit src/dialogs/Preferences.vala
-   // Add new UI elements and settings bindings
-   ```
-
-## 🌍 Internationalization
-
-### Adding Translations
-
-1. **Extract Translatable Strings**
-   ```bash
-   meson compile -C build app-template-pot
-   ```
-
-2. **Create Language Files**
-   ```bash
-   # Add language to po/LINGUAS
-   echo "es" >> po/LINGUAS
-
-   # Create translation file
-   msginit -l es -o po/es.po -i po/app-template.pot
-   ```
-
-3. **Update Translations**
-   ```bash
-   msgmerge -U po/es.po po/app-template.pot
-   ```
-
-## 📦 Distribution
-
-### Flatpak Submission
-
-1. **Test Your Application**
-   ```bash
-   flatpak run --command=sh io.github.tobagin.AppTemplate.Devel
-   flatpak-builder --run build packaging/*.yml app-template
-   ```
-
-2. **Validate Metadata**
-   ```bash
-   appstream-util validate data/*.metainfo.xml
-   desktop-file-validate data/*.desktop
-   ```
-
-3. **Submit to Flathub**
-   - Fork the [Flathub repository](https://github.com/flathub/flathub)
-   - Add your manifest to the repository
-   - Create a pull request with your application
-
-### Automated Flathub Updates
-
-This repository includes a GitHub workflow that automatically creates Flathub pull requests when new releases are tagged. The workflow handles updating the Flatpak manifest with new version information and source URLs.
-
-**How It Works:**
-- Triggers automatically when you push a git tag (format: `v*.*.*`)
-- Downloads the latest Flatpak manifest from your Flathub repository
-- Updates version numbers and source URLs to match the new release
-- Creates a pull request to the Flathub repository with the changes
-- Validates the manifest before submission
-
-**Repository Setup Requirements:**
-
-1. **GitHub Secrets Configuration**
-   ```bash
-   # In your repository settings > Secrets and variables > Actions
-   # Add these secrets:
-   FLATHUB_TOKEN=<your-github-personal-access-token>
-   ```
-
-2. **Personal Access Token Setup**
-   - Generate a GitHub personal access token with `public_repo` scope
-   - The token must have write access to your Flathub repository fork
-   - Store it as `FLATHUB_TOKEN` in your repository secrets
-
-3. **Flathub Repository Configuration**
-   - Your application must already be published on Flathub
-   - The workflow expects a Flathub repository at `flathub/io.github.tobagin.AppTemplate`
-   - Your Flatpak manifest must reference GitHub releases as the source
-
-4. **Release Tagging Requirements**
-   - Use semantic versioning for tags (e.g., `v1.0.0`, `v1.2.3`)
-   - Create GitHub releases for each tag
-   - Ensure release assets include source archives that match your manifest
-
-**Usage:**
-```bash
-# Create and push a new release tag
-git tag v1.0.0
-git push origin v1.0.0
-
-# The workflow will automatically:
-# 1. Detect the new tag
-# 2. Update the Flathub manifest
-# 3. Create a PR to Flathub
-# 4. Notify you of the submission status
-```
-
-## 🧪 Testing
-
-### Running Tests
-```bash
-# Tests run within Flatpak environment
-flatpak-builder --run build packaging/io.github.tobagin.AppTemplate.Devel.yml meson test -C _flatpak_build
-```
-
-### Manual Testing
-```bash
-# Test development build
-./scripts/build.sh --dev
-flatpak run io.github.tobagin.AppTemplate.Devel
-
-# Test production build
-./scripts/build.sh
-flatpak run io.github.tobagin.AppTemplate
-```
-
-### Validation
-```bash
-# Validate desktop file
-desktop-file-validate data/*.desktop
-
-# Validate metainfo
-appstream-util validate data/*.metainfo.xml
-
-# Validate GSettings schema (within Flatpak)
-flatpak-builder --run build packaging/*.yml glib-compile-schemas --dry-run /app/share/glib-2.0/schemas/
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Build Failures**
-```bash
-# Clean Flatpak cache
-rm -rf .flatpak-builder build
-
-# Rebuild from scratch
-./scripts/build.sh --dev
-```
-
-**Flatpak Issues**
-```bash
-# Clean Flatpak cache
-flatpak uninstall io.github.tobagin.AppTemplate.Devel
-rm -rf .flatpak-builder
-
-# Rebuild from scratch
-./scripts/build.sh --dev
-```
-
-**Schema Compilation Errors**
-```bash
-# Validate schema syntax within Flatpak
-flatpak-builder --run build packaging/*.yml xmllint --noout /app/share/glib-2.0/schemas/*.xml
-
-# Check schema compilation
-flatpak-builder --run build packaging/*.yml glib-compile-schemas --dry-run /app/share/glib-2.0/schemas/
-```
-
-### Debug Information
-
-**Enable Debug Output**
-```bash
-G_MESSAGES_DEBUG=all flatpak run io.github.tobagin.AppTemplate.Devel
-```
-
-**Check Application Logs**
-```bash
-journalctl --user -f | grep app-template
-```
-
-## 🤝 Contributing
+## Usage
+
+### Starting a New Game
+
+1. Click the menu button (☰) in the header bar
+2. Select "New Game"
+3. Choose your game variant
+4. Configure players (Human vs AI, Human vs Human, or AI vs AI)
+5. Optionally enable time controls
+6. Click "Start Game"
+
+### Making Moves
+
+- **Click to Select**: Click a piece to select it (valid moves will be highlighted)
+- **Click to Move**: Click a highlighted square to move the selected piece
+- **Multi-Jump Captures**: The piece will remain selected after a capture if more jumps are available
+- **Forced Captures**: Capture moves are mandatory when available (enforced by the game)
+
+### Keyboard Shortcuts
+
+- `Ctrl+N` - New Game
+- `Ctrl+Z` - Undo Move
+- `Ctrl+Shift+Z` - Redo Move
+- `Ctrl+H` - Show Move History
+- `Ctrl+,` - Preferences
+- `Ctrl+Q` - Quit
+- `F1` - Help
+- `F11` - Fullscreen
+
+### Game History
+
+View and replay your past games:
+1. Open the menu and select "Game History"
+2. Browse your saved games
+3. Click "Replay" to watch a game move-by-move
+4. Export games to PDN format for analysis
+
+## Game Variants Guide
+
+### American Checkers (8x8)
+- Standard checkers rules
+- Men move diagonally forward, kings move diagonally in all directions
+- Captures are mandatory
+- Kings can only move one square at a time
+
+### International Draughts (10x10)
+- Played on 10x10 board
+- Flying kings (can move multiple squares)
+- Majority capture rule (must capture the maximum number of pieces)
+- Men can capture backwards
+
+### Russian Draughts (8x8)
+- Men can capture backwards
+- Kings can move multiple squares (flying kings)
+- Promoted piece can continue capturing in the same turn
+
+For detailed rules of each variant, see the in-game rules documentation (Menu → Variant Rules).
+
+## Technical Details
+
+### Built With
+- **GTK4** - Modern GNOME toolkit
+- **LibAdwaita** - Adaptive GNOME widgets
+- **Vala** - Object-oriented language compiling to C
+- **Blueprint** - Declarative UI markup
+- **Meson** - Build system
+- **Flatpak** - Application packaging
+
+### Architecture
+- **MVC Pattern**: Clean separation of game logic and UI
+- **Unified Rule Engine**: Single engine handles all 16 variants
+- **Async AI**: AI calculations run on background threads
+- **Smooth Animations**: GTK tick callbacks for fluid motion
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ### Development Setup
 
-1. **Fork and Clone**
-   ```bash
-   git clone <your-fork-url>
-   cd AppTemplate
-   ```
+```bash
+# Fork the repository
+git clone https://github.com/yourusername/Dama.git
+cd Dama
 
-2. **Create Feature Branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+# Create a feature branch
+git checkout -b feature/your-feature-name
 
-3. **Make Changes**
-   ```bash
-   # Edit code
-   # Test changes
-   ./scripts/build.sh --dev
-   ```
+# Make your changes and test
+./scripts/build.sh --dev
+flatpak run io.github.tobagin.Draughts.Devel
 
-4. **Submit Pull Request**
-   ```bash
-   git commit -am "Add your feature"
-   git push origin feature/your-feature-name
-   ```
+# Commit and push
+git commit -am "Add your feature"
+git push origin feature/your-feature-name
+
+# Create a Pull Request on GitHub
+```
 
 ### Code Style
-
-- Follow [GNOME coding style guidelines](https://wiki.gnome.org/Projects/Vala/StyleGuide)
+- Follow GNOME coding style guidelines
 - Use 4 spaces for indentation
-- Maximum line length of 100 characters
 - Write clear, descriptive commit messages
+- Add comments for complex logic
 
-## 📄 License
+## License
 
 This project is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Credits
 
-- **GNOME Project** - For the incredible platform and ecosystem
-- **LibAdwaita Contributors** - For the beautiful adaptive UI components
+### Developer
+- **Thiago Fernandes** ([@tobagin](https://github.com/tobagin))
+
+### Acknowledgments
+- **GNOME Project** - For the incredible platform
+- **LibAdwaita Contributors** - For beautiful adaptive components
 - **Vala Team** - For the elegant programming language
-- **Blueprint Contributors** - For the declarative UI markup language
-- **Flatpak Team** - For universal application packaging
+- **International Draughts Community** - For rules documentation and variants
 
-## 📞 Support
+## Support
 
-- **Documentation**: Check the `specs/` directory for detailed specifications
-- **Issues**: Report bugs and feature requests on the project's issue tracker
-- **Community**: Join the GNOME development community for general support
+- **Bug Reports**: [GitHub Issues](https://github.com/tobagin/Dama/issues)
+- **Documentation**: [Wiki](https://github.com/tobagin/Dama/wiki)
+- **Source Code**: [GitHub](https://github.com/tobagin/Dama)
 
 ---
 
-**Happy coding!** 🎉 This template provides everything you need to create modern, native GNOME applications with Flatpak packaging. Start building your next great application today!
+Enjoy playing Draughts! 🎯

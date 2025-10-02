@@ -80,6 +80,7 @@ configure_file(
 # Subdirectories
 subdir('data')
 subdir('src')
+subdir('help')
 subdir('tests')
 
 # Summary

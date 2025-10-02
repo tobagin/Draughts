@@ -1,48 +1,162 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $DraughtsNewGameDialog : Adw.AlertDialog {
-  heading: _("Start New Game");
-  body: _("Choose the game mode:");
+template $DraughtsNewGameDialog : Adw.Dialog {
+  content-width: 600;
+  content-height: 700;
 
-  extra-child: Gtk.Box {
-    orientation: vertical;
-    spacing: 12;
-    margin-top: 12;
-    margin-bottom: 12;
-    margin-start: 20;
-    margin-end: 20;
+  Adw.ToolbarView {
+    top-bar-style: raised;
+    
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
 
-    Gtk.ListBox {
-      selection-mode: none;
 
-      styles ["boxed-list"]
-
-      Adw.ActionRow human_vs_human_row {
-        title: _("Human vs Human");
-        subtitle: _("Play against another person");
-        activatable: true;
-
-        Gtk.Image {
-          icon-name: "system-users-symbolic";
-          margin-end: 12;
-        }
+      [start]
+      Gtk.Button cancel_button {
+        label: _("Cancel");
       }
 
-      Adw.ActionRow human_vs_ai_row {
-        title: _("Human vs AI");
-        subtitle: _("Play against the computer");
-        activatable: true;
+      [end]
+      Gtk.Button start_button {
+        label: _("Start");
 
-        Gtk.Image {
-          icon-name: "applications-games-symbolic";
-          margin-end: 12;
-        }
+        styles ["suggested-action"]
       }
+
+      title-widget: Adw.WindowTitle {
+        title: _("New Game");
+      };
     }
-  };
 
-  responses [
-    cancel: _("Cancel")
-  ]
+    content: Adw.Clamp {
+      maximum-size: 600;
+      tightening-threshold: 300;
+
+      Gtk.Box {
+        orientation: vertical;
+        spacing: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        margin-start: 12;
+        margin-end: 12;
+
+        // Game Configuration Section
+        Adw.PreferencesGroup {
+          title: _("Game Configuration");
+
+          Adw.ComboRow variant_row {
+            title: _("Variant");
+            subtitle: _("Choose which draughts rules to play with");
+            model: Gtk.StringList {
+              strings [
+                _("American Checkers"),
+                _("International Draughts"),
+                _("Russian Draughts"),
+                _("Brazilian Draughts"),
+                _("Italian Draughts"),
+                _("Spanish Draughts"),
+                _("Czech Draughts"),
+                _("Thai Draughts"),
+                _("German Draughts"),
+                _("Swedish Draughts"),
+                _("Pool Checkers"),
+                _("Turkish Draughts"),
+                _("Armenian Draughts"),
+                _("Gothic Draughts"),
+                _("Frisian Draughts"),
+                _("Canadian Draughts")
+              ]
+            };
+          }
+
+          Adw.ComboRow opposing_player_row {
+            title: _("Opposing Player");
+            model: Gtk.StringList {
+              strings [_("Human"), _("AI")]
+            };
+          }
+
+          Adw.ComboRow play_as_row {
+            title: _("Play as");
+            sensitive: false;
+            model: Gtk.StringList {
+              strings [_("Red"), _("Black")]
+            };
+          }
+
+          Adw.ComboRow difficulty_row {
+            title: _("Difficulty");
+            sensitive: false;
+            model: Gtk.StringList {
+              strings [_("Beginner"), _("Intermediate"), _("Advanced"), _("Expert"), _("Grandmaster")]
+            };
+          }
+        }
+
+        // Time Limit Section
+        Adw.PreferencesGroup time_limit_group {
+          title: _("Time Limit");
+
+          Adw.ActionRow time_limit_toggle_row {
+            title: _("Use Time Limit");
+            activatable-widget: time_limit_switch;
+
+            Gtk.Switch time_limit_switch {
+              valign: center;
+              active: false;
+            }
+          }
+
+          Adw.SpinRow minutes_per_side_row {
+            title: _("Minutes Per Side");
+            sensitive: false;
+            adjustment: Gtk.Adjustment {
+              lower: 1;
+              upper: 180;
+              step-increment: 1;
+              value: 5;
+            };
+          }
+
+          Adw.SpinRow increment_row {
+            title: _("Increment (seconds)");
+            sensitive: false;
+            adjustment: Gtk.Adjustment {
+              lower: 0;
+              upper: 60;
+              step-increment: 1;
+              value: 0;
+            };
+          }
+
+          Adw.ComboRow clock_type_row {
+            title: _("Clock Type");
+            sensitive: false;
+            model: Gtk.StringList {
+              strings [_("Fischer"), _("Bronstein")]
+            };
+          }
+        }
+
+        // Audio Section
+        Adw.PreferencesGroup audio_group {
+          title: _("Audio");
+
+          Adw.ActionRow sound_effects_toggle_row {
+            title: _("Sound Effects");
+            subtitle: _("Play audio feedback during gameplay");
+            activatable-widget: sound_effects_switch;
+
+            Gtk.Switch sound_effects_switch {
+              valign: center;
+              active: true;
+            }
+          }
+        }
+      }
+    };
+  }
 }

@@ -1,0 +1,73 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic" style="task"
+      id="introduction">
+
+  <info>
+    <link type="guide" xref="index#getting-started"/>
+    <revision pkgversion="1.0" date="2025-01-20" status="final"/>
+
+    <credit type="author">
+      <name>Thiago Fernandes</name>
+    </credit>
+
+    <desc>Introduction to Draughts and how to start playing.</desc>
+  </info>
+
+  <title>Introduction</title>
+
+  <p>
+    Draughts (also called Checkers) is a two-player strategy board game played on a checkered board.
+    The objective is to capture all of your opponent's pieces or block them so they cannot move.
+  </p>
+
+  <section id="objective">
+    <title>Game Objective</title>
+    <p>
+      The goal is to win by either:
+    </p>
+    <list>
+      <item><p>Capturing all of your opponent's pieces</p></item>
+      <item><p>Blocking all of your opponent's pieces so they have no legal moves</p></item>
+      <item><p>Making your opponent run out of time (in timed games)</p></item>
+    </list>
+  </section>
+
+  <section id="starting">
+    <title>Starting a New Game</title>
+    <steps>
+      <item><p>Press <keyseq><key>Ctrl</key><key>N</key></keyseq> or click the <gui>New Game</gui> button</p></item>
+      <item><p>Select your preferred <gui>Variant</gui> (International Draughts is recommended for beginners)</p></item>
+      <item><p>Choose to play against a <gui>Human</gui> or <gui>AI</gui> opponent</p></item>
+      <item><p>If playing against AI, select your color and difficulty level</p></item>
+      <item><p>Optionally enable time limits and configure time controls</p></item>
+      <item><p>Click <gui>Start</gui> to begin the game</p></item>
+    </steps>
+  </section>
+
+  <section id="interface">
+    <title>Understanding the Interface</title>
+    <terms>
+      <item>
+        <title>Game Board</title>
+        <p>The main playing area where pieces are displayed and moves are made.</p>
+      </item>
+      <item>
+        <title>Move History Dropdown</title>
+        <p>Shows all moves made in the game. Click to jump to any previous position.</p>
+      </item>
+      <item>
+        <title>Navigation Buttons</title>
+        <p>Use the arrow buttons to move forward and backward through the game history.</p>
+      </item>
+      <item>
+        <title>Timer Displays</title>
+        <p>Shows remaining time for each player (when time limits are enabled).</p>
+      </item>
+      <item>
+        <title>Undo/Redo Buttons</title>
+        <p>Take back or replay moves during the game.</p>
+      </item>
+    </terms>
+  </section>
+
+</page>

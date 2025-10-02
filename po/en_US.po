@@ -1,0 +1,2048 @@
+# American English translations for Draughts package.
+# Copyright (C) 2025 THE Draughts'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Draughts package.
+# Translated by Claude Code, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Draughts 1.0.0\n"
+"Report-Msgid-Bugs-To: tobagin@example.com\n"
+"POT-Creation-Date: 2025-10-01 22:45+0100\n"
+"PO-Revision-Date: 2025-10-01 20:00+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: American English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/io.github.tobagin.Draughts.desktop.in:2
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:6
+msgid "@NAME@"
+msgstr "Checkers"
+
+#: data/io.github.tobagin.Draughts.desktop.in:3
+msgid "A classic draughts game built with GTK4/LibAdwaita"
+msgstr "A classic draughts game built with GTK4/LibAdwaita"
+
+#: data/io.github.tobagin.Draughts.desktop.in:9
+msgid "draughts;draughts;board;game;strategy;"
+msgstr "draughts;draughts;board;game;strategy;"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:7
+msgid ""
+"Play draughts (checkers) with 16 international variants and AI opponents"
+msgstr ""
+"Play draughts (checkers) with 16 international variants and AI opponents"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:9
+msgid ""
+"Draughts is a comprehensive checkers/draughts game featuring 16 "
+"international game variants, multiple AI difficulty levels, and a beautiful "
+"modern interface built with GTK4 and LibAdwaita. Whether you're a casual "
+"player or a serious competitor, Draughts offers engaging gameplay for "
+"players of all skill levels."
+msgstr ""
+"Draughts is a comprehensive checkers/draughts game featuring 16 "
+"international game variants, multiple AI difficulty levels, and a beautiful "
+"modern interface built with GTK4 and LibAdwaita. Whether you're a casual "
+"player or a serious competitor, Draughts offers engaging gameplay for "
+"players of all skill levels."
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:15
+msgid "Game Features:"
+msgstr "Game Features:"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:17
+msgid ""
+"16 international draughts variants including American Checkers, "
+"International Draughts, Russian, Brazilian, and more"
+msgstr ""
+"16 international draughts variants including American Checkers, "
+"International Draughts, Russian, Brazilian, and more"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:18
+msgid "10 AI difficulty levels from Beginner to Grandmaster"
+msgstr "10 AI difficulty levels from Beginner to Grandmaster"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:19
+msgid "Human vs Human, Human vs AI, and AI vs AI gameplay modes"
+msgstr "Human vs Human, Human vs AI, and AI vs AI gameplay modes"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:20
+msgid "Complete move history with undo/redo support"
+msgstr "Complete move history with undo/redo support"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:21
+msgid "PDN (Portable Draughts Notation) export for game analysis"
+msgstr "PDN (Portable Draughts Notation) export for game analysis"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:22
+msgid ""
+"Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)"
+msgstr ""
+"Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:23
+msgid "Timer modes: countdown, Fischer increment, and Bronstein delay"
+msgstr "Timer modes: countdown, Fischer increment, and Bronstein delay"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:25
+msgid "Accessibility and Polish:"
+msgstr "Accessibility and Polish:"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:27
+msgid "Sound effects for moves, captures, and game events"
+msgstr "Sound effects for moves, captures, and game events"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:28
+msgid "Keyboard navigation and screen reader support"
+msgstr "Keyboard navigation and screen reader support"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:29
+msgid "High contrast mode for better visibility"
+msgstr "High contrast mode for better visibility"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:30
+msgid "Smooth animations and visual feedback"
+msgstr "Smooth animations and visual feedback"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:31
+msgid "Game history browser with replay functionality"
+msgstr "Game history browser with replay functionality"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:32
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:118
+msgid "Comprehensive rules documentation for each variant"
+msgstr "Comprehensive rules documentation for each variant"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:45
+msgid "Thiago Fernandes"
+msgstr "Thiago Fernandes"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:61
+msgid "checkers"
+msgstr "checkers"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:62
+msgid "draughts"
+msgstr "draughts"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:63
+msgid "board game"
+msgstr "board game"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:64
+msgid "strategy"
+msgstr "strategy"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:65
+msgid "dama"
+msgstr "dama"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:66
+#: data/ui/dialogs/new-game.blp:78
+msgid "AI"
+msgstr "AI"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:67
+msgid "puzzle"
+msgstr "puzzle"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:68
+msgid "international"
+msgstr "international"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:69
+msgid "american"
+msgstr "american"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:70
+msgid "russian"
+msgstr "russian"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:71
+msgid "brazilian"
+msgstr "brazilian"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:106
+msgid ""
+"First stable release of Draughts - A comprehensive draughts/checkers game"
+msgstr ""
+"First stable release of Draughts - A comprehensive draughts/checkers game"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:108
+msgid ""
+"16 international game variants: American Checkers, International, Russian, "
+"Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, "
+"Armenian, Gothic, Frisian, and Canadian"
+msgstr ""
+"16 international game variants: American Checkers, International, Russian, "
+"Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, "
+"Armenian, Gothic, Frisian, and Canadian"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:109
+msgid ""
+"10 AI difficulty levels from Beginner to Grandmaster with intelligent move "
+"evaluation"
+msgstr ""
+"10 AI difficulty levels from Beginner to Grandmaster with intelligent move "
+"evaluation"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:110
+msgid "Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI"
+msgstr "Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:111
+msgid ""
+"Complete sound effects system with audio feedback for moves, captures, and "
+"game events"
+msgstr ""
+"Complete sound effects system with audio feedback for moves, captures, and "
+"game events"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:112
+msgid "PDN (Portable Draughts Notation) export for game analysis and sharing"
+msgstr "PDN (Portable Draughts Notation) export for game analysis and sharing"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:113
+msgid "Four piece styles: Plastic, Wood, Metal, and Bottle Cap"
+msgstr "Four piece styles: Plastic, Wood, Metal, and Bottle Cap"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:114
+msgid "Five board themes: Classic, Wood, Green, Blue, and High Contrast"
+msgstr "Five board themes: Classic, Wood, Green, Blue, and High Contrast"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:115
+msgid "Full move history with unlimited undo/redo support"
+msgstr "Full move history with unlimited undo/redo support"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:116
+msgid "Smooth animations and visual feedback for all game actions"
+msgstr "Smooth animations and visual feedback for all game actions"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:117
+msgid "Keyboard navigation and screen reader accessibility support"
+msgstr "Keyboard navigation and screen reader accessibility support"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:119
+msgid "Modern GTK4/LibAdwaita interface with adaptive design"
+msgstr "Modern GTK4/LibAdwaita interface with adaptive design"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:120
+msgid "Dark mode support following system theme"
+msgstr "Dark mode support following system theme"
+
+#: data/ui/window.blp:10
+msgid "Draughts"
+msgstr "Draughts"
+
+#: data/ui/window.blp:11
+msgid "Checkers/Anglo-American Draughts"
+msgstr "Checkers/Anglo-American Draughts"
+
+#: data/ui/window.blp:17 data/ui/dialogs/help.blp:236
+msgid "Undo Move"
+msgstr "Undo Move"
+
+#: data/ui/window.blp:24 data/ui/dialogs/help.blp:246
+msgid "Redo Move"
+msgstr "Redo Move"
+
+msgid "Pause Game"
+msgstr "Pause Game"
+
+#: data/ui/window.blp:37
+msgid "Main Menu"
+msgstr "Main Menu"
+
+msgid "Paused"
+msgstr "Paused"
+
+#: data/ui/window.blp:76
+msgid "Press Play to resume"
+msgstr "Press Play to resume"
+
+msgid "First Move"
+msgstr "First Move"
+
+#: data/ui/window.blp:120 data/ui/dialogs/game-replay.blp:80
+msgid "Previous Move"
+msgstr "Previous Move"
+
+#: data/ui/window.blp:127 data/ui/dialogs/game-replay.blp:91
+msgid "Next Move"
+msgstr "Next Move"
+
+msgid "Last Move"
+msgstr "Last Move"
+
+msgid "Navigate to move"
+msgstr "Navigate to move"
+
+msgid "Game Start"
+msgstr "Game Start"
+
+#: data/ui/window.blp:174
+msgid "_New Game"
+msgstr "_New Game"
+
+#: data/ui/window.blp:180
+msgid "_Reset Game"
+msgstr "_Reset Game"
+
+#: data/ui/window.blp:187
+msgid "Game _History"
+msgstr "Game _History"
+
+#: data/ui/window.blp:196
+msgid "_Preferences"
+msgstr "_Preferences"
+
+#: data/ui/window.blp:204
+msgid "_Help"
+msgstr "_Help"
+
+#: data/ui/window.blp:210
+msgid "_Keyboard Shortcuts"
+msgstr "_Keyboard Shortcuts"
+
+#: data/ui/window.blp:216
+msgid "_About Draughts"
+msgstr "_About Draughts"
+
+#: data/ui/window.blp:223
+msgid "_Quit"
+msgstr "_Quit"
+
+#: data/ui/dialogs/game-end.blp:5
+msgid "Game Complete!"
+msgstr "Game Complete!"
+
+#: data/ui/dialogs/game-end.blp:49 data/ui/dialogs/game-replay.blp:222
+msgid "Game Statistics"
+msgstr "Game Statistics"
+
+#: data/ui/dialogs/game-end.blp:52
+msgid "Total Moves"
+msgstr "Total Moves"
+
+#: data/ui/dialogs/game-end.blp:53
+msgid "Number of moves played in the game"
+msgstr "Number of moves played in the game"
+
+#: data/ui/dialogs/game-end.blp:63 data/ui/dialogs/game-replay.blp:195
+msgid "Game Duration"
+msgstr "Game Duration"
+
+#: data/ui/dialogs/game-end.blp:64
+msgid "Total time played"
+msgstr "Total time played"
+
+#: data/ui/dialogs/game-end.blp:76
+msgid "Red Player Statistics"
+msgstr "Red Player Statistics"
+
+#: data/ui/dialogs/game-end.blp:79 data/ui/dialogs/game-end.blp:127
+msgid "Pieces Captured"
+msgstr "Pieces Captured"
+
+#: data/ui/dialogs/game-end.blp:80 data/ui/dialogs/game-end.blp:128
+msgid "Enemy pieces captured"
+msgstr "Enemy pieces captured"
+
+#: data/ui/dialogs/game-end.blp:90 data/ui/dialogs/game-end.blp:138
+msgid "Pieces Promoted"
+msgstr "Pieces Promoted"
+
+#: data/ui/dialogs/game-end.blp:91 data/ui/dialogs/game-end.blp:139
+msgid "Men promoted to kings"
+msgstr "Men promoted to kings"
+
+#: data/ui/dialogs/game-end.blp:101 data/ui/dialogs/game-end.blp:149
+msgid "Moves Made"
+msgstr "Moves Made"
+
+#: data/ui/dialogs/game-end.blp:102 data/ui/dialogs/game-end.blp:150
+msgid "Total moves by this player"
+msgstr "Total moves by this player"
+
+#: data/ui/dialogs/game-end.blp:112 data/ui/dialogs/game-end.blp:160
+msgid "Pieces Remaining"
+msgstr "Pieces Remaining"
+
+#: data/ui/dialogs/game-end.blp:113 data/ui/dialogs/game-end.blp:161
+msgid "Pieces left on the board"
+msgstr "Pieces left on the board"
+
+#: data/ui/dialogs/game-end.blp:124
+msgid "Black Player Statistics"
+msgstr "Black Player Statistics"
+
+#: data/ui/dialogs/game-end.blp:174 data/ui/dialogs/help.blp:226
+#: data/ui/dialogs/new-game.blp:30
+msgid "New Game"
+msgstr "New Game"
+
+#: data/ui/dialogs/game-end.blp:175 src/dialogs/GameHistoryDialog.vala:443
+msgid "Close"
+msgstr "Close"
+
+#: data/ui/dialogs/game-history.blp:5 data/ui/dialogs/game-history.blp:13
+#: data/ui/dialogs/preferences.blp:81
+msgid "Game History"
+msgstr "Game History"
+
+#: data/ui/dialogs/game-history.blp:20 src/dialogs/GameHistoryDialog.vala:375
+msgid "Clear History"
+msgstr "Clear History"
+
+#: data/ui/dialogs/game-history.blp:33
+msgid "Filter Games"
+msgstr "Filter Games"
+
+#: data/ui/dialogs/game-history.blp:40
+msgid "Filter by variant"
+msgstr "Filter by variant"
+
+#: data/ui/dialogs/game-history.blp:45
+msgid "Filter by result"
+msgstr "Filter by result"
+
+#: data/ui/dialogs/game-history.blp:50
+msgid "Filter by player type"
+msgstr "Filter by player type"
+
+#: data/ui/dialogs/game-history.blp:87
+msgid "No Games Found"
+msgstr "No Games Found"
+
+#: data/ui/dialogs/game-history.blp:88
+msgid "Play some games to see them in your history"
+msgstr "Play some games to see them in your history"
+
+#: data/ui/dialogs/game-history.blp:103
+msgid "Watch Replay"
+msgstr "Watch Replay"
+
+#: data/ui/dialogs/game-history.blp:114
+msgid "View Details"
+msgstr "View Details"
+
+#: data/ui/dialogs/game-history.blp:119 data/ui/widgets/move-history.blp:71
+msgid "Export PGN"
+msgstr "Export PGN"
+
+#: data/ui/dialogs/game-history.blp:125 src/dialogs/GameHistoryDialog.vala:477
+msgid "Delete"
+msgstr "Delete"
+
+#: data/ui/dialogs/game-preferences.blp:5
+msgid "Game Preferences"
+msgstr "Game Preferences"
+
+#: data/ui/dialogs/game-preferences.blp:10 data/ui/dialogs/preferences.blp:46
+msgid "General"
+msgstr "General"
+
+#: data/ui/dialogs/game-preferences.blp:14
+msgid "Game Settings"
+msgstr "Game Settings"
+
+#: data/ui/dialogs/game-preferences.blp:17
+msgid "Default Variant"
+msgstr "Default Variant"
+
+#: data/ui/dialogs/game-preferences.blp:18
+msgid "Choose the default draughts variant"
+msgstr "Choose the default draughts variant"
+
+#: data/ui/dialogs/game-preferences.blp:22
+msgid "Show Legal Moves"
+msgstr "Show Legal Moves"
+
+#: data/ui/dialogs/game-preferences.blp:23
+msgid "Highlight possible moves for selected pieces"
+msgstr "Highlight possible moves for selected pieces"
+
+#: data/ui/dialogs/game-preferences.blp:27
+msgid "Animate Moves"
+msgstr "Animate Moves"
+
+#: data/ui/dialogs/game-preferences.blp:28
+msgid "Animate piece movements"
+msgstr "Animate piece movements"
+
+#: data/ui/dialogs/game-preferences.blp:32 data/ui/dialogs/new-game.blp:149
+#: data/ui/dialogs/preferences.blp:54
+msgid "Sound Effects"
+msgstr "Sound Effects"
+
+#: data/ui/dialogs/game-preferences.blp:33
+msgid "Play sounds for moves and captures"
+msgstr "Play sounds for moves and captures"
+
+#: data/ui/dialogs/game-preferences.blp:37
+msgid "Interaction Mode"
+msgstr "Interaction Mode"
+
+#: data/ui/dialogs/game-preferences.blp:38
+msgid "Choose how to select and move pieces"
+msgstr "Choose how to select and move pieces"
+
+#: data/ui/dialogs/game-preferences.blp:43
+msgid "AI Settings"
+msgstr "AI Settings"
+
+#: data/ui/dialogs/game-preferences.blp:46
+msgid "AI Difficulty"
+msgstr "AI Difficulty"
+
+#: data/ui/dialogs/game-preferences.blp:47
+msgid "Set the computer opponent difficulty"
+msgstr "Set the computer opponent difficulty"
+
+#: data/ui/dialogs/game-preferences.blp:51
+msgid "AI Thinking Time"
+msgstr "AI Thinking Time"
+
+#: data/ui/dialogs/game-preferences.blp:52
+msgid "Maximum time for AI to think (seconds)"
+msgstr "Maximum time for AI to think (seconds)"
+
+#: data/ui/dialogs/game-preferences.blp:63
+msgid "Show AI Thinking"
+msgstr "Show AI Thinking"
+
+#: data/ui/dialogs/game-preferences.blp:64
+msgid "Display AI analysis during its turn"
+msgstr "Display AI analysis during its turn"
+
+#: data/ui/dialogs/game-preferences.blp:68
+msgid "AI Progress Indicator"
+msgstr "AI Progress Indicator"
+
+#: data/ui/dialogs/game-preferences.blp:69
+msgid "Show progress while AI is thinking"
+msgstr "Show progress while AI is thinking"
+
+#: data/ui/dialogs/game-preferences.blp:75
+msgid "Timers"
+msgstr "Timers"
+
+#: data/ui/dialogs/game-preferences.blp:79
+msgid "Timer Settings"
+msgstr "Timer Settings"
+
+#: data/ui/dialogs/game-preferences.blp:82
+msgid "Default Timer Mode"
+msgstr "Default Timer Mode"
+
+#: data/ui/dialogs/game-preferences.blp:83
+msgid "Choose the default timing method"
+msgstr "Choose the default timing method"
+
+#: data/ui/dialogs/game-preferences.blp:87
+msgid "Countdown Time"
+msgstr "Countdown Time"
+
+#: data/ui/dialogs/game-preferences.blp:88
+msgid "Minutes per player for countdown timer"
+msgstr "Minutes per player for countdown timer"
+
+#: data/ui/dialogs/game-preferences.blp:99
+msgid "Fischer Increment"
+msgstr "Fischer Increment"
+
+#: data/ui/dialogs/game-preferences.blp:100
+msgid "Seconds added per move in Fischer mode"
+msgstr "Seconds added per move in Fischer mode"
+
+#: data/ui/dialogs/game-preferences.blp:111
+msgid "Timer Warnings"
+msgstr "Timer Warnings"
+
+#: data/ui/dialogs/game-preferences.blp:112
+msgid "Show warnings when time is running low"
+msgstr "Show warnings when time is running low"
+
+#: data/ui/dialogs/game-preferences.blp:116
+msgid "Delay Time"
+msgstr "Delay Time"
+
+#: data/ui/dialogs/game-preferences.blp:117
+msgid "Seconds of delay before clock starts"
+msgstr "Seconds of delay before clock starts"
+
+#: data/ui/dialogs/game-preferences.blp:128
+msgid "Timer Sounds"
+msgstr "Timer Sounds"
+
+#: data/ui/dialogs/game-preferences.blp:129
+msgid "Play sounds for timer events"
+msgstr "Play sounds for timer events"
+
+#: data/ui/dialogs/game-preferences.blp:135
+msgid "Display"
+msgstr "Display"
+
+#: data/ui/dialogs/game-preferences.blp:139 data/ui/dialogs/preferences.blp:8
+msgid "Appearance"
+msgstr "Appearance"
+
+#: data/ui/dialogs/game-preferences.blp:142 data/ui/dialogs/preferences.blp:34
+msgid "Piece Style"
+msgstr "Piece Style"
+
+#: data/ui/dialogs/game-preferences.blp:143
+msgid "Choose the visual style for game pieces"
+msgstr "Choose the visual style for game pieces"
+
+#: data/ui/dialogs/game-preferences.blp:147
+msgid "Show Coordinates"
+msgstr "Show Coordinates"
+
+#: data/ui/dialogs/game-preferences.blp:148
+msgid "Display board coordinates (A1, B2, etc.)"
+msgstr "Display board coordinates (A1, B2, etc.)"
+
+#: data/ui/dialogs/game-preferences.blp:152
+msgid "Highlight Last Move"
+msgstr "Highlight Last Move"
+
+#: data/ui/dialogs/game-preferences.blp:153
+msgid "Highlight the most recent move"
+msgstr "Highlight the most recent move"
+
+#: data/ui/dialogs/game-preferences.blp:157
+msgid "Show Move History"
+msgstr "Show Move History"
+
+#: data/ui/dialogs/game-preferences.blp:158
+msgid "Display the move history panel"
+msgstr "Display the move history panel"
+
+#: data/ui/dialogs/game-preferences.blp:162 data/ui/dialogs/preferences.blp:23
+msgid "Board Theme"
+msgstr "Board Theme"
+
+#: data/ui/dialogs/game-preferences.blp:163
+msgid "Choose the visual style for the game board"
+msgstr "Choose the visual style for the game board"
+
+#: data/ui/dialogs/game-preferences.blp:168
+msgid "Accessibility"
+msgstr "Accessibility"
+
+#: data/ui/dialogs/game-preferences.blp:171 data/ui/dialogs/preferences.blp:108
+msgid "High Contrast"
+msgstr "High Contrast"
+
+#: data/ui/dialogs/game-preferences.blp:172
+msgid "Use high contrast colors"
+msgstr "Use high contrast colors"
+
+#: data/ui/dialogs/game-preferences.blp:176
+msgid "Large Pieces"
+msgstr "Large Pieces"
+
+#: data/ui/dialogs/game-preferences.blp:177
+msgid "Use larger piece graphics"
+msgstr "Use larger piece graphics"
+
+#: data/ui/dialogs/game-preferences.blp:181
+msgid "Keyboard Navigation"
+msgstr "Keyboard Navigation"
+
+#: data/ui/dialogs/game-preferences.blp:182
+msgid "Enable keyboard control of the board"
+msgstr "Enable keyboard control of the board"
+
+#: data/ui/dialogs/game-preferences.blp:186
+msgid "Move Announcements"
+msgstr "Move Announcements"
+
+#: data/ui/dialogs/game-preferences.blp:187
+msgid "Level of move descriptions for screen readers"
+msgstr "Level of move descriptions for screen readers"
+
+#: data/ui/dialogs/game-preferences.blp:191
+msgid "Screen Reader Support"
+msgstr "Screen Reader Support"
+
+#: data/ui/dialogs/game-preferences.blp:192
+msgid "Enhanced support for screen reader software"
+msgstr "Enhanced support for screen reader software"
+
+#. Set default values for display
+#: data/ui/dialogs/game-replay.blp:5 src/dialogs/GameReplayDialog.vala:93
+msgid "Game Replay"
+msgstr "Game Replay"
+
+#: data/ui/dialogs/game-replay.blp:21
+msgid "Replay Options"
+msgstr "Replay Options"
+
+#: data/ui/dialogs/game-replay.blp:60
+msgid "Loading board..."
+msgstr "Loading board..."
+
+#: data/ui/dialogs/game-replay.blp:75
+msgid "Go to Start"
+msgstr "Go to Start"
+
+#: data/ui/dialogs/game-replay.blp:85
+msgid "Play/Pause"
+msgstr "Play/Pause"
+
+#: data/ui/dialogs/game-replay.blp:96
+msgid "Go to End"
+msgstr "Go to End"
+
+#: data/ui/dialogs/game-replay.blp:107
+msgid "Playback Speed"
+msgstr "Playback Speed"
+
+#: data/ui/dialogs/game-replay.blp:118
+msgid "Speed"
+msgstr "Speed"
+
+#: data/ui/dialogs/game-replay.blp:130
+msgid "Move Position"
+msgstr "Move Position"
+
+#: data/ui/dialogs/game-replay.blp:172
+msgid "Game Information"
+msgstr "Game Information"
+
+#: data/ui/dialogs/game-replay.blp:185 data/ui/dialogs/new-game.blp:51
+msgid "Variant"
+msgstr "Variant"
+
+#: data/ui/dialogs/game-replay.blp:207
+msgid "Current Move"
+msgstr "Current Move"
+
+#: data/ui/dialogs/game-replay.blp:225 data/ui/widgets/timer-display.blp:19
+msgid "Red Player"
+msgstr "Red Player"
+
+#: data/ui/dialogs/game-replay.blp:236 data/ui/widgets/timer-display.blp:43
+msgid "Black Player"
+msgstr "Black Player"
+
+#: data/ui/dialogs/game-replay.blp:249 data/ui/widgets/move-history.blp:12
+msgid "Move History"
+msgstr "Move History"
+
+#: data/ui/dialogs/game-replay.blp:250
+msgid "Click a move to jump to that position"
+msgstr "Click a move to jump to that position"
+
+#: data/ui/dialogs/game-replay.blp:271
+msgid "Export Game (PGN)"
+msgstr "Export Game (PGN)"
+
+#: data/ui/dialogs/game-replay.blp:276
+msgid "Copy Game Notation"
+msgstr "Copy Game Notation"
+
+#: data/ui/dialogs/game-replay.blp:283
+msgid "Reset View"
+msgstr "Reset View"
+
+#: data/ui/dialogs/game-replay.blp:288
+msgid "Auto-rotate Board"
+msgstr "Auto-rotate Board"
+
+#: data/ui/dialogs/help.blp:13 data/ui/dialogs/help.blp:276
+msgid "Help"
+msgstr "Help"
+
+#: data/ui/dialogs/help.blp:20
+msgid "Getting Started"
+msgstr "Getting Started"
+
+#: data/ui/dialogs/help.blp:35
+msgid "Getting Started with Draughts"
+msgstr "Getting Started with Draughts"
+
+#: data/ui/dialogs/help.blp:41
+msgid "Welcome to Draughts! This guide will help you start playing."
+msgstr "Welcome to Draughts! This guide will help you start playing."
+
+#: data/ui/dialogs/help.blp:47
+msgid "Starting a New Game"
+msgstr "Starting a New Game"
+
+#: data/ui/dialogs/help.blp:53
+msgid ""
+"1. Click the menu button (☰) in the top-right corner\n"
+"2. Select 'New Game'\n"
+"3. Choose your preferred variant (16 available)\n"
+"4. Select game mode (Human vs Human, Human vs AI, or AI vs AI)\n"
+"5. For AI games, choose difficulty level (Beginner to Grandmaster)\n"
+"6. Click 'Start Game'"
+msgstr ""
+"1. Click the menu button (☰) in the top-right corner\n"
+"2. Select 'New Game'\n"
+"3. Choose your preferred variant (16 available)\n"
+"4. Select game mode (Human vs Human, Human vs AI, or AI vs AI)\n"
+"5. For AI games, choose difficulty level (Beginner to Grandmaster)\n"
+"6. Click 'Start Game'"
+
+#: data/ui/dialogs/help.blp:59
+msgid "Basic Rules"
+msgstr "Basic Rules"
+
+#: data/ui/dialogs/help.blp:65
+msgid ""
+"• Pieces move diagonally on dark squares\n"
+"• Regular pieces (men) typically move forward only\n"
+"• Capture opponent pieces by jumping over them\n"
+"• Reach the opposite end to promote to a king\n"
+"• Kings can move and capture in more directions\n"
+"• Captures are usually mandatory when available\n"
+"• Win by capturing all opponent pieces or blocking all moves"
+msgstr ""
+"• Pieces move diagonally on dark squares\n"
+"• Regular pieces (men) typically move forward only\n"
+"• Capture opponent pieces by jumping over them\n"
+"• Reach the opposite end to promote to a king\n"
+"• Kings can move and capture in more directions\n"
+"• Captures are usually mandatory when available\n"
+"• Win by capturing all opponent pieces or blocking all moves"
+
+#: data/ui/dialogs/help.blp:71 data/ui/dialogs/help.blp:217
+msgid "Game Controls"
+msgstr "Game Controls"
+
+#: data/ui/dialogs/help.blp:77
+msgid ""
+"• Click a piece to select it\n"
+"• Click a highlighted square to move\n"
+"• Use Undo/Redo buttons to review moves\n"
+"• Access Preferences to customize appearance\n"
+"• Export games in PDN format for analysis"
+msgstr ""
+"• Click a piece to select it\n"
+"• Click a highlighted square to move\n"
+"• Use Undo/Redo buttons to review moves\n"
+"• Access Preferences to customize appearance\n"
+"• Export games in PDN format for analysis"
+
+#: data/ui/dialogs/help.blp:87
+msgid "Variants"
+msgstr "Variants"
+
+#: data/ui/dialogs/help.blp:102
+msgid "Game Variants"
+msgstr "Game Variants"
+
+#: data/ui/dialogs/help.blp:108
+msgid "Draughts includes 16 international variants, each with unique rules:"
+msgstr "Draughts includes 16 international variants, each with unique rules:"
+
+#: data/ui/dialogs/help.blp:114 src/dialogs/VariantRulesDialog.vala:92
+msgid "American Checkers (8×8)"
+msgstr "American Checkers (8×8)"
+
+#: data/ui/dialogs/help.blp:119
+msgid ""
+"Most popular in North America. Men move forward only, kings don't fly. "
+"Players choose which capture to make."
+msgstr ""
+"Most popular in North America. Men move forward only, kings don't fly. "
+"Players choose which capture to make."
+
+#: data/ui/dialogs/help.blp:125 src/dialogs/VariantRulesDialog.vala:109
+msgid "International Draughts (10×10)"
+msgstr "International Draughts (10×10)"
+
+#: data/ui/dialogs/help.blp:130
+msgid ""
+"Official world championship variant. Flying kings, longest sequence rule. "
+"Most complex and strategic."
+msgstr ""
+"Official world championship variant. Flying kings, longest sequence rule. "
+"Most complex and strategic."
+
+#: data/ui/dialogs/help.blp:136 src/dialogs/VariantRulesDialog.vala:126
+msgid "Russian Draughts (8×8)"
+msgstr "Russian Draughts (8×8)"
+
+#: data/ui/dialogs/help.blp:141
+msgid ""
+"Similar to International but on 8×8 board. Flying kings with longest "
+"sequence capture rule."
+msgstr ""
+"Similar to International but on 8×8 board. Flying kings with longest "
+"sequence capture rule."
+
+#: data/ui/dialogs/help.blp:147 src/dialogs/VariantRulesDialog.vala:143
+msgid "Brazilian Draughts (8×8)"
+msgstr "Brazilian Draughts (8×8)"
+
+#: data/ui/dialogs/help.blp:152
+msgid ""
+"Same rules as International Draughts but played on 8×8 board. Popular in "
+"South America."
+msgstr ""
+"Same rules as International Draughts but played on 8×8 board. Popular in "
+"South America."
+
+#: data/ui/dialogs/help.blp:158 src/dialogs/VariantRulesDialog.vala:160
+msgid "Italian Draughts (8×8)"
+msgstr "Italian Draughts (8×8)"
+
+#: data/ui/dialogs/help.blp:163
+msgid ""
+"Traditional Italian variant. Must capture maximum pieces. Men cannot capture "
+"kings."
+msgstr ""
+"Traditional Italian variant. Must capture maximum pieces. Men cannot capture "
+"kings."
+
+#: data/ui/dialogs/help.blp:169 src/dialogs/VariantRulesDialog.vala:177
+msgid "Spanish Draughts (8×8)"
+msgstr "Spanish Draughts (8×8)"
+
+#: data/ui/dialogs/help.blp:174
+msgid ""
+"Unique rule: men can capture backwards. Kings don't fly. Popular in Spain "
+"and Latin America."
+msgstr ""
+"Unique rule: men can capture backwards. Kings don't fly. Popular in Spain "
+"and Latin America."
+
+#: data/ui/dialogs/help.blp:180
+msgid "Other Variants"
+msgstr "Other Variants"
+
+#: data/ui/dialogs/help.blp:186
+msgid ""
+"• Czech Draughts (8×8) - Flying kings, longest sequence\n"
+"• Thai Draughts (8×8) - Kings don't fly, longest sequence\n"
+"• German Draughts (8×8) - Flying kings, similar to Russian\n"
+"• Swedish Draughts (10×10) - Scandinavian variant\n"
+"• Pool Checkers (8×8) - American variant with optional rules\n"
+"• Turkish Draughts (8×8) - Orthogonal movement variant\n"
+"• Armenian Draughts (8×8) - Middle Eastern variant\n"
+"• Gothic Draughts (8×8) - Medieval European rules\n"
+"• Frisian Draughts (10×10) - Dutch regional variant\n"
+"• Canadian Draughts (12×12) - Largest board variant"
+msgstr ""
+"• Czech Draughts (8×8) - Flying kings, longest sequence\n"
+"• Thai Draughts (8×8) - Kings don't fly, longest sequence\n"
+"• German Draughts (8×8) - Flying kings, similar to Russian\n"
+"• Swedish Draughts (10×10) - Scandinavian variant\n"
+"• Pool Checkers (8×8) - American variant with optional rules\n"
+"• Turkish Draughts (8×8) - Orthogonal movement variant\n"
+"• Armenian Draughts (8×8) - Middle Eastern variant\n"
+"• Gothic Draughts (8×8) - Medieval European rules\n"
+"• Frisian Draughts (10×10) - Dutch regional variant\n"
+"• Canadian Draughts (12×12) - Largest board variant"
+
+#: data/ui/dialogs/help.blp:196
+msgid "Keyboard"
+msgstr "Keyboard"
+
+#: data/ui/dialogs/help.blp:211 data/ui/dialogs/help.blp:266
+msgid "Keyboard Shortcuts"
+msgstr "Keyboard Shortcuts"
+
+#: data/ui/dialogs/help.blp:256 data/ui/dialogs/preferences.blp:5
+msgid "Preferences"
+msgstr "Preferences"
+
+#: data/ui/dialogs/help.blp:286
+msgid "Quit"
+msgstr "Quit"
+
+#: data/ui/dialogs/help.blp:297
+msgid "Window Controls"
+msgstr "Window Controls"
+
+#: data/ui/dialogs/help.blp:306
+msgid "Close Window"
+msgstr "Close Window"
+
+#: data/ui/dialogs/help.blp:321
+msgid "About"
+msgstr "About"
+
+#: data/ui/dialogs/help.blp:337
+msgid "About Draughts"
+msgstr "About Draughts"
+
+#: data/ui/dialogs/help.blp:342
+msgid "A comprehensive draughts/checkers game for GNOME"
+msgstr "A comprehensive draughts/checkers game for GNOME"
+
+#: data/ui/dialogs/help.blp:347
+msgid "Features"
+msgstr "Features"
+
+#: data/ui/dialogs/help.blp:353
+msgid ""
+"• 16 international game variants\n"
+"• 10 AI difficulty levels\n"
+"• Multiple game modes\n"
+"• Complete sound effects\n"
+"• PDN game export\n"
+"• Beautiful themes\n"
+"• Accessibility support\n"
+"• Modern GTK4/LibAdwaita interface"
+msgstr ""
+"• 16 international game variants\n"
+"• 10 AI difficulty levels\n"
+"• Multiple game modes\n"
+"• Complete sound effects\n"
+"• PDN game export\n"
+"• Beautiful themes\n"
+"• Accessibility support\n"
+"• Modern GTK4/LibAdwaita interface"
+
+#: data/ui/dialogs/help.blp:359
+msgid "Version 1.0.0"
+msgstr "Version 1.0.0"
+
+#: data/ui/dialogs/help.blp:364
+msgid "Licensed under GPL-3.0+"
+msgstr "Licensed under GPL-3.0+"
+
+#: data/ui/dialogs/new-game.blp:19 data/ui/dialogs/variant-selector.blp:20
+#: src/dialogs/GameHistoryDialog.vala:374
+#: src/dialogs/GameHistoryDialog.vala:476 src/utils/ErrorHandler.vala:159
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Game Configuration"
+msgstr "Game Configuration"
+
+msgid "Choose which draughts rules to play with"
+msgstr "Choose which draughts rules to play with"
+
+#: data/ui/dialogs/new-game.blp:55 src/dialogs/GameHistoryDialog.vala:85
+msgid "American Checkers"
+msgstr "American Checkers"
+
+#: data/ui/dialogs/new-game.blp:56 src/dialogs/GameHistoryDialog.vala:86
+msgid "International Draughts"
+msgstr "International Draughts"
+
+#: data/ui/dialogs/new-game.blp:57 src/dialogs/GameHistoryDialog.vala:87
+msgid "Russian Draughts"
+msgstr "Russian Draughts"
+
+#: data/ui/dialogs/new-game.blp:58 src/dialogs/GameHistoryDialog.vala:88
+msgid "Brazilian Draughts"
+msgstr "Brazilian Draughts"
+
+#: data/ui/dialogs/new-game.blp:59 src/dialogs/GameHistoryDialog.vala:89
+msgid "Italian Draughts"
+msgstr "Italian Draughts"
+
+#: data/ui/dialogs/new-game.blp:60 src/dialogs/GameHistoryDialog.vala:90
+msgid "Spanish Draughts"
+msgstr "Spanish Draughts"
+
+#: data/ui/dialogs/new-game.blp:61 src/dialogs/GameHistoryDialog.vala:91
+msgid "Czech Draughts"
+msgstr "Czech Draughts"
+
+#: data/ui/dialogs/new-game.blp:62 src/dialogs/GameHistoryDialog.vala:92
+msgid "Thai Draughts"
+msgstr "Thai Draughts"
+
+#: data/ui/dialogs/new-game.blp:63 src/dialogs/GameHistoryDialog.vala:93
+msgid "German Draughts"
+msgstr "German Draughts"
+
+#: data/ui/dialogs/new-game.blp:64 src/dialogs/GameHistoryDialog.vala:94
+msgid "Swedish Draughts"
+msgstr "Swedish Draughts"
+
+#: data/ui/dialogs/new-game.blp:65 src/dialogs/GameHistoryDialog.vala:95
+msgid "Pool Checkers"
+msgstr "Pool Checkers"
+
+#: data/ui/dialogs/new-game.blp:66 src/dialogs/GameHistoryDialog.vala:96
+msgid "Turkish Draughts"
+msgstr "Turkish Draughts"
+
+#: data/ui/dialogs/new-game.blp:67 src/dialogs/GameHistoryDialog.vala:97
+msgid "Armenian Draughts"
+msgstr "Armenian Draughts"
+
+#: data/ui/dialogs/new-game.blp:68 src/dialogs/GameHistoryDialog.vala:98
+msgid "Gothic Draughts"
+msgstr "Gothic Draughts"
+
+#: data/ui/dialogs/new-game.blp:69 src/dialogs/GameHistoryDialog.vala:99
+msgid "Frisian Draughts"
+msgstr "Frisian Draughts"
+
+#: data/ui/dialogs/new-game.blp:70 src/dialogs/GameHistoryDialog.vala:100
+msgid "Canadian Draughts"
+msgstr "Canadian Draughts"
+
+#: data/ui/dialogs/new-game.blp:76
+msgid "Opposing Player"
+msgstr "Opposing Player"
+
+msgid "Human"
+msgstr "Human"
+
+msgid "Play as"
+msgstr "Play as"
+
+#: data/ui/dialogs/new-game.blp:86
+msgid "Red"
+msgstr "Red"
+
+msgid "Black"
+msgstr "Black"
+
+msgid "Difficulty"
+msgstr "Difficulty"
+
+#: data/ui/dialogs/new-game.blp:94
+msgid "Beginner"
+msgstr "Beginner"
+
+msgid "Intermediate"
+msgstr "Intermediate"
+
+#: data/ui/dialogs/new-game.blp:94
+msgid "Advanced"
+msgstr "Advanced"
+
+#: data/ui/dialogs/new-game.blp:94
+msgid "Expert"
+msgstr "Expert"
+
+#: data/ui/dialogs/new-game.blp:94
+msgid "Grandmaster"
+msgstr "Grandmaster"
+
+#: data/ui/dialogs/new-game.blp:101
+msgid "Time Limit"
+msgstr "Time Limit"
+
+#: data/ui/dialogs/new-game.blp:104
+msgid "Use Time Limit"
+msgstr "Use Time Limit"
+
+#: data/ui/dialogs/new-game.blp:114
+msgid "Minutes Per Side"
+msgstr "Minutes Per Side"
+
+#: data/ui/dialogs/new-game.blp:125
+msgid "Increment (seconds)"
+msgstr "Increment (seconds)"
+
+#: data/ui/dialogs/new-game.blp:136
+msgid "Clock Type"
+msgstr "Clock Type"
+
+#: data/ui/dialogs/new-game.blp:139
+msgid "Fischer"
+msgstr "Fischer"
+
+#: data/ui/dialogs/new-game.blp:139
+msgid "Bronstein"
+msgstr "Bronstein"
+
+#: data/ui/dialogs/new-game.blp:146 data/ui/dialogs/preferences.blp:50
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Play audio feedback during gameplay"
+msgstr "Play audio feedback during gameplay"
+
+#: data/ui/dialogs/preferences.blp:12
+msgid "Application Theme"
+msgstr "Application Theme"
+
+#: data/ui/dialogs/preferences.blp:13
+msgid "Choose the color scheme for the application"
+msgstr "Choose the color scheme for the application"
+
+#: data/ui/dialogs/preferences.blp:16
+msgid "Theme"
+msgstr "Theme"
+
+#: data/ui/dialogs/preferences.blp:17
+msgid "Light, dark, or follow system preference"
+msgstr "Light, dark, or follow system preference"
+
+#: data/ui/dialogs/preferences.blp:24
+msgid "Customize the appearance of the game board"
+msgstr "Customize the appearance of the game board"
+
+#: data/ui/dialogs/preferences.blp:27
+msgid "Board Colors"
+msgstr "Board Colors"
+
+#: data/ui/dialogs/preferences.blp:28
+msgid "Choose the color scheme for the board"
+msgstr "Choose the color scheme for the board"
+
+#: data/ui/dialogs/preferences.blp:35
+msgid "Customize the appearance of game pieces"
+msgstr "Customize the appearance of game pieces"
+
+#: data/ui/dialogs/preferences.blp:38
+msgid "Piece Design"
+msgstr "Piece Design"
+
+#: data/ui/dialogs/preferences.blp:39
+msgid "Choose the visual style for pieces"
+msgstr "Choose the visual style for pieces"
+
+#: data/ui/dialogs/preferences.blp:51
+msgid "Configure sound effects during gameplay"
+msgstr "Configure sound effects during gameplay"
+
+#: data/ui/dialogs/preferences.blp:55
+msgid "Play audio feedback for moves, captures, and game events"
+msgstr "Play audio feedback for moves, captures, and game events"
+
+#: data/ui/dialogs/preferences.blp:60
+msgid "Startup"
+msgstr "Startup"
+
+#: data/ui/dialogs/preferences.blp:61
+msgid "Configure what happens when the application starts"
+msgstr "Configure what happens when the application starts"
+
+#: data/ui/dialogs/preferences.blp:64
+msgid "Show Welcome Screen"
+msgstr "Show Welcome Screen"
+
+#: data/ui/dialogs/preferences.blp:65
+msgid "Display welcome dialog on startup"
+msgstr "Display welcome dialog on startup"
+
+#: data/ui/dialogs/preferences.blp:70
+msgid "Interaction"
+msgstr "Interaction"
+
+#: data/ui/dialogs/preferences.blp:71
+msgid "Configure how you interact with the game board"
+msgstr "Configure how you interact with the game board"
+
+#: data/ui/dialogs/preferences.blp:74
+msgid "Playing Style"
+msgstr "Playing Style"
+
+#: data/ui/dialogs/preferences.blp:75
+msgid "Choose how to move pieces on the board"
+msgstr "Choose how to move pieces on the board"
+
+#: data/ui/dialogs/preferences.blp:82
+msgid "Configure game history tracking and features"
+msgstr "Configure game history tracking and features"
+
+#: data/ui/dialogs/preferences.blp:85
+msgid "Enable Game History"
+msgstr "Enable Game History"
+
+#: data/ui/dialogs/preferences.blp:86
+msgid "Record game histories and enable history menu"
+msgstr "Record game histories and enable history menu"
+
+#: data/ui/dialogs/preferences.blp:91
+msgid "Updates"
+msgstr "Updates"
+
+#: data/ui/dialogs/preferences.blp:92
+msgid "Configure how the application handles updates"
+msgstr "Configure how the application handles updates"
+
+#: data/ui/dialogs/preferences.blp:95
+msgid "Show Release Notes"
+msgstr "Show Release Notes"
+
+#: data/ui/dialogs/preferences.blp:96
+msgid "Display what's new when the application is updated"
+msgstr "Display what's new when the application is updated"
+
+#: data/ui/dialogs/preferences.blp:104
+msgid "Classic Brown/Beige"
+msgstr "Classic Brown/Beige"
+
+#: data/ui/dialogs/preferences.blp:105
+msgid "Wood Light/Dark"
+msgstr "Wood Light/Dark"
+
+#: data/ui/dialogs/preferences.blp:106
+msgid "Green/White"
+msgstr "Green/White"
+
+#: data/ui/dialogs/preferences.blp:107
+msgid "Blue/Gray"
+msgstr "Blue/Gray"
+
+#: data/ui/dialogs/preferences.blp:114
+msgid "Plastic"
+msgstr "Plastic"
+
+#: data/ui/dialogs/preferences.blp:115
+msgid "Wood"
+msgstr "Wood"
+
+#: data/ui/dialogs/preferences.blp:116
+msgid "Metal"
+msgstr "Metal"
+
+#: data/ui/dialogs/preferences.blp:117
+msgid "Bottle Cap"
+msgstr "Bottle Cap"
+
+#: data/ui/dialogs/preferences.blp:123
+msgid "Follow System"
+msgstr "Follow System"
+
+#: data/ui/dialogs/preferences.blp:124
+msgid "Light"
+msgstr "Light"
+
+#: data/ui/dialogs/preferences.blp:125
+msgid "Dark"
+msgstr "Dark"
+
+#: data/ui/dialogs/preferences.blp:131
+msgid "Click to Move"
+msgstr "Click to Move"
+
+#: data/ui/dialogs/preferences.blp:132
+msgid "Drag and Drop"
+msgstr "Drag and Drop"
+
+#: data/ui/dialogs/variant-rules.blp:5
+msgid "Game Rules Changed"
+msgstr "Game Rules Changed"
+
+#: data/ui/dialogs/variant-rules.blp:6
+msgid ""
+"You have selected a new draughts variant. Here are the key rules for this "
+"variant:"
+msgstr ""
+"You have selected a new draughts variant. Here are the key rules for this "
+"variant:"
+
+#: data/ui/dialogs/variant-rules.blp:22
+msgid "Variant Information"
+msgstr "Variant Information"
+
+#: data/ui/dialogs/variant-rules.blp:25
+msgid "Variant Name"
+msgstr "Variant Name"
+
+#: data/ui/dialogs/variant-rules.blp:29
+msgid "Board Size"
+msgstr "Board Size"
+
+#: data/ui/dialogs/variant-rules.blp:33
+msgid "Starting Pieces per Player"
+msgstr "Starting Pieces per Player"
+
+#: data/ui/dialogs/variant-rules.blp:38
+msgid "Movement Rules"
+msgstr "Movement Rules"
+
+#: data/ui/dialogs/variant-rules.blp:41
+msgid "Men Movement"
+msgstr "Men Movement"
+
+#: data/ui/dialogs/variant-rules.blp:45
+msgid "Kings Movement"
+msgstr "Kings Movement"
+
+#: data/ui/dialogs/variant-rules.blp:49
+msgid "Kings Can Fly"
+msgstr "Kings Can Fly"
+
+#: data/ui/dialogs/variant-rules.blp:54
+msgid "Capture Rules"
+msgstr "Capture Rules"
+
+#: data/ui/dialogs/variant-rules.blp:57
+msgid "Men Capture"
+msgstr "Men Capture"
+
+#: data/ui/dialogs/variant-rules.blp:61
+msgid "Kings Capture"
+msgstr "Kings Capture"
+
+#: data/ui/dialogs/variant-rules.blp:65
+msgid "Mandatory Capture"
+msgstr "Mandatory Capture"
+
+#: data/ui/dialogs/variant-rules.blp:69
+msgid "Capture Priority"
+msgstr "Capture Priority"
+
+#: data/ui/dialogs/variant-rules.blp:73
+msgid "Multiple Captures"
+msgstr "Multiple Captures"
+
+#: data/ui/dialogs/variant-rules.blp:78
+msgid "Promotion Rules"
+msgstr "Promotion Rules"
+
+#: data/ui/dialogs/variant-rules.blp:81
+msgid "Promotion Condition"
+msgstr "Promotion Condition"
+
+#: data/ui/dialogs/variant-rules.blp:85
+msgid "Promotion Timing"
+msgstr "Promotion Timing"
+
+#: data/ui/dialogs/variant-rules.blp:92
+msgid "Continue with New Rules"
+msgstr "Continue with New Rules"
+
+#: data/ui/dialogs/variant-rules.blp:93
+msgid "Keep Current Variant"
+msgstr "Keep Current Variant"
+
+#: data/ui/dialogs/variant-selector.blp:15
+msgid "Select Game Variant"
+msgstr "Select Game Variant"
+
+#: data/ui/dialogs/variant-selector.blp:25
+msgid "Select"
+msgstr "Select"
+
+#: data/ui/dialogs/variant-selector.blp:48
+msgid "Choose a draughts variant:"
+msgstr "Choose a draughts variant:"
+
+#: data/ui/dialogs/variant-selector.blp:76
+msgid "Variant Details"
+msgstr "Variant Details"
+
+#: data/ui/dialogs/variant-selector.blp:96
+msgid "Select a variant"
+msgstr "Select a variant"
+
+#: data/ui/dialogs/welcome.blp:14 data/ui/dialogs/welcome.blp:20
+msgid "Welcome to Draughts"
+msgstr "Welcome to Draughts"
+
+#: data/ui/dialogs/welcome.blp:21
+msgid "Let's get you started playing!"
+msgstr "Let's get you started playing!"
+
+#: data/ui/dialogs/welcome.blp:36
+msgid "Game Features"
+msgstr "Game Features"
+
+#: data/ui/dialogs/welcome.blp:51
+msgid "16 international game variants"
+msgstr "16 international game variants"
+
+#: data/ui/dialogs/welcome.blp:62
+msgid "Play against friends or AI opponents"
+msgstr "Play against friends or AI opponents"
+
+#: data/ui/dialogs/welcome.blp:73
+msgid "Customize board themes and piece styles"
+msgstr "Customize board themes and piece styles"
+
+#: data/ui/dialogs/welcome.blp:84
+msgid "Export games in PDN format"
+msgstr "Export games in PDN format"
+
+#: data/ui/dialogs/welcome.blp:97
+msgid "Quick Start"
+msgstr "Quick Start"
+
+#: data/ui/dialogs/welcome.blp:102
+msgid ""
+"1. Click the menu button (☰) → New Game\n"
+"2. Choose a variant (try American Checkers to start)\n"
+"3. Select Human vs AI to play against the computer\n"
+"4. Press F1 anytime for help"
+msgstr ""
+"1. Click the menu button (☰) → New Game\n"
+"2. Choose a variant (try American Checkers to start)\n"
+"3. Select Human vs AI to play against the computer\n"
+"4. Press F1 anytime for help"
+
+#: data/ui/dialogs/welcome.blp:115
+msgid "Let's Play!"
+msgstr "Let's Play!"
+
+#: data/ui/dialogs/welcome.blp:121
+msgid "Show this welcome screen on startup"
+msgstr "Show this welcome screen on startup"
+
+#: data/ui/widgets/move-history.blp:19
+msgid "0 moves"
+msgstr "0 moves"
+
+#: data/ui/widgets/move-history.blp:46
+msgid "Go to first move"
+msgstr "Go to first move"
+
+#: data/ui/widgets/move-history.blp:51
+msgid "Previous move"
+msgstr "Previous move"
+
+#: data/ui/widgets/move-history.blp:56
+msgid "Next move"
+msgstr "Next move"
+
+#: data/ui/widgets/move-history.blp:61
+msgid "Go to last move"
+msgstr "Go to last move"
+
+#: data/ui/widgets/move-history.blp:72
+msgid "Export game in PGN format"
+msgstr "Export game in PGN format"
+
+#: data/ui/widgets/move-history.blp:76
+msgid "Clear"
+msgstr "Clear"
+
+#: data/ui/widgets/move-history.blp:77
+msgid "Clear move history"
+msgstr "Clear move history"
+
+#: data/ui/widgets/timer-display.blp:67
+msgid "Game duration: 0:00"
+msgstr "Game duration: 0:00"
+
+#: data/ui/widgets/timer-display.blp:73
+msgid "Timer settings"
+msgstr "Timer settings"
+
+msgid "Resume Game"
+msgstr "Resume Game"
+
+msgid "Time's Up!"
+msgstr "Time's Up!"
+
+#: src/Window.vala:942 src/Window.vala:1546 src/utils/ErrorHandler.vala:113
+#: src/utils/ErrorHandler.vala:126
+msgid "OK"
+msgstr "OK"
+
+#: src/Window.vala:1543
+msgid "PDN Import"
+msgstr "PDN Import"
+
+#: src/Window.vala:1544
+#, c-format
+msgid ""
+"PDN file import functionality will be available in a future version.\n"
+"\n"
+"File: %s"
+msgstr ""
+"PDN file import functionality will be available in a future version.\n"
+"\n"
+"File: %s"
+
+#: src/Window.vala:1555
+#, c-format
+msgid "Failed to open file: %s"
+msgstr "Failed to open file: %s"
+
+#: src/dialogs/VariantRulesDialog.vala:93
+#: src/dialogs/VariantRulesDialog.vala:127
+#: src/dialogs/VariantRulesDialog.vala:144
+#: src/dialogs/VariantRulesDialog.vala:161
+#: src/dialogs/VariantRulesDialog.vala:178
+#: src/dialogs/VariantRulesDialog.vala:195
+#: src/dialogs/VariantRulesDialog.vala:212
+#: src/dialogs/VariantRulesDialog.vala:229
+#: src/dialogs/VariantRulesDialog.vala:263
+#: src/dialogs/VariantRulesDialog.vala:280
+#: src/dialogs/VariantRulesDialog.vala:297
+#: src/dialogs/VariantRulesDialog.vala:314
+msgid "8×8 board with 64 squares"
+msgstr "8×8 board with 64 squares"
+
+#: src/dialogs/VariantRulesDialog.vala:94
+#: src/dialogs/VariantRulesDialog.vala:128
+#: src/dialogs/VariantRulesDialog.vala:145
+#: src/dialogs/VariantRulesDialog.vala:162
+#: src/dialogs/VariantRulesDialog.vala:179
+#: src/dialogs/VariantRulesDialog.vala:196
+#: src/dialogs/VariantRulesDialog.vala:213
+#: src/dialogs/VariantRulesDialog.vala:230
+#: src/dialogs/VariantRulesDialog.vala:264
+#: src/dialogs/VariantRulesDialog.vala:281
+#: src/dialogs/VariantRulesDialog.vala:298
+#: src/dialogs/VariantRulesDialog.vala:315
+msgid "12 pieces per player"
+msgstr "12 pieces per player"
+
+#: src/dialogs/VariantRulesDialog.vala:95
+#: src/dialogs/VariantRulesDialog.vala:112
+#: src/dialogs/VariantRulesDialog.vala:129
+#: src/dialogs/VariantRulesDialog.vala:146
+#: src/dialogs/VariantRulesDialog.vala:163
+#: src/dialogs/VariantRulesDialog.vala:180
+#: src/dialogs/VariantRulesDialog.vala:197
+#: src/dialogs/VariantRulesDialog.vala:214
+#: src/dialogs/VariantRulesDialog.vala:231
+#: src/dialogs/VariantRulesDialog.vala:248
+#: src/dialogs/VariantRulesDialog.vala:265
+#: src/dialogs/VariantRulesDialog.vala:282
+#: src/dialogs/VariantRulesDialog.vala:299
+#: src/dialogs/VariantRulesDialog.vala:316
+#: src/dialogs/VariantRulesDialog.vala:333
+#: src/dialogs/VariantRulesDialog.vala:350
+msgid "Diagonally forward only, one square"
+msgstr "Diagonally forward only, one square"
+
+#: src/dialogs/VariantRulesDialog.vala:96
+#: src/dialogs/VariantRulesDialog.vala:164
+#: src/dialogs/VariantRulesDialog.vala:181
+#: src/dialogs/VariantRulesDialog.vala:215
+#: src/dialogs/VariantRulesDialog.vala:266
+#: src/dialogs/VariantRulesDialog.vala:283
+#: src/dialogs/VariantRulesDialog.vala:317
+msgid "Diagonally forward and backward, one square"
+msgstr "Diagonally forward and backward, one square"
+
+#: src/dialogs/VariantRulesDialog.vala:97
+#: src/dialogs/VariantRulesDialog.vala:165
+#: src/dialogs/VariantRulesDialog.vala:182
+#: src/dialogs/VariantRulesDialog.vala:216
+#: src/dialogs/VariantRulesDialog.vala:267
+#: src/dialogs/VariantRulesDialog.vala:284
+#: src/dialogs/VariantRulesDialog.vala:318
+msgid "No - kings move one square at a time"
+msgstr "No - kings move one square at a time"
+
+#: src/dialogs/VariantRulesDialog.vala:98
+#: src/dialogs/VariantRulesDialog.vala:115
+#: src/dialogs/VariantRulesDialog.vala:200
+#: src/dialogs/VariantRulesDialog.vala:217
+#: src/dialogs/VariantRulesDialog.vala:234
+#: src/dialogs/VariantRulesDialog.vala:251
+#: src/dialogs/VariantRulesDialog.vala:268
+#: src/dialogs/VariantRulesDialog.vala:285
+#: src/dialogs/VariantRulesDialog.vala:302
+#: src/dialogs/VariantRulesDialog.vala:319
+msgid "Diagonally forward only, must jump over enemy piece"
+msgstr "Diagonally forward only, must jump over enemy piece"
+
+#: src/dialogs/VariantRulesDialog.vala:99
+#: src/dialogs/VariantRulesDialog.vala:167
+#: src/dialogs/VariantRulesDialog.vala:184
+#: src/dialogs/VariantRulesDialog.vala:218
+#: src/dialogs/VariantRulesDialog.vala:269
+#: src/dialogs/VariantRulesDialog.vala:286
+#: src/dialogs/VariantRulesDialog.vala:320
+msgid "Diagonally in any direction, must jump over enemy piece"
+msgstr "Diagonally in any direction, must jump over enemy piece"
+
+#: src/dialogs/VariantRulesDialog.vala:100
+#: src/dialogs/VariantRulesDialog.vala:117
+#: src/dialogs/VariantRulesDialog.vala:134
+#: src/dialogs/VariantRulesDialog.vala:151
+#: src/dialogs/VariantRulesDialog.vala:168
+#: src/dialogs/VariantRulesDialog.vala:185
+#: src/dialogs/VariantRulesDialog.vala:202
+#: src/dialogs/VariantRulesDialog.vala:219
+#: src/dialogs/VariantRulesDialog.vala:236
+#: src/dialogs/VariantRulesDialog.vala:253
+#: src/dialogs/VariantRulesDialog.vala:270
+#: src/dialogs/VariantRulesDialog.vala:287
+#: src/dialogs/VariantRulesDialog.vala:304
+#: src/dialogs/VariantRulesDialog.vala:321
+#: src/dialogs/VariantRulesDialog.vala:338
+#: src/dialogs/VariantRulesDialog.vala:355
+msgid "Yes - must capture if possible"
+msgstr "Yes - must capture if possible"
+
+#: src/dialogs/VariantRulesDialog.vala:101
+#: src/dialogs/VariantRulesDialog.vala:118
+#: src/dialogs/VariantRulesDialog.vala:135
+#: src/dialogs/VariantRulesDialog.vala:152
+#: src/dialogs/VariantRulesDialog.vala:203
+#: src/dialogs/VariantRulesDialog.vala:220
+#: src/dialogs/VariantRulesDialog.vala:237
+#: src/dialogs/VariantRulesDialog.vala:254
+#: src/dialogs/VariantRulesDialog.vala:288
+#: src/dialogs/VariantRulesDialog.vala:305
+#: src/dialogs/VariantRulesDialog.vala:339
+#: src/dialogs/VariantRulesDialog.vala:356
+msgid "Maximum number of pieces must be captured"
+msgstr "Maximum number of pieces must be captured"
+
+#: src/dialogs/VariantRulesDialog.vala:102
+#: src/dialogs/VariantRulesDialog.vala:119
+#: src/dialogs/VariantRulesDialog.vala:136
+#: src/dialogs/VariantRulesDialog.vala:153
+#: src/dialogs/VariantRulesDialog.vala:170
+#: src/dialogs/VariantRulesDialog.vala:187
+#: src/dialogs/VariantRulesDialog.vala:204
+#: src/dialogs/VariantRulesDialog.vala:221
+#: src/dialogs/VariantRulesDialog.vala:238
+#: src/dialogs/VariantRulesDialog.vala:255
+#: src/dialogs/VariantRulesDialog.vala:272
+#: src/dialogs/VariantRulesDialog.vala:289
+#: src/dialogs/VariantRulesDialog.vala:306
+#: src/dialogs/VariantRulesDialog.vala:323
+#: src/dialogs/VariantRulesDialog.vala:340
+#: src/dialogs/VariantRulesDialog.vala:357
+msgid "Yes - continue jumping with same piece if possible"
+msgstr "Yes - continue jumping with same piece if possible"
+
+#: src/dialogs/VariantRulesDialog.vala:103
+#: src/dialogs/VariantRulesDialog.vala:120
+#: src/dialogs/VariantRulesDialog.vala:137
+#: src/dialogs/VariantRulesDialog.vala:154
+#: src/dialogs/VariantRulesDialog.vala:171
+#: src/dialogs/VariantRulesDialog.vala:188
+#: src/dialogs/VariantRulesDialog.vala:205
+#: src/dialogs/VariantRulesDialog.vala:222
+#: src/dialogs/VariantRulesDialog.vala:239
+#: src/dialogs/VariantRulesDialog.vala:256
+#: src/dialogs/VariantRulesDialog.vala:273
+#: src/dialogs/VariantRulesDialog.vala:290
+#: src/dialogs/VariantRulesDialog.vala:307
+#: src/dialogs/VariantRulesDialog.vala:324
+#: src/dialogs/VariantRulesDialog.vala:341
+#: src/dialogs/VariantRulesDialog.vala:358
+msgid "Reach opposite end of board"
+msgstr "Reach opposite end of board"
+
+#: src/dialogs/VariantRulesDialog.vala:104
+#: src/dialogs/VariantRulesDialog.vala:121
+#: src/dialogs/VariantRulesDialog.vala:138
+#: src/dialogs/VariantRulesDialog.vala:155
+#: src/dialogs/VariantRulesDialog.vala:172
+#: src/dialogs/VariantRulesDialog.vala:189
+#: src/dialogs/VariantRulesDialog.vala:206
+#: src/dialogs/VariantRulesDialog.vala:223
+#: src/dialogs/VariantRulesDialog.vala:240
+#: src/dialogs/VariantRulesDialog.vala:257
+#: src/dialogs/VariantRulesDialog.vala:274
+#: src/dialogs/VariantRulesDialog.vala:291
+#: src/dialogs/VariantRulesDialog.vala:308
+#: src/dialogs/VariantRulesDialog.vala:325
+#: src/dialogs/VariantRulesDialog.vala:342
+#: src/dialogs/VariantRulesDialog.vala:359
+msgid "Immediately when reaching promotion square"
+msgstr "Immediately when reaching promotion square"
+
+#: src/dialogs/VariantRulesDialog.vala:110
+#: src/dialogs/VariantRulesDialog.vala:246
+#: src/dialogs/VariantRulesDialog.vala:331
+msgid "10×10 board with 100 squares"
+msgstr "10×10 board with 100 squares"
+
+#: src/dialogs/VariantRulesDialog.vala:111
+#: src/dialogs/VariantRulesDialog.vala:247
+#: src/dialogs/VariantRulesDialog.vala:332
+msgid "20 pieces per player"
+msgstr "20 pieces per player"
+
+#: src/dialogs/VariantRulesDialog.vala:113
+#: src/dialogs/VariantRulesDialog.vala:130
+#: src/dialogs/VariantRulesDialog.vala:147
+#: src/dialogs/VariantRulesDialog.vala:198
+#: src/dialogs/VariantRulesDialog.vala:232
+#: src/dialogs/VariantRulesDialog.vala:249
+#: src/dialogs/VariantRulesDialog.vala:300
+#: src/dialogs/VariantRulesDialog.vala:334
+#: src/dialogs/VariantRulesDialog.vala:351
+msgid "Diagonally in any direction, any distance"
+msgstr "Diagonally in any direction, any distance"
+
+#: src/dialogs/VariantRulesDialog.vala:114
+#: src/dialogs/VariantRulesDialog.vala:131
+#: src/dialogs/VariantRulesDialog.vala:148
+#: src/dialogs/VariantRulesDialog.vala:199
+#: src/dialogs/VariantRulesDialog.vala:233
+#: src/dialogs/VariantRulesDialog.vala:250
+#: src/dialogs/VariantRulesDialog.vala:301
+#: src/dialogs/VariantRulesDialog.vala:335
+#: src/dialogs/VariantRulesDialog.vala:352
+msgid "Yes - kings can move multiple squares"
+msgstr "Yes - kings can move multiple squares"
+
+#: src/dialogs/VariantRulesDialog.vala:116
+#: src/dialogs/VariantRulesDialog.vala:133
+#: src/dialogs/VariantRulesDialog.vala:150
+#: src/dialogs/VariantRulesDialog.vala:201
+#: src/dialogs/VariantRulesDialog.vala:235
+#: src/dialogs/VariantRulesDialog.vala:252
+#: src/dialogs/VariantRulesDialog.vala:303
+#: src/dialogs/VariantRulesDialog.vala:337
+#: src/dialogs/VariantRulesDialog.vala:354
+msgid "Diagonally in any direction, can land anywhere after jumped piece"
+msgstr "Diagonally in any direction, can land anywhere after jumped piece"
+
+#: src/dialogs/VariantRulesDialog.vala:132
+#: src/dialogs/VariantRulesDialog.vala:149
+#: src/dialogs/VariantRulesDialog.vala:336
+#: src/dialogs/VariantRulesDialog.vala:353
+msgid "Diagonally forward and backward, must jump over enemy piece"
+msgstr "Diagonally forward and backward, must jump over enemy piece"
+
+#: src/dialogs/VariantRulesDialog.vala:166
+msgid "Diagonally forward only, cannot capture kings"
+msgstr "Diagonally forward only, cannot capture kings"
+
+#: src/dialogs/VariantRulesDialog.vala:169
+msgid "Kings have priority over men in captures"
+msgstr "Kings have priority over men in captures"
+
+#: src/dialogs/VariantRulesDialog.vala:183
+msgid "Diagonally forward AND backward - unique to Spanish variant"
+msgstr "Diagonally forward AND backward - unique to Spanish variant"
+
+#: src/dialogs/VariantRulesDialog.vala:186
+#: src/dialogs/VariantRulesDialog.vala:271
+#: src/dialogs/VariantRulesDialog.vala:322
+msgid "Player chooses any legal capture"
+msgstr "Player chooses any legal capture"
+
+#: src/dialogs/VariantRulesDialog.vala:194
+msgid "Czech Draughts (8×8)"
+msgstr "Czech Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:211
+msgid "Thai Draughts (8×8)"
+msgstr "Thai Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:228
+msgid "German Draughts (8×8)"
+msgstr "German Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:245
+msgid "Swedish Draughts (10×10)"
+msgstr "Swedish Draughts (10×10)"
+
+#: src/dialogs/VariantRulesDialog.vala:262
+msgid "Pool Checkers (8×8)"
+msgstr "Pool Checkers (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:279
+msgid "Turkish Draughts (8×8)"
+msgstr "Turkish Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:296
+msgid "Armenian Draughts (8×8)"
+msgstr "Armenian Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:313
+msgid "Gothic Draughts (8×8)"
+msgstr "Gothic Draughts (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:330
+msgid "Frisian Draughts (10×10)"
+msgstr "Frisian Draughts (10×10)"
+
+#: src/dialogs/VariantRulesDialog.vala:347
+msgid "Canadian Draughts (12×12)"
+msgstr "Canadian Draughts (12×12)"
+
+#: src/dialogs/VariantRulesDialog.vala:348
+msgid "12×12 board with 144 squares"
+msgstr "12×12 board with 144 squares"
+
+#: src/dialogs/VariantRulesDialog.vala:349
+msgid "30 pieces per player"
+msgstr "30 pieces per player"
+
+#. Variant filter
+#: src/dialogs/GameHistoryDialog.vala:84
+msgid "All Variants"
+msgstr "All Variants"
+
+#. Result filter
+#: src/dialogs/GameHistoryDialog.vala:107
+msgid "All Results"
+msgstr "All Results"
+
+#: src/dialogs/GameHistoryDialog.vala:107
+msgid "Red Wins"
+msgstr "Red Wins"
+
+#: src/dialogs/GameHistoryDialog.vala:107
+msgid "Black Wins"
+msgstr "Black Wins"
+
+#: src/dialogs/GameHistoryDialog.vala:107
+msgid "Draws"
+msgstr "Draws"
+
+#. Player type filter
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "All Games"
+msgstr "All Games"
+
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "Human vs Human"
+msgstr "Human vs Human"
+
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "vs Computer"
+msgstr "vs Computer"
+
+#: src/dialogs/GameHistoryDialog.vala:371
+msgid "Clear Game History"
+msgstr "Clear Game History"
+
+#: src/dialogs/GameHistoryDialog.vala:372
+msgid ""
+"Are you sure you want to delete all game history? This action cannot be "
+"undone."
+msgstr ""
+"Are you sure you want to delete all game history? This action cannot be "
+"undone."
+
+#: src/dialogs/GameHistoryDialog.vala:395
+msgid "Export Game History"
+msgstr "Export Game History"
+
+#: src/dialogs/GameHistoryDialog.vala:405
+msgid "Game history exported successfully"
+msgstr "Game history exported successfully"
+
+#: src/dialogs/GameHistoryDialog.vala:409
+msgid "Failed to export game history"
+msgstr "Failed to export game history"
+
+#: src/dialogs/GameHistoryDialog.vala:452
+msgid "Export Game"
+msgstr "Export Game"
+
+#: src/dialogs/GameHistoryDialog.vala:460
+msgid "Game exported successfully"
+msgstr "Game exported successfully"
+
+#: src/dialogs/GameHistoryDialog.vala:464
+msgid "Failed to export game"
+msgstr "Failed to export game"
+
+#: src/dialogs/GameHistoryDialog.vala:473
+msgid "Delete Game"
+msgstr "Delete Game"
+
+#: src/dialogs/GameHistoryDialog.vala:486
+msgid "Game deleted"
+msgstr "Game deleted"
+
+#: src/dialogs/GameReplayDialog.vala:94
+msgid "No game data available"
+msgstr "No game data available"
+
+#: src/dialogs/GameReplayDialog.vala:445
+msgid "Pause"
+msgstr "Pause"
+
+#: src/dialogs/GameReplayDialog.vala:462
+msgid "Play"
+msgstr "Play"
+
+#: src/dialogs/GameReplayDialog.vala:506
+msgid "Export Game Replay"
+msgstr "Export Game Replay"
+
+#: src/dialogs/GameEndDialog.vala:96
+msgid "Red Player Wins!"
+msgstr "Red Player Wins!"
+
+#: src/dialogs/GameEndDialog.vala:97 src/dialogs/GameEndDialog.vala:104
+msgid "Congratulations on your victory!"
+msgstr "Congratulations on your victory!"
+
+#: src/dialogs/GameEndDialog.vala:103
+msgid "Black Player Wins!"
+msgstr "Black Player Wins!"
+
+#: src/dialogs/GameEndDialog.vala:110
+msgid "Game Drawn!"
+msgstr "Game Drawn!"
+
+#: src/dialogs/GameEndDialog.vala:111
+msgid "Well played by both sides!"
+msgstr "Well played by both sides!"
+
+#: src/dialogs/GameEndDialog.vala:117
+msgid "Game Ended"
+msgstr "Game Ended"
+
+#: src/dialogs/GameEndDialog.vala:118
+msgid "Thanks for playing!"
+msgstr "Thanks for playing!"
+
+#: src/utils/ErrorHandler.vala:112
+msgid "Error"
+msgstr "Error"
+
+#: src/utils/ErrorHandler.vala:125
+msgid "Critical Error"
+msgstr "Critical Error"
+
+#: src/utils/ErrorHandler.vala:127
+msgid "Quit Application"
+msgstr "Quit Application"
+
+#: src/utils/ErrorHandler.vala:160
+msgid "Confirm"
+msgstr "Confirm"
+
+#~ msgid "Red's Turn"
+#~ msgstr "Red's Turn"
+
+#~ msgid "Start New Game"
+#~ msgstr "Start New Game"
+
+#~ msgid "Choose the game mode:"
+#~ msgstr "Choose the game mode:"
+
+#~ msgid "Play against another person"
+#~ msgstr "Play against another person"
+
+#~ msgid "Play against the computer"
+#~ msgstr "Play against the computer"
+
+#~ msgid "Gameplay"
+#~ msgstr "Gameplay"
+
+#~ msgid "16 international draughts variants available"
+#~ msgstr "16 international draughts variants available"
+
+#~ msgid "Artificial Intelligence"
+#~ msgstr "Artificial Intelligence"
+
+#~ msgid "Configure AI opponent difficulty"
+#~ msgstr "Configure AI opponent difficulty"
+
+#~ msgid "From Beginner to Grandmaster"
+#~ msgstr "From Beginner to Grandmaster"
+
+#~ msgid "Swedish Draughts (8×8)"
+#~ msgstr "Swedish Draughts (8×8)"
+
+#~ msgid "Easy"
+#~ msgstr "Easy"
+
+#~ msgid "Medium"
+#~ msgstr "Medium"
+
+#~ msgid "Hard"
+#~ msgstr "Hard"
+
+#~ msgid "Master"
+#~ msgstr "Master"
+
+#~ msgid "Black's Turn"
+#~ msgstr "Black's Turn"
