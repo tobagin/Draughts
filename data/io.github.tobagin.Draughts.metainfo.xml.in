@@ -67,14 +67,15 @@
     </screenshot>
     <screenshot>
       <caption>About dialog</caption>
-      <image>https://raw.githubusercontent.com/tobagin/Dama/master/data/screenshots/about.png</image>
+      <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/about.png</image>
     </screenshot>
   </screenshots>
-  <url type="homepage">https://github.com/tobagin/Dama</url>
-  <url type="bugtracker">https://github.com/tobagin/Dama/issues</url>
-  <url type="help">https://github.com/tobagin/Dama/wiki</url>
-  <url type="vcs-browser">https://github.com/tobagin/Dama</url>
-  <url type="contribute">https://github.com/tobagin/Dama/blob/master/CONTRIBUTING.md</url>
+  <url type="homepage">https://github.com/tobagin/Draughts</url>
+  <url type="bugtracker">https://github.com/tobagin/Draughts/issues</url>
+  <url type="help">https://github.com/tobagin/Draughts/wiki</url>
+  <url type="vcs-browser">https://github.com/tobagin/Draughts</url>
+  <url type="donation">https://github.com/sponsors/tobagin</url>
+  <url type="contribute">https://github.com/tobagin/Draughts/blob/master/CONTRIBUTING.md</url>
 
   <developer_name>Thiago Fernandes</developer_name>
 
