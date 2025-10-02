@@ -128,11 +128,12 @@ install_data([
 ], install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps')
 
 # Install SVG icon
-install_data(
-  '../io.github.tobagin.Draughts.svg',
-  install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps',
-  rename: '@0@.svg'.format(project_id)
-)
+# Note: No SVG icon currently, using PNG icons instead
+# install_data(
+#   '../io.github.tobagin.Draughts.svg',
+#   install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps',
+#   rename: '@0@.svg'.format(project_id)
+# )
 
 # Install PNG icons in all required sizes
 icon_sizes = ['16x16', '32x32', '48x48', '64x64', '128x128', '256x256', '512x512']
