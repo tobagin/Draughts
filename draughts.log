@@ -1,6 +1,4 @@
 
-(draughts:2): Gtk-WARNING **: 05:56:55.372: Cannot add an object of type GtkStringList to a widget of type DraughtsWindow
+(draughts:2): Gtk-WARNING **: 16:19:22.822: Cannot add an object of type GtkStringList to a widget of type DraughtsWindow
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:981: FINISHME: support more multi-planar formats with DRM modifiers
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
-
-(draughts:2): Adwaita-WARNING **: 05:56:56.078: AdwFloatingSheet 0x5654219c7520 exceeds AdwBreakpointBin height: requested 754 px, 700 px available

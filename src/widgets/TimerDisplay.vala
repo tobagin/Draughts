@@ -17,6 +17,7 @@ public class Draughts.TimerDisplay : GLib.Object {
     private uint timer_update_id = 0;
     private bool red_timer_started = false;
     private bool black_timer_started = false;
+    private bool time_expired_signaled = false;  // Prevent multiple time_expired signals
 
     // Signal for timer updates
     public signal void timer_updated(string subtitle_text);
@@ -209,7 +210,7 @@ public class Draughts.TimerDisplay : GLib.Object {
      * Check if any timer has expired
      */
     private void check_time_expired() {
-        if (!timer_enabled) {
+        if (!timer_enabled || time_expired_signaled) {
             return;
         }
 
@@ -217,6 +218,8 @@ public class Draughts.TimerDisplay : GLib.Object {
         if (red_timer != null && red_timer_started) {
             var red_time = red_timer.get_current_time_remaining();
             if (red_time <= 0) {
+                time_expired_signaled = true;  // Prevent multiple signals
+                timer_enabled = false;  // Stop timer updates
                 time_expired(Player.RED);
                 return;
             }
@@ -226,6 +229,8 @@ public class Draughts.TimerDisplay : GLib.Object {
         if (black_timer != null && black_timer_started) {
             var black_time = black_timer.get_current_time_remaining();
             if (black_time <= 0) {
+                time_expired_signaled = true;  // Prevent multiple signals
+                timer_enabled = false;  // Stop timer updates
                 time_expired(Player.BLACK);
                 return;
             }
@@ -246,6 +251,8 @@ public class Draughts.TimerDisplay : GLib.Object {
         game_start_time = 0;
         red_timer_started = false;
         black_timer_started = false;
+        time_expired_signaled = false;  // Reset the flag
+        timer_enabled = (red_timer != null || black_timer != null);  // Re-enable if timers exist
         update_display();
     }
 

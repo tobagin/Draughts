@@ -3,8 +3,22 @@ using Adw 1;
 
 template $DraughtsGameHistoryDialog : Adw.Dialog {
   title: _("Game History");
-  content-width: 800;
-  content-height: 600;
+  content-width: 900;
+  content-height: 700;
+
+  // Mobile/tablet breakpoint
+  Adw.Breakpoint {
+    condition ("max-width: 800px")
+
+    setters {
+      filter_row.visible: false;
+      filter_button.visible: true;
+      bottom_toolbar.margin-start: 6;
+      bottom_toolbar.margin-end: 6;
+      game_list.margin-start: 6;
+      game_list.margin-end: 6;
+    }
+  }
 
   Adw.ToolbarView {
     [top]
@@ -15,6 +29,13 @@ template $DraughtsGameHistoryDialog : Adw.Dialog {
       };
 
       [start]
+      Button filter_button {
+        icon-name: "funnel-symbolic";
+        tooltip-text: _("Filter Games");
+        visible: false;
+      }
+
+      [end]
       Button clear_history_button {
         icon-name: "user-trash-symbolic";
         tooltip-text: _("Clear History");
@@ -24,11 +45,11 @@ template $DraughtsGameHistoryDialog : Adw.Dialog {
 
     }
 
-    content: Box {
+    content: Box main_content {
       orientation: vertical;
       spacing: 0;
 
-      // Filter bar
+      // Filter bar (desktop only)
       Adw.ActionRow filter_row {
         title: _("Filter Games");
 
@@ -53,7 +74,7 @@ template $DraughtsGameHistoryDialog : Adw.Dialog {
         }
       }
 
-      Separator {}
+      Separator filter_separator {}
 
       // Statistics summary
       Adw.ActionRow stats_row {

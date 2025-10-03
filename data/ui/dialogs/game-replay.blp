@@ -3,8 +3,33 @@ using Adw 1;
 
 template $DraughtsGameReplayDialog : Adw.Dialog {
   title: _("Game Replay");
+  // Full-screen on mobile/tablet, regular dialog on desktop
   content-width: 900;
   content-height: 700;
+
+  Adw.Breakpoint narrow_breakpoint {
+    condition ("max-width: 700px")
+
+    setters {
+      // Switch to vertical layout on narrow screens
+      main_content_box.orientation: vertical;
+      board_container.width-request: -1;
+      board_container.hexpand: true;
+      side_panel.width-request: -1;
+      side_panel.visible: false;
+      side_panel_button.visible: true;
+      separator_vertical.visible: false;
+      main_content_box.margin-start: 6;
+      main_content_box.margin-end: 6;
+      main_content_box.margin-top: 6;
+      main_content_box.margin-bottom: 6;
+      controls_box.spacing: 4;
+      // Hide speed controls on mobile - moved to overflow menu
+      speed_separator.visible: false;
+      speed_scale.visible: false;
+      speed_label.visible: false;
+    }
+  }
 
   Adw.ToolbarView {
     [top]
@@ -14,6 +39,12 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
         subtitle: bind template.game_subtitle;
       };
 
+      [start]
+      Button side_panel_button {
+        icon-name: "sidebar-show-symbolic";
+        tooltip-text: _("Show Game Information");
+        visible: false;
+      }
 
       [end]
       MenuButton options_button {
@@ -23,7 +54,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
       }
     }
 
-    content: Box {
+    content: Box main_content_box {
       orientation: horizontal;
       spacing: 12;
       margin-top: 12;
@@ -36,6 +67,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
         orientation: vertical;
         spacing: 12;
         width-request: 500;
+        hexpand: true;
 
         // Board with aspect ratio
         AspectFrame board_frame {
@@ -96,7 +128,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
             tooltip-text: _("Go to End");
           }
 
-          Separator {
+          Separator speed_separator {
             margin-start: 12;
             margin-end: 12;
           }
@@ -114,7 +146,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
             };
           }
 
-          Label {
+          Label speed_label {
             label: _("Speed");
             margin-start: 6;
           }
@@ -157,7 +189,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
         }
       }
 
-      Separator {
+      Separator separator_vertical {
         orientation: vertical;
       }
 
@@ -166,6 +198,7 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
         orientation: vertical;
         spacing: 12;
         width-request: 300;
+        hexpand: false;
 
         // Game information
         Adw.PreferencesGroup info_group {
@@ -266,6 +299,42 @@ template $DraughtsGameReplayDialog : Adw.Dialog {
 }
 
 menu replay_menu {
+  section {
+    submenu {
+      label: _("Playback Speed");
+
+      item {
+        label: _("0.25× (Very Slow)");
+        action: "replay.speed";
+        target: "0.25";
+      }
+
+      item {
+        label: _("0.5× (Slow)");
+        action: "replay.speed";
+        target: "0.5";
+      }
+
+      item {
+        label: _("1× (Normal)");
+        action: "replay.speed";
+        target: "1.0";
+      }
+
+      item {
+        label: _("2× (Fast)");
+        action: "replay.speed";
+        target: "2.0";
+      }
+
+      item {
+        label: _("4× (Very Fast)");
+        action: "replay.speed";
+        target: "4.0";
+      }
+    }
+  }
+
   section {
     item {
       label: _("Export Game (PGN)");

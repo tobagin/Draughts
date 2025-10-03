@@ -2,12 +2,27 @@ using Gtk 4.0;
 using Adw 1;
 
 template $DraughtsNewGameDialog : Adw.Dialog {
+  // Set reasonable default size, but allow flexibility for mobile
   content-width: 600;
-  content-height: 700;
+  content-height: 650;
+
+  Adw.Breakpoint {
+    condition ("max-width: 550px")
+
+    setters {
+      // On narrow screens (mobile), make dialog adaptive
+      clamp.maximum-size: 400;
+      main_box.margin-start: 8;
+      main_box.margin-end: 8;
+      main_box.margin-top: 12;
+      main_box.margin-bottom: 12;
+      main_box.spacing: 18;
+    }
+  }
 
   Adw.ToolbarView {
     top-bar-style: raised;
-    
+
     [top]
     Adw.HeaderBar {
       show-end-title-buttons: false;
@@ -31,17 +46,21 @@ template $DraughtsNewGameDialog : Adw.Dialog {
       };
     }
 
-    content: Adw.Clamp {
-      maximum-size: 600;
-      tightening-threshold: 300;
+    content: Gtk.ScrolledWindow {
+      hscrollbar-policy: never;
+      vexpand: true;
 
-      Gtk.Box {
-        orientation: vertical;
-        spacing: 24;
-        margin-top: 24;
-        margin-bottom: 24;
-        margin-start: 12;
-        margin-end: 12;
+      Adw.Clamp clamp {
+        maximum-size: 600;
+        tightening-threshold: 300;
+
+        Gtk.Box main_box {
+          orientation: vertical;
+          spacing: 24;
+          margin-top: 24;
+          margin-bottom: 24;
+          margin-start: 12;
+          margin-end: 12;
 
         // Game Configuration Section
         Adw.PreferencesGroup {
@@ -157,6 +176,7 @@ template $DraughtsNewGameDialog : Adw.Dialog {
           }
         }
       }
+    }
     };
   }
 }

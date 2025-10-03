@@ -136,7 +136,24 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="@VERSION@" date="2025-10-02">
+    <release version="@VERSION@" date="2025-10-03">
+      <description>
+        <p>Mobile-friendly update with improved adaptive design and bug fixes</p>
+        <ul>
+          <li>Full mobile and tablet support with 360px minimum width</li>
+          <li>Adaptive dialogs with breakpoints for narrow screens</li>
+          <li>Game History dialog now uses bottom sheet for filters on mobile</li>
+          <li>Game Replay dialog optimized with side panel as bottom sheet</li>
+          <li>Speed controls moved to overflow menu on mobile devices</li>
+          <li>New Game dialog now properly scrollable on small screens</li>
+          <li>Fixed timer expiration crash - game now ends properly when time runs out</li>
+          <li>Improved touch-friendly margins and spacing on mobile</li>
+          <li>Better adaptive bottom bar with priority-based element hiding</li>
+          <li>All dialogs now work seamlessly at mobile screen sizes</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.0" date="2025-10-02">
       <description>
         <p>First stable release of Draughts - A comprehensive draughts/checkers game</p>
         <ul>

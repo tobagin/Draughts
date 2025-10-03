@@ -99,7 +99,8 @@ namespace Draughts {
             logger = Logger.get_default();
             settings_manager = SettingsManager.get_instance();
             set_default_size(900, 700);
-            set_size_request(600, 400);
+            // Mobile-friendly minimum size (360px width for mobile devices)
+            set_size_request(360, 400);
             setup_actions();
             load_css();
             setup_board();
@@ -936,34 +937,39 @@ namespace Draughts {
         private void on_time_expired(Player player) {
             logger.info("Time expired for player: %s", player.to_string());
 
-            // Determine the winner (opposite player)
-            string winner_name;
-            string loser_name;
-
-            if (player == Player.RED) {
-                winner_name = "Black";
-                loser_name = "Red";
-            } else {
-                winner_name = "Red";
-                loser_name = "Black";
-            }
-
-            // Stop all timers
+            // Stop all timers immediately
             if (timer_display != null) {
                 timer_display.pause_timers();
             }
 
-            // Show game over dialog
-            var dialog = new Adw.AlertDialog(
-                _("Time's Up!"),
-                @"$(loser_name) ran out of time.\n$(winner_name) wins!"
-            );
+            // Determine the winner (opposite player)
+            GameStatus result;
+            string winner_name;
+            string loser_name;
 
-            dialog.add_response("ok", _("OK"));
-            dialog.set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED);
-            dialog.set_default_response("ok");
+            if (player == Player.RED) {
+                result = GameStatus.BLACK_WINS;
+                winner_name = "Black";
+                loser_name = "Red";
+            } else {
+                result = GameStatus.RED_WINS;
+                winner_name = "Red";
+                loser_name = "Black";
+            }
 
-            dialog.present(this);
+            // End the game in the adapter/controller
+            if (adapter != null) {
+                var current_game = adapter.get_current_game();
+                if (current_game != null) {
+                    // Force game to end with the appropriate result
+                    current_game.current_state.game_status = result;
+
+                    logger.debug("Game forcefully ended due to timeout");
+
+                    // Trigger the game finished event which will handle saving and showing dialog
+                    on_game_finished(result);
+                }
+            }
 
             logger.info("Game ended by timeout - %s wins", winner_name);
         }

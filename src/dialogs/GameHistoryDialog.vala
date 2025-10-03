@@ -17,6 +17,8 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
     [GtkChild]
     private unowned Adw.HeaderBar header_bar;
     [GtkChild]
+    private unowned Button filter_button;
+    [GtkChild]
     private unowned Button clear_history_button;
     [GtkChild]
     private unowned Adw.ActionRow filter_row;
@@ -44,6 +46,7 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
     private GameHistoryManager history_manager;
     private Logger logger;
     private GameHistoryRecord? selected_game = null;
+    private Adw.Dialog? filter_sheet = null;
 
     // Filter models
     private StringList variant_filter_model;
@@ -71,6 +74,9 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
         setup_list();
         load_game_history();
         update_statistics();
+
+        // Connect filter button for mobile
+        filter_button.clicked.connect(show_filter_sheet);
 
         logger.debug("GameHistoryDialog constructed");
     }
@@ -514,5 +520,93 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
     public void refresh() {
         load_game_history();
         update_statistics();
+    }
+
+    /**
+     * Show filter bottom sheet for mobile/tablet
+     */
+    private void show_filter_sheet() {
+        if (filter_sheet != null) {
+            filter_sheet.present(this);
+            return;
+        }
+
+        // Create filter bottom sheet
+        filter_sheet = new Adw.Dialog();
+        filter_sheet.title = _("Filter Games");
+        filter_sheet.content_width = 400;
+        filter_sheet.content_height = 500;
+
+        var toolbar_view = new Adw.ToolbarView();
+
+        var header = new Adw.HeaderBar();
+        header.show_end_title_buttons = false;
+        header.show_start_title_buttons = false;
+
+        var done_button = new Button.with_label(_("Done"));
+        done_button.add_css_class("suggested-action");
+        done_button.clicked.connect(() => {
+            filter_sheet.close();
+        });
+        header.pack_end(done_button);
+
+        var window_title = new Adw.WindowTitle(_("Filter Games"), "");
+        header.set_title_widget(window_title);
+
+        toolbar_view.add_top_bar(header);
+
+        // Create filter content
+        var content_box = new Box(Orientation.VERTICAL, 0);
+        content_box.margin_start = 12;
+        content_box.margin_end = 12;
+        content_box.margin_top = 12;
+        content_box.margin_bottom = 12;
+
+        // Variant filter
+        var variant_group = new Adw.PreferencesGroup();
+        variant_group.title = _("Game Variant");
+
+        var variant_row = new Adw.ComboRow();
+        variant_row.title = _("Variant");
+        variant_row.model = variant_filter_model;
+        variant_row.selected = variant_filter.selected;
+        variant_row.notify["selected"].connect(() => {
+            variant_filter.selected = variant_row.selected;
+        });
+        variant_group.add(variant_row);
+        content_box.append(variant_group);
+
+        // Result filter
+        var result_group = new Adw.PreferencesGroup();
+        result_group.title = _("Game Result");
+
+        var result_row = new Adw.ComboRow();
+        result_row.title = _("Result");
+        result_row.model = result_filter_model;
+        result_row.selected = result_filter.selected;
+        result_row.notify["selected"].connect(() => {
+            result_filter.selected = result_row.selected;
+        });
+        result_group.add(result_row);
+        content_box.append(result_group);
+
+        // Player type filter
+        var player_group = new Adw.PreferencesGroup();
+        player_group.title = _("Player Type");
+
+        var player_row = new Adw.ComboRow();
+        player_row.title = _("Players");
+        player_row.model = player_filter_model;
+        player_row.selected = player_filter.selected;
+        player_row.notify["selected"].connect(() => {
+            player_filter.selected = player_row.selected;
+        });
+        player_group.add(player_row);
+        content_box.append(player_group);
+
+        toolbar_view.set_content(content_box);
+        filter_sheet.set_child(toolbar_view);
+
+        filter_sheet.present(this);
     }
 }

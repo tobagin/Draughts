@@ -46,6 +46,8 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
     private unowned Box side_panel;
     [GtkChild]
     private unowned ListBox move_history_list;
+    [GtkChild]
+    private unowned Button side_panel_button;
 
     private GameHistoryRecord? game_record = null;
     private DraughtsBoard replay_board;
@@ -54,6 +56,7 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
     private bool is_playing = false;
     private int current_move_index = 0;
     private DraughtsGameState[] game_states;
+    private Adw.Dialog? side_panel_sheet = null;
 
     // Properties for data binding
     public string game_title { get; private set; default = ""; }
@@ -259,6 +262,9 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
 
         // Move history list
         move_history_list.row_selected.connect(on_move_history_selected);
+
+        // Side panel button for mobile (shows bottom sheet)
+        side_panel_button.clicked.connect(show_side_panel_sheet);
     }
 
     /**
@@ -281,6 +287,18 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
         var reset_action = new SimpleAction("reset", null);
         reset_action.activate.connect(() => go_to_position(0));
         action_group.add_action(reset_action);
+
+        // Speed action (for menu-based speed control on mobile)
+        var speed_action = new SimpleAction("speed", VariantType.STRING);
+        speed_action.activate.connect((parameter) => {
+            if (parameter != null) {
+                string speed_str = parameter.get_string();
+                double speed = double.parse(speed_str);
+                speed_scale.set_value(speed);
+                logger.info(@"Playback speed changed to $(speed)×");
+            }
+        });
+        action_group.add_action(speed_action);
 
         insert_action_group("replay", action_group);
     }
@@ -597,6 +615,119 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
                 logger.debug(@"GameReplayDialog: Unknown variant name '$(variant_name)', defaulting to Brazilian Draughts");
                 return DraughtsVariant.BRAZILIAN;
         }
+    }
+
+    /**
+     * Show side panel as bottom sheet on mobile
+     */
+    private void show_side_panel_sheet() {
+        if (side_panel_sheet != null) {
+            side_panel_sheet.present(this);
+            return;
+        }
+
+        // Create a dialog to show side panel content as a drawer/bottom sheet
+        side_panel_sheet = new Adw.Dialog();
+        side_panel_sheet.title = _("Game Information");
+        side_panel_sheet.content_width = 400;
+        side_panel_sheet.content_height = 600;
+
+        var toolbar_view = new Adw.ToolbarView();
+
+        var header = new Adw.HeaderBar();
+        header.show_end_title_buttons = false;
+        header.show_start_title_buttons = false;
+
+        var close_button = new Button.with_label(_("Done"));
+        close_button.add_css_class("suggested-action");
+        close_button.clicked.connect(() => {
+            side_panel_sheet.close();
+        });
+        header.pack_end(close_button);
+
+        var window_title = new Adw.WindowTitle(_("Game Information"), "");
+        header.set_title_widget(window_title);
+
+        toolbar_view.add_top_bar(header);
+
+        // Create scrollable content with side panel info
+        var scrolled = new ScrolledWindow();
+        scrolled.vexpand = true;
+        scrolled.hscrollbar_policy = PolicyType.NEVER;
+
+        var content_box = new Box(Orientation.VERTICAL, 12);
+        content_box.margin_start = 12;
+        content_box.margin_end = 12;
+        content_box.margin_top = 12;
+        content_box.margin_bottom = 12;
+
+        // Add game info
+        var info_group = new Adw.PreferencesGroup();
+        info_group.title = _("Game Information");
+
+        var players_row = new Adw.ActionRow();
+        players_row.title = players_text;
+        players_row.subtitle = result_text;
+        var players_icon = new Image.from_icon_name("system-users-symbolic");
+        players_row.add_prefix(players_icon);
+        info_group.add(players_row);
+
+        var variant_row = new Adw.ActionRow();
+        variant_row.title = _("Variant");
+        variant_row.subtitle = variant_text;
+        var variant_icon = new Image.from_icon_name("applications-games-symbolic");
+        variant_row.add_prefix(variant_icon);
+        info_group.add(variant_row);
+
+        var duration_row = new Adw.ActionRow();
+        duration_row.title = _("Game Duration");
+        duration_row.subtitle = duration_text;
+        var duration_icon = new Image.from_icon_name("alarm-symbolic");
+        duration_row.add_prefix(duration_icon);
+        info_group.add(duration_row);
+
+        content_box.append(info_group);
+
+        // Add current move info
+        var move_group = new Adw.PreferencesGroup();
+        move_group.title = _("Current Move");
+
+        var move_info_row = new Adw.ActionRow();
+        move_info_row.title = move_notation;
+        move_info_row.subtitle = move_description;
+        var move_icon = new Image.from_icon_name("view-list-symbolic");
+        move_info_row.add_prefix(move_icon);
+        move_group.add(move_info_row);
+
+        content_box.append(move_group);
+
+        // Add statistics
+        var stats_group = new Adw.PreferencesGroup();
+        stats_group.title = _("Game Statistics");
+
+        var red_stats_row = new Adw.ActionRow();
+        red_stats_row.title = _("Red Player");
+        red_stats_row.subtitle = red_stats_text;
+        var red_icon = new Image.from_icon_name("media-record-symbolic");
+        red_icon.add_css_class("red-piece");
+        red_stats_row.add_prefix(red_icon);
+        stats_group.add(red_stats_row);
+
+        var black_stats_row = new Adw.ActionRow();
+        black_stats_row.title = _("Black Player");
+        black_stats_row.subtitle = black_stats_text;
+        var black_icon = new Image.from_icon_name("media-record-symbolic");
+        black_icon.add_css_class("black-piece");
+        black_stats_row.add_prefix(black_icon);
+        stats_group.add(black_stats_row);
+
+        content_box.append(stats_group);
+
+        scrolled.set_child(content_box);
+        toolbar_view.set_content(scrolled);
+        side_panel_sheet.set_child(toolbar_view);
+
+        side_panel_sheet.present(this);
     }
 
     /**

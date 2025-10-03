@@ -2,9 +2,23 @@ using Gtk 4.0;
 using Adw 1;
 
 template $DraughtsWindow : Adw.ApplicationWindow {
+  // Mobile breakpoint for narrow screens
+  Adw.Breakpoint {
+    condition ("max-width: 550px")
+
+    setters {
+      // On narrow screens, hide less important bottom bar elements
+      navigation_buttons.visible: false;
+      board_container.margin-start: 6;
+      board_container.margin-end: 6;
+      board_container.margin-top: 6;
+      board_container.margin-bottom: 6;
+    }
+  }
+
   Gtk.Box {
     orientation: vertical;
-    
+
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle window_title {
         title: _("Draughts");
