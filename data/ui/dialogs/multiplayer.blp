@@ -1,0 +1,427 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $DraughtsMultiplayerDialog : Adw.Dialog {
+  title: _("Play Online");
+  content-width: 480;
+  content-height: 600;
+
+  Adw.ViewStack view_stack {
+    // Main view
+    Adw.ViewStackPage {
+      name: "main";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar header_bar {
+          [title]
+          Adw.WindowTitle {
+            title: _("Play Online");
+            subtitle: _("Not connected");
+          }
+        }
+
+        content: Adw.StatusPage status_page {
+          title: _("Multiplayer");
+          description: _("Play draughts with opponents online");
+
+          Box {
+            orientation: vertical;
+            spacing: 24;
+            halign: center;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 24;
+            margin-end: 24;
+
+            // Main action buttons
+            Box main_buttons {
+              orientation: vertical;
+              spacing: 12;
+              halign: fill;
+
+              Button host_button {
+                label: _("Host Game");
+                tooltip-text: _("Create a new game room");
+
+                styles [
+                  "pill",
+                  "suggested-action"
+                ]
+              }
+
+              Button join_button {
+                label: _("Join Game");
+                tooltip-text: _("Join an existing game room");
+
+                styles [
+                  "pill"
+                ]
+              }
+
+              Button quick_match_button {
+                label: _("Quick Match");
+                tooltip-text: _("Find a random opponent (coming soon)");
+                sensitive: false;
+
+                styles [
+                  "pill"
+                ]
+              }
+            }
+          }
+        };
+      };
+    }
+
+    // Host settings view
+    Adw.ViewStackPage {
+      name: "host";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar host_header_bar {
+          [title]
+          Adw.WindowTitle host_window_title {
+            title: _("Host Game");
+            subtitle: _("Connected");
+          }
+
+          [start]
+          Button cancel_host_button {
+            icon-name: "go-previous-symbolic";
+            tooltip-text: _("Back");
+          }
+        }
+
+        content: Adw.StatusPage {
+          vexpand: true;
+          title: _("Game Settings");
+          description: _("Configure your game settings and create a room");
+
+          Box {
+            orientation: vertical;
+            spacing: 12;
+            halign: fill;
+            valign: center;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 24;
+            margin-end: 24;
+
+            Adw.PreferencesGroup {
+              Adw.ComboRow variant_row {
+                title: _("Variant");
+
+                model: StringList {
+                  strings [
+                    _("American Checkers"),
+                    _("International Draughts"),
+                    _("Russian Draughts"),
+                    _("Brazilian Draughts"),
+                    _("Italian Draughts"),
+                    _("Spanish Draughts"),
+                    _("Czech Draughts"),
+                    _("Thai Draughts"),
+                    _("German Draughts"),
+                    _("Swedish Draughts"),
+                    _("Pool Checkers"),
+                    _("Turkish Draughts"),
+                    _("Armenian Draughts"),
+                    _("Gothic Draughts"),
+                    _("Frisian Draughts"),
+                    _("Canadian Draughts")
+                  ]
+                };
+              }
+
+              Adw.SwitchRow use_timer_row {
+                title: _("Use Timer");
+                subtitle: _("Add time limits to the game");
+              }
+
+              Adw.SpinRow minutes_row {
+                title: _("Minutes per Side");
+                adjustment: Adjustment {
+                  lower: 1;
+                  upper: 60;
+                  value: 5;
+                  step-increment: 1;
+                  page-increment: 5;
+                };
+              }
+
+              Adw.SpinRow increment_row {
+                title: _("Increment (seconds)");
+                subtitle: _("Time added after each move");
+                adjustment: Adjustment {
+                  lower: 0;
+                  upper: 60;
+                  value: 0;
+                  step-increment: 1;
+                  page-increment: 5;
+                };
+              }
+
+              Adw.ComboRow clock_type_row {
+                title: _("Clock Type");
+                subtitle: _("Timer mode for the game");
+
+                model: StringList {
+                  strings [
+                    _("Fischer (add time after move)"),
+                    _("Bronstein (delay before countdown)")
+                  ]
+                };
+              }
+            }
+          }
+        };
+
+        [bottom]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+
+          [title]
+          Button create_room_button {
+            label: _("Create Room");
+
+            styles [
+              "pill",
+              "suggested-action"
+            ]
+          }
+        }
+      };
+    }
+
+    // Join game view
+    Adw.ViewStackPage {
+      name: "join";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar join_header_bar {
+          [title]
+          Adw.WindowTitle join_window_title {
+            title: _("Join Game");
+            subtitle: _("Connected");
+          }
+
+          [start]
+          Button cancel_join_button {
+            icon-name: "go-previous-symbolic";
+            tooltip-text: _("Back");
+          }
+        }
+
+        content: Adw.StatusPage {
+          vexpand: true;
+          title: _("Enter Room Code");
+          description: _("Ask your friend for their 6-character room code");
+
+          Box {
+            orientation: vertical;
+            spacing: 12;
+            halign: center;
+            valign: center;
+
+            Entry room_code_entry {
+              placeholder-text: _("ABCD12");
+              max-length: 6;
+              halign: center;
+              width-request: 200;
+
+              styles [
+                "title-2"
+              ]
+            }
+          }
+        };
+
+        [bottom]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+
+          [title]
+          Button join_room_button {
+            label: _("Join");
+
+            styles [
+              "pill",
+              "suggested-action"
+            ]
+          }
+        }
+      };
+    }
+
+    // Quick match variant selection view
+    Adw.ViewStackPage {
+      name: "quick_match";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar quick_match_header_bar {
+          [title]
+          Adw.WindowTitle quick_match_window_title {
+            title: _("Quick Match");
+            subtitle: _("Connected");
+          }
+
+          [start]
+          Button cancel_quick_match_button {
+            icon-name: "go-previous-symbolic";
+            tooltip-text: _("Back");
+          }
+        }
+
+        content: Adw.StatusPage {
+          vexpand: true;
+          title: _("Quick Match");
+          description: _("You'll be matched with players of the same variant");
+
+          Box {
+            orientation: vertical;
+            spacing: 12;
+            halign: fill;
+            valign: center;
+            margin-top: 24;
+            margin-bottom: 24;
+            margin-start: 24;
+            margin-end: 24;
+
+            Adw.PreferencesGroup {
+              Adw.ComboRow quick_match_variant_row {
+                title: _("Variant");
+
+                model: StringList {
+                  strings [
+                    _("American Checkers"),
+                    _("International Draughts"),
+                    _("Russian Draughts"),
+                    _("Brazilian Draughts"),
+                    _("Italian Draughts"),
+                    _("Spanish Draughts"),
+                    _("Czech Draughts"),
+                    _("Thai Draughts"),
+                    _("German Draughts"),
+                    _("Swedish Draughts"),
+                    _("Pool Checkers"),
+                    _("Turkish Draughts"),
+                    _("Armenian Draughts"),
+                    _("Gothic Draughts"),
+                    _("Frisian Draughts"),
+                    _("Canadian Draughts")
+                  ]
+                };
+              }
+            }
+          }
+        };
+
+        [bottom]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+
+          [title]
+          Button start_quick_match_button {
+            label: _("Find Opponent");
+
+            styles [
+              "pill",
+              "suggested-action"
+            ]
+          }
+        }
+      };
+    }
+
+    // Waiting view
+    Adw.ViewStackPage {
+      name: "waiting";
+
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar waiting_header_bar {
+          [title]
+          Adw.WindowTitle waiting_window_title {
+            title: _("Waiting");
+            subtitle: _("Connected");
+          }
+        }
+
+        content: Adw.StatusPage {
+          vexpand: true;
+
+          Box {
+            orientation: vertical;
+            spacing: 16;
+            halign: center;
+            valign: center;
+
+            Spinner waiting_spinner {
+              spinning: true;
+              width-request: 48;
+              height-request: 48;
+            }
+
+            Label waiting_label {
+              label: _("Waiting for opponent...");
+
+              styles [
+                "title-3"
+              ]
+            }
+
+            // Room code display
+            Box {
+              orientation: vertical;
+              spacing: 8;
+              halign: center;
+
+              Label {
+                label: _("Share this code:");
+
+                styles [
+                  "dim-label"
+                ]
+              }
+
+              Box {
+                orientation: horizontal;
+                spacing: 8;
+                halign: center;
+
+                Label room_code_label {
+                  label: "------";
+                  selectable: true;
+
+                  styles [
+                    "title-1",
+                    "monospace"
+                  ]
+                }
+
+                Button copy_code_button {
+                  icon-name: "edit-copy-symbolic";
+                  tooltip-text: _("Copy room code");
+                  valign: center;
+
+                  styles [
+                    "flat"
+                  ]
+                }
+              }
+            }
+
+            Button cancel_waiting_button {
+              label: _("Cancel");
+              margin-top: 12;
+            }
+          }
+        };
+      };
+    }
+  }
+}

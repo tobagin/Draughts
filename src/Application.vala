@@ -51,14 +51,8 @@ namespace Draughts {
 
             // Show dialogs after a delay to ensure GTK is ready
             Idle.add(() => {
-                // Show welcome dialog first if needed
-                if (settings.is_first_run() || settings.get_show_welcome()) {
-                    WelcomeDialog.show_if_needed(window);
-                }
-                // Then check for What's New
-                else {
-                    check_and_show_whats_new();
-                }
+                // Check for What's New
+                check_and_show_whats_new();
                 return false;
             });
         }
@@ -117,6 +111,12 @@ namespace Draughts {
             const string[] new_game_accels = {"<primary>n", null};
             set_accels_for_action("app.new-game", new_game_accels);
 
+            var play_online_action = new SimpleAction("play-online", null);
+            play_online_action.activate.connect(show_multiplayer_dialog);
+            add_action(play_online_action);
+            const string[] play_online_accels = {"<primary>m", null};
+            set_accels_for_action("app.play-online", play_online_accels);
+
             var reset_game_action = new SimpleAction("reset-game", null);
             reset_game_action.activate.connect(reset_game);
             add_action(reset_game_action);
@@ -131,13 +131,6 @@ namespace Draughts {
             add_action(help_action);
             const string[] help_accels = {"F1", null};
             set_accels_for_action("app.help", help_accels);
-
-            // Welcome dialog
-            var welcome_action = new SimpleAction("welcome", null);
-            welcome_action.activate.connect(() => {
-                WelcomeDialog.show_dialog(active_window);
-            });
-            add_action(welcome_action);
 
             // Keyboard shortcuts overlay
             const string[] shortcuts_accels = {"<primary>question", null};
@@ -210,6 +203,17 @@ namespace Draughts {
             logger.info("New game action triggered");
             if (main_window != null) {
                 main_window.start_new_game();
+            }
+        }
+
+        private void show_multiplayer_dialog() {
+            logger.info("Play online action triggered");
+            if (main_window != null) {
+                var dialog = MultiplayerDialog.show(main_window);
+                dialog.game_ready.connect((controller) => {
+                    logger.info("Multiplayer game ready, setting up controller");
+                    main_window.set_multiplayer_controller(controller);
+                });
             }
         }
 

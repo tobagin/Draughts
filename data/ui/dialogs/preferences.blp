@@ -49,16 +49,6 @@ template $DraughtsPreferences : Adw.PreferencesDialog {
     // Audio section removed from preferences - now controlled per-game in New Game dialog
     // Code maintained for potential future global sound settings
 
-    Adw.PreferencesGroup {
-      title: _("Startup");
-      description: _("Configure what happens when the application starts");
-
-      Adw.SwitchRow welcome_row {
-        title: _("Show Welcome Screen");
-        subtitle: _("Display welcome dialog on startup");
-      }
-    }
-
     // Interaction mode removed from UI - defaults to "Click to Move"
     // Drag and Drop code maintained but hidden due to sluggish performance
 

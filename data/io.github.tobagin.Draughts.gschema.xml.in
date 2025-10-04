@@ -113,12 +113,6 @@
       <description>Display release notes when the application is updated to a new version</description>
     </key>
 
-    <key name="show-welcome" type="b">
-      <default>true</default>
-      <summary>Show Welcome dialog on startup</summary>
-      <description>Display the welcome screen when the application starts</description>
-    </key>
-
     <key name="board-size" type="i">
       <default>10</default>
       <summary>Board size</summary>
@@ -413,6 +407,19 @@
       <default>0</default>
       <summary>Clock type</summary>
       <description>Last selected clock type (0=Fischer, 1=Bronstein)</description>
+    </key>
+
+    <!-- Multiplayer Settings -->
+    <key name="multiplayer-server-url" type="s">
+      <default>""</default>
+      <summary>Multiplayer server URL</summary>
+      <description>WebSocket server URL for multiplayer games (empty = use default localhost:8080)</description>
+    </key>
+
+    <key name="multiplayer-session-id" type="s">
+      <default>""</default>
+      <summary>Multiplayer session ID</summary>
+      <description>Persistent session ID for reconnecting to multiplayer games</description>
     </key>
   </schema>
 </schemalist>

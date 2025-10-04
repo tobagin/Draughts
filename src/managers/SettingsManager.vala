@@ -78,15 +78,6 @@ namespace Draughts {
             settings.bind (Constants.SETTINGS_SHOW_WHATS_NEW, object, property, SettingsBindFlags.DEFAULT);
         }
 
-        // Welcome dialog settings
-        public bool get_show_welcome () {
-            return settings.get_boolean ("show-welcome");
-        }
-
-        public void set_show_welcome (bool show) {
-            settings.set_boolean ("show-welcome", show);
-        }
-
         // First run detection
         public bool is_first_run () {
             return settings.get_boolean (Constants.SETTINGS_FIRST_RUN);

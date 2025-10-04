@@ -1033,7 +1033,28 @@ namespace Draughts {
             on_game_reset_requested();
         }
 
+        /**
+         * Set multiplayer controller and switch to multiplayer mode
+         */
+        public void set_multiplayer_controller(MultiplayerGameController controller) {
+            if (adapter != null) {
+                adapter.set_multiplayer_controller(controller);
 
+                // Update window subtitle with the multiplayer game variant
+                var game = controller.get_current_game();
+                if (game != null && game.variant != null) {
+                    window_title.set_subtitle(game.variant.display_name);
+
+                    // Set up timers if the game has them
+                    if (game.timer_red != null && game.timer_black != null && timer_display != null) {
+                        timer_display.set_timers(game.timer_red, game.timer_black);
+                        logger.info("Multiplayer game timers configured");
+                    } else if (timer_display != null) {
+                        timer_display.set_timers(null, null);
+                    }
+                }
+            }
+        }
 
         public void set_game_rules(string rules) {
             logger.info("Setting game rules to: %s", rules);

@@ -81,6 +81,9 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Update the board widget to match the game state
         sync_board_to_game_state();
+
+        // Set board perspective (always RED for 2-player games)
+        board_widget.set_player_perspective(Player.RED);
     }
 
     /**
@@ -118,6 +121,9 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Update the board widget to match the game state
         sync_board_to_game_state();
+
+        // Set board perspective (always RED for human vs AI with black AI)
+        board_widget.set_player_perspective(Player.RED);
 
         // Check if the first player (red) is AI and should make the opening move
         check_ai_turn();
@@ -188,6 +194,15 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Update the board widget to match the game state
         sync_board_to_game_state();
+
+        // Set board perspective based on human player color
+        if (is_human_vs_ai) {
+            Player perspective = (human_color == PieceColor.RED) ? Player.RED : Player.BLACK;
+            board_widget.set_player_perspective(perspective);
+        } else {
+            // For human vs human, default to RED
+            board_widget.set_player_perspective(Player.RED);
+        }
 
         // Check if the first player (red) is AI and should make the opening move
         check_ai_turn();
@@ -559,6 +574,49 @@ public class Draughts.DraughtsBoardAdapter : Object {
     }
 
     /**
+     * Switch to multiplayer mode with the given controller
+     */
+    public void set_multiplayer_controller(MultiplayerGameController multiplayer_controller) {
+        // Disconnect signals from old controller
+        if (game_controller != null) {
+            game_controller.game_state_changed.disconnect(on_engine_state_changed);
+            game_controller.game_finished.disconnect(on_engine_game_finished);
+        }
+
+        // Set new controller
+        game_controller = multiplayer_controller;
+        current_game = multiplayer_controller.get_current_game();
+
+        // Get the variant from the multiplayer game
+        if (current_game != null) {
+            current_variant = current_game.variant;
+
+            // Update board widget for the correct variant and board size
+            board_widget.set_board_size(current_variant.board_size);
+            board_widget.set_game_rules(current_variant.id);
+
+            logger.info("Multiplayer game variant: %s (%dx%d)",
+                       current_variant.display_name,
+                       current_variant.board_size,
+                       current_variant.board_size);
+        }
+
+        // Connect signals
+        game_controller.game_state_changed.connect(on_engine_state_changed);
+        game_controller.game_finished.connect(on_engine_game_finished);
+
+        // Set board perspective based on local player color
+        PieceColor local_color = multiplayer_controller.get_local_player_color();
+        Player perspective = (local_color == PieceColor.RED) ? Player.RED : Player.BLACK;
+        board_widget.set_player_perspective(perspective);
+
+        // Update the board to show the current game state
+        sync_board_to_game_state();
+
+        logger.info("Switched to multiplayer mode, perspective: %s", perspective.to_string());
+    }
+
+    /**
      * Get all legal moves for the current player
      */
     public Gee.ArrayList<DraughtsMove> get_legal_moves() {
@@ -851,6 +909,19 @@ public class Draughts.DraughtsBoardAdapter : Object {
      * Highlight all playable pieces with blue glow
      */
     public void highlight_playable_pieces() {
+        // In multiplayer, only highlight if it's the local player's turn
+        if (game_controller is MultiplayerGameController) {
+            var multiplayer_controller = (MultiplayerGameController) game_controller;
+            var current_state = game_controller.get_current_state();
+            var local_color = multiplayer_controller.get_local_player_color();
+
+            // Only highlight if it's the local player's turn
+            if (current_state.active_player != local_color) {
+                board_widget.set_playable_pieces(new Gee.HashSet<string>());
+                return;
+            }
+        }
+
         var playable_positions = get_playable_piece_positions();
         board_widget.set_playable_pieces(playable_positions);
     }

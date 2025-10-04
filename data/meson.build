@@ -5,7 +5,6 @@ ui_files = []
 blueprint_files = [
   'ui/window.blp',
   'ui/dialogs/help.blp',
-  'ui/dialogs/welcome.blp',
   'ui/dialogs/preferences.blp',
   'ui/dialogs/variant-selector.blp',
   'ui/dialogs/variant-rules.blp',
@@ -14,6 +13,7 @@ blueprint_files = [
   'ui/dialogs/game-history.blp',
   'ui/dialogs/game-replay.blp',
   'ui/dialogs/new-game.blp',
+  'ui/dialogs/multiplayer.blp',
   'ui/widgets/game-controls.blp',
   'ui/widgets/timer-display.blp',
   'ui/widgets/move-history.blp',

@@ -17,6 +17,7 @@ public class Draughts.BoardRenderer : Object {
     private int board_size;
     private double square_size;
     private double piece_radius;
+    private bool flip_board = false; // true = black at bottom, false = red at bottom
 
     // Colors
     private Gdk.RGBA dark_square_color;
@@ -86,6 +87,28 @@ public class Draughts.BoardRenderer : Object {
     }
 
     /**
+     * Set board perspective based on player color
+     * @param player_color Color of the player viewing the board (PieceColor.RED or PieceColor.BLACK)
+     */
+    public void set_board_perspective(PieceColor player_color) {
+        flip_board = (player_color == PieceColor.BLACK);
+    }
+
+    /**
+     * Transform row coordinate based on board flip state
+     */
+    private int transform_row(int row) {
+        return flip_board ? (board_size - 1 - row) : row;
+    }
+
+    /**
+     * Transform column coordinate based on board flip state
+     */
+    private int transform_col(int col) {
+        return flip_board ? (board_size - 1 - col) : col;
+    }
+
+    /**
      * Calculate layout dimensions based on widget size
      */
     public void calculate_layout(double widget_width, double widget_height) {
@@ -119,10 +142,13 @@ public class Draughts.BoardRenderer : Object {
     private void render_board_squares(Cairo.Context cr) {
         for (int row = 0; row < board_size; row++) {
             for (int col = 0; col < board_size; col++) {
-                double x = col * square_size;
-                double y = row * square_size;
+                int display_row = transform_row(row);
+                int display_col = transform_col(col);
 
-                // Determine square color
+                double x = display_col * square_size;
+                double y = display_row * square_size;
+
+                // Determine square color (use original coordinates for pattern)
                 bool is_dark = (row + col) % 2 == 1;
                 var color = is_dark ? dark_square_color : light_square_color;
 
@@ -150,8 +176,9 @@ public class Draughts.BoardRenderer : Object {
 
         // Column labels (a, b, c, ...)
         for (int col = 0; col < board_size; col++) {
+            int display_col = transform_col(col);
             string label = ((char)('a' + col)).to_string();
-            double x = col * square_size + square_size / 2;
+            double x = display_col * square_size + square_size / 2;
             double y = board_size * square_size + 15;
 
             Cairo.TextExtents extents;
@@ -162,9 +189,10 @@ public class Draughts.BoardRenderer : Object {
 
         // Row labels (1, 2, 3, ...)
         for (int row = 0; row < board_size; row++) {
+            int display_row = transform_row(row);
             string label = (board_size - row).to_string();
             double x = -15;
-            double y = row * square_size + square_size / 2;
+            double y = display_row * square_size + square_size / 2;
 
             Cairo.TextExtents extents;
             cr.text_extents(label, out extents);
@@ -177,8 +205,11 @@ public class Draughts.BoardRenderer : Object {
      * Render a game piece
      */
     public void render_piece(Cairo.Context cr, Draughts.PieceType piece_type, int row, int col, double alpha = 1.0) {
-        double center_x = col * square_size + square_size / 2;
-        double center_y = row * square_size + square_size / 2;
+        int display_row = transform_row(row);
+        int display_col = transform_col(col);
+
+        double center_x = display_col * square_size + square_size / 2;
+        double center_y = display_row * square_size + square_size / 2;
 
         var piece_color = get_piece_color(piece_type);
         bool is_king = (piece_type == Draughts.PieceType.RED_KING || piece_type == Draughts.PieceType.BLACK_KING);
@@ -235,8 +266,11 @@ public class Draughts.BoardRenderer : Object {
      * Render square highlight
      */
     public void render_highlight(Cairo.Context cr, int row, int col, string highlight_type) {
-        double x = col * square_size;
-        double y = row * square_size;
+        int display_row = transform_row(row);
+        int display_col = transform_col(col);
+
+        double x = display_col * square_size;
+        double y = display_row * square_size;
 
         Gdk.RGBA color;
         switch (highlight_type) {
@@ -383,16 +417,23 @@ public class Draughts.BoardRenderer : Object {
      * Convert board coordinates to screen coordinates
      */
     public void board_to_screen_coords(int row, int col, out double x, out double y) {
-        x = col * square_size + square_size / 2;
-        y = row * square_size + square_size / 2;
+        int display_row = transform_row(row);
+        int display_col = transform_col(col);
+
+        x = display_col * square_size + square_size / 2;
+        y = display_row * square_size + square_size / 2;
     }
 
     /**
      * Convert screen coordinates to board coordinates
      */
     public bool screen_to_board_coords(double x, double y, out int row, out int col) {
-        row = (int)(y / square_size);
-        col = (int)(x / square_size);
+        int display_row = (int)(y / square_size);
+        int display_col = (int)(x / square_size);
+
+        // Transform back to logical coordinates
+        row = flip_board ? (board_size - 1 - display_row) : display_row;
+        col = flip_board ? (board_size - 1 - display_col) : display_col;
 
         return row >= 0 && row < board_size && col >= 0 && col < board_size;
     }

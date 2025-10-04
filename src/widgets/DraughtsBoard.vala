@@ -101,6 +101,9 @@ namespace Draughts {
         // Visibility state
         private bool pieces_visible = true;
 
+        // Board orientation state
+        private bool flip_board = false; // true = black at bottom, false = red at bottom
+
         // Animation state
         private bool is_animating = false;
         private int anim_from_row = -1;
@@ -376,8 +379,12 @@ namespace Draughts {
             // Draw each square
             for (int row = 0; row < board_size; row++) {
                 for (int col = 0; col < board_size; col++) {
-                    double x = col * square_size;
-                    double y = row * square_size;
+                    // Transform coordinates for display
+                    int display_row = transform_display_row(row);
+                    int display_col = transform_display_col(col);
+
+                    double x = display_col * square_size;
+                    double y = display_row * square_size;
 
                     // Determine square color (checkerboard pattern)
                     // Dark squares are playable in draughts (where row + col is odd)
@@ -474,11 +481,17 @@ namespace Draughts {
 
             // Draw animating piece (only if pieces are visible)
             if (is_animating && pieces_visible) {
+                // Transform animation coordinates for display
+                int from_display_row = transform_display_row(anim_from_row);
+                int from_display_col = transform_display_col(anim_from_col);
+                int to_display_row = transform_display_row(anim_to_row);
+                int to_display_col = transform_display_col(anim_to_col);
+
                 // Calculate interpolated position
-                double from_x = anim_from_col * square_size + square_size / 2;
-                double from_y = anim_from_row * square_size + square_size / 2;
-                double to_x = anim_to_col * square_size + square_size / 2;
-                double to_y = anim_to_row * square_size + square_size / 2;
+                double from_x = from_display_col * square_size + square_size / 2;
+                double from_y = from_display_row * square_size + square_size / 2;
+                double to_x = to_display_col * square_size + square_size / 2;
+                double to_y = to_display_row * square_size + square_size / 2;
 
                 double current_x = from_x + (to_x - from_x) * anim_progress;
                 double current_y = from_y + (to_y - from_y) * anim_progress;
@@ -632,8 +645,12 @@ namespace Draughts {
             int width = drawing_area.get_width();
             double square_size = (double)width / board_size;
 
-            col = (int)(x / square_size);
-            row = (int)(y / square_size);
+            int display_col = (int)(x / square_size);
+            int display_row = (int)(y / square_size);
+
+            // Transform back from display coordinates to logical coordinates
+            col = flip_board ? (board_size - 1 - display_col) : display_col;
+            row = flip_board ? (board_size - 1 - display_row) : display_row;
 
             return (row >= 0 && row < board_size && col >= 0 && col < board_size);
         }
@@ -1044,6 +1061,30 @@ namespace Draughts {
             // Trigger a redraw
             drawing_area.queue_draw();
             logger.debug("Pieces visibility set to: %s", visible.to_string());
+        }
+
+        /**
+         * Set board perspective based on player color
+         * @param player_color Color of the player (RED or BLACK) - their pieces will be at the bottom
+         */
+        public void set_player_perspective(Player player_color) {
+            flip_board = (player_color == Player.BLACK);
+            drawing_area.queue_draw();
+            logger.debug("Board perspective set to: %s at bottom", player_color.to_string());
+        }
+
+        /**
+         * Transform row coordinate for display (flip if needed)
+         */
+        private int transform_display_row(int row) {
+            return flip_board ? (board_size - 1 - row) : row;
+        }
+
+        /**
+         * Transform column coordinate for display (flip if needed)
+         */
+        private int transform_display_col(int col) {
+            return flip_board ? (board_size - 1 - col) : col;
         }
 
         public void set_game_rules(string rules) {

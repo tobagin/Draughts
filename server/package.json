@@ -1,0 +1,27 @@
+{
+  "name": "draughts-multiplayer-server",
+  "version": "1.0.0",
+  "description": "WebSocket relay server for Draughts multiplayer gameplay",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "draughts",
+    "checkers",
+    "multiplayer",
+    "websocket"
+  ],
+  "author": "Thiago Fernandes",
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

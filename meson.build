@@ -24,6 +24,8 @@ libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8')
 glib_dep = dependency('glib-2.0', version: '>= 2.86')
 gio_dep = dependency('gio-2.0', version: '>= 2.86')
 gee_dep = dependency('gee-0.8', version: '>= 0.8')
+libsoup_dep = dependency('libsoup-3.0', version: '>= 3.0')
+json_glib_dep = dependency('json-glib-1.0', version: '>= 1.6')
 
 # Vala compiler requirements
 vala = meson.get_compiler('vala')

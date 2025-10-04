@@ -15,7 +15,6 @@ draughts_sources = [
   'managers/GameHistoryManager.vala',
   'dialogs/About.vala',
   'dialogs/HelpDialog.vala',
-  'dialogs/WelcomeDialog.vala',
   'dialogs/KeyboardShortcuts.vala',
   'dialogs/Preferences.vala',
   'dialogs/VariantSelector.vala',
@@ -25,6 +24,7 @@ draughts_sources = [
   'dialogs/GameHistoryDialog.vala',
   'dialogs/GameReplayDialog.vala',
   'dialogs/NewGameDialog.vala',
+  'dialogs/MultiplayerDialog.vala',
   'widgets/DraughtsBoard.vala',
 
   # Draughts widgets
@@ -60,6 +60,12 @@ draughts_sources = [
   'services/draughts/GameController.vala',
   'services/draughts/TimerController.vala',
 
+  # Network multiplayer services
+  'services/network/NetworkMessage.vala',
+  'services/network/NetworkClient.vala',
+  'services/network/NetworkSession.vala',
+  'services/network/MultiplayerGameController.vala',
+
   # Draughts variant rule engines
   'services/draughts/UnifiedRuleEngine.vala',
 ]
@@ -81,6 +87,7 @@ draughts_exe = executable('draughts',
     glib_dep,
     gio_dep,
     gee_dep,
+    libsoup_dep,
     dependency('json-glib-1.0'),
     dependency('gstreamer-1.0'),
     declare_dependency(link_args: ['-lm']),

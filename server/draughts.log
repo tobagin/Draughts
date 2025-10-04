@@ -1,0 +1,55 @@
+F: /run/user/1000/.flatpak/io.github.tobagin.Draughts.Devel/xdg-run/pulse is not a symlink to "../../flatpak/pulse" as expected: readlinkat: Invalid argument
+
+(draughts:2): Gtk-WARNING **: 17:47:22.515: Cannot add an object of type GtkStringList to a widget of type DraughtsWindow
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:981: FINISHME: support more multi-planar formats with DRM modifiers
+MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.839: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.874: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.895: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.913: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.930: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.946: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.962: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.980: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:22.995: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:23.012: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:23.029: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:23.045: DraughtsNewGameDialog 0x5582d83f7160 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.561: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.590: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.624: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.641: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.657: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.674: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.690: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.707: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.724: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.741: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.757: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.774: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+
+(draughts:2): Adwaita-WARNING **: 17:47:48.791: DraughtsNewGameDialog 0x5582d8327820 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it

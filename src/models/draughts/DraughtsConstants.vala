@@ -196,12 +196,14 @@ namespace Draughts {
      */
     public enum PlayerType {
         HUMAN,
-        AI;
+        AI,
+        NETWORK_REMOTE;
 
         public string to_string() {
             switch (this) {
                 case HUMAN: return "Human";
                 case AI: return "AI";
+                case NETWORK_REMOTE: return "Network (Remote)";
                 default: return "Unknown";
             }
         }

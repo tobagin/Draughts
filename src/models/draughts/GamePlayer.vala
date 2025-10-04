@@ -40,6 +40,18 @@ public class Draughts.GamePlayer : Object {
     }
 
     /**
+     * Create a network remote player
+     */
+    public GamePlayer.network_remote(string id, string name, PieceColor color) {
+        this.id = id;
+        this.player_type = PlayerType.NETWORK_REMOTE;
+        this.name = name;
+        this.color = color;
+        this.ai_difficulty = null;
+        this.time_used = 0;
+    }
+
+    /**
      * Check if this is a human player
      */
     public bool is_human() {
@@ -51,6 +63,13 @@ public class Draughts.GamePlayer : Object {
      */
     public bool is_ai() {
         return player_type == PlayerType.AI;
+    }
+
+    /**
+     * Check if this is a network remote player
+     */
+    public bool is_network_remote() {
+        return player_type == PlayerType.NETWORK_REMOTE;
     }
 
     /**
@@ -118,6 +137,8 @@ public class Draughts.GamePlayer : Object {
 
         if (is_ai()) {
             copy = new GamePlayer.ai(id, name, color, ai_difficulty);
+        } else if (is_network_remote()) {
+            copy = new GamePlayer.network_remote(id, name, color);
         } else {
             copy = new GamePlayer.human(id, name, color);
         }
@@ -130,7 +151,14 @@ public class Draughts.GamePlayer : Object {
      * Get string representation
      */
     public string to_string() {
-        string type_str = is_ai() ? @"AI ($(ai_difficulty))" : "Human";
+        string type_str;
+        if (is_ai()) {
+            type_str = @"AI ($(ai_difficulty))";
+        } else if (is_network_remote()) {
+            type_str = "Network";
+        } else {
+            type_str = "Human";
+        }
         return @"$name ($type_str, $(color))";
     }
 
@@ -140,6 +168,8 @@ public class Draughts.GamePlayer : Object {
     public string get_display_name() {
         if (is_ai()) {
             return @"$name ($(ai_difficulty))";
+        } else if (is_network_remote()) {
+            return @"$name (Online)";
         } else {
             return name;
         }

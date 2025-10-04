@@ -38,6 +38,13 @@ template $DraughtsWindow : Adw.ApplicationWindow {
         tooltip-text: _("Pause Game");
       }
 
+      [start]
+      Gtk.Button disconnect_button {
+        icon-name: "network-offline-symbolic";
+        tooltip-text: _("Disconnect from Multiplayer Game");
+        visible: false;
+      }
+
       [end]
       Gtk.MenuButton menu_button {
         icon-name: "open-menu-symbolic";
@@ -83,6 +90,46 @@ template $DraughtsWindow : Adw.ApplicationWindow {
               label: _("Press Play to resume");
               halign: center;
               styles ["pause-subtitle"]
+            }
+          }
+        }
+
+        [overlay]
+        Gtk.Box disconnect_overlay {
+          orientation: vertical;
+          halign: fill;
+          valign: fill;
+          hexpand: true;
+          vexpand: true;
+          visible: false;
+
+          styles ["pause-overlay"]
+
+          Gtk.Box {
+            orientation: vertical;
+            valign: center;
+            halign: center;
+            vexpand: true;
+            hexpand: true;
+            spacing: 16;
+
+            Gtk.Label disconnect_label {
+              label: _("Opponent Disconnected");
+              halign: center;
+              valign: center;
+              styles ["paused-text"]
+            }
+
+            Gtk.Label disconnect_message {
+              label: _("Waiting for reconnection...");
+              halign: center;
+              styles ["pause-subtitle"]
+            }
+
+            Gtk.Label disconnect_countdown {
+              label: "30";
+              halign: center;
+              styles ["disconnect-countdown"]
             }
           }
         }
@@ -181,6 +228,12 @@ menu primary_menu {
       label: _("_New Game");
       action: "app.new-game";
       accel: "<primary>n";
+    }
+
+    item {
+      label: _("Play _Online");
+      action: "app.play-online";
+      accel: "<primary>m";
     }
 
     item {

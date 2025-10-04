@@ -4,7 +4,6 @@
     <file>window.ui</file>
     <file>preferences.ui</file>
     <file alias="dialogs/help.ui">help.ui</file>
-    <file alias="dialogs/welcome.ui">welcome.ui</file>
     <file alias="dialogs/variant-selector.ui">variant-selector.ui</file>
     <file alias="dialogs/variant-rules.ui">variant-rules.ui</file>
     <file alias="dialogs/game-preferences.ui">game-preferences.ui</file>
@@ -12,6 +11,7 @@
     <file alias="dialogs/game-history.ui">game-history.ui</file>
     <file alias="dialogs/game-replay.ui">game-replay.ui</file>
     <file alias="dialogs/new-game.ui">new-game.ui</file>
+    <file alias="dialogs/multiplayer.ui">multiplayer.ui</file>
     <file alias="widgets/game-controls.ui">game-controls.ui</file>
     <file alias="widgets/timer-display.ui">timer-display.ui</file>
     <file alias="widgets/move-history.ui">move-history.ui</file>

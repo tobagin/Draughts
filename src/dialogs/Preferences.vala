@@ -32,8 +32,6 @@ namespace Draughts {
     [GtkChild]
     private unowned Adw.ComboRow theme_row;
     [GtkChild]
-    private unowned Adw.SwitchRow welcome_row;
-    [GtkChild]
     private unowned Adw.SwitchRow whats_new_row;
     // Audio section removed from preferences - controlled per-game now
     // [GtkChild]
@@ -58,7 +56,6 @@ namespace Draughts {
         setup_board_theme_selection ();
         setup_piece_style_selection ();
         setup_theme_selection ();
-        setup_welcome_switch ();
         setup_whats_new_switch ();
         // setup_sound_effects_switch (); // Removed from preferences - controlled per-game
         setup_game_history_switch ();
@@ -105,15 +102,6 @@ namespace Draughts {
             var selected = (ColorScheme) theme_row.selected;
             settings_manager.set_color_scheme (selected);
             logger.debug ("Theme preference changed to: %s", selected.to_string ());
-        });
-    }
-
-    private void setup_welcome_switch () {
-        welcome_row.active = settings_manager.get_show_welcome ();
-
-        welcome_row.notify["active"].connect (() => {
-            settings_manager.set_show_welcome (welcome_row.active);
-            logger.debug ("Welcome Screen preference changed to: %s", welcome_row.active.to_string ());
         });
     }
 

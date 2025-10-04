@@ -228,6 +228,13 @@ label.pause-subtitle {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
+label.disconnect-countdown {
+  font-size: 96px;
+  font-weight: bold;
+  color: #ff6b6b;
+  text-shadow: 0 4px 12px rgba(255, 0, 0, 0.8);
+}
+
 /* Timer display styles for bottom bar */
 label.timer-display {
   font-family: monospace;
