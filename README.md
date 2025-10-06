@@ -12,6 +12,10 @@ A comprehensive draughts (checkers) game for GNOME, featuring 16 international v
 - **Authentic Rules**: Each variant implements official rules including forced captures, flying kings, and variant-specific move patterns
 
 ### Gameplay Modes
+- **Online Multiplayer**: Play against opponents worldwide in real-time
+  - Room-based matchmaking with 6-character room codes
+  - Quick match to find random opponents
+  - Automatic game state restoration on reconnection
 - **Human vs Human**: Play against a friend on the same computer
 - **Human vs AI**: Challenge the computer with 10 difficulty levels (Beginner to Grandmaster)
 - **AI vs AI**: Watch two AI opponents battle each other
@@ -129,6 +133,7 @@ flatpak run io.github.tobagin.Draughts.Devel
 ### Keyboard Shortcuts
 
 - `Ctrl+N` - New Game
+- `Ctrl+M` - Play Online (Multiplayer)
 - `Ctrl+Z` - Undo Move
 - `Ctrl+Shift+Z` - Redo Move
 - `Ctrl+H` - Show Move History
@@ -175,12 +180,15 @@ For detailed rules of each variant, see the in-game rules documentation (Menu â†
 - **Blueprint** - Declarative UI markup
 - **Meson** - Build system
 - **Flatpak** - Application packaging
+- **WebSocket** - Real-time multiplayer communication
+- **Node.js** - Multiplayer server (optional, for self-hosting)
 
 ### Architecture
 - **MVC Pattern**: Clean separation of game logic and UI
 - **Unified Rule Engine**: Single engine handles all 16 variants
 - **Async AI**: AI calculations run on background threads
 - **Smooth Animations**: GTK tick callbacks for fluid motion
+- **WebSocket Multiplayer**: Real-time online gameplay with automatic reconnection
 
 ## Contributing
 

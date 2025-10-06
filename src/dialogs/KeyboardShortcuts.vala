@@ -25,21 +25,21 @@ namespace Draughts {
             var section = new Adw.ShortcutsSection("general");
             section.title = "Application";
 
-            var quit_item = new Adw.ShortcutsItem("Quit", "<Primary>q");
-            var help_item = new Adw.ShortcutsItem("Show Keyboard Shortcuts", "<Primary>question");
+            var help_item = new Adw.ShortcutsItem("Help", "F1");
+            var shortcuts_item = new Adw.ShortcutsItem("Show Keyboard Shortcuts", "<Primary>question");
             var about_item = new Adw.ShortcutsItem("About", "<Primary>F1");
             var preferences_item = new Adw.ShortcutsItem("Preferences", "<Primary>comma");
-            var new_window_item = new Adw.ShortcutsItem("New Window", "<Primary>n");
             var close_item = new Adw.ShortcutsItem("Close Window", "<Primary>w");
             var fullscreen_item = new Adw.ShortcutsItem("Toggle Fullscreen", "F11");
+            var quit_item = new Adw.ShortcutsItem("Quit", "<Primary>q");
 
-            section.add(quit_item);
             section.add(help_item);
+            section.add(shortcuts_item);
             section.add(about_item);
             section.add(preferences_item);
-            section.add(new_window_item);
             section.add(close_item);
             section.add(fullscreen_item);
+            section.add(quit_item);
             shortcuts_window.add(section);
 
             // Game section
@@ -47,11 +47,13 @@ namespace Draughts {
             game_section.title = "Game Controls";
 
             var new_game_item = new Adw.ShortcutsItem("New Game", "<Primary>n");
+            var play_online_item = new Adw.ShortcutsItem("Play Online (Multiplayer)", "<Primary>m");
             var reset_game_item = new Adw.ShortcutsItem("Reset Game", "<Primary>r");
             var undo_item = new Adw.ShortcutsItem("Undo Move", "<Primary>z");
             var redo_item = new Adw.ShortcutsItem("Redo Move", "<Primary><Shift>z");
 
             game_section.add(new_game_item);
+            game_section.add(play_online_item);
             game_section.add(reset_game_item);
             game_section.add(undo_item);
             game_section.add(redo_item);

@@ -60,10 +60,15 @@ repo/
 # Temporary Files
 *.tmp
 *.temp
-# *.log
+*.log
 *.pid
 *.seed
 *.coverage
+
+# Translation Files
+*.mo
+temp_clean.po
+draughts.pot
 
 # Configuration
 config.log
