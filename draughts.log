@@ -1,81 +1,88 @@
 F: /run/user/1000/.flatpak/io.github.tobagin.Draughts.Devel/xdg-run/pulse is not a symlink to "../../flatpak/pulse" as expected: readlinkat: Invalid argument
-
-(draughts:2): Gtk-WARNING **: 22:34:38.391: Cannot add an object of type GtkStringList to a widget of type DraughtsWindow
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:981: FINISHME: support more multi-planar formats with DRM modifiers
 MESA-INTEL: warning: ../src/intel/vulkan/anv_formats.c:949: FINISHME: support YUV colorspace with DRM format modifiers
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.703: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Red
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.741: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+*** update_undo_redo_buttons: history_size=0, current_is_human=TRUE, undo_just_used=FALSE ***
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.764: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+!!!! GameController.make_move CALLED: piece_id=13 from (5,0) to (4,1) !!!!
+apply_move: Found piece ID 13 at (5,0), moving to (4,1)
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.781: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== STORING MOVE TO HISTORY ====
+Move piece_id=13 from (5,0) to (4,1)
+active_player_BEFORE=Red, active_player_AFTER=Black
+MoveHistoryManager.add_move: RECEIVED piece_id=13 from (5,0) to (4,1)
+MoveHistoryManager.add_move: STORED at position 0, history_size=1
+MoveHistoryManager.add_move: VERIFY stored move piece_id=13 from (5,0) to (4,1)
+!!!! GameController.make_move: About to emit game_state_changed with active_player=Black !!!!
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.797: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+#### on_engine_state_changed CALLED - active_player=Black ####
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.814: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Black
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.830: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+#### on_engine_state_changed DONE ####
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.847: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.864: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Black
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.880: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+*** update_undo_redo_buttons: history_size=1, current_is_human=FALSE, undo_just_used=FALSE ***
+apply_move: Found piece ID 9 at (2,1), moving to (3,0)
+apply_move: Found piece ID 9 at (2,1), moving to (3,2)
+apply_move: Found piece ID 10 at (2,3), moving to (3,2)
+apply_move: Found piece ID 10 at (2,3), moving to (3,4)
+apply_move: Found piece ID 11 at (2,5), moving to (3,4)
+apply_move: Found piece ID 11 at (2,5), moving to (3,6)
+apply_move: Found piece ID 12 at (2,7), moving to (3,6)
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.897: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+!!!! GameController.make_move CALLED: piece_id=10 from (2,3) to (3,4) !!!!
+apply_move: Found piece ID 10 at (2,3), moving to (3,4)
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.914: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== STORING MOVE TO HISTORY ====
+Move piece_id=10 from (2,3) to (3,4)
+active_player_BEFORE=Black, active_player_AFTER=Red
+MoveHistoryManager.add_move: RECEIVED piece_id=10 from (2,3) to (3,4)
+MoveHistoryManager.add_move: STORED at position 1, history_size=2
+MoveHistoryManager.add_move: VERIFY stored move piece_id=10 from (2,3) to (3,4)
+!!!! GameController.make_move: About to emit game_state_changed with active_player=Red !!!!
 
-(draughts:2): Adwaita-WARNING **: 22:34:38.931: DraughtsNewGameDialog 0x55b96b8678e0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+#### on_engine_state_changed CALLED - active_player=Red ####
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.307: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Red
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.332: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+#### on_engine_state_changed DONE ####
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.348: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.366: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Red
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.382: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+*** update_undo_redo_buttons: history_size=2, current_is_human=TRUE, undo_just_used=FALSE ***
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.399: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+==== ADAPTER: sync_board_to_game_state called ====
+Active player: Red
+Pieces (showing piece 12 only):
+  Piece ID 12 Black at (2,7)
+====================================
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.415: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+*** update_undo_redo_buttons: history_size=0, current_is_human=TRUE, undo_just_used=FALSE ***
 
-(draughts:2): Adwaita-WARNING **: 22:40:25.432: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:25.449: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:25.465: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:25.482: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:25.499: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:25.515: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.003: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.026: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.091: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.156: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.196: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:37.238: DraughtsNewGameDialog 0x7fedc00291b0 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.043: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.072: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.139: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.206: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.243: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
-
-(draughts:2): Adwaita-WARNING **: 22:40:41.279: DraughtsNewGameDialog 0x55b96d2c0110 does not have a minimum size, set the 'width-request' and 'height-request' properties to specify it
+(draughts:2): io.github.tobagin.Draughts.Devel-WARNING **: 19:39:05.197: NetworkClient: No pong received in 90000 ms, connection may be dead

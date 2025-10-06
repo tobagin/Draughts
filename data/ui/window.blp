@@ -29,7 +29,6 @@ template $DraughtsWindow : Adw.ApplicationWindow {
       Gtk.Button undo_button {
         icon-name: "io.github.tobagin.Draughts-undo-symbolic";
         tooltip-text: _("Undo Move");
-        action-name: "win.undo-move";
       }
 
       [start]
@@ -216,10 +215,10 @@ template $DraughtsWindow : Adw.ApplicationWindow {
       }
     }
   }
+}
 
-  Gtk.StringList move_history_model {
-    strings [_("Game Start")]
-  }
+Gtk.StringList move_history_model {
+  strings [_("Game Start")]
 }
 
 menu primary_menu {

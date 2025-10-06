@@ -79,9 +79,15 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
     [GtkChild]
     private unowned Label waiting_label;
     [GtkChild]
+    private unowned Box room_code_box;
+    [GtkChild]
     private unowned Label room_code_label;
     [GtkChild]
     private unowned Button copy_code_button;
+    [GtkChild]
+    private unowned Box quick_match_variant_box;
+    [GtkChild]
+    private unowned Label quick_match_variant_label;
     [GtkChild]
     private unowned Button cancel_waiting_button;
 
@@ -125,8 +131,12 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         // Initialize settings from preferences
         load_settings_from_preferences();
 
-        // Initialize multiplayer controller
-        initialize_controller();
+        // Connect to map signal to initialize controller after dialog is ready
+        this.map.connect(() => {
+            if (controller == null) {
+                initialize_controller();
+            }
+        });
 
         logger.info("MultiplayerDialog: Initialized");
     }
@@ -138,7 +148,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         // Get server URL from settings or use default
         string server_url = settings_manager.get_string("multiplayer-server-url");
         if (server_url == "") {
-            server_url = "ws://192.168.0.6:8123"; // Default local server
+            server_url = "ws://145.241.228.207:8123"; // Default server
         }
 
         controller = new MultiplayerGameController(server_url);
@@ -164,19 +174,31 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         client.state_changed.connect((state) => {
             update_connection_state(state);
         });
+        client.session_restored.connect((room_code, variant, opponent_name, player_color) => {
+            on_session_restored(room_code, variant, opponent_name, player_color);
+        });
 
         // Disable buttons until connected
         enable_multiplayer_buttons(false);
         update_connection_status(false, "Connecting...");
 
-        // Connect to server
+        // Connect to server (with error handling)
         controller.connect_to_server.begin((obj, res) => {
-            bool success = controller.connect_to_server.end(res);
-            if (!success) {
+            try {
+                bool success = controller.connect_to_server.end(res);
+                if (!success) {
+                    is_connected = false;
+                    enable_multiplayer_buttons(false);
+                    update_connection_status(false, "Connection failed");
+                    // Don't show error dialog here - wait for user to try an action
+                    logger.warning("MultiplayerDialog: Failed to connect to server on initialization");
+                    show_view("main");
+                }
+            } catch (Error e) {
+                logger.error("MultiplayerDialog: Connection error: %s", e.message);
                 is_connected = false;
                 enable_multiplayer_buttons(false);
-                update_connection_status(false, "Connection failed");
-                show_error("Failed to connect to multiplayer server.\n\nPlease make sure the server is running at localhost:8123");
+                update_connection_status(false, "Connection error");
                 show_view("main");
             }
         });
@@ -187,7 +209,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_host_clicked() {
         if (!is_connected) {
-            show_error("Not connected to server. Please wait for connection.");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
             return;
         }
         logger.info("MultiplayerDialog: Host button clicked");
@@ -199,7 +221,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_join_clicked() {
         if (!is_connected) {
-            show_error("Not connected to server. Please wait for connection.");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
             return;
         }
         logger.info("MultiplayerDialog: Join button clicked");
@@ -212,7 +234,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_quick_match_clicked() {
         if (!is_connected) {
-            show_error("Not connected to server. Please wait for connection.");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
             return;
         }
 
@@ -232,8 +254,11 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         // Show waiting view
         show_view("waiting");
         waiting_label.label = _("Searching for opponent...");
-        room_code_label.visible = false;
-        copy_code_button.visible = false;
+
+        // Hide room code, show variant instead
+        room_code_box.visible = false;
+        quick_match_variant_box.visible = true;
+        quick_match_variant_label.label = get_variant_display_name(variant);
 
         // Mark as quick matching
         is_quick_matching = true;
@@ -274,6 +299,10 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         // Show waiting view
         show_view("waiting");
         waiting_label.label = _("Creating room...");
+
+        // Show room code, hide variant
+        room_code_box.visible = true;
+        quick_match_variant_box.visible = false;
 
         // Create room
         controller.create_room.begin(variant, use_timer, minutes, increment, clock_type, (obj, res) => {
@@ -385,10 +414,23 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
     }
 
     /**
+     * Handle session restored event - auto-reconnect to ongoing game
+     */
+    private void on_session_restored(string room_code, string variant_str, string opponent_name, PieceColor player_color) {
+        logger.info("MultiplayerDialog: Session restored - Room: %s, Variant: %s, Opponent: %s, Color: %s",
+                   room_code, variant_str, opponent_name, player_color.to_string());
+
+        // The server will automatically send a GAME_STARTED message to restore the full game state
+        // We just need to wait for that signal which will trigger on_game_started()
+        // For now, just log that we're reconnecting
+        logger.info("MultiplayerDialog: Waiting for server to send game state...");
+    }
+
+    /**
      * Handle multiplayer error
      */
     private void on_multiplayer_error(string error_message) {
-        logger.error("MultiplayerDialog: Multiplayer error - %s", error_message);
+        logger.warning("MultiplayerDialog: Multiplayer error - %s", error_message);
         show_error(error_message);
         show_view("main");
     }
@@ -533,6 +575,28 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
             case 14: return DraughtsVariant.FRISIAN;
             case 15: return DraughtsVariant.CANADIAN;
             default: return DraughtsVariant.INTERNATIONAL;
+        }
+    }
+
+    private string get_variant_display_name(DraughtsVariant variant) {
+        switch (variant) {
+            case DraughtsVariant.AMERICAN: return _("American Checkers");
+            case DraughtsVariant.INTERNATIONAL: return _("International Draughts");
+            case DraughtsVariant.RUSSIAN: return _("Russian Draughts");
+            case DraughtsVariant.BRAZILIAN: return _("Brazilian Draughts");
+            case DraughtsVariant.ITALIAN: return _("Italian Draughts");
+            case DraughtsVariant.SPANISH: return _("Spanish Draughts");
+            case DraughtsVariant.CZECH: return _("Czech Draughts");
+            case DraughtsVariant.THAI: return _("Thai Draughts");
+            case DraughtsVariant.GERMAN: return _("German Draughts");
+            case DraughtsVariant.SWEDISH: return _("Swedish Draughts");
+            case DraughtsVariant.POOL: return _("Pool Checkers");
+            case DraughtsVariant.TURKISH: return _("Turkish Draughts");
+            case DraughtsVariant.ARMENIAN: return _("Armenian Draughts");
+            case DraughtsVariant.GOTHIC: return _("Gothic Draughts");
+            case DraughtsVariant.FRISIAN: return _("Frisian Draughts");
+            case DraughtsVariant.CANADIAN: return _("Canadian Checkers");
+            default: return _("International Draughts");
         }
     }
 

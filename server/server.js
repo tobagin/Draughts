@@ -12,6 +12,7 @@ const http = require('http');
 
 const PORT = process.env.PORT || 8123;
 const ROOM_CODE_LENGTH = 6;
+const REQUIRED_VERSION = '2.0.0'; // Minimum client version required
 
 // Game rooms storage
 const rooms = new Map();
@@ -21,6 +22,20 @@ const clients = new Map();
 
 // Quick match queue (variant -> array of waiting clients)
 const quickMatchQueue = new Map();
+
+// Version comparison helper
+function isVersionCompatible(clientVersion, requiredVersion) {
+  const parseVersion = (v) => v.split('.').map(n => parseInt(n) || 0);
+  const client = parseVersion(clientVersion);
+  const required = parseVersion(requiredVersion);
+
+  // Compare major.minor.patch
+  for (let i = 0; i < 3; i++) {
+    if (client[i] > required[i]) return true;
+    if (client[i] < required[i]) return false;
+  }
+  return true; // Versions are equal
+}
 
 // Room code generator
 function generateRoomCode() {
@@ -62,6 +77,22 @@ wss.on('connection', (ws) => {
   const handleFirstMessage = (data) => {
     try {
       const message = JSON.parse(data.toString());
+      console.log(`📨 First message received - Type: ${message.type}, Version: ${message.version || 'not provided'}`);
+
+      // Check client version
+      const clientVersion = message.version || '0.0.0';
+      if (!isVersionCompatible(clientVersion, REQUIRED_VERSION)) {
+        send(ws, {
+          type: 'error',
+          error_code: 'VERSION_MISMATCH',
+          error_description: `Client version ${clientVersion} is outdated. Please update to version ${REQUIRED_VERSION} or later.`,
+          required_version: REQUIRED_VERSION,
+          client_version: clientVersion
+        });
+        console.log(`❌ Client rejected due to version mismatch: ${clientVersion} < ${REQUIRED_VERSION}`);
+        ws.close();
+        return;
+      }
 
       // Check if this is a reconnection
       if (message.type === 'reconnect' && message.session_id) {
@@ -71,6 +102,8 @@ wss.on('connection', (ws) => {
           clientId = message.session_id;
           isReconnecting = true;
           existingClient.ws = ws;
+          existingClient.disconnected = false;
+          existingClient.disconnectTime = null;
           console.log(`🔄 Client reconnected: ${clientId}`);
 
           // Send reconnection success with current game state
@@ -86,6 +119,37 @@ wss.on('connection', (ws) => {
               opponent_name: (clientId === room.host) ? room.guestName : room.hostName
             } : null
           });
+
+          // Notify opponent of reconnection if in a room
+          if (room) {
+            const opponentId = (clientId === room.host) ? room.guest : room.host;
+            const opponentClient = clients.get(opponentId);
+            if (opponentClient) {
+              send(opponentClient.ws, {
+                type: 'opponent_reconnected',
+                timestamp: Date.now()
+              });
+            }
+
+            // If the game is in progress, send GAME_STARTED to restore the game
+            if (room.gameStarted) {
+              const opponentName = (clientId === room.host) ? room.guestName : room.hostName;
+
+              // Include all moves in the GAME_STARTED message for proper state restoration
+              const movesToRestore = room.moves ? room.moves.map(m => m.move) : [];
+
+              send(ws, {
+                type: 'game_started',
+                variant: room.variant,
+                your_color: existingClient.playerColor,
+                opponent_name: opponentName,
+                room_code: existingClient.roomCode,
+                moves: movesToRestore  // Include moves for restoration
+              });
+
+              console.log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} with ${movesToRestore.length} moves`);
+            }
+          }
         } else {
           // Session expired or invalid
           clientId = Math.random().toString(36).substring(7);
@@ -184,6 +248,10 @@ function handleMessage(clientId, message) {
 
     case 'reject_draw':
       handleRejectDraw(clientId);
+      break;
+
+    case 'game_ended':
+      handleGameEnded(clientId, message);
       break;
 
     case 'ping':
@@ -448,6 +516,29 @@ function handleRejectDraw(clientId) {
 }
 
 /**
+ * Handle game ended (natural end - checkmate, no moves, etc.)
+ */
+function handleGameEnded(clientId, message) {
+  const client = clients.get(clientId);
+  const room = rooms.get(client.roomCode);
+
+  if (!room) return;
+
+  const { result, reason } = message;
+
+  // Broadcast game ended to both players
+  broadcastToRoom(room, {
+    type: 'game_ended',
+    result: result || 'unknown',
+    reason: reason || 'game_over',
+    timestamp: Date.now()
+  });
+
+  console.log(`🏁 Game ended in room ${client.roomCode}: ${result} (${reason})`);
+  cleanupRoom(room.code);
+}
+
+/**
  * Handle ping
  */
 function handlePing(clientId, timestamp) {
@@ -464,47 +555,52 @@ function handlePing(clientId, timestamp) {
 function handleDisconnect(clientId) {
   const client = clients.get(clientId);
 
-  if (client && client.roomCode) {
-    const room = rooms.get(client.roomCode);
+  if (client) {
+    // Mark client as disconnected but keep data for reconnection
+    client.disconnected = true;
+    client.disconnectTime = Date.now();
 
-    if (room) {
-      // Mark client as disconnected but keep data for reconnection
-      client.disconnected = true;
-      client.disconnectTime = Date.now();
+    if (client.roomCode) {
+      const room = rooms.get(client.roomCode);
 
-      // Notify opponent
-      const opponentId = (clientId === room.host) ? room.guest : room.host;
-      const opponentClient = clients.get(opponentId);
+      if (room) {
+        // Notify opponent
+        const opponentId = (clientId === room.host) ? room.guest : room.host;
+        const opponentClient = clients.get(opponentId);
 
-      if (opponentClient) {
-        send(opponentClient.ws, {
-          type: 'opponent_disconnected',
-          timestamp: Date.now()
-        });
+        if (opponentClient) {
+          send(opponentClient.ws, {
+            type: 'opponent_disconnected',
+            timestamp: Date.now()
+          });
 
-        // After 60 seconds, if still disconnected, end game
-        setTimeout(() => {
-          const currentClient = clients.get(clientId);
-          if (currentClient && currentClient.disconnected) {
-            const winner = (clientId === room.host) ? 'black_wins' : 'red_wins';
-            send(opponentClient.ws, {
-              type: 'game_ended',
-              result: winner,
-              reason: 'opponent_timeout',
-              timestamp: Date.now()
-            });
-            cleanupRoom(room.code);
-            clients.delete(clientId); // Now fully remove client
-          }
-        }, 60000);
+          // After 60 seconds, if still disconnected, end game
+          setTimeout(() => {
+            const currentClient = clients.get(clientId);
+            if (currentClient && currentClient.disconnected) {
+              const winner = (clientId === room.host) ? 'black_wins' : 'red_wins';
+              send(opponentClient.ws, {
+                type: 'game_ended',
+                result: winner,
+                reason: 'opponent_timeout',
+                timestamp: Date.now()
+              });
+              cleanupRoom(room.code);
+              clients.delete(clientId); // Now fully remove client
+            }
+          }, 60000);
+        }
       }
-    } else {
-      // No active game, can fully delete
-      clients.delete(clientId);
     }
-  } else {
-    // No room, can fully delete
-    clients.delete(clientId);
+
+    // Always give 60 seconds to reconnect, regardless of room state
+    setTimeout(() => {
+      const currentClient = clients.get(clientId);
+      if (currentClient && currentClient.disconnected) {
+        console.log(`⏱️  Client session expired after 60s: ${clientId}`);
+        clients.delete(clientId);
+      }
+    }, 60000);
   }
 }
 

@@ -374,8 +374,8 @@ template $DraughtsMultiplayerDialog : Adw.Dialog {
               ]
             }
 
-            // Room code display
-            Box {
+            // Room code display (for custom games)
+            Box room_code_box {
               orientation: vertical;
               spacing: 8;
               halign: center;
@@ -412,6 +412,30 @@ template $DraughtsMultiplayerDialog : Adw.Dialog {
                     "flat"
                   ]
                 }
+              }
+            }
+
+            // Variant display (for quick match)
+            Box quick_match_variant_box {
+              orientation: vertical;
+              spacing: 8;
+              halign: center;
+              visible: false;
+
+              Label {
+                label: _("Game variant:");
+
+                styles [
+                  "dim-label"
+                ]
+              }
+
+              Label quick_match_variant_label {
+                label: "American Checkers";
+
+                styles [
+                  "title-4"
+                ]
               }
             }
 

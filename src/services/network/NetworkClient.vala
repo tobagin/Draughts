@@ -74,6 +74,8 @@ namespace Draughts {
         public signal void message_received(NetworkMessage message, string raw_json);
         public signal void error_occurred(string error_message);
         public signal void latency_updated(int latency_ms);
+        public signal void session_restored(string room_code, string variant, string opponent_name, PieceColor player_color);
+        public signal void version_mismatch(string required_version, string client_version);
 
         public NetworkClient(string server_url) {
             this.server_url = server_url;
@@ -87,6 +89,9 @@ namespace Draughts {
             this.session_id = settings.get_string("multiplayer-session-id");
             if (session_id == "" || session_id == null) {
                 session_id = null;
+                logger.info("NetworkClient: No stored session ID found");
+            } else {
+                logger.info("NetworkClient: Loaded stored session ID: %s", session_id);
             }
 
             logger.info("NetworkClient: Initialized with server URL: %s", server_url);
@@ -125,20 +130,39 @@ namespace Draughts {
                 reconnect_attempts = 0;
                 logger.info("NetworkClient: Successfully connected to server");
 
-                // Send reconnect message if we have a session ID, otherwise wait for connected message
-                if (session_id != null) {
-                    logger.info("NetworkClient: Sending reconnection request with session ID");
+                // Send reconnect message if we have a session ID, otherwise send version on first connect
+                if (session_id != null && session_id != "") {
+                    logger.info("NetworkClient: Sending reconnection request with session ID: %s", session_id);
                     var reconnect_msg = new Json.Builder();
                     reconnect_msg.begin_object();
                     reconnect_msg.set_member_name("type");
                     reconnect_msg.add_string_value("reconnect");
                     reconnect_msg.set_member_name("session_id");
                     reconnect_msg.add_string_value(session_id);
+                    reconnect_msg.set_member_name("version");
+                    reconnect_msg.add_string_value(Config.VERSION);
                     reconnect_msg.end_object();
 
                     var gen = new Json.Generator();
                     gen.set_root(reconnect_msg.get_root());
-                    connection.send_text(gen.to_data(null));
+                    string json_msg = gen.to_data(null);
+                    logger.debug("NetworkClient: Sending reconnect JSON: %s", json_msg);
+                    connection.send_text(json_msg);
+                } else {
+                    // First connect - send version info
+                    logger.info("NetworkClient: Sending initial connect with version: %s", Config.VERSION);
+                    var connect_msg = new Json.Builder();
+                    connect_msg.begin_object();
+                    connect_msg.set_member_name("type");
+                    connect_msg.add_string_value("connect");
+                    connect_msg.set_member_name("version");
+                    connect_msg.add_string_value(Config.VERSION);
+                    connect_msg.end_object();
+
+                    var gen = new Json.Generator();
+                    gen.set_root(connect_msg.get_root());
+                    string json_msg = gen.to_data(null);
+                    connection.send_text(json_msg);
                 }
 
                 connected();
@@ -149,7 +173,7 @@ namespace Draughts {
                 return true;
 
             } catch (Error e) {
-                logger.error("NetworkClient: Connection failed: %s", e.message);
+                logger.warning("NetworkClient: Connection failed: %s", e.message);
                 state = ConnectionState.ERROR;
                 error_occurred(e.message);
                 schedule_reconnect();
@@ -171,6 +195,25 @@ namespace Draughts {
             }
 
             state = ConnectionState.DISCONNECTED;
+        }
+
+        /**
+         * Send raw JSON string to the server
+         */
+        public bool send_raw(string json_data) {
+            if (connection == null || state != ConnectionState.CONNECTED) {
+                logger.warning("NetworkClient: Cannot send raw data, not connected");
+                return false;
+            }
+
+            try {
+                connection.send_text(json_data);
+                return true;
+            } catch (Error e) {
+                logger.error("NetworkClient: Failed to send raw data: %s", e.message);
+                error_occurred("Failed to send raw data: " + e.message);
+                return false;
+            }
         }
 
         /**
@@ -239,16 +282,33 @@ namespace Draughts {
                     if (root.has_member("session_id")) {
                         session_id = root.get_string_member("session_id");
                         settings.set_string("multiplayer-session-id", session_id);
-                        logger.info("NetworkClient: Received session ID: %s", session_id);
+                        logger.info("NetworkClient: Received and stored new session ID: %s", session_id);
+                    } else {
+                        logger.warning("NetworkClient: Received 'connected' message without session_id");
                     }
                     return;
                 } else if (msg_type_str == "reconnected") {
-                    logger.info("NetworkClient: Successfully reconnected!");
-                    // Session restored, emit message for handling
-                    var msg_type = NetworkMessageType.from_string(msg_type_str);
-                    NetworkMessage? msg = parse_message(msg_type, root);
-                    if (msg != null) {
-                        message_received(msg, message_str);
+                    logger.info("NetworkClient: Successfully reconnected with existing session!");
+                    if (root.has_member("session_id")) {
+                        var confirmed_session_id = root.get_string_member("session_id");
+                        logger.info("NetworkClient: Session confirmed: %s", confirmed_session_id);
+                    }
+
+                    // Check if there's an active room to restore
+                    if (root.has_member("room") && !root.get_null_member("room")) {
+                        var room_obj = root.get_object_member("room");
+                        string room_code = root.get_string_member("room_code");
+                        string variant = room_obj.get_string_member("variant");
+                        string opponent_name = room_obj.get_string_member("opponent_name");
+                        string player_color_str = root.get_string_member("player_color");
+
+                        PieceColor player_color = (player_color_str == "red") ? PieceColor.RED : PieceColor.BLACK;
+
+                        logger.info("NetworkClient: Restoring game session - Room: %s, Variant: %s, Opponent: %s, Color: %s",
+                                   room_code, variant, opponent_name, player_color_str);
+
+                        // Emit session restored signal
+                        session_restored(room_code, variant, opponent_name, player_color);
                     }
                     return;
                 }
@@ -259,6 +319,19 @@ namespace Draughts {
                 if (msg_type == NetworkMessageType.PONG) {
                     handle_pong(root);
                     return;
+                }
+
+                // Handle error messages - check for VERSION_MISMATCH
+                if (msg_type == NetworkMessageType.ERROR) {
+                    string error_code = root.has_member("error_code") ? root.get_string_member("error_code") : "";
+                    if (error_code == "VERSION_MISMATCH") {
+                        string required = root.has_member("required_version") ? root.get_string_member("required_version") : "unknown";
+                        string client = root.has_member("client_version") ? root.get_string_member("client_version") : Config.VERSION;
+                        logger.error("NetworkClient: Version mismatch - Client: %s, Required: %s", client, required);
+                        version_mismatch(required, client);
+                        disconnect();
+                        return;
+                    }
                 }
 
                 // Create appropriate message object based on type
@@ -302,6 +375,21 @@ namespace Draughts {
                         }
                         if (root.has_member("opponent_name")) {
                             msg.opponent_name = root.get_string_member("opponent_name");
+                        }
+                        // Parse moves array for game restoration
+                        if (root.has_member("moves")) {
+                            var moves_array = root.get_array_member("moves");
+                            if (moves_array.get_length() > 0) {
+                                msg.moves = new Gee.ArrayList<DraughtsMove>();
+                                int board_size = msg.variant.get_variant_board_size();
+                                for (uint i = 0; i < moves_array.get_length(); i++) {
+                                    var move_obj = moves_array.get_object_element(i);
+                                    var move = parse_move_from_json(move_obj, board_size);
+                                    if (move != null) {
+                                        msg.moves.add(move);
+                                    }
+                                }
+                            }
                         }
                         return msg;
 
@@ -370,12 +458,12 @@ namespace Draughts {
          * Handle connection closed event
          */
         private void on_connection_closed() {
-            logger.info("NetworkClient: Connection closed");
+            logger.warning("NetworkClient: Connection closed unexpectedly");
             stop_ping_monitor();
 
-            if (state == ConnectionState.CONNECTED) {
+            if (state == ConnectionState.CONNECTED || state == ConnectionState.CONNECTING) {
                 state = ConnectionState.DISCONNECTED;
-                disconnected("Connection closed by server");
+                disconnected("Connection to server lost. Attempting to reconnect...");
                 schedule_reconnect();
             }
         }
@@ -434,7 +522,7 @@ namespace Draughts {
             if (reconnect_attempts >= MAX_RECONNECT_ATTEMPTS) {
                 logger.error("NetworkClient: Max reconnection attempts reached");
                 state = ConnectionState.ERROR;
-                error_occurred("Max reconnection attempts reached");
+                error_occurred("Unable to connect to multiplayer server. The server may be offline.");
                 return;
             }
 
@@ -469,6 +557,45 @@ namespace Draughts {
          */
         public int get_latency() {
             return latency_ms;
+        }
+
+        /**
+         * Parse DraughtsMove from JSON object
+         */
+        private DraughtsMove? parse_move_from_json(Json.Object move_obj, int board_size) {
+            try {
+                int piece_id = (int) move_obj.get_int_member("piece_id");
+                int from_row = (int) move_obj.get_int_member("from_row");
+                int from_col = (int) move_obj.get_int_member("from_col");
+                int to_row = (int) move_obj.get_int_member("to_row");
+                int to_col = (int) move_obj.get_int_member("to_col");
+                bool promoted = move_obj.get_boolean_member("promoted");
+
+                var from_pos = new BoardPosition(from_row, from_col, board_size);
+                var to_pos = new BoardPosition(to_row, to_col, board_size);
+
+                // Parse captured pieces if present
+                DraughtsMove move;
+                if (move_obj.has_member("captured_pieces")) {
+                    var captured_array = move_obj.get_array_member("captured_pieces");
+                    int[] captured_ids = new int[captured_array.get_length()];
+                    for (uint i = 0; i < captured_array.get_length(); i++) {
+                        captured_ids[i] = (int) captured_array.get_int_element(i);
+                    }
+                    move = new DraughtsMove.with_captures(piece_id, from_pos, to_pos, captured_ids);
+                } else {
+                    bool is_capture = move_obj.has_member("is_capture") ? move_obj.get_boolean_member("is_capture") : false;
+                    MoveType move_type = is_capture ? MoveType.CAPTURE : MoveType.SIMPLE;
+                    move = new DraughtsMove(piece_id, from_pos, to_pos, move_type);
+                }
+
+                move.promoted = promoted;
+                return move;
+
+            } catch (Error e) {
+                logger.error("NetworkClient: Failed to parse move: %s", e.message);
+                return null;
+            }
         }
 
         /**

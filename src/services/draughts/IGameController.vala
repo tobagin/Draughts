@@ -3,6 +3,7 @@ public interface Draughts.IGameController : Object {
     public abstract Game start_new_game(GameVariant variant, GamePlayer red_player, GamePlayer black_player, Timer? timer_config);
     public abstract bool make_move(DraughtsMove move);
     public abstract bool undo_last_move();
+    public abstract bool undo_full_round(int move_count);
     public abstract bool redo_last_move();
     public abstract bool can_undo();
     public abstract bool can_redo();

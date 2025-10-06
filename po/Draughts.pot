@@ -1,45 +1,42 @@
-# Portuguese translations for Draughts package
-# Traduções em português brasileiro para o pacote Draughts.
-# Copyright (C) 2025 THE Draughts'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Draughts package.
-# Automatically generated, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Draughts 1.0.0\n"
+"Project-Id-Version: Draughts 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-05 19:57+0100\n"
-"PO-Revision-Date: 2025-10-01 19:09+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/io.github.tobagin.Draughts.desktop.in:2
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:6
 msgid "@NAME@"
-msgstr "Damas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.desktop.in:3
 msgid "A classic draughts game built with GTK4/LibAdwaita"
-msgstr "Um jogo clássico de damas criado com GTK4/LibAdwaita"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.desktop.in:9
 msgid "draughts;draughts;board;game;strategy;"
-msgstr "damas;tabuleiro;jogo;estratégia;"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:7
-#, fuzzy
 msgid ""
 "Play draughts (checkers) with 16 variants, AI opponents, and online "
 "multiplayer"
-msgstr "Jogue damas com 16 variantes internacionais e oponentes IA"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:9
-#, fuzzy
 msgid ""
 "Draughts is a comprehensive checkers/draughts game featuring 16 "
 "international game variants, multiple AI difficulty levels, online "
@@ -48,27 +45,20 @@ msgid ""
 "offers engaging gameplay for players of all skill levels - play against AI, "
 "friends locally, or opponents online!"
 msgstr ""
-"Damas é um jogo completo de damas com 16 variantes internacionais, múltiplos "
-"níveis de dificuldade de IA e uma bela interface moderna criada com GTK4 e "
-"LibAdwaita. Seja você um jogador casual ou um competidor sério, Damas "
-"oferece jogabilidade envolvente para jogadores de todos os níveis de "
-"habilidade."
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:15
 msgid "Game Features:"
-msgstr "Recursos do Jogo:"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:17
 msgid ""
 "16 international draughts variants including American Checkers, "
 "International Draughts, Russian, Brazilian, and more"
 msgstr ""
-"16 variantes internacionais de damas incluindo Damas Americanas, Damas "
-"Internacionais, Russas, Brasileiras e mais"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:18
 msgid "10 AI difficulty levels from Beginner to Grandmaster"
-msgstr "10 níveis de dificuldade de IA do Iniciante ao Grão-Mestre"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:19
 msgid ""
@@ -76,60 +66,55 @@ msgid ""
 msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:20
-#, fuzzy
 msgid ""
 "Human vs Human (local and online), Human vs AI, and AI vs AI gameplay modes"
-msgstr "Modos de jogo Humano vs Humano, Humano vs IA e IA vs IA"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:21
 msgid "Complete move history with undo/redo support"
-msgstr "Histórico completo de movimentos com suporte para desfazer/refazer"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:22
 msgid "PDN (Portable Draughts Notation) export for game analysis"
-msgstr "Exportação PDN (Portable Draughts Notation) para análise de jogos"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:23
 msgid ""
 "Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)"
 msgstr ""
-"Múltiplos temas de tabuleiro e estilos de peças (plástico, madeira, metal, "
-"tampinha)"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:24
 msgid "Timer modes: countdown, Fischer increment, and Bronstein delay"
 msgstr ""
-"Modos de cronômetro: contagem regressiva, incremento Fischer e atraso "
-"Bronstein"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:26
 msgid "Accessibility and Polish:"
-msgstr "Acessibilidade e Refinamento:"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:28
 msgid "Sound effects for moves, captures, and game events"
-msgstr "Efeitos sonoros para movimentos, capturas e eventos do jogo"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:29
 msgid "Keyboard navigation and screen reader support"
-msgstr "Navegação por teclado e suporte para leitores de tela"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:30
 msgid "High contrast mode for better visibility"
-msgstr "Modo de alto contraste para melhor visibilidade"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:31
 msgid "Smooth animations and visual feedback"
-msgstr "Animações suaves e feedback visual"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:32
 msgid "Game history browser with replay functionality"
-msgstr "Navegador de histórico de jogos com funcionalidade de replay"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:33
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:225
 msgid "Comprehensive rules documentation for each variant"
-msgstr "Documentação completa de regras para cada variante"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:34
 msgid "Adaptive board orientation - your pieces always at the bottom"
@@ -144,19 +129,16 @@ msgid "New game setup dialog with variant selection"
 msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:47
-#, fuzzy
 msgid "Active game with piece movement"
-msgstr "Animar movimentos das peças"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:51
-#, fuzzy
 msgid "Game paused overlay"
-msgstr "Replay do Jogo"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:55
-#, fuzzy
 msgid "Game history browser with saved games"
-msgstr "Navegador de histórico de jogos com funcionalidade de replay"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:59
 msgid "Replay previous games from history"
@@ -167,72 +149,69 @@ msgid "Preferences with customization options"
 msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:67
-#, fuzzy
 msgid "Keyboard shortcuts reference"
-msgstr "Atalhos de Teclado"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:71
-#, fuzzy
 msgid "About dialog"
-msgstr "Sobre Damas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:82
 msgid "Thiago Fernandes"
-msgstr "Thiago Fernandes"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:98
 msgid "checkers"
-msgstr "damas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:99
 msgid "draughts"
-msgstr "damas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:100
 msgid "board game"
-msgstr "jogo de tabuleiro"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:101
 msgid "strategy"
-msgstr "estratégia"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:102
 msgid "dama"
-msgstr "dama"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:103
 #: data/ui/dialogs/new-game.blp:99
 msgid "AI"
-msgstr "IA"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:104
 msgid "puzzle"
-msgstr "quebra-cabeça"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:105
 msgid "international"
-msgstr "internacional"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:106
 msgid "american"
-msgstr "americana"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:107
 msgid "russian"
-msgstr "russa"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:108
 msgid "brazilian"
-msgstr "brasileira"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:143
 msgid "Major update: Online Multiplayer with extensive improvements"
 msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:144
-#, fuzzy
 msgid "NEW: Online Multiplayer Features"
-msgstr "Capturas Múltiplas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:146
 msgid "Play draughts online against opponents worldwide"
@@ -430,7 +409,7 @@ msgstr ""
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:213
 msgid ""
 "First stable release of Draughts - A comprehensive draughts/checkers game"
-msgstr "Primeira versão estável de Damas - Um jogo completo de damas"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:215
 msgid ""
@@ -438,85 +417,73 @@ msgid ""
 "Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, "
 "Armenian, Gothic, Frisian, and Canadian"
 msgstr ""
-"16 variantes internacionais de jogo: Damas Americanas, Internacional, Russa, "
-"Brasileira, Italiana, Espanhola, Tcheca, Tailandesa, Alemã, Sueca, Pool, "
-"Turca, Armênia, Gótica, Frísica e Canadense"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:216
 msgid ""
 "10 AI difficulty levels from Beginner to Grandmaster with intelligent move "
 "evaluation"
 msgstr ""
-"10 níveis de dificuldade de IA do Iniciante ao Grão-Mestre com avaliação "
-"inteligente de movimentos"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:217
 msgid "Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI"
-msgstr "Três modos de jogo: Humano vs Humano, Humano vs IA e IA vs IA"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:218
 msgid ""
 "Complete sound effects system with audio feedback for moves, captures, and "
 "game events"
 msgstr ""
-"Sistema completo de efeitos sonoros com feedback de áudio para movimentos, "
-"capturas e eventos do jogo"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:219
 msgid "PDN (Portable Draughts Notation) export for game analysis and sharing"
 msgstr ""
-"Exportação PDN (Portable Draughts Notation) para análise e compartilhamento "
-"de jogos"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:220
 msgid "Four piece styles: Plastic, Wood, Metal, and Bottle Cap"
-msgstr "Quatro estilos de peças: Plástico, Madeira, Metal e Tampinha"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:221
 msgid "Five board themes: Classic, Wood, Green, Blue, and High Contrast"
 msgstr ""
-"Cinco temas de tabuleiro: Clássico, Madeira, Verde, Azul e Alto Contraste"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:222
 msgid "Full move history with unlimited undo/redo support"
 msgstr ""
-"Histórico completo de movimentos com suporte ilimitado para desfazer/refazer"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:223
 msgid "Smooth animations and visual feedback for all game actions"
-msgstr "Animações suaves e feedback visual para todas as ações do jogo"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:224
 msgid "Keyboard navigation and screen reader accessibility support"
 msgstr ""
-"Navegação por teclado e suporte de acessibilidade para leitores de tela"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:226
 msgid "Modern GTK4/LibAdwaita interface with adaptive design"
-msgstr "Interface moderna GTK4/LibAdwaita com design adaptativo"
+msgstr ""
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:227
 msgid "Dark mode support following system theme"
-msgstr "Suporte para modo escuro seguindo o tema do sistema"
+msgstr ""
 
 #: data/ui/window.blp:24
 msgid "Draughts"
-msgstr "Damas"
+msgstr ""
 
 #: data/ui/window.blp:25 data/ui/dialogs/multiplayer.blp:118
 #: data/ui/dialogs/multiplayer.blp:300 data/ui/dialogs/new-game.blp:76
 #: src/dialogs/MultiplayerDialog.vala:567 src/dialogs/GameHistoryDialog.vala:91
 msgid "American Checkers"
-msgstr "Damas Americanas"
+msgstr ""
 
 #: data/ui/window.blp:31 data/ui/dialogs/help.blp:236
 msgid "Undo Move"
-msgstr "Desfazer Movimento"
+msgstr ""
 
 #. Update button icon and tooltip
 #: data/ui/window.blp:37 src/Window.vala:729
 msgid "Pause Game"
-msgstr "Pausar Jogo"
+msgstr ""
 
 #: data/ui/window.blp:43
 msgid "Disconnect from Multiplayer Game"
@@ -524,15 +491,15 @@ msgstr ""
 
 #: data/ui/window.blp:50
 msgid "Main Menu"
-msgstr "Menu Principal"
+msgstr ""
 
 #: data/ui/window.blp:82
 msgid "Paused"
-msgstr "Pausado"
+msgstr ""
 
 #: data/ui/window.blp:89
 msgid "Press Play to resume"
-msgstr "Pressione Play para continuar"
+msgstr ""
 
 #: data/ui/window.blp:116
 msgid "Opponent Disconnected"
@@ -544,33 +511,33 @@ msgstr ""
 
 #: data/ui/window.blp:166
 msgid "First Move"
-msgstr "Primeiro Movimento"
+msgstr ""
 
 #: data/ui/window.blp:173 data/ui/dialogs/game-replay.blp:112
 msgid "Previous Move"
-msgstr "Movimento Anterior"
+msgstr ""
 
 #: data/ui/window.blp:180 data/ui/dialogs/game-replay.blp:123
 msgid "Next Move"
-msgstr "Próximo Movimento"
+msgstr ""
 
 #: data/ui/window.blp:187
 msgid "Last Move"
-msgstr "Último Movimento"
+msgstr ""
 
 #: data/ui/window.blp:196
 msgid "Navigate to move"
-msgstr "Navegar para movimento"
+msgstr ""
 
 #. Clear existing items
 #. Add "Game Start"
 #: data/ui/window.blp:221 src/Window.vala:311
 msgid "Game Start"
-msgstr "Início do Jogo"
+msgstr ""
 
 #: data/ui/window.blp:227
 msgid "_New Game"
-msgstr "_Novo Jogo"
+msgstr ""
 
 #: data/ui/window.blp:233
 msgid "Play _Online"
@@ -578,473 +545,472 @@ msgstr ""
 
 #: data/ui/window.blp:239
 msgid "_Reset Game"
-msgstr "_Reiniciar Jogo"
+msgstr ""
 
 #: data/ui/window.blp:246
 msgid "Game _History"
-msgstr "_Histórico de Jogos"
+msgstr ""
 
 #: data/ui/window.blp:255
 msgid "_Preferences"
-msgstr "_Preferências"
+msgstr ""
 
 #: data/ui/window.blp:263
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr ""
 
 #: data/ui/window.blp:269
 msgid "_Keyboard Shortcuts"
-msgstr "_Atalhos de Teclado"
+msgstr ""
 
 #: data/ui/window.blp:275
 msgid "_About Draughts"
-msgstr "_Sobre Damas"
+msgstr ""
 
 #: data/ui/window.blp:282
 msgid "_Quit"
-msgstr "_Sair"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:5
 msgid "Game Complete!"
-msgstr "Jogo Concluído!"
+msgstr ""
 
 #. Add statistics
 #: data/ui/dialogs/game-end.blp:49 data/ui/dialogs/game-replay.blp:255
 #: src/dialogs/GameReplayDialog.vala:706
 msgid "Game Statistics"
-msgstr "Estatísticas do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:52
 msgid "Total Moves"
-msgstr "Total de Movimentos"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:53
 msgid "Number of moves played in the game"
-msgstr "Número de movimentos jogados na partida"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:63 data/ui/dialogs/game-replay.blp:228
 #: src/dialogs/GameReplayDialog.vala:683
 msgid "Game Duration"
-msgstr "Duração do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:64
 msgid "Total time played"
-msgstr "Tempo total jogado"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:76
 msgid "Red Player Statistics"
-msgstr "Estatísticas do Jogador Vermelho"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:79 data/ui/dialogs/game-end.blp:127
 msgid "Pieces Captured"
-msgstr "Peças Capturadas"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:80 data/ui/dialogs/game-end.blp:128
 msgid "Enemy pieces captured"
-msgstr "Peças inimigas capturadas"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:90 data/ui/dialogs/game-end.blp:138
 msgid "Pieces Promoted"
-msgstr "Peças Promovidas"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:91 data/ui/dialogs/game-end.blp:139
 msgid "Men promoted to kings"
-msgstr "Peças promovidas a damas"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:101 data/ui/dialogs/game-end.blp:149
 msgid "Moves Made"
-msgstr "Movimentos Realizados"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:102 data/ui/dialogs/game-end.blp:150
 msgid "Total moves by this player"
-msgstr "Total de movimentos deste jogador"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:112 data/ui/dialogs/game-end.blp:160
 msgid "Pieces Remaining"
-msgstr "Peças Restantes"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:113 data/ui/dialogs/game-end.blp:161
 msgid "Pieces left on the board"
-msgstr "Peças restantes no tabuleiro"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:124
 msgid "Black Player Statistics"
-msgstr "Estatísticas do Jogador Preto"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:174 data/ui/dialogs/help.blp:226
 #: data/ui/dialogs/new-game.blp:47
 msgid "New Game"
-msgstr "Novo Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-end.blp:175 src/dialogs/GameHistoryDialog.vala:449
 msgid "Close"
-msgstr "Fechar"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:5 data/ui/dialogs/game-history.blp:27
 #: data/ui/dialogs/preferences.blp:56
 msgid "Game History"
-msgstr "Histórico de Jogos"
+msgstr ""
 
 #. Create filter bottom sheet
 #: data/ui/dialogs/game-history.blp:34 data/ui/dialogs/game-history.blp:54
 #: src/dialogs/GameHistoryDialog.vala:536
 #: src/dialogs/GameHistoryDialog.vala:553
 msgid "Filter Games"
-msgstr "Filtrar Jogos"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:41 src/dialogs/GameHistoryDialog.vala:381
 msgid "Clear History"
-msgstr "Limpar Histórico"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:61
 msgid "Filter by variant"
-msgstr "Filtrar por variante"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:66
 msgid "Filter by result"
-msgstr "Filtrar por resultado"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:71
 msgid "Filter by player type"
-msgstr "Filtrar por tipo de jogador"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:108
 msgid "No Games Found"
-msgstr "Nenhum Jogo Encontrado"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:109
 msgid "Play some games to see them in your history"
-msgstr "Jogue algumas partidas para vê-las em seu histórico"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:124
 msgid "Watch Replay"
-msgstr "Assistir Replay"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:135
 msgid "View Details"
-msgstr "Ver Detalhes"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:140 data/ui/widgets/move-history.blp:71
 msgid "Export PGN"
-msgstr "Exportar PGN"
+msgstr ""
 
 #: data/ui/dialogs/game-history.blp:146 src/dialogs/GameHistoryDialog.vala:483
 msgid "Delete"
-msgstr "Excluir"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:5
 msgid "Game Preferences"
-msgstr "Preferências do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:10 data/ui/dialogs/preferences.blp:46
 msgid "General"
-msgstr "Geral"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:14 data/ui/dialogs/multiplayer.blp:99
 msgid "Game Settings"
-msgstr "Configurações do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:17
 msgid "Default Variant"
-msgstr "Variante Padrão"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:18
 msgid "Choose the default draughts variant"
-msgstr "Escolha a variante padrão de damas"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:22
 msgid "Show Legal Moves"
-msgstr "Mostrar Movimentos Legais"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:23
 msgid "Highlight possible moves for selected pieces"
-msgstr "Destacar movimentos possíveis para peças selecionadas"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:27
 msgid "Animate Moves"
-msgstr "Animar Movimentos"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:28
 msgid "Animate piece movements"
-msgstr "Animar movimentos das peças"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:32 data/ui/dialogs/new-game.blp:170
 msgid "Sound Effects"
-msgstr "Efeitos Sonoros"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:33
 msgid "Play sounds for moves and captures"
-msgstr "Reproduzir sons para movimentos e capturas"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:37
 msgid "Interaction Mode"
-msgstr "Modo de Interação"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:38
 msgid "Choose how to select and move pieces"
-msgstr "Escolha como selecionar e mover peças"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:43
 msgid "AI Settings"
-msgstr "Configurações de IA"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:46
 msgid "AI Difficulty"
-msgstr "Dificuldade da IA"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:47
 msgid "Set the computer opponent difficulty"
-msgstr "Defina a dificuldade do oponente computador"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:51
 msgid "AI Thinking Time"
-msgstr "Tempo de Pensamento da IA"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:52
 msgid "Maximum time for AI to think (seconds)"
-msgstr "Tempo máximo para a IA pensar (segundos)"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:63
 msgid "Show AI Thinking"
-msgstr "Mostrar Pensamento da IA"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:64
 msgid "Display AI analysis during its turn"
-msgstr "Exibir análise da IA durante sua vez"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:68
 msgid "AI Progress Indicator"
-msgstr "Indicador de Progresso da IA"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:69
 msgid "Show progress while AI is thinking"
-msgstr "Mostrar progresso enquanto a IA está pensando"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:75
 msgid "Timers"
-msgstr "Cronômetros"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:79
 msgid "Timer Settings"
-msgstr "Configurações do Cronômetro"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:82
 msgid "Default Timer Mode"
-msgstr "Modo de Cronômetro Padrão"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:83
 msgid "Choose the default timing method"
-msgstr "Escolha o método de cronometragem padrão"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:87
 msgid "Countdown Time"
-msgstr "Tempo de Contagem Regressiva"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:88
 msgid "Minutes per player for countdown timer"
-msgstr "Minutos por jogador para cronômetro de contagem regressiva"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:99
 msgid "Fischer Increment"
-msgstr "Incremento Fischer"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:100
 msgid "Seconds added per move in Fischer mode"
-msgstr "Segundos adicionados por movimento no modo Fischer"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:111
 msgid "Timer Warnings"
-msgstr "Avisos do Cronômetro"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:112
 msgid "Show warnings when time is running low"
-msgstr "Mostrar avisos quando o tempo está acabando"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:116
 msgid "Delay Time"
-msgstr "Tempo de Atraso"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:117
 msgid "Seconds of delay before clock starts"
-msgstr "Segundos de atraso antes do cronômetro começar"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:128
 msgid "Timer Sounds"
-msgstr "Sons do Cronômetro"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:129
 msgid "Play sounds for timer events"
-msgstr "Reproduzir sons para eventos do cronômetro"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:135
 msgid "Display"
-msgstr "Exibição"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:139 data/ui/dialogs/preferences.blp:8
 msgid "Appearance"
-msgstr "Aparência"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:142 data/ui/dialogs/preferences.blp:34
 msgid "Piece Style"
-msgstr "Estilo das Peças"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:143
 msgid "Choose the visual style for game pieces"
-msgstr "Escolha o estilo visual das peças do jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:147
 msgid "Show Coordinates"
-msgstr "Mostrar Coordenadas"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:148
 msgid "Display board coordinates (A1, B2, etc.)"
-msgstr "Exibir coordenadas do tabuleiro (A1, B2, etc.)"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:152
 msgid "Highlight Last Move"
-msgstr "Destacar Último Movimento"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:153
 msgid "Highlight the most recent move"
-msgstr "Destacar o movimento mais recente"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:157
 msgid "Show Move History"
-msgstr "Mostrar Histórico de Movimentos"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:158
 msgid "Display the move history panel"
-msgstr "Exibir o painel de histórico de movimentos"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:162 data/ui/dialogs/preferences.blp:23
 msgid "Board Theme"
-msgstr "Tema do Tabuleiro"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:163
 msgid "Choose the visual style for the game board"
-msgstr "Escolha o estilo visual do tabuleiro de jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:168
 msgid "Accessibility"
-msgstr "Acessibilidade"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:171 data/ui/dialogs/preferences.blp:83
 msgid "High Contrast"
-msgstr "Alto Contraste"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:172
 msgid "Use high contrast colors"
-msgstr "Usar cores de alto contraste"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:176
 msgid "Large Pieces"
-msgstr "Peças Grandes"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:177
 msgid "Use larger piece graphics"
-msgstr "Usar gráficos de peças maiores"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:181
 msgid "Keyboard Navigation"
-msgstr "Navegação por Teclado"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:182
 msgid "Enable keyboard control of the board"
-msgstr "Habilitar controle do tabuleiro por teclado"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:186
 msgid "Move Announcements"
-msgstr "Anúncios de Movimento"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:187
 msgid "Level of move descriptions for screen readers"
-msgstr "Nível de descrições de movimento para leitores de tela"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:191
 msgid "Screen Reader Support"
-msgstr "Suporte para Leitor de Tela"
+msgstr ""
 
 #: data/ui/dialogs/game-preferences.blp:192
 msgid "Enhanced support for screen reader software"
-msgstr "Suporte aprimorado para software de leitor de tela"
+msgstr ""
 
 #. Set default values for display
 #: data/ui/dialogs/game-replay.blp:5 src/dialogs/GameReplayDialog.vala:96
 msgid "Game Replay"
-msgstr "Replay do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:45
-#, fuzzy
 msgid "Show Game Information"
-msgstr "Informações do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:52
 msgid "Replay Options"
-msgstr "Opções de Replay"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:92
 msgid "Loading board..."
-msgstr "Carregando tabuleiro..."
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:107
 msgid "Go to Start"
-msgstr "Ir para o Início"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:117
 msgid "Play/Pause"
-msgstr "Reproduzir/Pausar"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:128
 msgid "Go to End"
-msgstr "Ir para o Fim"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:139 data/ui/dialogs/game-replay.blp:304
 msgid "Playback Speed"
-msgstr "Velocidade de Reprodução"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:150
 msgid "Speed"
-msgstr "Velocidade"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:162
 msgid "Move Position"
-msgstr "Posição do Movimento"
+msgstr ""
 
 #. Create a dialog to show side panel content as a drawer/bottom sheet
 #. Add game info
 #: data/ui/dialogs/game-replay.blp:205 src/dialogs/GameReplayDialog.vala:631
 #: src/dialogs/GameReplayDialog.vala:648 src/dialogs/GameReplayDialog.vala:666
 msgid "Game Information"
-msgstr "Informações do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:218 data/ui/dialogs/multiplayer.blp:114
 #: data/ui/dialogs/multiplayer.blp:296 data/ui/dialogs/new-game.blp:72
 #: src/dialogs/GameHistoryDialog.vala:570 src/dialogs/GameReplayDialog.vala:676
 msgid "Variant"
-msgstr "Variante"
+msgstr ""
 
 #. Add current move info
 #: data/ui/dialogs/game-replay.blp:240 src/dialogs/GameReplayDialog.vala:693
 msgid "Current Move"
-msgstr "Movimento Atual"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:258 data/ui/widgets/timer-display.blp:19
 #: src/dialogs/GameReplayDialog.vala:709
 msgid "Red Player"
-msgstr "Jogador Vermelho"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:269 data/ui/widgets/timer-display.blp:43
 #: src/dialogs/GameReplayDialog.vala:717
 msgid "Black Player"
-msgstr "Jogador Preto"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:282 data/ui/widgets/move-history.blp:12
 msgid "Move History"
-msgstr "Histórico de Movimentos"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:283
 msgid "Click a move to jump to that position"
-msgstr "Clique em um movimento para pular para aquela posição"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:307
 msgid "0.25× (Very Slow)"
@@ -1068,39 +1034,39 @@ msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:340
 msgid "Export Game (PGN)"
-msgstr "Exportar Jogo (PGN)"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:345
 msgid "Copy Game Notation"
-msgstr "Copiar Notação do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:352
 msgid "Reset View"
-msgstr "Redefinir Visualização"
+msgstr ""
 
 #: data/ui/dialogs/game-replay.blp:357
 msgid "Auto-rotate Board"
-msgstr "Rotacionar Tabuleiro Automaticamente"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:13 data/ui/dialogs/help.blp:276
 msgid "Help"
-msgstr "Ajuda"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:20
 msgid "Getting Started"
-msgstr "Começando"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:35
 msgid "Getting Started with Draughts"
-msgstr "Começando com Damas"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:41
 msgid "Welcome to Draughts! This guide will help you start playing."
-msgstr "Bem-vindo ao Damas! Este guia vai ajudá-lo a começar a jogar."
+msgstr ""
 
 #: data/ui/dialogs/help.blp:47
 msgid "Starting a New Game"
-msgstr "Iniciando um Novo Jogo"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:53
 msgid ""
@@ -1111,17 +1077,10 @@ msgid ""
 "5. For AI games, choose difficulty level (Beginner to Grandmaster)\n"
 "6. Click 'Start Game'"
 msgstr ""
-"1. Clique no botão de menu (☰) no canto superior direito\n"
-"2. Selecione 'Novo Jogo'\n"
-"3. Escolha sua variante preferida (16 disponíveis)\n"
-"4. Selecione o modo de jogo (Humano vs Humano, Humano vs IA ou IA vs IA)\n"
-"5. Para jogos com IA, escolha o nível de dificuldade (Iniciante a Grão-"
-"Mestre)\n"
-"6. Clique em 'Iniciar Jogo'"
 
 #: data/ui/dialogs/help.blp:59
 msgid "Basic Rules"
-msgstr "Regras Básicas"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:65
 msgid ""
@@ -1133,17 +1092,10 @@ msgid ""
 "• Captures are usually mandatory when available\n"
 "• Win by capturing all opponent pieces or blocking all moves"
 msgstr ""
-"• As peças se movem diagonalmente nas casas escuras\n"
-"• Peças regulares normalmente se movem apenas para frente\n"
-"• Capture peças oponentes pulando sobre elas\n"
-"• Alcance o lado oposto para promover a dama\n"
-"• Damas podem se mover e capturar em mais direções\n"
-"• Capturas geralmente são obrigatórias quando disponíveis\n"
-"• Vença capturando todas as peças oponentes ou bloqueando todos os movimentos"
 
 #: data/ui/dialogs/help.blp:71 data/ui/dialogs/help.blp:217
 msgid "Game Controls"
-msgstr "Controles do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:77
 msgid ""
@@ -1153,99 +1105,82 @@ msgid ""
 "• Access Preferences to customize appearance\n"
 "• Export games in PDN format for analysis"
 msgstr ""
-"• Clique em uma peça para selecioná-la\n"
-"• Clique em uma casa destacada para mover\n"
-"• Use os botões Desfazer/Refazer para revisar movimentos\n"
-"• Acesse Preferências para personalizar a aparência\n"
-"• Exporte jogos em formato PDN para análise"
 
 #: data/ui/dialogs/help.blp:87
 msgid "Variants"
-msgstr "Variantes"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:102
 msgid "Game Variants"
-msgstr "Variantes do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:108
 msgid "Draughts includes 16 international variants, each with unique rules:"
-msgstr "Damas inclui 16 variantes internacionais, cada uma com regras únicas:"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:114 src/dialogs/VariantRulesDialog.vala:92
 msgid "American Checkers (8×8)"
-msgstr "Damas Americanas (8×8)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:119
 msgid ""
 "Most popular in North America. Men move forward only, kings don't fly. "
 "Players choose which capture to make."
 msgstr ""
-"Mais popular na América do Norte. Peças movem-se apenas para frente, damas "
-"não voam. Jogadores escolhem qual captura fazer."
 
 #: data/ui/dialogs/help.blp:125 src/dialogs/VariantRulesDialog.vala:109
 msgid "International Draughts (10×10)"
-msgstr "Damas Internacionais (10×10)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:130
 msgid ""
 "Official world championship variant. Flying kings, longest sequence rule. "
 "Most complex and strategic."
 msgstr ""
-"Variante oficial do campeonato mundial. Damas voadoras, regra da sequência "
-"mais longa. Mais complexa e estratégica."
 
 #: data/ui/dialogs/help.blp:136 src/dialogs/VariantRulesDialog.vala:126
 msgid "Russian Draughts (8×8)"
-msgstr "Damas Russas (8×8)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:141
 msgid ""
 "Similar to International but on 8×8 board. Flying kings with longest "
 "sequence capture rule."
 msgstr ""
-"Similar às Damas Internacionais mas em tabuleiro 8×8. Damas voadoras com "
-"regra de captura de sequência mais longa."
 
 #: data/ui/dialogs/help.blp:147 src/dialogs/VariantRulesDialog.vala:143
 msgid "Brazilian Draughts (8×8)"
-msgstr "Damas Brasileiras (8×8)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:152
 msgid ""
 "Same rules as International Draughts but played on 8×8 board. Popular in "
 "South America."
 msgstr ""
-"Mesmas regras das Damas Internacionais mas jogadas em tabuleiro 8×8. Popular "
-"na América do Sul."
 
 #: data/ui/dialogs/help.blp:158 src/dialogs/VariantRulesDialog.vala:160
 msgid "Italian Draughts (8×8)"
-msgstr "Damas Italianas (8×8)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:163
 msgid ""
 "Traditional Italian variant. Must capture maximum pieces. Men cannot capture "
 "kings."
 msgstr ""
-"Variante tradicional italiana. Deve capturar o máximo de peças. Peças não "
-"podem capturar damas."
 
 #: data/ui/dialogs/help.blp:169 src/dialogs/VariantRulesDialog.vala:177
 msgid "Spanish Draughts (8×8)"
-msgstr "Damas Espanholas (8×8)"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:174
 msgid ""
 "Unique rule: men can capture backwards. Kings don't fly. Popular in Spain "
 "and Latin America."
 msgstr ""
-"Regra única: peças podem capturar para trás. Damas não voam. Popular na "
-"Espanha e América Latina."
 
 #: data/ui/dialogs/help.blp:180
 msgid "Other Variants"
-msgstr "Outras Variantes"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:186
 msgid ""
@@ -1260,60 +1195,50 @@ msgid ""
 "• Frisian Draughts (10×10) - Dutch regional variant\n"
 "• Canadian Draughts (12×12) - Largest board variant"
 msgstr ""
-"• Damas Tchecas (8×8) - Damas voadoras, sequência mais longa\n"
-"• Damas Tailandesas (8×8) - Damas não voam, sequência mais longa\n"
-"• Damas Alemãs (8×8) - Damas voadoras, similar às Russas\n"
-"• Damas Suecas (10×10) - Variante escandinava\n"
-"• Pool Checkers (8×8) - Variante americana com regras opcionais\n"
-"• Damas Turcas (8×8) - Variante com movimento ortogonal\n"
-"• Damas Armênias (8×8) - Variante do Oriente Médio\n"
-"• Damas Góticas (8×8) - Regras medievais europeias\n"
-"• Damas Frísicas (10×10) - Variante regional holandesa\n"
-"• Damas Canadenses (12×12) - Variante de tabuleiro maior"
 
 #: data/ui/dialogs/help.blp:196
 msgid "Keyboard"
-msgstr "Teclado"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:211 data/ui/dialogs/help.blp:266
 msgid "Keyboard Shortcuts"
-msgstr "Atalhos de Teclado"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:246
 msgid "Redo Move"
-msgstr "Refazer Movimento"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:256 data/ui/dialogs/preferences.blp:5
 msgid "Preferences"
-msgstr "Preferências"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:286
 msgid "Quit"
-msgstr "Sair"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:297
 msgid "Window Controls"
-msgstr "Controles da Janela"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:306
 msgid "Close Window"
-msgstr "Fechar Janela"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:321
 msgid "About"
-msgstr "Sobre"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:337
 msgid "About Draughts"
-msgstr "Sobre Damas"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:342
 msgid "A comprehensive draughts/checkers game for GNOME"
-msgstr "Um jogo completo de damas para GNOME"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:347
 msgid "Features"
-msgstr "Recursos"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:353
 msgid ""
@@ -1326,22 +1251,14 @@ msgid ""
 "• Accessibility support\n"
 "• Modern GTK4/LibAdwaita interface"
 msgstr ""
-"• 16 variantes internacionais de jogo\n"
-"• 10 níveis de dificuldade de IA\n"
-"• Múltiplos modos de jogo\n"
-"• Efeitos sonoros completos\n"
-"• Exportação de jogos PDN\n"
-"• Temas bonitos\n"
-"• Suporte de acessibilidade\n"
-"• Interface moderna GTK4/LibAdwaita"
 
 #: data/ui/dialogs/help.blp:359
 msgid "Version 1.0.0"
-msgstr "Versão 1.0.0"
+msgstr ""
 
 #: data/ui/dialogs/help.blp:364
 msgid "Licensed under GPL-3.0+"
-msgstr "Licenciado sob GPL-3.0+"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:5 data/ui/dialogs/multiplayer.blp:19
 msgid "Play Online"
@@ -1352,27 +1269,24 @@ msgid "Not connected"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:25
-#, fuzzy
 msgid "Multiplayer"
-msgstr "Capturas Múltiplas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:26
 msgid "Play draughts with opponents online"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:44 data/ui/dialogs/multiplayer.blp:86
-#, fuzzy
 msgid "Host Game"
-msgstr "_Reiniciar Jogo"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:45
 msgid "Create a new game room"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:54 data/ui/dialogs/multiplayer.blp:207
-#, fuzzy
 msgid "Join Game"
-msgstr "Exportar Jogo"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:55
 msgid "Join an existing game room"
@@ -1380,9 +1294,8 @@ msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:63 data/ui/dialogs/multiplayer.blp:268
 #: data/ui/dialogs/multiplayer.blp:281
-#, fuzzy
 msgid "Quick Match"
-msgstr "Início Rápido"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:64
 msgid "Find a random opponent (coming soon)"
@@ -1400,116 +1313,113 @@ msgid "Back"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:100
-#, fuzzy
 msgid "Configure your game settings and create a room"
-msgstr "Configure o rastreamento de histórico de jogos e recursos"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:119 data/ui/dialogs/multiplayer.blp:301
 #: data/ui/dialogs/new-game.blp:77 src/dialogs/MultiplayerDialog.vala:568
 #: src/dialogs/MultiplayerDialog.vala:583 src/dialogs/GameHistoryDialog.vala:92
 msgid "International Draughts"
-msgstr "Damas Internacionais"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:120 data/ui/dialogs/multiplayer.blp:302
 #: data/ui/dialogs/new-game.blp:78 src/dialogs/MultiplayerDialog.vala:569
 #: src/dialogs/GameHistoryDialog.vala:93
 msgid "Russian Draughts"
-msgstr "Damas Russas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:121 data/ui/dialogs/multiplayer.blp:303
 #: data/ui/dialogs/new-game.blp:79 src/dialogs/MultiplayerDialog.vala:570
 #: src/dialogs/GameHistoryDialog.vala:94
 msgid "Brazilian Draughts"
-msgstr "Damas Brasileiras"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:122 data/ui/dialogs/multiplayer.blp:304
 #: data/ui/dialogs/new-game.blp:80 src/dialogs/MultiplayerDialog.vala:571
 #: src/dialogs/GameHistoryDialog.vala:95
 msgid "Italian Draughts"
-msgstr "Damas Italianas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:123 data/ui/dialogs/multiplayer.blp:305
 #: data/ui/dialogs/new-game.blp:81 src/dialogs/MultiplayerDialog.vala:572
 #: src/dialogs/GameHistoryDialog.vala:96
 msgid "Spanish Draughts"
-msgstr "Damas Espanholas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:124 data/ui/dialogs/multiplayer.blp:306
 #: data/ui/dialogs/new-game.blp:82 src/dialogs/MultiplayerDialog.vala:573
 #: src/dialogs/GameHistoryDialog.vala:97
 msgid "Czech Draughts"
-msgstr "Damas Tchecas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:125 data/ui/dialogs/multiplayer.blp:307
 #: data/ui/dialogs/new-game.blp:83 src/dialogs/MultiplayerDialog.vala:574
 #: src/dialogs/GameHistoryDialog.vala:98
 msgid "Thai Draughts"
-msgstr "Damas Tailandesas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:126 data/ui/dialogs/multiplayer.blp:308
 #: data/ui/dialogs/new-game.blp:84 src/dialogs/MultiplayerDialog.vala:575
 #: src/dialogs/GameHistoryDialog.vala:99
 msgid "German Draughts"
-msgstr "Damas Alemãs"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:127 data/ui/dialogs/multiplayer.blp:309
 #: data/ui/dialogs/new-game.blp:85 src/dialogs/MultiplayerDialog.vala:576
 #: src/dialogs/GameHistoryDialog.vala:100
 msgid "Swedish Draughts"
-msgstr "Damas Suecas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:128 data/ui/dialogs/multiplayer.blp:310
 #: data/ui/dialogs/new-game.blp:86 src/dialogs/MultiplayerDialog.vala:577
 #: src/dialogs/GameHistoryDialog.vala:101
 msgid "Pool Checkers"
-msgstr "Pool Checkers"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:129 data/ui/dialogs/multiplayer.blp:311
 #: data/ui/dialogs/new-game.blp:87 src/dialogs/MultiplayerDialog.vala:578
 #: src/dialogs/GameHistoryDialog.vala:102
 msgid "Turkish Draughts"
-msgstr "Damas Turcas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:130 data/ui/dialogs/multiplayer.blp:312
 #: data/ui/dialogs/new-game.blp:88 src/dialogs/MultiplayerDialog.vala:579
 #: src/dialogs/GameHistoryDialog.vala:103
 msgid "Armenian Draughts"
-msgstr "Damas Armênias"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:131 data/ui/dialogs/multiplayer.blp:313
 #: data/ui/dialogs/new-game.blp:89 src/dialogs/MultiplayerDialog.vala:580
 #: src/dialogs/GameHistoryDialog.vala:104
 msgid "Gothic Draughts"
-msgstr "Damas Góticas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:132 data/ui/dialogs/multiplayer.blp:314
 #: data/ui/dialogs/new-game.blp:90 src/dialogs/MultiplayerDialog.vala:581
 #: src/dialogs/GameHistoryDialog.vala:105
 msgid "Frisian Draughts"
-msgstr "Damas Frísicas"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:133 data/ui/dialogs/multiplayer.blp:315
 #: data/ui/dialogs/new-game.blp:91 src/dialogs/GameHistoryDialog.vala:106
 msgid "Canadian Draughts"
-msgstr "Damas Canadenses"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:139
-#, fuzzy
 msgid "Use Timer"
-msgstr "Usar Limite de Tempo"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:140
 msgid "Add time limits to the game"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:144
-#, fuzzy
 msgid "Minutes per Side"
-msgstr "Minutos por Lado"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:155 data/ui/dialogs/new-game.blp:146
 msgid "Increment (seconds)"
-msgstr "Incremento (segundos)"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:156
 msgid "Time added after each move"
@@ -1517,7 +1427,7 @@ msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:167 data/ui/dialogs/new-game.blp:157
 msgid "Clock Type"
-msgstr "Tipo de Relógio"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:168
 msgid "Timer mode for the game"
@@ -1528,9 +1438,8 @@ msgid "Fischer (add time after move)"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:173
-#, fuzzy
 msgid "Bronstein (delay before countdown)"
-msgstr "Minutos por jogador para cronômetro de contagem regressiva"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:187
 msgid "Create Room"
@@ -1577,365 +1486,362 @@ msgid "Copy room code"
 msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:426
-#, fuzzy
 msgid "Game variant:"
-msgstr "Variantes do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/multiplayer.blp:443 data/ui/dialogs/new-game.blp:36
 #: data/ui/dialogs/variant-selector.blp:20
 #: src/dialogs/GameHistoryDialog.vala:380
 #: src/dialogs/GameHistoryDialog.vala:482 src/utils/ErrorHandler.vala:159
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:41
 msgid "Start"
-msgstr "Iniciar"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:69
 msgid "Game Configuration"
-msgstr "Configuração do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:73
 msgid "Choose which draughts rules to play with"
-msgstr "Escolha com quais regras de damas jogar"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:97
 msgid "Opposing Player"
-msgstr "Jogador Adversário"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:99
 msgid "Human"
-msgstr "Humano"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:104
 msgid "Play as"
-msgstr "Jogar como"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:107
 msgid "Red"
-msgstr "Vermelho"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:107
 msgid "Black"
-msgstr "Preto"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:112
 msgid "Difficulty"
-msgstr "Dificuldade"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:115
 msgid "Beginner"
-msgstr "Iniciante"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:115
 msgid "Intermediate"
-msgstr "Intermediário"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:115
 msgid "Advanced"
-msgstr "Avançado"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:115
 msgid "Expert"
-msgstr "Especialista"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:115
 msgid "Grandmaster"
-msgstr "Grão-Mestre"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:122
 msgid "Time Limit"
-msgstr "Limite de Tempo"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:125
 msgid "Use Time Limit"
-msgstr "Usar Limite de Tempo"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:135
 msgid "Minutes Per Side"
-msgstr "Minutos por Lado"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:160
 msgid "Fischer"
-msgstr "Fischer"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:160
 msgid "Bronstein"
-msgstr "Bronstein"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:167
 msgid "Audio"
-msgstr "Áudio"
+msgstr ""
 
 #: data/ui/dialogs/new-game.blp:171
 msgid "Play audio feedback during gameplay"
-msgstr "Reproduzir feedback de áudio durante o jogo"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:12
 msgid "Application Theme"
-msgstr "Tema do Aplicativo"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:13
 msgid "Choose the color scheme for the application"
-msgstr "Escolha o esquema de cores do aplicativo"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:16
 msgid "Theme"
-msgstr "Tema"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:17
 msgid "Light, dark, or follow system preference"
-msgstr "Claro, escuro ou seguir preferência do sistema"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:24
 msgid "Customize the appearance of the game board"
-msgstr "Personalize a aparência do tabuleiro de jogo"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:27
 msgid "Board Colors"
-msgstr "Cores do Tabuleiro"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:28
 msgid "Choose the color scheme for the board"
-msgstr "Escolha o esquema de cores do tabuleiro"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:35
 msgid "Customize the appearance of game pieces"
-msgstr "Personalize a aparência das peças do jogo"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:38
 msgid "Piece Design"
-msgstr "Design das Peças"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:39
 msgid "Choose the visual style for pieces"
-msgstr "Escolha o estilo visual das peças"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:57
 msgid "Configure game history tracking and features"
-msgstr "Configure o rastreamento de histórico de jogos e recursos"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:60
 msgid "Enable Game History"
-msgstr "Habilitar Histórico de Jogos"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:61
 msgid "Record game histories and enable history menu"
-msgstr "Gravar históricos de jogos e habilitar menu de histórico"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:66
 msgid "Updates"
-msgstr "Atualizações"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:67
 msgid "Configure how the application handles updates"
-msgstr "Configure como o aplicativo lida com atualizações"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:70
 msgid "Show Release Notes"
-msgstr "Mostrar Notas de Lançamento"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:71
 msgid "Display what's new when the application is updated"
-msgstr "Exibir novidades quando o aplicativo for atualizado"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:79
 msgid "Classic Brown/Beige"
-msgstr "Marrom/Bege Clássico"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:80
 msgid "Wood Light/Dark"
-msgstr "Madeira Clara/Escura"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:81
 msgid "Green/White"
-msgstr "Verde/Branco"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:82
 msgid "Blue/Gray"
-msgstr "Azul/Cinza"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:89
 msgid "Plastic"
-msgstr "Plástico"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:90
 msgid "Wood"
-msgstr "Madeira"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:91
 msgid "Metal"
-msgstr "Metal"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:92
 msgid "Bottle Cap"
-msgstr "Tampinha"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:98
 msgid "Follow System"
-msgstr "Seguir Sistema"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:99
 msgid "Light"
-msgstr "Claro"
+msgstr ""
 
 #: data/ui/dialogs/preferences.blp:100
 msgid "Dark"
-msgstr "Escuro"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:5
 msgid "Game Rules Changed"
-msgstr "Regras do Jogo Alteradas"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:6
 msgid ""
 "You have selected a new draughts variant. Here are the key rules for this "
 "variant:"
 msgstr ""
-"Você selecionou uma nova variante de damas. Aqui estão as regras principais "
-"desta variante:"
 
 #: data/ui/dialogs/variant-rules.blp:22
 msgid "Variant Information"
-msgstr "Informações da Variante"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:25
 msgid "Variant Name"
-msgstr "Nome da Variante"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:29
 msgid "Board Size"
-msgstr "Tamanho do Tabuleiro"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:33
 msgid "Starting Pieces per Player"
-msgstr "Peças Iniciais por Jogador"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:38
 msgid "Movement Rules"
-msgstr "Regras de Movimento"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:41
 msgid "Men Movement"
-msgstr "Movimento das Peças"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:45
 msgid "Kings Movement"
-msgstr "Movimento das Damas"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:49
 msgid "Kings Can Fly"
-msgstr "Damas Podem Voar"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:54
 msgid "Capture Rules"
-msgstr "Regras de Captura"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:57
 msgid "Men Capture"
-msgstr "Captura de Peças"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:61
 msgid "Kings Capture"
-msgstr "Captura de Damas"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:65
 msgid "Mandatory Capture"
-msgstr "Captura Obrigatória"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:69
 msgid "Capture Priority"
-msgstr "Prioridade de Captura"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:73
 msgid "Multiple Captures"
-msgstr "Capturas Múltiplas"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:78
 msgid "Promotion Rules"
-msgstr "Regras de Promoção"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:81
 msgid "Promotion Condition"
-msgstr "Condição de Promoção"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:85
 msgid "Promotion Timing"
-msgstr "Momento da Promoção"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:92
 msgid "Continue with New Rules"
-msgstr "Continuar com Novas Regras"
+msgstr ""
 
 #: data/ui/dialogs/variant-rules.blp:93
 msgid "Keep Current Variant"
-msgstr "Manter Variante Atual"
+msgstr ""
 
 #: data/ui/dialogs/variant-selector.blp:15
 msgid "Select Game Variant"
-msgstr "Selecionar Variante do Jogo"
+msgstr ""
 
 #: data/ui/dialogs/variant-selector.blp:25
 msgid "Select"
-msgstr "Selecionar"
+msgstr ""
 
 #: data/ui/dialogs/variant-selector.blp:48
 msgid "Choose a draughts variant:"
-msgstr "Escolha uma variante de damas:"
+msgstr ""
 
 #: data/ui/dialogs/variant-selector.blp:76
 msgid "Variant Details"
-msgstr "Detalhes da Variante"
+msgstr ""
 
 #: data/ui/dialogs/variant-selector.blp:96
 msgid "Select a variant"
-msgstr "Selecione uma variante"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:19
 msgid "0 moves"
-msgstr "0 movimentos"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:46
 msgid "Go to first move"
-msgstr "Ir para o primeiro movimento"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:51
 msgid "Previous move"
-msgstr "Movimento anterior"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:56
 msgid "Next move"
-msgstr "Próximo movimento"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:61
 msgid "Go to last move"
-msgstr "Ir para o último movimento"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:72
 msgid "Export game in PGN format"
-msgstr "Exportar jogo em formato PGN"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:76
 msgid "Clear"
-msgstr "Limpar"
+msgstr ""
 
 #: data/ui/widgets/move-history.blp:77
 msgid "Clear move history"
-msgstr "Limpar histórico de movimentos"
+msgstr ""
 
 #: data/ui/widgets/timer-display.blp:67
 msgid "Game duration: 0:00"
-msgstr "Duração do jogo: 0:00"
+msgstr ""
 
 #: data/ui/widgets/timer-display.blp:73
 msgid "Timer settings"
-msgstr "Configurações do cronômetro"
+msgstr ""
 
 #. Update button icon and tooltip
 #: src/Window.vala:706
 msgid "Resume Game"
-msgstr "Retomar Jogo"
+msgstr ""
 
 #. Show error dialog
 #: src/Window.vala:1225
@@ -1947,7 +1853,7 @@ msgstr ""
 #: src/dialogs/MultiplayerDialog.vala:511 src/utils/ErrorHandler.vala:113
 #: src/utils/ErrorHandler.vala:126
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #. Could show a banner or toast here
 #: src/Window.vala:1241
@@ -1961,7 +1867,7 @@ msgstr ""
 #. Show a dialog informing the user that PDN import is coming
 #: src/Window.vala:1786
 msgid "PDN Import"
-msgstr "Importação PDN"
+msgstr ""
 
 #: src/Window.vala:1787
 #, c-format
@@ -1970,15 +1876,11 @@ msgid ""
 "\n"
 "File: %s"
 msgstr ""
-"A funcionalidade de importação de arquivo PDN estará disponível em uma "
-"versão futura.\n"
-"\n"
-"Arquivo: %s"
 
 #: src/Window.vala:1798
 #, c-format
 msgid "Failed to open file: %s"
-msgstr "Falha ao abrir arquivo: %s"
+msgstr ""
 
 #. Get variant from selection
 #. Show waiting view
@@ -2014,17 +1916,15 @@ msgstr ""
 
 #: src/dialogs/MultiplayerDialog.vala:500 src/utils/ErrorHandler.vala:112
 msgid "Error"
-msgstr "Erro"
+msgstr ""
 
 #: src/dialogs/MultiplayerDialog.vala:510
-#, fuzzy
 msgid "Information"
-msgstr "Informações do Jogo"
+msgstr ""
 
 #: src/dialogs/MultiplayerDialog.vala:582
-#, fuzzy
 msgid "Canadian Checkers"
-msgstr "Damas Americanas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:93
 #: src/dialogs/VariantRulesDialog.vala:127
@@ -2039,7 +1939,7 @@ msgstr "Damas Americanas"
 #: src/dialogs/VariantRulesDialog.vala:297
 #: src/dialogs/VariantRulesDialog.vala:314
 msgid "8×8 board with 64 squares"
-msgstr "Tabuleiro 8×8 com 64 casas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:94
 #: src/dialogs/VariantRulesDialog.vala:128
@@ -2054,7 +1954,7 @@ msgstr "Tabuleiro 8×8 com 64 casas"
 #: src/dialogs/VariantRulesDialog.vala:298
 #: src/dialogs/VariantRulesDialog.vala:315
 msgid "12 pieces per player"
-msgstr "12 peças por jogador"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:95
 #: src/dialogs/VariantRulesDialog.vala:112
@@ -2073,7 +1973,7 @@ msgstr "12 peças por jogador"
 #: src/dialogs/VariantRulesDialog.vala:333
 #: src/dialogs/VariantRulesDialog.vala:350
 msgid "Diagonally forward only, one square"
-msgstr "Diagonalmente apenas para frente, uma casa"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:96
 #: src/dialogs/VariantRulesDialog.vala:164
@@ -2083,7 +1983,7 @@ msgstr "Diagonalmente apenas para frente, uma casa"
 #: src/dialogs/VariantRulesDialog.vala:283
 #: src/dialogs/VariantRulesDialog.vala:317
 msgid "Diagonally forward and backward, one square"
-msgstr "Diagonalmente para frente e para trás, uma casa"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:97
 #: src/dialogs/VariantRulesDialog.vala:165
@@ -2093,7 +1993,7 @@ msgstr "Diagonalmente para frente e para trás, uma casa"
 #: src/dialogs/VariantRulesDialog.vala:284
 #: src/dialogs/VariantRulesDialog.vala:318
 msgid "No - kings move one square at a time"
-msgstr "Não - damas movem-se uma casa por vez"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:98
 #: src/dialogs/VariantRulesDialog.vala:115
@@ -2106,7 +2006,7 @@ msgstr "Não - damas movem-se uma casa por vez"
 #: src/dialogs/VariantRulesDialog.vala:302
 #: src/dialogs/VariantRulesDialog.vala:319
 msgid "Diagonally forward only, must jump over enemy piece"
-msgstr "Diagonalmente apenas para frente, deve pular sobre peça inimiga"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:99
 #: src/dialogs/VariantRulesDialog.vala:167
@@ -2116,7 +2016,7 @@ msgstr "Diagonalmente apenas para frente, deve pular sobre peça inimiga"
 #: src/dialogs/VariantRulesDialog.vala:286
 #: src/dialogs/VariantRulesDialog.vala:320
 msgid "Diagonally in any direction, must jump over enemy piece"
-msgstr "Diagonalmente em qualquer direção, deve pular sobre peça inimiga"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:100
 #: src/dialogs/VariantRulesDialog.vala:117
@@ -2135,7 +2035,7 @@ msgstr "Diagonalmente em qualquer direção, deve pular sobre peça inimiga"
 #: src/dialogs/VariantRulesDialog.vala:338
 #: src/dialogs/VariantRulesDialog.vala:355
 msgid "Yes - must capture if possible"
-msgstr "Sim - deve capturar se possível"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:101
 #: src/dialogs/VariantRulesDialog.vala:118
@@ -2150,7 +2050,7 @@ msgstr "Sim - deve capturar se possível"
 #: src/dialogs/VariantRulesDialog.vala:339
 #: src/dialogs/VariantRulesDialog.vala:356
 msgid "Maximum number of pieces must be captured"
-msgstr "Número máximo de peças deve ser capturado"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:102
 #: src/dialogs/VariantRulesDialog.vala:119
@@ -2169,7 +2069,7 @@ msgstr "Número máximo de peças deve ser capturado"
 #: src/dialogs/VariantRulesDialog.vala:340
 #: src/dialogs/VariantRulesDialog.vala:357
 msgid "Yes - continue jumping with same piece if possible"
-msgstr "Sim - continue pulando com a mesma peça se possível"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:103
 #: src/dialogs/VariantRulesDialog.vala:120
@@ -2188,7 +2088,7 @@ msgstr "Sim - continue pulando com a mesma peça se possível"
 #: src/dialogs/VariantRulesDialog.vala:341
 #: src/dialogs/VariantRulesDialog.vala:358
 msgid "Reach opposite end of board"
-msgstr "Alcançar o lado oposto do tabuleiro"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:104
 #: src/dialogs/VariantRulesDialog.vala:121
@@ -2207,19 +2107,19 @@ msgstr "Alcançar o lado oposto do tabuleiro"
 #: src/dialogs/VariantRulesDialog.vala:342
 #: src/dialogs/VariantRulesDialog.vala:359
 msgid "Immediately when reaching promotion square"
-msgstr "Imediatamente ao alcançar a casa de promoção"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:110
 #: src/dialogs/VariantRulesDialog.vala:246
 #: src/dialogs/VariantRulesDialog.vala:331
 msgid "10×10 board with 100 squares"
-msgstr "Tabuleiro 10×10 com 100 casas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:111
 #: src/dialogs/VariantRulesDialog.vala:247
 #: src/dialogs/VariantRulesDialog.vala:332
 msgid "20 pieces per player"
-msgstr "20 peças por jogador"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:113
 #: src/dialogs/VariantRulesDialog.vala:130
@@ -2231,7 +2131,7 @@ msgstr "20 peças por jogador"
 #: src/dialogs/VariantRulesDialog.vala:334
 #: src/dialogs/VariantRulesDialog.vala:351
 msgid "Diagonally in any direction, any distance"
-msgstr "Diagonalmente em qualquer direção, qualquer distância"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:114
 #: src/dialogs/VariantRulesDialog.vala:131
@@ -2243,7 +2143,7 @@ msgstr "Diagonalmente em qualquer direção, qualquer distância"
 #: src/dialogs/VariantRulesDialog.vala:335
 #: src/dialogs/VariantRulesDialog.vala:352
 msgid "Yes - kings can move multiple squares"
-msgstr "Sim - damas podem mover-se múltiplas casas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:116
 #: src/dialogs/VariantRulesDialog.vala:133
@@ -2256,161 +2156,156 @@ msgstr "Sim - damas podem mover-se múltiplas casas"
 #: src/dialogs/VariantRulesDialog.vala:354
 msgid "Diagonally in any direction, can land anywhere after jumped piece"
 msgstr ""
-"Diagonalmente em qualquer direção, pode pousar em qualquer lugar após peça "
-"pulada"
 
 #: src/dialogs/VariantRulesDialog.vala:132
 #: src/dialogs/VariantRulesDialog.vala:149
 #: src/dialogs/VariantRulesDialog.vala:336
 #: src/dialogs/VariantRulesDialog.vala:353
 msgid "Diagonally forward and backward, must jump over enemy piece"
-msgstr "Diagonalmente para frente e para trás, deve pular sobre peça inimiga"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:166
 msgid "Diagonally forward only, cannot capture kings"
-msgstr "Diagonalmente apenas para frente, não pode capturar damas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:169
 msgid "Kings have priority over men in captures"
-msgstr "Damas têm prioridade sobre peças nas capturas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:183
 msgid "Diagonally forward AND backward - unique to Spanish variant"
 msgstr ""
-"Diagonalmente para frente E para trás - exclusivo da variante espanhola"
 
 #: src/dialogs/VariantRulesDialog.vala:186
 #: src/dialogs/VariantRulesDialog.vala:271
 #: src/dialogs/VariantRulesDialog.vala:322
 msgid "Player chooses any legal capture"
-msgstr "Jogador escolhe qualquer captura legal"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:194
 msgid "Czech Draughts (8×8)"
-msgstr "Damas Tchecas (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:211
 msgid "Thai Draughts (8×8)"
-msgstr "Damas Tailandesas (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:228
 msgid "German Draughts (8×8)"
-msgstr "Damas Alemãs (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:245
 msgid "Swedish Draughts (10×10)"
-msgstr "Damas Suecas (10×10)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:262
 msgid "Pool Checkers (8×8)"
-msgstr "Pool Checkers (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:279
 msgid "Turkish Draughts (8×8)"
-msgstr "Damas Turcas (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:296
 msgid "Armenian Draughts (8×8)"
-msgstr "Damas Armênias (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:313
 msgid "Gothic Draughts (8×8)"
-msgstr "Damas Góticas (8×8)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:330
 msgid "Frisian Draughts (10×10)"
-msgstr "Damas Frísicas (10×10)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:347
 msgid "Canadian Draughts (12×12)"
-msgstr "Damas Canadenses (12×12)"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:348
 msgid "12×12 board with 144 squares"
-msgstr "Tabuleiro 12×12 com 144 casas"
+msgstr ""
 
 #: src/dialogs/VariantRulesDialog.vala:349
 msgid "30 pieces per player"
-msgstr "30 peças por jogador"
+msgstr ""
 
 #. Variant filter
 #: src/dialogs/GameHistoryDialog.vala:90
 msgid "All Variants"
-msgstr "Todas as Variantes"
+msgstr ""
 
 #. Result filter
 #: src/dialogs/GameHistoryDialog.vala:113
 msgid "All Results"
-msgstr "Todos os Resultados"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:113
 msgid "Red Wins"
-msgstr "Vermelho Vence"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:113
 msgid "Black Wins"
-msgstr "Preto Vence"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:113
 msgid "Draws"
-msgstr "Empates"
+msgstr ""
 
 #. Player type filter
 #: src/dialogs/GameHistoryDialog.vala:119
 msgid "All Games"
-msgstr "Todos os Jogos"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:119
 msgid "Human vs Human"
-msgstr "Humano vs Humano"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:119
 msgid "vs Computer"
-msgstr "vs Computador"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:377
 msgid "Clear Game History"
-msgstr "Limpar Histórico de Jogos"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:378
 msgid ""
 "Are you sure you want to delete all game history? This action cannot be "
 "undone."
 msgstr ""
-"Tem certeza de que deseja excluir todo o histórico de jogos? Esta ação não "
-"pode ser desfeita."
 
 #: src/dialogs/GameHistoryDialog.vala:401
 msgid "Export Game History"
-msgstr "Exportar Histórico de Jogos"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:411
 msgid "Game history exported successfully"
-msgstr "Histórico de jogos exportado com sucesso"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:415
 msgid "Failed to export game history"
-msgstr "Falha ao exportar histórico de jogos"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:458
 msgid "Export Game"
-msgstr "Exportar Jogo"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:466
 msgid "Game exported successfully"
-msgstr "Jogo exportado com sucesso"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:470
 msgid "Failed to export game"
-msgstr "Falha ao exportar jogo"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:479
 msgid "Delete Game"
-msgstr "Excluir Jogo"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:492
 msgid "Game deleted"
-msgstr "Jogo excluído"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:546 src/dialogs/GameReplayDialog.vala:641
 msgid "Done"
@@ -2418,20 +2313,17 @@ msgstr ""
 
 #. Variant filter
 #: src/dialogs/GameHistoryDialog.vala:567
-#, fuzzy
 msgid "Game Variant"
-msgstr "Variantes do Jogo"
+msgstr ""
 
 #. Result filter
 #: src/dialogs/GameHistoryDialog.vala:581
-#, fuzzy
 msgid "Game Result"
-msgstr "Replay do Jogo"
+msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:584
-#, fuzzy
 msgid "Result"
-msgstr "Todos os Resultados"
+msgstr ""
 
 #. Player type filter
 #: src/dialogs/GameHistoryDialog.vala:595
@@ -2439,191 +2331,61 @@ msgid "Player Type"
 msgstr ""
 
 #: src/dialogs/GameHistoryDialog.vala:598
-#, fuzzy
 msgid "Players"
-msgstr "Reproduzir"
+msgstr ""
 
 #: src/dialogs/GameReplayDialog.vala:97
 msgid "No game data available"
-msgstr "Nenhum dado de jogo disponível"
+msgstr ""
 
 #: src/dialogs/GameReplayDialog.vala:463
 msgid "Pause"
-msgstr "Pausar"
+msgstr ""
 
 #: src/dialogs/GameReplayDialog.vala:480
 msgid "Play"
-msgstr "Reproduzir"
+msgstr ""
 
 #: src/dialogs/GameReplayDialog.vala:524
 msgid "Export Game Replay"
-msgstr "Exportar Replay do Jogo"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:96
 msgid "Red Player Wins!"
-msgstr "Jogador Vermelho Vence!"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:97 src/dialogs/GameEndDialog.vala:104
 msgid "Congratulations on your victory!"
-msgstr "Parabéns pela sua vitória!"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:103
 msgid "Black Player Wins!"
-msgstr "Jogador Preto Vence!"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:110
 msgid "Game Drawn!"
-msgstr "Jogo Empatado!"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:111
 msgid "Well played by both sides!"
-msgstr "Bem jogado por ambos os lados!"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:117
 msgid "Game Ended"
-msgstr "Jogo Finalizado"
+msgstr ""
 
 #: src/dialogs/GameEndDialog.vala:118
 msgid "Thanks for playing!"
-msgstr "Obrigado por jogar!"
+msgstr ""
 
 #: src/utils/ErrorHandler.vala:125
 msgid "Critical Error"
-msgstr "Erro Crítico"
+msgstr ""
 
 #: src/utils/ErrorHandler.vala:127
 msgid "Quit Application"
-msgstr "Sair do Aplicativo"
+msgstr ""
 
 #: src/utils/ErrorHandler.vala:160
 msgid "Confirm"
-msgstr "Confirmar"
-
-#~ msgid "Checkers/Anglo-American Draughts"
-#~ msgstr "Damas Anglo-Americanas"
-
-#~ msgid "Configure sound effects during gameplay"
-#~ msgstr "Configure efeitos sonoros durante o jogo"
-
-#~ msgid "Play audio feedback for moves, captures, and game events"
-#~ msgstr ""
-#~ "Reproduzir feedback de áudio para movimentos, capturas e eventos do jogo"
-
-#~ msgid "Startup"
-#~ msgstr "Inicialização"
-
-#~ msgid "Configure what happens when the application starts"
-#~ msgstr "Configure o que acontece quando o aplicativo inicia"
-
-#~ msgid "Show Welcome Screen"
-#~ msgstr "Mostrar Tela de Boas-Vindas"
-
-#~ msgid "Display welcome dialog on startup"
-#~ msgstr "Exibir diálogo de boas-vindas na inicialização"
-
-#~ msgid "Interaction"
-#~ msgstr "Interação"
-
-#~ msgid "Configure how you interact with the game board"
-#~ msgstr "Configure como você interage com o tabuleiro de jogo"
-
-#~ msgid "Playing Style"
-#~ msgstr "Estilo de Jogo"
-
-#~ msgid "Choose how to move pieces on the board"
-#~ msgstr "Escolha como mover peças no tabuleiro"
-
-#~ msgid "Click to Move"
-#~ msgstr "Clique para Mover"
-
-#~ msgid "Drag and Drop"
-#~ msgstr "Arrastar e Soltar"
-
-#~ msgid "Welcome to Draughts"
-#~ msgstr "Bem-vindo ao Damas"
-
-#~ msgid "Let's get you started playing!"
-#~ msgstr "Vamos começar a jogar!"
-
-#~ msgid "Game Features"
-#~ msgstr "Recursos do Jogo"
-
-#~ msgid "16 international game variants"
-#~ msgstr "16 variantes internacionais de jogo"
-
-#~ msgid "Play against friends or AI opponents"
-#~ msgstr "Jogue contra amigos ou oponentes IA"
-
-#~ msgid "Customize board themes and piece styles"
-#~ msgstr "Personalize temas de tabuleiro e estilos de peças"
-
-#~ msgid "Export games in PDN format"
-#~ msgstr "Exporte jogos em formato PDN"
-
-#~ msgid ""
-#~ "1. Click the menu button (☰) → New Game\n"
-#~ "2. Choose a variant (try American Checkers to start)\n"
-#~ "3. Select Human vs AI to play against the computer\n"
-#~ "4. Press F1 anytime for help"
-#~ msgstr ""
-#~ "1. Clique no botão de menu (☰) → Novo Jogo\n"
-#~ "2. Escolha uma variante (tente Damas Americanas para começar)\n"
-#~ "3. Selecione Humano vs IA para jogar contra o computador\n"
-#~ "4. Pressione F1 a qualquer momento para ajuda"
-
-#~ msgid "Let's Play!"
-#~ msgstr "Vamos Jogar!"
-
-#~ msgid "Show this welcome screen on startup"
-#~ msgstr "Mostrar esta tela de boas-vindas na inicialização"
-
-#~ msgid "Time's Up!"
-#~ msgstr "Tempo Esgotado!"
-
-#~ msgid "Red's Turn"
-#~ msgstr "Vez do Vermelho"
-
-#~ msgid "Start New Game"
-#~ msgstr "Iniciar Novo Jogo"
-
-#~ msgid "Choose the game mode:"
-#~ msgstr "Escolha o modo de jogo:"
-
-#~ msgid "Play against another person"
-#~ msgstr "Jogar contra outra pessoa"
-
-#~ msgid "Play against the computer"
-#~ msgstr "Jogar contra o computador"
-
-#~ msgid "Gameplay"
-#~ msgstr "Jogabilidade"
-
-#~ msgid "16 international draughts variants available"
-#~ msgstr "16 variantes internacionais de damas disponíveis"
-
-#~ msgid "Artificial Intelligence"
-#~ msgstr "Inteligência Artificial"
-
-#~ msgid "Configure AI opponent difficulty"
-#~ msgstr "Configure a dificuldade do oponente IA"
-
-#~ msgid "From Beginner to Grandmaster"
-#~ msgstr "De Iniciante a Grão-Mestre"
-
-#~ msgid "Swedish Draughts (8×8)"
-#~ msgstr "Damas Suecas (8×8)"
-
-#~ msgid "Easy"
-#~ msgstr "Fácil"
-
-#~ msgid "Medium"
-#~ msgstr "Médio"
-
-#~ msgid "Hard"
-#~ msgstr "Difícil"
-
-#~ msgid "Master"
-#~ msgstr "Mestre"
-
-#~ msgid "Black's Turn"
-#~ msgstr "Vez do Preto"
+msgstr ""

@@ -90,12 +90,13 @@ namespace Draughts {
         public signal void state_changed(SessionState new_state);
         public signal void room_created(string room_code, PieceColor your_color);
         public signal void opponent_joined(string opponent_name);
-        public signal void game_started(DraughtsVariant variant, PieceColor your_color, string opponent_name);
+        public signal void game_started(DraughtsVariant variant, PieceColor your_color, string opponent_name, Gee.ArrayList<DraughtsMove>? moves);
         public signal void move_received(DraughtsMove move);
         public signal void game_ended(GameStatus result, string reason);
         public signal void opponent_disconnected();
         public signal void opponent_reconnected();
         public signal void session_error(string error_message);
+        public signal void version_mismatch(string required_version, string client_version);
 
         public NetworkSession(NetworkClient client) {
             this.client = client;
@@ -118,6 +119,9 @@ namespace Draughts {
             client.message_received.connect(on_network_message_received);
             client.disconnected.connect(on_network_disconnected);
             client.error_occurred.connect(on_network_error);
+            client.version_mismatch.connect((required, client_ver) => {
+                version_mismatch(required, client_ver);
+            });
         }
 
         /**
@@ -235,6 +239,54 @@ namespace Draughts {
             logger.debug("NetworkSession: Sending move to server");
             var message = new MakeMoveMessage(move);
             return client.send_message(message);
+        }
+
+        /**
+         * Notify server that the game ended naturally (checkmate, no moves, etc.)
+         */
+        public bool notify_game_ended(GameStatus result, string reason) {
+            if (state != SessionState.IN_GAME) {
+                logger.warning("NetworkSession: Cannot notify game end, not in game");
+                return false;
+            }
+
+            logger.info("NetworkSession: Notifying server of game end: %s (%s)", result.to_string(), reason);
+
+            // Build JSON manually for game_ended message
+            var builder = new Json.Builder();
+            builder.begin_object();
+            builder.set_member_name("type");
+            builder.add_string_value("game_ended");
+            builder.set_member_name("result");
+            builder.add_string_value(result_to_server_string(result));
+            builder.set_member_name("reason");
+            builder.add_string_value(reason);
+            builder.set_member_name("timestamp");
+            builder.add_int_value(new DateTime.now_utc().to_unix());
+            builder.end_object();
+
+            var generator = new Json.Generator();
+            generator.set_root(builder.get_root());
+            generator.set_pretty(false);
+            string json_str = generator.to_data(null);
+
+            return client.send_raw(json_str);
+        }
+
+        /**
+         * Convert GameStatus to server result string
+         */
+        private string result_to_server_string(GameStatus status) {
+            switch (status) {
+                case GameStatus.RED_WINS:
+                    return "red_wins";
+                case GameStatus.BLACK_WINS:
+                    return "black_wins";
+                case GameStatus.DRAW:
+                    return "draw";
+                default:
+                    return "unknown";
+            }
         }
 
         /**
@@ -366,8 +418,10 @@ namespace Draughts {
                 opponent_name = message.opponent_name;
             }
 
-            logger.info("NetworkSession: Playing as %s against %s", local_player_color.to_string(), opponent_name);
-            game_started(game_variant, local_player_color, opponent_name);
+            logger.info("NetworkSession: Playing as %s against %s - Restoring %d moves",
+                       local_player_color.to_string(), opponent_name,
+                       (message.moves != null) ? message.moves.size : 0);
+            game_started(game_variant, local_player_color, opponent_name, message.moves);
         }
 
         /**
@@ -517,7 +571,7 @@ namespace Draughts {
          * Handle network error
          */
         private void on_network_error(string error_message) {
-            logger.error("NetworkSession: Network error: %s", error_message);
+            logger.warning("NetworkSession: Network error: %s", error_message);
             session_error("Network error: " + error_message);
         }
 

@@ -36,12 +36,18 @@ public class Draughts.GameController : Object, IGameController {
             return false;
         }
 
+        print("\n!!!! GameController.make_move CALLED: piece_id=%d from (%d,%d) to (%d,%d) !!!!\n",
+              move.piece_id, move.from_position.row, move.from_position.col,
+              move.to_position.row, move.to_position.col);
+
         // Delegate to the Game's make_move method which handles
         // move execution, timers, and state management
         bool success = current_game.make_move(move);
 
         if (success) {
             // Emit game state changed signal
+            print("!!!! GameController.make_move: About to emit game_state_changed with active_player=%s !!!!\n",
+                  current_game.current_state.active_player.to_string());
             game_state_changed(current_game.current_state, move);
         }
 
@@ -61,6 +67,28 @@ public class Draughts.GameController : Object, IGameController {
         if (success) {
             // Emit game state changed signal
             game_state_changed(current_game.current_state, null);
+        }
+
+        return success;
+    }
+
+    /**
+     * Undo a full round (multiple moves) for vs AI mode
+     */
+    public bool undo_full_round(int move_count) {
+        if (current_game == null || is_paused) {
+            return false;
+        }
+
+        bool success = current_game.undo_full_round(move_count);
+
+        if (success) {
+            // Emit game state changed signal
+            print("\n!!!! GameController.undo_full_round: About to emit game_state_changed with active_player=%s !!!!\n",
+                  current_game.current_state.active_player.to_string());
+            game_state_changed(current_game.current_state, null);
+            print("!!!! GameController.undo_full_round: After emit, current_state.active_player=%s !!!!\n\n",
+                  current_game.current_state.active_player.to_string());
         }
 
         return success;

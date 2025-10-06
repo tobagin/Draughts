@@ -174,9 +174,29 @@ The server will start on port 8080 by default (configurable via `PORT` environme
 
 ### Docker
 
+**Build and run with Docker:**
 ```bash
+cd server
 docker build -t draughts-server .
-docker run -p 8080:8080 draughts-server
+docker run -d -p 8123:8123 --name draughts-server draughts-server
+```
+
+**Or use Docker Compose:**
+```bash
+cd server
+docker-compose up -d
+```
+
+**View logs:**
+```bash
+docker logs -f draughts-server
+```
+
+**Stop server:**
+```bash
+docker-compose down
+# or
+docker stop draughts-server
 ```
 
 ### Cloud Platforms
@@ -186,10 +206,12 @@ The server can be deployed to:
 - **Railway**: Connect GitHub repo and deploy
 - **Render**: Connect GitHub repo and deploy
 - **DigitalOcean App Platform**: Connect GitHub repo and deploy
+- **AWS ECS**: Use provided Dockerfile
+- **Google Cloud Run**: Use provided Dockerfile
 
 ### Environment Variables
 
-- `PORT` - Server port (default: 8080)
+- `PORT` - Server port (default: 8123)
 - `NODE_ENV` - Environment (development/production)
 
 ## Architecture

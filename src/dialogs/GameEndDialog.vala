@@ -70,38 +70,85 @@ public class Draughts.GameEndDialog : Adw.AlertDialog {
     /**
      * Show the game end dialog with full game session statistics
      */
-    public void show_game_end_with_session(Gtk.Window parent, DraughtsGameState final_state, GameSessionStats session_stats) {
-        populate_results(final_state);
+    public void show_game_end_with_session(Gtk.Window parent, DraughtsGameState final_state, GameSessionStats session_stats, PieceColor? local_player_color = null, bool is_multiplayer = false) {
+        populate_results(final_state, local_player_color);
         populate_statistics_from_session(session_stats, final_state);
+
+        // Update button labels for multiplayer
+        if (is_multiplayer) {
+            set_response_label("new_game", _("Play Again"));
+            set_response_label("close", _("Exit to Menu"));
+        }
+
         present(parent);
     }
 
     /**
      * Show the game end dialog with game statistics - fallback method
      */
-    public void show_game_end(Gtk.Window parent, DraughtsGameState final_state, GameStatistics stats) {
-        populate_results(final_state);
+    public void show_game_end(Gtk.Window parent, DraughtsGameState final_state, GameStatistics stats, PieceColor? local_player_color = null, bool is_multiplayer = false) {
+        populate_results(final_state, local_player_color);
         populate_statistics(stats, final_state);
+
+        // Update button labels for multiplayer
+        if (is_multiplayer) {
+            set_response_label("new_game", _("Play Again"));
+            set_response_label("close", _("Exit to Menu"));
+        }
+
         present(parent);
     }
 
     /**
      * Populate the result section based on game outcome
      */
-    private void populate_results(DraughtsGameState final_state) {
+    private void populate_results(DraughtsGameState final_state, PieceColor? local_player_color) {
+        // Determine if this is a multiplayer game by checking if local_player_color is provided
+        bool is_multiplayer = (local_player_color != null);
+
         switch (final_state.game_status) {
             case GameStatus.RED_WINS:
-                result_icon.set_from_icon_name("emblem-favorite-symbolic");
-                result_icon.add_css_class("success");
-                result_title.set_text(_("Red Player Wins!"));
-                result_subtitle.set_text(_("Congratulations on your victory!"));
+                if (is_multiplayer) {
+                    bool local_won = (local_player_color == PieceColor.RED);
+                    if (local_won) {
+                        result_icon.set_from_icon_name("emblem-favorite-symbolic");
+                        result_icon.add_css_class("success");
+                        result_title.set_text(_("You Win!"));
+                        result_subtitle.set_text(_("Congratulations on your victory!"));
+                    } else {
+                        result_icon.set_from_icon_name("emblem-important-symbolic");
+                        result_icon.add_css_class("error");
+                        result_title.set_text(_("Opponent Wins!"));
+                        result_subtitle.set_text(_("Better luck next time!"));
+                    }
+                } else {
+                    result_icon.set_from_icon_name("emblem-favorite-symbolic");
+                    result_icon.add_css_class("success");
+                    result_title.set_text(_("Red Player Wins!"));
+                    result_subtitle.set_text(_("Congratulations on your victory!"));
+                }
                 break;
 
             case GameStatus.BLACK_WINS:
-                result_icon.set_from_icon_name("emblem-favorite-symbolic");
-                result_icon.add_css_class("success");
-                result_title.set_text(_("Black Player Wins!"));
-                result_subtitle.set_text(_("Congratulations on your victory!"));
+                if (is_multiplayer) {
+                    bool local_won = (local_player_color == PieceColor.BLACK);
+                    if (local_won) {
+                        result_icon.set_from_icon_name("emblem-favorite-symbolic");
+                        result_icon.add_css_class("success");
+                        result_title.set_text(_("You Win!"));
+                        result_subtitle.set_text(_("Congratulations on your victory!"));
+                    } else {
+                        result_icon.set_from_icon_name("emblem-important-symbolic");
+                        result_icon.add_css_class("error");
+                        result_title.set_text(_("Opponent Wins!"));
+                        result_subtitle.set_text(_("Better luck next time!"));
+                    }
+                } else {
+                    result_icon.set_from_icon_name("emblem-favorite-symbolic");
+                    result_icon.add_css_class("success");
+                    result_title.set_text(_("Black Player Wins!"));
+                    result_subtitle.set_text(_("Congratulations on your victory!"));
+                }
                 break;
 
             case GameStatus.DRAW:

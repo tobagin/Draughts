@@ -32,7 +32,7 @@ namespace Draughts {
         private Gee.Queue<DraughtsMove> pending_network_moves;
 
         // Server URL configuration
-        private const string DEFAULT_SERVER_URL = "ws://192.168.0.6:8123";
+        private const string DEFAULT_SERVER_URL = "ws://145.241.228.207:8123";
 
         public MultiplayerGameController(string? server_url = null) {
             this.logger = Logger.get_default();
@@ -61,6 +61,9 @@ namespace Draughts {
             session.opponent_disconnected.connect(on_opponent_disconnected);
             session.opponent_reconnected.connect(on_opponent_reconnected);
             session.session_error.connect(on_session_error);
+            session.version_mismatch.connect((required, client_ver) => {
+                version_mismatch(required, client_ver);
+            });
         }
 
         /**
@@ -164,8 +167,14 @@ namespace Draughts {
 
                 logger.debug("MultiplayerGameController: Local move made and sent to server");
 
-                // Don't check for game end locally - wait for server to send GAME_ENDED message
-                // This prevents duplicate game_finished signals
+                // Check if the game ended as a result of this move
+                if (current_game.is_game_over()) {
+                    var result = current_game.current_state.game_status;
+                    logger.info("MultiplayerGameController: Game ended locally with result: %s", result.to_string());
+
+                    // Notify server so it can broadcast game_ended to both players
+                    session.notify_game_ended(result, "game_over");
+                }
             } else {
                 logger.warning("MultiplayerGameController: Move validation failed");
             }
@@ -177,6 +186,14 @@ namespace Draughts {
          * Undo last move (disabled in multiplayer)
          */
         public bool undo_last_move() {
+            logger.warning("MultiplayerGameController: Undo not available in multiplayer");
+            return false;
+        }
+
+        /**
+         * Undo full round (disabled in multiplayer)
+         */
+        public bool undo_full_round(int move_count) {
             logger.warning("MultiplayerGameController: Undo not available in multiplayer");
             return false;
         }
@@ -377,9 +394,10 @@ namespace Draughts {
          * Handle game started event
          */
         private void on_game_started(DraughtsVariant variant, PieceColor your_color,
-                                     string opponent_name) {
-            logger.info("MultiplayerGameController: Game started - Variant: %s, Your color: %s, Opponent: %s",
-                       variant.to_string(), your_color.to_string(), opponent_name);
+                                     string opponent_name, Gee.ArrayList<DraughtsMove>? moves) {
+            logger.info("MultiplayerGameController: Game started - Variant: %s, Your color: %s, Opponent: %s, Moves to restore: %d",
+                       variant.to_string(), your_color.to_string(), opponent_name,
+                       (moves != null) ? moves.size : 0);
 
             local_player_color = your_color;
 
@@ -419,10 +437,22 @@ namespace Draughts {
 
             start_new_game(game_variant, red_player, black_player, timer);
 
+            // Replay moves to restore game state
+            if (moves != null && moves.size > 0) {
+                logger.info("MultiplayerGameController: Replaying %d moves to restore game state", moves.size);
+                foreach (var move in moves) {
+                    bool success = current_game.make_move(move);
+                    if (!success) {
+                        logger.error("MultiplayerGameController: Failed to replay move during restoration");
+                    }
+                }
+                logger.info("MultiplayerGameController: Game state restored to move %d", moves.size);
+            }
+
             // Emit game started signal
             multiplayer_game_started(variant, your_color, opponent_name);
 
-            // Emit initial game state
+            // Emit current game state (after replaying moves)
             if (current_game != null) {
                 game_state_changed(current_game.current_state, null);
             }
@@ -496,7 +526,7 @@ namespace Draughts {
          * Handle session error
          */
         private void on_session_error(string error_message) {
-            logger.error("MultiplayerGameController: Session error: %s", error_message);
+            logger.warning("MultiplayerGameController: Session error: %s", error_message);
             multiplayer_error(error_message);
         }
 
@@ -517,5 +547,6 @@ namespace Draughts {
         public signal void opponent_disconnected();
         public signal void opponent_reconnected();
         public signal void multiplayer_error(string error_message);
+        public signal void version_mismatch(string required_version, string client_version);
     }
 }

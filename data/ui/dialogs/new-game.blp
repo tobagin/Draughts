@@ -5,6 +5,8 @@ template $DraughtsNewGameDialog : Adw.Dialog {
   // Set reasonable default size, but allow flexibility for mobile
   content-width: 600;
   content-height: 650;
+  width-request: 400;
+  height-request: 500;
 
   Adw.Breakpoint {
     condition ("max-width: 550px")

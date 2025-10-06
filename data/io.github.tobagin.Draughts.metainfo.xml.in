@@ -4,19 +4,20 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>@NAME@</name>
-  <summary>Play draughts (checkers) with 16 international variants and AI opponents</summary>
+  <summary>Play draughts (checkers) with 16 variants, AI opponents, and online multiplayer</summary>
   <description>
     <p>
       Draughts is a comprehensive checkers/draughts game featuring 16 international game variants,
-      multiple AI difficulty levels, and a beautiful modern interface built with GTK4 and LibAdwaita.
+      multiple AI difficulty levels, online multiplayer, and a beautiful modern interface built with GTK4 and LibAdwaita.
       Whether you're a casual player or a serious competitor, Draughts offers engaging gameplay
-      for players of all skill levels.
+      for players of all skill levels - play against AI, friends locally, or opponents online!
     </p>
     <p>Game Features:</p>
     <ul>
       <li>16 international draughts variants including American Checkers, International Draughts, Russian, Brazilian, and more</li>
       <li>10 AI difficulty levels from Beginner to Grandmaster</li>
-      <li>Human vs Human, Human vs AI, and AI vs AI gameplay modes</li>
+      <li>Online multiplayer with quick match, room hosting, and session persistence</li>
+      <li>Human vs Human (local and online), Human vs AI, and AI vs AI gameplay modes</li>
       <li>Complete move history with undo/redo support</li>
       <li>PDN (Portable Draughts Notation) export for game analysis</li>
       <li>Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)</li>
@@ -30,6 +31,7 @@
       <li>Smooth animations and visual feedback</li>
       <li>Game history browser with replay functionality</li>
       <li>Comprehensive rules documentation for each variant</li>
+      <li>Adaptive board orientation - your pieces always at the bottom</li>
     </ul>
   </description>
   <screenshots>
@@ -127,8 +129,8 @@
     <content_attribute id="language-profanity">none</content_attribute>
     <content_attribute id="language-humor">none</content_attribute>
     <content_attribute id="language-discrimination">none</content_attribute>
-    <content_attribute id="social-chat">none</content_attribute>
-    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-chat">mild</content_attribute>
+    <content_attribute id="social-info">mild</content_attribute>
     <content_attribute id="social-audio">none</content_attribute>
     <content_attribute id="social-location">none</content_attribute>
     <content_attribute id="social-contacts">none</content_attribute>
@@ -136,7 +138,60 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="@VERSION@" date="2025-10-03">
+    <release version="2.0.0" date="2025-10-04">
+      <description>
+        <p>Major update: Online Multiplayer with extensive improvements</p>
+        <p>NEW: Online Multiplayer Features</p>
+        <ul>
+          <li>Play draughts online against opponents worldwide</li>
+          <li>Host private game rooms with unique room codes</li>
+          <li>Quick match system for instant random opponent pairing</li>
+          <li>Session persistence - reconnect to games after disconnections</li>
+          <li>Server crash recovery with automatic reconnection</li>
+          <li>Support for all 16 game variants in multiplayer</li>
+          <li>Timer support in online games (Fischer and Bronstein modes)</li>
+          <li>Real-time game synchronization via WebSocket</li>
+          <li>Opponent disconnect/reconnect notifications</li>
+        </ul>
+        <p>Board and Gameplay Improvements</p>
+        <ul>
+          <li>Adaptive board orientation - your pieces always appear at the bottom</li>
+          <li>Works in single-player (color selection) and multiplayer</li>
+          <li>Proper piece highlighting based on current player in multiplayer</li>
+          <li>Fixed captured pieces synchronization in online games</li>
+          <li>Improved board perspective transformations</li>
+        </ul>
+        <p>UI/UX Enhancements</p>
+        <ul>
+          <li>New multiplayer dialog with modern ViewStack navigation</li>
+          <li>StatusPages with helpful descriptions for all multiplayer screens</li>
+          <li>Connection status indicators in header bars</li>
+          <li>Toast notifications for opponent connection events</li>
+          <li>Pill-shaped action buttons in bottom header bars</li>
+          <li>Back navigation buttons with arrow icons</li>
+          <li>Settings initialized from user preferences in multiplayer</li>
+          <li>Removed welcome screen for streamlined experience</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed duplicate game end dialogs in multiplayer</li>
+          <li>Fixed timer not working in multiplayer games</li>
+          <li>Fixed variant selection bug (Brazilian → American)</li>
+          <li>Fixed server crash causing application crashes</li>
+          <li>Fixed quick match self-pairing issues</li>
+          <li>Improved error handling for offline servers</li>
+        </ul>
+        <p>Technical Improvements</p>
+        <ul>
+          <li>WebSocket-based multiplayer networking with libsoup-3.0</li>
+          <li>Node.js relay server with room management</li>
+          <li>JSON-based protocol for all multiplayer messages</li>
+          <li>Quick match queue system organized by variant</li>
+          <li>Added node_modules to .gitignore</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.1" date="2025-10-03">
       <description>
         <p>Mobile-friendly update with improved adaptive design and bug fixes</p>
         <ul>

@@ -86,12 +86,15 @@ namespace Draughts {
         private BoardInteractionHandler interaction_handler;
         private TimerDisplay timer_display;
         private SimpleAction show_history_action;
+        private SimpleAction undo_move_action;
 
         private Logger logger;
         private SettingsManager settings_manager;
         private bool is_first_move = true;
         private bool is_paused = false;
         private bool is_navigating = false;
+        private bool is_multiplayer_game = false;
+        private bool undo_just_used = false;
 
         public Window(Gtk.Application app) {
             Object(application: app);
@@ -121,10 +124,10 @@ namespace Draughts {
             // Connect move history dropdown
             move_history_dropdown.notify["selected"].connect(on_move_history_selected);
 
-            // Board starts empty - show New Game dialog automatically
+            // Start a game automatically with saved settings
             // Use a delay to ensure widgets are fully realized and sized
             Timeout.add(200, () => {
-                show_new_game_dialog();
+                start_game_with_saved_settings();
                 return false;
             });
 
@@ -171,11 +174,9 @@ namespace Draughts {
             });
             add_action(reset_game_action);
 
-            var undo_move_action = new SimpleAction("undo-move", null);
+            undo_move_action = new SimpleAction("undo-move", null);
             undo_move_action.activate.connect(() => {
-                if (adapter != null) {
-                    adapter.undo_last_move();
-                }
+                on_undo_requested();
             });
             add_action(undo_move_action);
 
@@ -326,7 +327,18 @@ namespace Draughts {
 
             // Select the current position
             int current_position = get_current_move_index();
-            move_history_dropdown.set_selected(current_position);
+            uint n_items = move_history_model.get_n_items();
+
+            // Ensure current_position is within bounds
+            if (current_position < 0) {
+                current_position = 0;
+            } else if (current_position >= n_items) {
+                current_position = (int)n_items - 1;
+            }
+
+            if (n_items > 0) {
+                move_history_dropdown.set_selected((uint)current_position);
+            }
 
             is_navigating = false;
         }
@@ -436,6 +448,7 @@ namespace Draughts {
 
                 // Reset first move flag for timer
                 is_first_move = true;
+                undo_just_used = false;
 
                 // Initialize turn indicator for Red (starting player)
                 update_turn_indicator(PieceColor.RED);
@@ -461,6 +474,7 @@ namespace Draughts {
             int increment_seconds,
             string clock_type
         ) {
+            is_multiplayer_game = false;  // Reset multiplayer flag for single-player games
             if (adapter != null) {
                 // Configure AI difficulty based on the selection
                 AIDifficulty difficulty;
@@ -539,6 +553,7 @@ namespace Draughts {
 
                 // Reset first move flag for timer
                 is_first_move = true;
+                undo_just_used = false;
 
                 // Initialize turn indicator for Red (starting player)
                 update_turn_indicator(PieceColor.RED);
@@ -585,12 +600,70 @@ namespace Draughts {
         }
 
         private void on_undo_requested() {
-            if (adapter != null && adapter.undo_last_move()) {
-                // Move undone - no toast needed, visual board update is sufficient
+            // Disable undo for multiplayer games
+            if (is_multiplayer_game) {
+                logger.info("Undo not allowed in multiplayer games");
+                return;
+            }
 
-                logger.info("Move undone");
+            if (adapter == null) {
+                return;
+            }
+
+            // Disable undo button and action immediately to prevent double-clicks/keypresses
+            undo_button.set_sensitive(false);
+            undo_move_action.set_enabled(false);
+
+            // For human vs AI games, undo one full round (player move + CPU move)
+            var current_game = adapter.get_current_game();
+            if (current_game != null) {
+                // Check if it's human vs AI by checking player types
+                bool is_vs_ai = (current_game.red_player.player_type == PlayerType.AI ||
+                                current_game.black_player.player_type == PlayerType.AI);
+
+                if (is_vs_ai) {
+                    // For vs AI: remove 2 moves from history (AI's move + player's move)
+                    print("\n*** WINDOW: Undo button clicked, calling controller.undo_full_round ***\n");
+                    var controller = adapter.get_controller();
+                    print("*** WINDOW: controller is %s ***\n", controller != null ? "NOT NULL" : "NULL");
+                    if (controller != null) {
+                        bool success = controller.undo_full_round(1);
+                        print("*** WINDOW: undo_full_round returned %s ***\n", success ? "TRUE" : "FALSE");
+                        if (success) {
+                            logger.info("Undone AI's last move and player's previous move");
+                            // Set flag to keep undo disabled until next move
+                            undo_just_used = true;
+                            // Rebuild the move history dropdown to reflect removed moves
+                            // Use idle callback to ensure game state is fully updated
+                            Idle.add(() => {
+                                rebuild_move_history_dropdown();
+                                update_undo_redo_buttons();
+                                return false;
+                            });
+                        } else {
+                            // Undo failed, re-enable button
+                            update_undo_redo_buttons();
+                        }
+                    } else {
+                        // No controller, re-enable button
+                        update_undo_redo_buttons();
+                    }
+                } else {
+                    // For human vs human, undo one move
+                    if (adapter.undo_last_move()) {
+                        logger.info("Move undone");
+                        // Set flag to keep undo disabled until next move
+                        undo_just_used = true;
+                        update_undo_redo_buttons();
+                        update_navigation_buttons();
+                    } else {
+                        // Undo failed, re-enable button
+                        update_undo_redo_buttons();
+                    }
+                }
+            } else {
+                // No game, re-enable button
                 update_undo_redo_buttons();
-                update_navigation_buttons();
             }
         }
 
@@ -659,11 +732,61 @@ namespace Draughts {
         }
 
         private void update_undo_redo_buttons() {
+            // Disable undo/redo for multiplayer games
+            if (is_multiplayer_game) {
+                undo_button.set_sensitive(false);
+                undo_move_action.set_enabled(false);
+                // redo_button.set_sensitive(false); // Redo removed from UI
+                return;
+            }
+
+            // If undo was just used, keep it disabled
+            if (undo_just_used) {
+                undo_button.set_sensitive(false);
+                undo_move_action.set_enabled(false);
+                return;
+            }
+
             if (adapter != null) {
-                undo_button.set_sensitive(adapter.can_undo());
+                var current_game = adapter.get_current_game();
+                bool can_undo = false;
+
+                if (current_game != null) {
+                    // Check if it's human vs AI
+                    bool is_vs_ai = (current_game.red_player.player_type == PlayerType.AI ||
+                                    current_game.black_player.player_type == PlayerType.AI);
+
+                    if (is_vs_ai) {
+                        // For vs AI, only allow undo if:
+                        // 1. There are at least 2 moves in history (player + AI)
+                        // 2. The current turn is the human player's turn (AI just played)
+                        int history_size = current_game.get_history_size();
+                        var current_state = current_game.current_state;
+
+                        // Check if current player is human
+                        bool current_is_human = false;
+                        if (current_state.active_player == PieceColor.RED) {
+                            current_is_human = (current_game.red_player.player_type == PlayerType.HUMAN);
+                        } else {
+                            current_is_human = (current_game.black_player.player_type == PlayerType.HUMAN);
+                        }
+
+                        print("*** update_undo_redo_buttons: history_size=%d, current_is_human=%s, undo_just_used=%s ***\n",
+                              history_size, current_is_human ? "TRUE" : "FALSE", undo_just_used ? "TRUE" : "FALSE");
+
+                        can_undo = (history_size >= 2 && current_is_human);
+                    } else {
+                        // For human vs human, use normal undo check
+                        can_undo = adapter.can_undo();
+                    }
+                }
+
+                undo_button.set_sensitive(can_undo);
+                undo_move_action.set_enabled(can_undo);
                 // redo_button.set_sensitive(adapter.can_redo()); // Redo removed from UI
             } else {
                 undo_button.set_sensitive(false);
+                undo_move_action.set_enabled(false);
                 // redo_button.set_sensitive(false); // Redo removed from UI
             }
         }
@@ -846,12 +969,34 @@ namespace Draughts {
             if (final_state != null) {
                 var dialog = new GameEndDialog();
 
+                // Check if this is a multiplayer game and get local player color
+                PieceColor? local_player_color = null;
+                bool is_multiplayer = adapter.get_controller() is MultiplayerGameController;
+                if (is_multiplayer) {
+                    var multiplayer_controller = (MultiplayerGameController) adapter.get_controller();
+                    local_player_color = multiplayer_controller.get_local_player_color();
+                }
+
                 // Connect to dialog responses
                 dialog.response.connect((response) => {
                     if (response == "new_game") {
-                        start_new_game();
+                        if (is_multiplayer) {
+                            // "Play Again" in multiplayer - show multiplayer dialog to find new opponent
+                            var app = get_application() as Draughts.Application;
+                            if (app != null) {
+                                app.activate_action("play-online", null);
+                            }
+                        } else {
+                            // "New Game" in single player - show new game dialog
+                            start_new_game();
+                        }
+                    } else if (response == "close") {
+                        if (is_multiplayer) {
+                            // "Exit to Menu" in multiplayer - start new single player game with saved settings
+                            start_game_with_saved_settings();
+                        }
+                        // In single player, "Close" just closes the dialog (default behavior)
                     }
-                    // "close" response just closes the dialog
                 });
 
                 // Save game to history
@@ -868,12 +1013,12 @@ namespace Draughts {
 
                 // Use real session statistics if available, otherwise fallback
                 if (session_stats != null) {
-                    dialog.show_game_end_with_session(this, final_state, session_stats);
+                    dialog.show_game_end_with_session(this, final_state, session_stats, local_player_color, is_multiplayer);
                 } else {
                     // Fallback to basic statistics
                     var fallback_stats = new GameStatistics();
                     fallback_stats.calculate_basic_stats(0, 0.0);
-                    dialog.show_game_end(this, final_state, fallback_stats);
+                    dialog.show_game_end(this, final_state, fallback_stats, local_player_color, is_multiplayer);
                 }
             } else {
                 // Fallback to simple toast if we can't get game state
@@ -902,6 +1047,9 @@ namespace Draughts {
         }
 
         private void on_move_made(DraughtsMove move) {
+            // Clear the undo_just_used flag to re-enable undo after a new move
+            undo_just_used = false;
+
             // Update undo/redo button states
             update_undo_redo_buttons();
             update_navigation_buttons();
@@ -1014,6 +1162,33 @@ namespace Draughts {
             show_new_game_dialog();
         }
 
+        private void start_game_with_saved_settings() {
+            // Get saved settings
+            var variant = settings_manager.get_default_variant();
+            int opponent_type = settings_manager.get_int("new-game-opponent-type");
+            int human_color_index = settings_manager.get_int("new-game-human-color");
+            var ai_difficulty = settings_manager.get_ai_difficulty();
+
+            bool use_time_limit = settings_manager.get_boolean("new-game-time-limit-enabled");
+            int minutes_per_side = settings_manager.get_int("new-game-minutes-per-side");
+            int increment_seconds = settings_manager.get_int("new-game-increment-seconds");
+            int clock_type_int = settings_manager.get_int("new-game-clock-type");
+            string clock_type_str = (clock_type_int == 0) ? "Fischer" : "Bronstein";
+
+            // opponent_type: 0 = Human, 1 = AI
+            bool is_human_vs_ai = (opponent_type == 1);
+
+            // human_color_index: 0 = Red, 1 = Black
+            PieceColor human_color = (human_color_index == 0) ? PieceColor.RED : PieceColor.BLACK;
+
+            logger.info("Auto-starting game with saved settings: variant=%s, vs_ai=%s, color=%s",
+                variant.to_string(), is_human_vs_ai.to_string(), human_color.to_string());
+
+            // Start new game with the saved configuration
+            on_new_game_requested_with_configuration(variant, is_human_vs_ai, human_color, ai_difficulty,
+                use_time_limit, minutes_per_side, increment_seconds, clock_type_str);
+        }
+
         private void show_new_game_dialog() {
             var dialog = new NewGameDialog();
             dialog.game_started.connect((variant, is_human_vs_ai, human_color, ai_difficulty, use_time_limit, minutes_per_side, increment_seconds, clock_type) => {
@@ -1037,8 +1212,15 @@ namespace Draughts {
          * Set multiplayer controller and switch to multiplayer mode
          */
         public void set_multiplayer_controller(MultiplayerGameController controller) {
+            is_multiplayer_game = true;
             if (adapter != null) {
                 adapter.set_multiplayer_controller(controller);
+
+                // Connect to error signal
+                controller.multiplayer_error.connect(on_multiplayer_error);
+                controller.opponent_disconnected.connect(on_opponent_disconnected);
+                controller.opponent_reconnected.connect(on_opponent_reconnected);
+                controller.version_mismatch.connect(on_version_mismatch);
 
                 // Update window subtitle with the multiplayer game variant
                 var game = controller.get_current_game();
@@ -1054,6 +1236,89 @@ namespace Draughts {
                     }
                 }
             }
+        }
+
+        /**
+         * Handle multiplayer error (e.g., server crash)
+         */
+        private void on_multiplayer_error(string error_message) {
+            logger.error("Window: Multiplayer error - %s", error_message);
+
+            // Show error dialog
+            var dialog = new Adw.MessageDialog(this, _("Multiplayer Connection Lost"), error_message);
+            dialog.add_response("ok", _("OK"));
+            dialog.set_default_response("ok");
+            dialog.set_close_response("ok");
+            dialog.response.connect((response) => {
+                dialog.close();
+            });
+            dialog.present();
+        }
+
+        /**
+         * Handle version mismatch - prompt user to update
+         */
+        private void on_version_mismatch(string required_version, string client_version) {
+            logger.error("Window: Version mismatch - Client: %s, Required: %s", client_version, required_version);
+
+            // Show update required dialog
+            var dialog = new Adw.MessageDialog(
+                this,
+                _("Update Required"),
+                _("Your game version (%s) is outdated. Please update to version %s or later to play online.").printf(client_version, required_version)
+            );
+            dialog.add_response("cancel", _("Cancel"));
+            dialog.add_response("update", _("Update"));
+            dialog.set_response_appearance("update", Adw.ResponseAppearance.SUGGESTED);
+            dialog.set_default_response("update");
+            dialog.set_close_response("cancel");
+            dialog.response.connect((response) => {
+                if (response == "update") {
+                    // Open the app in the system's software center
+                    // Try appstream:// URL first (works with GNOME Software, KDE Discover, etc.)
+                    try {
+                        string app_id = Config.ID;
+                        string appstream_url = @"appstream://$(app_id)";
+                        logger.info("Opening software center with URL: %s", appstream_url);
+                        Gtk.show_uri(this, appstream_url, Gdk.CURRENT_TIME);
+                    } catch (Error e) {
+                        logger.error("Failed to open software center: %s", e.message);
+
+                        // Fallback to GitHub releases page
+                        try {
+                            Gtk.show_uri(this, "https://github.com/tobagin/Dama/releases", Gdk.CURRENT_TIME);
+                        } catch (Error e2) {
+                            logger.error("Failed to open update URL: %s", e2.message);
+                        }
+                    }
+                }
+                dialog.close();
+
+                // Start new single-player game
+                start_game_with_saved_settings();
+            });
+            dialog.present();
+        }
+
+        /**
+         * Handle opponent disconnected
+         */
+        private void on_opponent_disconnected() {
+            logger.warning("Window: Opponent disconnected");
+            // Could show a banner or toast here
+            var toast = new Adw.Toast(_("Opponent disconnected. Waiting for reconnection..."));
+            toast.set_timeout(5);
+            toast_overlay.add_toast(toast);
+        }
+
+        /**
+         * Handle opponent reconnected
+         */
+        private void on_opponent_reconnected() {
+            logger.info("Window: Opponent reconnected");
+            var toast = new Adw.Toast(_("Opponent reconnected!"));
+            toast.set_timeout(3);
+            toast_overlay.add_toast(toast);
         }
 
         public void set_game_rules(string rules) {

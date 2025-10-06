@@ -384,6 +384,7 @@ namespace Draughts {
         public PieceColor your_color { get; set; }
         public DraughtsVariant variant { get; set; }
         public string opponent_name { get; set; }
+        public Gee.ArrayList<DraughtsMove>? moves { get; set; default = null; }
 
         public GameStartedMessage() {
             base(NetworkMessageType.GAME_STARTED);

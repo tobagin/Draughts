@@ -12,17 +12,18 @@ data/ui/dialogs/game-history.blp
 data/ui/dialogs/game-preferences.blp
 data/ui/dialogs/game-replay.blp
 data/ui/dialogs/help.blp
+data/ui/dialogs/multiplayer.blp
 data/ui/dialogs/new-game.blp
 data/ui/dialogs/preferences.blp
 data/ui/dialogs/variant-rules.blp
 data/ui/dialogs/variant-selector.blp
-data/ui/dialogs/welcome.blp
 data/ui/widgets/game-controls.blp
 data/ui/widgets/move-history.blp
 data/ui/widgets/timer-display.blp
 
 # Vala source files with translatable strings
 src/Window.vala
+src/dialogs/MultiplayerDialog.vala
 src/dialogs/VariantRulesDialog.vala
 src/dialogs/GameHistoryDialog.vala
 src/dialogs/GameReplayDialog.vala

@@ -169,6 +169,21 @@ public class Draughts.Game : Object {
         current_state = new_state;
         _state_history.add(current_state.clone());
 
+        // Log the state we're about to save
+        var move_logger = Logger.get_default();
+        print("\n==== STORING MOVE TO HISTORY ====\n");
+        print("Move piece_id=%d from (%d,%d) to (%d,%d)\n",
+              move.piece_id, move.from_position.row, move.from_position.col,
+              move.to_position.row, move.to_position.col);
+        print("active_player_BEFORE=%s, active_player_AFTER=%s\n",
+              previous_state.active_player.to_string(),
+              current_state.active_player.to_string());
+        move_logger.info("Game.make_move: Saving move to history - piece_id=%d from (%d,%d) to (%d,%d), active_player_BEFORE=%s, active_player_AFTER=%s",
+                   move.piece_id, move.from_position.row, move.from_position.col,
+                   move.to_position.row, move.to_position.col,
+                   previous_state.active_player.to_string(),
+                   current_state.active_player.to_string());
+
         // Add move to history manager for undo/redo functionality
         move_history_manager.add_move(move, previous_state, current_state.clone());
 
@@ -262,6 +277,64 @@ public class Draughts.Game : Object {
         }
 
         // Reset timers to previous state (simplified - doesn't account for time already used)
+        if (timer_red != null) {
+            timer_red.stop();
+        }
+        if (timer_black != null) {
+            timer_black.stop();
+        }
+
+        // Play undo sound
+        sound_manager.play_sound(SoundEffect.UNDO);
+
+        return true;
+    }
+
+    /**
+     * Undo a full round (multiple moves) for vs AI mode
+     * This removes player move + AI move, then redos the previous AI move to ensure correct turn
+     * @param move_count Number of moves to remove
+     */
+    public bool undo_full_round(int move_count) {
+        var log = Logger.get_default();
+
+        log.info("Game: undo_full_round called with move_count=%d", move_count);
+
+        if (move_count <= 0 || move_history_manager.get_undo_count() < move_count || is_game_over()) {
+            log.warning("Game: Cannot undo %d moves (undo_count=%d, is_game_over=%s)",
+                       move_count, move_history_manager.get_undo_count(), is_game_over().to_string());
+            return false;
+        }
+
+        var undo_result = move_history_manager.undo_and_redo_for_ai(move_count);
+        if (undo_result == null) {
+            log.warning("Game: undo_and_redo_for_ai returned null");
+            return false;
+        }
+
+        // Update current state to the final state (after redoing the AI move)
+        current_state = undo_result.board_state.clone();
+        log.info("Game: Set current_state, active_player=%s, piece_count=%d",
+                current_state.active_player.to_string(), current_state.pieces.size);
+
+        print("\n==== GAME.VALA: After setting current_state ====\n");
+        print("Active player: %s\n", current_state.active_player.to_string());
+        print("Pieces:\n");
+        foreach (var piece in current_state.pieces) {
+            print("  Piece ID %d %s at (%d,%d)\n", piece.id, piece.color.to_string(),
+                  piece.position.row, piece.position.col);
+        }
+        print("====================================\n\n");
+
+        // Update the state history - remove exactly 2 states (player move + AI move)
+        int removed_count = 0;
+        for (int i = 0; i < 2 && _state_history.size > 1; i++) {
+            _state_history.remove_at(_state_history.size - 1);
+            removed_count++;
+        }
+        log.info("Game: Removed %d states from _state_history, new size=%d", removed_count, _state_history.size);
+
+        // Reset timers
         if (timer_red != null) {
             timer_red.stop();
         }

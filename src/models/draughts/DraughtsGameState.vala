@@ -156,11 +156,18 @@ public class Draughts.DraughtsGameState : Object {
         // Get the piece being moved
         var moving_piece = new_state.get_piece_by_id(move.piece_id);
         if (moving_piece == null) {
-            warning("Piece with ID %d not found", move.piece_id);
+            print("apply_move: Piece with ID %d NOT FOUND!\n", move.piece_id);
+            print("  Available pieces:\n");
             foreach (var p in new_state.pieces) {
+                print("    Piece ID %d at (%d,%d)\n", p.id, p.position.row, p.position.col);
             }
+            print("  Returning unchanged state!\n");
             return new_state;
         }
+
+        print("apply_move: Found piece ID %d at (%d,%d), moving to (%d,%d)\n",
+              moving_piece.id, moving_piece.position.row, moving_piece.position.col,
+              move.to_position.row, move.to_position.col);
 
         // Remove captured pieces
         foreach (int captured_id in move.captured_pieces) {

@@ -275,6 +275,16 @@ public class Draughts.DraughtsBoardAdapter : Object {
         }
 
         var current_state = game_controller.get_current_state();
+        print("\n==== ADAPTER: sync_board_to_game_state called ====\n");
+        print("Active player: %s\n", current_state.active_player.to_string());
+        print("Pieces (showing piece 12 only):\n");
+        foreach (var piece in current_state.pieces) {
+            if (piece.id == 12) {
+                print("  Piece ID %d %s at (%d,%d)\n", piece.id, piece.color.to_string(),
+                      piece.position.row, piece.position.col);
+            }
+        }
+        print("====================================\n\n");
 
         // Clear the board widget's state
         board_widget.clear_board();
@@ -525,8 +535,10 @@ public class Draughts.DraughtsBoardAdapter : Object {
      * Handle state changes from the game engine
      */
     private void on_engine_state_changed(DraughtsGameState new_state, DraughtsMove? last_move) {
+        print("\n#### on_engine_state_changed CALLED - active_player=%s ####\n", new_state.active_player.to_string());
         sync_board_to_game_state();
         game_state_changed(new_state);
+        print("#### on_engine_state_changed DONE ####\n\n");
     }
 
     /**
@@ -1007,6 +1019,13 @@ public class Draughts.DraughtsBoardAdapter : Object {
             return game_controller.can_redo();
         }
         return false;
+    }
+
+    /**
+     * Get the game controller
+     */
+    public IGameController? get_controller() {
+        return game_controller;
     }
 
     /**
