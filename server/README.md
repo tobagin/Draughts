@@ -159,7 +159,7 @@ The server will start on port 8080 by default (configurable via `PORT` environme
 }
 ```
 
-### HTTP Health Check (http://localhost:8080/health)
+### HTTP Health Check (http://localhost:8443/health)
 
 ```json
 {
@@ -169,6 +169,20 @@ The server will start on port 8080 by default (configurable via `PORT` environme
   "uptime": 3600
 }
 ```
+
+### Statistics Dashboard (http://localhost:8443/stats)
+
+Visit `/stats` to view a real-time dashboard showing:
+- Total games played
+- Active games
+- Completed games
+- Connected players
+- Games by variant (with percentages)
+- Game results breakdown (wins, draws, resignations)
+- Peak concurrent games
+- Server uptime
+
+The dashboard auto-refreshes every 10 seconds and features a modern, responsive design.
 
 ## Deployment
 

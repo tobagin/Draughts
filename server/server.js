@@ -10,7 +10,7 @@
 const WebSocket = require('ws');
 const http = require('http');
 
-const PORT = process.env.PORT || 8123;
+const PORT = process.env.PORT || 8443;
 const ROOM_CODE_LENGTH = 6;
 const REQUIRED_VERSION = '2.0.0'; // Minimum client version required
 
@@ -22,6 +22,24 @@ const clients = new Map();
 
 // Quick match queue (variant -> array of waiting clients)
 const quickMatchQueue = new Map();
+
+// Statistics tracking
+const stats = {
+  totalGames: 0,
+  activeGames: 0,
+  completedGames: 0,
+  gamesByVariant: {},
+  gamesByResult: {
+    red_wins: 0,
+    black_wins: 0,
+    draw: 0,
+    resignation: 0,
+    timeout: 0
+  },
+  peakConcurrentGames: 0,
+  totalConnections: 0,
+  startTime: Date.now()
+};
 
 // Version comparison helper
 function isVersionCompatible(clientVersion, requiredVersion) {
@@ -48,6 +66,241 @@ function generateRoomCode() {
   return rooms.has(code) ? generateRoomCode() : code;
 }
 
+// Generate stats dashboard HTML
+function generateStatsHTML() {
+  const uptime = Math.floor((Date.now() - stats.startTime) / 1000);
+  const days = Math.floor(uptime / 86400);
+  const hours = Math.floor((uptime % 86400) / 3600);
+  const minutes = Math.floor((uptime % 3600) / 60);
+  const uptimeStr = `${days}d ${hours}h ${minutes}m`;
+
+  const variantRows = Object.entries(stats.gamesByVariant)
+    .sort((a, b) => b[1] - a[1])
+    .map(([variant, count]) => `
+      <tr>
+        <td>${variant}</td>
+        <td>${count}</td>
+        <td>${stats.totalGames > 0 ? ((count / stats.totalGames) * 100).toFixed(1) : 0}%</td>
+      </tr>
+    `).join('');
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draughts Server Statistics</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .chart-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f8f9fa;
+      color: #667eea;
+      font-weight: 600;
+    }
+    tr:hover {
+      background: #f8f9fa;
+    }
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 30px;
+      opacity: 0.8;
+    }
+    .pie-chart {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+  </style>
+  <script>
+    // Auto-refresh every 10 seconds
+    setTimeout(() => location.reload(), 10000);
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1><span class="status-indicator"></span>Draughts Multiplayer Server</h1>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">${stats.totalGames}</div>
+        <div class="stat-label">Total Games</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.activeGames}</div>
+        <div class="stat-label">Active Games</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.completedGames}</div>
+        <div class="stat-label">Completed Games</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${clients.size}</div>
+        <div class="stat-label">Connected Players</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.totalConnections}</div>
+        <div class="stat-label">Total Connections</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.peakConcurrentGames}</div>
+        <div class="stat-label">Peak Concurrent Games</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${uptimeStr}</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${rooms.size}</div>
+        <div class="stat-label">Active Rooms</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h2>Games by Variant</h2>
+      ${variantRows ? `
+        <table>
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>Games</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${variantRows}
+          </tbody>
+        </table>
+      ` : '<p style="text-align: center; color: #999;">No games played yet</p>'}
+    </div>
+
+    <div class="chart-card">
+      <h2>Game Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Result</th>
+            <th>Count</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Red Wins</td>
+            <td>${stats.gamesByResult.red_wins}</td>
+            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.red_wins / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+          </tr>
+          <tr>
+            <td>Black Wins</td>
+            <td>${stats.gamesByResult.black_wins}</td>
+            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.black_wins / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+          </tr>
+          <tr>
+            <td>Draws</td>
+            <td>${stats.gamesByResult.draw}</td>
+            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.draw / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+          </tr>
+          <tr>
+            <td>Resignations</td>
+            <td>${stats.gamesByResult.resignation}</td>
+            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.resignation / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Server Version 2.0.0 | Auto-refreshes every 10 seconds</p>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+}
+
 // Create HTTP server
 const server = http.createServer((req, res) => {
   if (req.url === '/health') {
@@ -58,6 +311,9 @@ const server = http.createServer((req, res) => {
       clients: clients.size,
       uptime: process.uptime()
     }));
+  } else if (req.url === '/stats') {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(generateStatsHTML());
   } else {
     res.writeHead(404);
     res.end('Not found');
@@ -72,6 +328,9 @@ console.log(`🎮 Draughts Multiplayer Server starting...`);
 wss.on('connection', (ws) => {
   let clientId = null;
   let isReconnecting = false;
+
+  // Track total connections
+  stats.totalConnections++;
 
   // Wait for initial message to get session ID
   const handleFirstMessage = (data) => {
@@ -365,6 +624,17 @@ function startGame(room_code) {
 
   room.gameStarted = true;
 
+  // Update stats
+  stats.totalGames++;
+  stats.activeGames++;
+  if (!stats.gamesByVariant[room.variant]) {
+    stats.gamesByVariant[room.variant] = 0;
+  }
+  stats.gamesByVariant[room.variant]++;
+  if (stats.activeGames > stats.peakConcurrentGames) {
+    stats.peakConcurrentGames = stats.activeGames;
+  }
+
   const hostClient = clients.get(room.host);
   const guestClient = clients.get(room.guest);
 
@@ -525,6 +795,28 @@ function handleGameEnded(clientId, message) {
   if (!room) return;
 
   const { result, reason } = message;
+
+  // Update stats
+  if (room.gameStarted) {
+    stats.activeGames--;
+    stats.completedGames++;
+
+    // Track result type
+    if (result === 'red_wins' || result === 'Red wins') {
+      stats.gamesByResult.red_wins++;
+    } else if (result === 'black_wins' || result === 'Black wins') {
+      stats.gamesByResult.black_wins++;
+    } else if (result === 'draw') {
+      stats.gamesByResult.draw++;
+    }
+
+    // Track reason
+    if (reason === 'resignation') {
+      stats.gamesByResult.resignation++;
+    } else if (reason === 'timeout') {
+      stats.gamesByResult.timeout++;
+    }
+  }
 
   // Broadcast game ended to both players
   broadcastToRoom(room, {

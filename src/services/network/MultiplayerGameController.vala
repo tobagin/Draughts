@@ -32,7 +32,7 @@ namespace Draughts {
         private Gee.Queue<DraughtsMove> pending_network_moves;
 
         // Server URL configuration
-        private const string DEFAULT_SERVER_URL = "ws://145.241.228.207:8123";
+        private const string DEFAULT_SERVER_URL = "wss://draughts.tobagin.eu";
 
         public MultiplayerGameController(string? server_url = null) {
             this.logger = Logger.get_default();

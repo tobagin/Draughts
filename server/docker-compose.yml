@@ -5,15 +5,15 @@ services:
     build: .
     container_name: draughts-multiplayer-server
     ports:
-      - "8123:8123"
+      - "8443:8443"
     environment:
-      - PORT=8123
+      - PORT=8443
       - NODE_ENV=production
     restart: unless-stopped
     networks:
       - draughts-network
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8123/health', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8443/health', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"]
       interval: 30s
       timeout: 3s
       retries: 3

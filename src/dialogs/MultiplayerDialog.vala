@@ -148,7 +148,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         // Get server URL from settings or use default
         string server_url = settings_manager.get_string("multiplayer-server-url");
         if (server_url == "") {
-            server_url = "ws://145.241.228.207:8123"; // Default server
+            server_url = "wss://draughts.tobagin.eu"; // Default server
         }
 
         controller = new MultiplayerGameController(server_url);
@@ -209,7 +209,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_host_clicked() {
         if (!is_connected) {
-            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: wss://draughts.tobagin.eu)");
             return;
         }
         logger.info("MultiplayerDialog: Host button clicked");
@@ -221,7 +221,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_join_clicked() {
         if (!is_connected) {
-            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: wss://draughts.tobagin.eu)");
             return;
         }
         logger.info("MultiplayerDialog: Join button clicked");
@@ -234,7 +234,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
      */
     private void on_quick_match_clicked() {
         if (!is_connected) {
-            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: ws://145.241.228.207:8123)");
+            show_error("Cannot connect to multiplayer server.\n\nPlease make sure:\n• The server is running\n• Server address is correct (currently: wss://draughts.tobagin.eu)");
             return;
         }
 
