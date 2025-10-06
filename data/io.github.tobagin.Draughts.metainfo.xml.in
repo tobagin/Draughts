@@ -138,43 +138,85 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="2.0.0" date="2025-10-04">
+    <release version="2.0.0" date="2025-10-06">
       <description>
         <p>Major update: Online Multiplayer with extensive improvements</p>
         <p>NEW: Online Multiplayer Features</p>
         <ul>
-          <li>Play draughts online against opponents worldwide</li>
-          <li>Host private game rooms with unique room codes</li>
+          <li>Play draughts online against opponents worldwide in real-time</li>
+          <li>Host private game rooms with unique 6-character room codes</li>
           <li>Quick match system for instant random opponent pairing</li>
-          <li>Session persistence - reconnect to games after disconnections</li>
-          <li>Server crash recovery with automatic reconnection</li>
+          <li>Automatic session persistence - seamlessly reconnect to games after disconnections</li>
+          <li>Game state restoration - board updates to correct position when reconnecting</li>
+          <li>Resign functionality with confirmation dialogs</li>
+          <li>Version checking - ensures client compatibility with server</li>
           <li>Support for all 16 game variants in multiplayer</li>
           <li>Timer support in online games (Fischer and Bronstein modes)</li>
           <li>Real-time game synchronization via WebSocket</li>
-          <li>Opponent disconnect/reconnect notifications</li>
+          <li>Opponent disconnect/reconnect notifications with toasts</li>
+          <li>Game end notifications delivered to both winner and loser</li>
+          <li>Statistics dashboard at /stats showing server metrics</li>
+        </ul>
+        <p>Resignation &amp; Game Management</p>
+        <ul>
+          <li>Resign button in multiplayer games (red destructive style)</li>
+          <li>Resign confirmation when starting new game during multiplayer</li>
+          <li>Resign confirmation when trying to play online during active game</li>
+          <li>Resign confirmation when resetting game during multiplayer</li>
+          <li>Resign confirmation when closing application during multiplayer</li>
+          <li>Post-game options: "Play Again" to rejoin queue or "Exit to Menu"</li>
+          <li>Server properly tracks resignation statistics</li>
         </ul>
         <p>Board and Gameplay Improvements</p>
         <ul>
           <li>Adaptive board orientation - your pieces always appear at the bottom</li>
-          <li>Works in single-player (color selection) and multiplayer</li>
+          <li>Fixed board not updating after reconnection when opponent made moves</li>
+          <li>Fixed duplicate game end dialogs in multiplayer</li>
           <li>Proper piece highlighting based on current player in multiplayer</li>
           <li>Fixed captured pieces synchronization in online games</li>
+          <li>Board state correctly restored with all opponent moves after reconnection</li>
           <li>Improved board perspective transformations</li>
         </ul>
         <p>UI/UX Enhancements</p>
         <ul>
           <li>New multiplayer dialog with modern ViewStack navigation</li>
+          <li>Game end dialogs show "You Win!" or "Opponent Wins!" based on result</li>
           <li>StatusPages with helpful descriptions for all multiplayer screens</li>
           <li>Connection status indicators in header bars</li>
           <li>Toast notifications for opponent connection events</li>
+          <li>Updated keyboard shortcuts dialog with Ctrl+M for Play Online</li>
           <li>Pill-shaped action buttons in bottom header bars</li>
           <li>Back navigation buttons with arrow icons</li>
           <li>Settings initialized from user preferences in multiplayer</li>
           <li>Removed welcome screen for streamlined experience</li>
+          <li>Removed disconnect button - only resign option remains</li>
+        </ul>
+        <p>Export and History</p>
+        <ul>
+          <li>Changed game export format from PGN to PDN (Portable Draughts Notation)</li>
+          <li>All game exports now use .pdn file extension</li>
+          <li>Game history exports with correct PDN format</li>
+          <li>Game replay exports with PDN format</li>
+        </ul>
+        <p>Server Features</p>
+        <ul>
+          <li>Real-time statistics dashboard at /stats endpoint</li>
+          <li>Track total games, active games, completed games</li>
+          <li>Games by variant with percentages</li>
+          <li>Game results breakdown (wins, draws, resignations)</li>
+          <li>Peak concurrent games and server uptime tracking</li>
+          <li>Auto-refresh dashboard every 10 seconds</li>
+          <li>Version checking prevents outdated clients from connecting</li>
+          <li>Health check endpoint for monitoring</li>
+          <li>Docker container support with proper healthcheck</li>
+          <li>Server IP: draughts.tobagin.eu (Cloudflare proxied)</li>
         </ul>
         <p>Bug Fixes</p>
         <ul>
-          <li>Fixed duplicate game end dialogs in multiplayer</li>
+          <li>Fixed duplicate game end dialogs in multiplayer games</li>
+          <li>Fixed board not updating after reconnection with opponent moves</li>
+          <li>Fixed loser not receiving game end dialog</li>
+          <li>Fixed resignation not updating game statistics</li>
           <li>Fixed timer not working in multiplayer games</li>
           <li>Fixed variant selection bug (Brazilian → American)</li>
           <li>Fixed server crash causing application crashes</li>
@@ -185,9 +227,13 @@
         <ul>
           <li>WebSocket-based multiplayer networking with libsoup-3.0</li>
           <li>Node.js relay server with room management</li>
+          <li>Docker containerization with health checks</li>
+          <li>Automated Docker publishing script (publish-server.sh)</li>
           <li>JSON-based protocol for all multiplayer messages</li>
           <li>Quick match queue system organized by variant</li>
-          <li>Added node_modules to .gitignore</li>
+          <li>Game state serialization and restoration</li>
+          <li>Move replay system for reconnection</li>
+          <li>Semantic versioning compatibility checking</li>
         </ul>
       </description>
     </release>

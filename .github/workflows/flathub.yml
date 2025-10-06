@@ -37,7 +37,7 @@ jobs:
     - name: Check manifest exists
       id: check
       run: |
-        MANIFEST_FILE="packaging/io.github.tobagin.karere.yml"
+        MANIFEST_FILE="packaging/io.github.tobagin.Draughts.yml"
         
         if [[ ! -f "$MANIFEST_FILE" ]]; then
           echo "❌ Manifest file not found: $MANIFEST_FILE"
@@ -55,30 +55,30 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.FLATHUB_TOKEN }}
       run: |
-        FLATHUB_REPO="flathub/io.github.tobagin.karere"
+        FLATHUB_REPO="flathub/io.github.tobagin.Draughts"
         
         echo "🔄 Cloning Flathub repository..."
         git clone https://x-access-token:$GITHUB_TOKEN@github.com/$FLATHUB_REPO.git flathub-repo
         cd flathub-repo
         
         git config user.email "action@github.com"
-        git config user.name "GitHub Action (Karere Updates)"
+        git config user.name "GitHub Action (Draughts Updates)"
         
         # Copy the manifest and update it with correct tag and commit
-        cp ../packaging/io.github.tobagin.karere.yml ./io.github.tobagin.karere.yml
+        cp ../packaging/io.github.tobagin.Draughts.yml ./io.github.tobagin.Draughts.yml
         
-        # Update the manifest with the correct tag and commit hash (only for karere module)
-        # Find the karere module section and update only its tag and commit
-        sed -i '/- name: karere/,/^  - name:/ { 
+        # Update the manifest with the correct tag and commit hash (only for Draughts module)
+        # Find the Draughts module section and update only its tag and commit
+        sed -i '/- name: Draughts/,/^  - name:/ { 
           s/tag: v.*/tag: ${{ steps.version.outputs.tag_name }}/
           s/commit: .*/commit: ${{ steps.version.outputs.commit_hash }}/
-        }' io.github.tobagin.karere.yml
+        }' io.github.tobagin.Draughts.yml
         
         echo "📋 Updated manifest with:"
         echo "  Tag: ${{ steps.version.outputs.tag_name }}"
         echo "  Commit: ${{ steps.version.outputs.commit_hash }}"
         
-        git add io.github.tobagin.karere.yml
+        git add io.github.tobagin.Draughts.yml
         git commit -m "Update to ${{ steps.version.outputs.tag_name }}
 
         🚀 **New Release: ${{ steps.version.outputs.tag_name }}**
@@ -88,7 +88,7 @@ jobs:
         - Updated commit hash to ${{ steps.version.outputs.commit_hash }}
         - Automated update from upstream repository
         
-        **Source:** https://github.com/tobagin/karere/releases/tag/${{ steps.version.outputs.tag_name }}
+        **Source:** https://github.com/tobagin/Draughts/releases/tag/${{ steps.version.outputs.tag_name }}
         
         ---
         *This update was automatically created by GitHub Actions*"
@@ -110,7 +110,7 @@ jobs:
         **Changes:**
         - **Tag:** \`${{ steps.version.outputs.tag_name }}\`
         - **Commit:** \`${{ steps.version.outputs.commit_hash }}\`
-        - **Release:** https://github.com/tobagin/karere/releases/tag/${{ steps.version.outputs.tag_name }}
+        - **Release:** https://github.com/tobagin/Draughts/releases/tag/${{ steps.version.outputs.tag_name }}
 
         **Automated Checks:**
         - ✅ Manifest syntax validated
@@ -126,11 +126,11 @@ jobs:
         If the test build passes, this PR can be safely merged to publish the update to Flathub.
 
         ---
-        *🤖 This PR was automatically created by [GitHub Actions](https://github.com/tobagin/karere/actions)*"
+        *🤖 This PR was automatically created by [GitHub Actions](https://github.com/tobagin/Draughts/actions)*"
         
         # Create JSON payload for API call
         PR_JSON=$(jq -n \
-          --arg title "📦 Update Karere to ${{ steps.version.outputs.tag_name }}" \
+          --arg title "📦 Update Draughts to ${{ steps.version.outputs.tag_name }}" \
           --arg head "$BRANCH_NAME" \
           --arg base "master" \
           --arg body "$PR_BODY" \
