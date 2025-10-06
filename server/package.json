@@ -16,7 +16,8 @@
   "author": "Thiago Fernandes",
   "license": "GPL-3.0+",
   "dependencies": {
-    "ws": "^8.14.0"
+    "ws": "^8.14.0",
+    "@supabase/supabase-js": "^2.39.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

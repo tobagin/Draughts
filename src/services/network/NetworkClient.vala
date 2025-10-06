@@ -376,6 +376,19 @@ namespace Draughts {
                         if (root.has_member("opponent_name")) {
                             msg.opponent_name = root.get_string_member("opponent_name");
                         }
+                        // Parse timer settings
+                        if (root.has_member("use_timer")) {
+                            msg.use_timer = root.get_boolean_member("use_timer");
+                        }
+                        if (root.has_member("minutes_per_side")) {
+                            msg.minutes_per_side = (int) root.get_int_member("minutes_per_side");
+                        }
+                        if (root.has_member("increment_seconds")) {
+                            msg.increment_seconds = (int) root.get_int_member("increment_seconds");
+                        }
+                        if (root.has_member("clock_type")) {
+                            msg.clock_type = root.get_string_member("clock_type");
+                        }
                         // Parse moves array for game restoration
                         if (root.has_member("moves")) {
                             var moves_array = root.get_array_member("moves");

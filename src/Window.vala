@@ -141,15 +141,25 @@ namespace Draughts {
         }
 
         private bool on_close_request() {
-            // If in multiplayer game, show resign confirmation
-            if (is_multiplayer_game) {
-                show_resign_confirmation_for_action(() => {
-                    // Actually close the window/quit
-                    var app = get_application();
-                    if (app != null) {
-                        app.quit();
-                    }
-                });
+            // If game in progress, show confirmation
+            if (is_game_in_progress()) {
+                if (is_multiplayer_game) {
+                    show_resign_confirmation_for_action(() => {
+                        // Actually close the window/quit
+                        var app = get_application();
+                        if (app != null) {
+                            app.quit();
+                        }
+                    });
+                } else {
+                    show_abandon_game_confirmation(() => {
+                        // Actually close the window/quit
+                        var app = get_application();
+                        if (app != null) {
+                            app.quit();
+                        }
+                    });
+                }
                 return true; // Prevent default close
             }
             return false; // Allow default close
@@ -1221,11 +1231,17 @@ namespace Draughts {
         public void start_new_game() {
             logger.info("start_new_game() called");
 
-            // Check if in multiplayer game - show resign confirmation
-            if (is_multiplayer_game) {
-                show_resign_confirmation_for_action(() => {
-                    show_new_game_dialog();
-                });
+            // Check if game is in progress - show confirmation
+            if (is_game_in_progress()) {
+                if (is_multiplayer_game) {
+                    show_resign_confirmation_for_action(() => {
+                        show_new_game_dialog();
+                    });
+                } else {
+                    show_abandon_game_confirmation(() => {
+                        show_new_game_dialog();
+                    });
+                }
                 return;
             }
 
@@ -1275,11 +1291,17 @@ namespace Draughts {
         }
 
         public void reset_game() {
-            // Check if in multiplayer game - show resign confirmation
-            if (is_multiplayer_game) {
-                show_resign_confirmation_for_action(() => {
-                    on_game_reset_requested();
-                });
+            // Check if game is in progress - show confirmation
+            if (is_game_in_progress()) {
+                if (is_multiplayer_game) {
+                    show_resign_confirmation_for_action(() => {
+                        on_game_reset_requested();
+                    });
+                } else {
+                    show_abandon_game_confirmation(() => {
+                        on_game_reset_requested();
+                    });
+                }
                 return;
             }
 
@@ -1287,11 +1309,17 @@ namespace Draughts {
         }
 
         public void show_play_online_dialog() {
-            // Check if in multiplayer game - show resign confirmation
-            if (is_multiplayer_game) {
-                show_resign_confirmation_for_action(() => {
-                    do_show_play_online_dialog();
-                });
+            // Check if game is in progress - show confirmation
+            if (is_game_in_progress()) {
+                if (is_multiplayer_game) {
+                    show_resign_confirmation_for_action(() => {
+                        do_show_play_online_dialog();
+                    });
+                } else {
+                    show_abandon_game_confirmation(() => {
+                        do_show_play_online_dialog();
+                    });
+                }
                 return;
             }
 
@@ -1307,7 +1335,41 @@ namespace Draughts {
         }
 
         /**
-         * Show resign confirmation dialog before performing an action
+         * Check if a game is in progress
+         */
+        private bool is_game_in_progress() {
+            if (adapter == null) {
+                return false;
+            }
+
+            var controller = adapter.get_controller();
+            if (controller == null) {
+                return false;
+            }
+
+            var game = controller.get_current_game();
+            if (game == null) {
+                return false;
+            }
+
+            // For multiplayer games, consider game in progress as soon as it starts
+            if (is_multiplayer_game) {
+                var state = controller.get_current_state();
+                if (state == null) {
+                    return false;
+                }
+                var status = state.game_status;
+                return status == GameStatus.IN_PROGRESS ||
+                       status == GameStatus.ACTIVE ||
+                       status == GameStatus.NOT_STARTED;
+            }
+
+            // For single-player games, only consider in progress after first move
+            return game.get_move_number() > 0 && !game.is_game_over();
+        }
+
+        /**
+         * Show resign confirmation dialog before performing an action (multiplayer)
          */
         private delegate void ActionCallback();
 
@@ -1333,6 +1395,33 @@ namespace Draughts {
                         multiplayer_controller.resign();
                         logger.info("Player resigned from multiplayer game to perform new action");
                     }
+                    // Perform the action
+                    action();
+                }
+                dialog.destroy();
+            });
+
+            dialog.present();
+        }
+
+        /**
+         * Show abandon game confirmation dialog before performing an action (single-player)
+         */
+        private void show_abandon_game_confirmation(owned ActionCallback action) {
+            var dialog = new Adw.MessageDialog(
+                this,
+                _("Abandon Current Game?"),
+                _("You have a game in progress. Are you sure you want to abandon it?")
+            );
+
+            dialog.add_response("cancel", _("Cancel"));
+            dialog.add_response("abandon", _("Abandon Game"));
+            dialog.set_response_appearance("abandon", Adw.ResponseAppearance.DESTRUCTIVE);
+            dialog.set_default_response("cancel");
+            dialog.set_close_response("cancel");
+
+            dialog.response.connect((response) => {
+                if (response == "abandon") {
                     // Perform the action
                     action();
                 }

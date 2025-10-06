@@ -9,10 +9,24 @@
 
 const WebSocket = require('ws');
 const http = require('http');
+const { createClient } = require('@supabase/supabase-js');
 
 const PORT = process.env.PORT || 8443;
 const ROOM_CODE_LENGTH = 6;
 const REQUIRED_VERSION = '2.0.0'; // Minimum client version required
+const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
+const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
+
+// Initialize Supabase client (optional - gracefully degrades if not configured)
+let supabase = null;
+const ENABLE_SUPABASE = process.env.ENABLE_SUPABASE !== 'false';
+
+if (ENABLE_SUPABASE && process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+  supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  console.log('✅ Supabase connected - game history and stats will be persisted');
+} else {
+  console.log('⚠️  Supabase not configured - running in memory-only mode');
+}
 
 // Game rooms storage
 const rooms = new Map();
@@ -66,23 +80,91 @@ function generateRoomCode() {
   return rooms.has(code) ? generateRoomCode() : code;
 }
 
+/**
+ * Fetch stats from Supabase
+ */
+async function fetchSupabaseStats() {
+  if (!supabase) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from('game_stats_summary')
+      .select('*')
+      .single();
+
+    if (error) {
+      console.error('Failed to fetch stats from Supabase:', error.message);
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Exception fetching stats from Supabase:', err);
+    return null;
+  }
+}
+
+/**
+ * Fetch variant stats from Supabase
+ */
+async function fetchSupabaseVariantStats() {
+  if (!supabase) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from('variant_stats')
+      .select('*')
+      .order('game_count', { ascending: false });
+
+    if (error) {
+      console.error('Failed to fetch variant stats from Supabase:', error.message);
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Exception fetching variant stats from Supabase:', err);
+    return null;
+  }
+}
+
 // Generate stats dashboard HTML
-function generateStatsHTML() {
+async function generateStatsHTML() {
   const uptime = Math.floor((Date.now() - stats.startTime) / 1000);
   const days = Math.floor(uptime / 86400);
   const hours = Math.floor((uptime % 86400) / 3600);
   const minutes = Math.floor((uptime % 3600) / 60);
   const uptimeStr = `${days}d ${hours}h ${minutes}m`;
 
-  const variantRows = Object.entries(stats.gamesByVariant)
-    .sort((a, b) => b[1] - a[1])
-    .map(([variant, count]) => `
+  // Fetch Supabase stats if available
+  const supabaseStats = await fetchSupabaseStats();
+  const supabaseVariantStats = await fetchSupabaseVariantStats();
+
+  // Use Supabase stats if available, otherwise use in-memory stats
+  const displayStats = supabaseStats || stats;
+  const totalGames = supabaseStats ? (supabaseStats.total_games || 0) : stats.totalGames;
+
+  // Generate variant rows
+  let variantRows = '';
+  if (supabaseVariantStats && supabaseVariantStats.length > 0) {
+    variantRows = supabaseVariantStats.map(row => `
       <tr>
-        <td>${variant}</td>
-        <td>${count}</td>
-        <td>${stats.totalGames > 0 ? ((count / stats.totalGames) * 100).toFixed(1) : 0}%</td>
+        <td>${row.variant}</td>
+        <td>${row.game_count}</td>
+        <td>${totalGames > 0 ? ((row.game_count / totalGames) * 100).toFixed(1) : 0}%</td>
       </tr>
     `).join('');
+  } else {
+    variantRows = Object.entries(stats.gamesByVariant)
+      .sort((a, b) => b[1] - a[1])
+      .map(([variant, count]) => `
+        <tr>
+          <td>${variant}</td>
+          <td>${count}</td>
+          <td>${stats.totalGames > 0 ? ((count / stats.totalGames) * 100).toFixed(1) : 0}%</td>
+        </tr>
+      `).join('');
+  }
 
   return `
 <!DOCTYPE html>
@@ -169,6 +251,16 @@ function generateStatsHTML() {
     tr:hover {
       background: #f8f9fa;
     }
+    .info-banner {
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 15px 25px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
     .status-indicator {
       display: inline-block;
       width: 8px;
@@ -204,9 +296,11 @@ function generateStatsHTML() {
   <div class="container">
     <h1><span class="status-indicator"></span>Draughts Multiplayer Server</h1>
 
+    ${supabase ? '<div class="info-banner">📊 Stats powered by Supabase (all-time data)</div>' : '<div class="info-banner">⚠️ In-memory stats only (current session)</div>'}
+
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-value">${stats.totalGames}</div>
+        <div class="stat-value">${totalGames}</div>
         <div class="stat-label">Total Games</div>
       </div>
       <div class="stat-card">
@@ -214,7 +308,7 @@ function generateStatsHTML() {
         <div class="stat-label">Active Games</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${stats.completedGames}</div>
+        <div class="stat-value">${supabaseStats ? totalGames - stats.activeGames : stats.completedGames}</div>
         <div class="stat-label">Completed Games</div>
       </div>
       <div class="stat-card">
@@ -223,11 +317,11 @@ function generateStatsHTML() {
       </div>
       <div class="stat-card">
         <div class="stat-value">${stats.totalConnections}</div>
-        <div class="stat-label">Total Connections</div>
+        <div class="stat-label">Total Connections (Session)</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">${stats.peakConcurrentGames}</div>
-        <div class="stat-label">Peak Concurrent Games</div>
+        <div class="stat-label">Peak Games (Session)</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">${uptimeStr}</div>
@@ -270,23 +364,23 @@ function generateStatsHTML() {
         <tbody>
           <tr>
             <td>Red Wins</td>
-            <td>${stats.gamesByResult.red_wins}</td>
-            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.red_wins / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+            <td>${supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins}</td>
+            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins) / totalGames) * 100).toFixed(1) : 0}%</td>
           </tr>
           <tr>
             <td>Black Wins</td>
-            <td>${stats.gamesByResult.black_wins}</td>
-            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.black_wins / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+            <td>${supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins}</td>
+            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins) / totalGames) * 100).toFixed(1) : 0}%</td>
           </tr>
           <tr>
             <td>Draws</td>
-            <td>${stats.gamesByResult.draw}</td>
-            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.draw / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+            <td>${supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw}</td>
+            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw) / totalGames) * 100).toFixed(1) : 0}%</td>
           </tr>
           <tr>
             <td>Resignations</td>
-            <td>${stats.gamesByResult.resignation}</td>
-            <td>${stats.completedGames > 0 ? ((stats.gamesByResult.resignation / stats.completedGames) * 100).toFixed(1) : 0}%</td>
+            <td>${supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation}</td>
+            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation) / totalGames) * 100).toFixed(1) : 0}%</td>
           </tr>
         </tbody>
       </table>
@@ -313,7 +407,7 @@ const server = http.createServer((req, res) => {
     }));
   } else if (req.url === '/stats') {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(generateStatsHTML());
+    generateStatsHTML().then(html => res.end(html));
   } else {
     res.writeHead(404);
     res.end('Not found');
@@ -545,7 +639,9 @@ function handleCreateRoom(clientId, message) {
     hostName: player_name || 'Host',
     guestName: null,
     gameStarted: false,
-    moves: []
+    moves: [],
+    lastActivityTime: Date.now(),
+    inactivityTimer: null
   });
 
   client.roomCode = roomCode;
@@ -623,6 +719,7 @@ function startGame(room_code) {
   }
 
   room.gameStarted = true;
+  room.startedAt = Date.now();
 
   // Update stats
   stats.totalGames++;
@@ -643,22 +740,37 @@ function startGame(room_code) {
     return;
   }
 
-  // Send game_started to both players
-  send(guestClient.ws, {
+  // Send game_started to both players (include timer settings if enabled)
+  const gameStartedMessage = {
     type: 'game_started',
-    your_color: 'Black',
     variant: room.variant,
-    opponent_name: room.hostName,
     timestamp: Date.now()
+  };
+
+  // Add timer settings if enabled
+  if (room.use_timer) {
+    gameStartedMessage.use_timer = true;
+    gameStartedMessage.minutes_per_side = room.minutes_per_side;
+    gameStartedMessage.increment_seconds = room.increment_seconds;
+    gameStartedMessage.clock_type = room.clock_type;
+  } else {
+    gameStartedMessage.use_timer = false;
+  }
+
+  send(guestClient.ws, {
+    ...gameStartedMessage,
+    your_color: 'Black',
+    opponent_name: room.hostName
   });
 
   send(hostClient.ws, {
-    type: 'game_started',
+    ...gameStartedMessage,
     your_color: 'Red',
-    variant: room.variant,
-    opponent_name: room.guestName,
-    timestamp: Date.now()
+    opponent_name: room.guestName
   });
+
+  // Start inactivity timer
+  startInactivityTimer(room);
 
   console.log(`🎮 Game started in room ${room_code}: ${room.hostName} vs ${room.guestName}`);
 }
@@ -681,6 +793,10 @@ function handleMove(clientId, message) {
     move: message.move,
     timestamp: Date.now()
   });
+
+  // Update last activity time and reset inactivity timer
+  room.lastActivityTime = Date.now();
+  startInactivityTimer(room);
 
   // Forward move to opponent
   const opponentId = (clientId === room.host) ? room.guest : room.host;
@@ -723,6 +839,9 @@ function handleResign(clientId) {
     // Track resignation
     stats.gamesByResult.resignation++;
   }
+
+  // Save game to Supabase
+  saveGameToSupabase(room, winner, 'resignation');
 
   // Notify both players
   broadcastToRoom(room, {
@@ -834,6 +953,9 @@ function handleGameEnded(clientId, message) {
     }
   }
 
+  // Save game to Supabase
+  saveGameToSupabase(room, result, reason);
+
   // Broadcast game ended to both players
   broadcastToRoom(room, {
     type: 'game_ended',
@@ -882,11 +1004,15 @@ function handleDisconnect(clientId) {
             timestamp: Date.now()
           });
 
-          // After 60 seconds, if still disconnected, end game
+          // After disconnect timeout, if still disconnected, end game
           setTimeout(() => {
             const currentClient = clients.get(clientId);
             if (currentClient && currentClient.disconnected) {
               const winner = (clientId === room.host) ? 'black_wins' : 'red_wins';
+
+              // Save game to Supabase
+              saveGameToSupabase(room, winner, 'disconnect_timeout');
+
               send(opponentClient.ws, {
                 type: 'game_ended',
                 result: winner,
@@ -896,19 +1022,19 @@ function handleDisconnect(clientId) {
               cleanupRoom(room.code);
               clients.delete(clientId); // Now fully remove client
             }
-          }, 60000);
+          }, DISCONNECT_TIMEOUT);
         }
       }
     }
 
-    // Always give 60 seconds to reconnect, regardless of room state
+    // Always give disconnect timeout to reconnect, regardless of room state
     setTimeout(() => {
       const currentClient = clients.get(clientId);
       if (currentClient && currentClient.disconnected) {
-        console.log(`⏱️  Client session expired after 60s: ${clientId}`);
+        console.log(`⏱️  Client session expired after ${DISCONNECT_TIMEOUT / 1000}s: ${clientId}`);
         clients.delete(clientId);
       }
-    }, 60000);
+    }, DISCONNECT_TIMEOUT);
   }
 }
 
@@ -924,11 +1050,133 @@ function broadcastToRoom(room, message) {
 }
 
 /**
+ * Save game to Supabase
+ */
+async function saveGameToSupabase(room, winner, reason) {
+  if (!supabase) return; // Skip if Supabase not configured
+
+  try {
+    const gameData = {
+      room_code: room.code,
+      variant: room.variant,
+      host_name: room.hostName,
+      guest_name: room.guestName,
+      winner: winner,
+      result_reason: reason,
+      move_count: room.moves.length,
+      duration_seconds: room.startedAt ? Math.floor((Date.now() - room.startedAt) / 1000) : 0,
+      use_timer: room.use_timer || false,
+      minutes_per_side: room.minutes_per_side || null,
+      increment_seconds: room.increment_seconds || null,
+      clock_type: room.clock_type || null,
+      started_at: room.startedAt ? new Date(room.startedAt).toISOString() : new Date().toISOString(),
+      ended_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabase
+      .from('games')
+      .insert([gameData])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('❌ Failed to save game to Supabase:', error.message);
+      return null;
+    }
+
+    console.log(`💾 Game saved to Supabase: ${room.code} (ID: ${data.id})`);
+
+    // Optionally save moves for replay
+    if (room.moves && room.moves.length > 0) {
+      const movesData = room.moves.map((move, index) => ({
+        game_id: data.id,
+        move_number: index + 1,
+        player_color: move.player === room.host ? 'red' : 'black',
+        move_data: move.move,
+        timestamp: new Date(move.timestamp).toISOString()
+      }));
+
+      const { error: movesError } = await supabase
+        .from('moves')
+        .insert(movesData);
+
+      if (movesError) {
+        console.error('❌ Failed to save moves to Supabase:', movesError.message);
+      }
+    }
+
+    return data;
+  } catch (err) {
+    console.error('❌ Exception saving game to Supabase:', err);
+    return null;
+  }
+}
+
+/**
  * Clean up a room
  */
+/**
+ * Start or restart inactivity timer for a room
+ */
+function startInactivityTimer(room) {
+  // Clear existing timer if any
+  if (room.inactivityTimer) {
+    clearTimeout(room.inactivityTimer);
+  }
+
+  // Set new timer
+  room.inactivityTimer = setTimeout(() => {
+    const timeSinceLastActivity = Date.now() - room.lastActivityTime;
+
+    if (timeSinceLastActivity >= GAME_INACTIVITY_TIMEOUT) {
+      console.log(`⏱️  Game in room ${room.code} timed out due to inactivity (${Math.floor(timeSinceLastActivity / 60000)} minutes)`);
+
+      // Notify both players
+      const hostClient = clients.get(room.host);
+      const guestClient = clients.get(room.guest);
+
+      if (hostClient && hostClient.ws) {
+        send(hostClient.ws, {
+          type: 'game_ended',
+          result: 'draw',
+          reason: 'Game abandoned due to inactivity',
+          timestamp: Date.now()
+        });
+      }
+
+      if (guestClient && guestClient.ws) {
+        send(guestClient.ws, {
+          type: 'game_ended',
+          result: 'draw',
+          reason: 'Game abandoned due to inactivity',
+          timestamp: Date.now()
+        });
+      }
+
+      // Update stats
+      if (room.gameStarted) {
+        stats.activeGames--;
+        stats.completedGames++;
+        stats.gamesByResult.timeout++;
+      }
+
+      // Save game to Supabase
+      saveGameToSupabase(room, 'draw', 'inactivity');
+
+      cleanupRoom(room.code);
+    }
+  }, GAME_INACTIVITY_TIMEOUT);
+}
+
 function cleanupRoom(roomCode) {
   const room = rooms.get(roomCode);
   if (room) {
+    // Clear inactivity timer if exists
+    if (room.inactivityTimer) {
+      clearTimeout(room.inactivityTimer);
+      room.inactivityTimer = null;
+    }
+
     console.log(`🧹 Cleaning up room ${roomCode}`);
     rooms.delete(roomCode);
   }
@@ -1008,7 +1256,9 @@ function handleQuickMatch(clientId, message) {
       guestName: player_name,
       variant: variant,
       gameStarted: false,
-      moves: []
+      moves: [],
+      lastActivityTime: Date.now(),
+      inactivityTimer: null
     });
 
     // Set room codes and player info for both clients

@@ -385,6 +385,10 @@ namespace Draughts {
         public DraughtsVariant variant { get; set; }
         public string opponent_name { get; set; }
         public Gee.ArrayList<DraughtsMove>? moves { get; set; default = null; }
+        public bool use_timer { get; set; default = false; }
+        public int minutes_per_side { get; set; default = 5; }
+        public int increment_seconds { get; set; default = 0; }
+        public string clock_type { get; set; default = "Fischer"; }
 
         public GameStartedMessage() {
             base(NetworkMessageType.GAME_STARTED);

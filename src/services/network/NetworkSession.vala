@@ -418,6 +418,18 @@ namespace Draughts {
                 opponent_name = message.opponent_name;
             }
 
+            // Apply timer settings from server (server is source of truth)
+            use_timer = message.use_timer;
+            if (use_timer) {
+                minutes_per_side = message.minutes_per_side;
+                increment_seconds = message.increment_seconds;
+                clock_type = message.clock_type;
+                logger.info("NetworkSession: Timer enabled - %d minutes per side, %d second increment, %s mode",
+                           minutes_per_side, increment_seconds, clock_type);
+            } else {
+                logger.info("NetworkSession: Timer disabled");
+            }
+
             logger.info("NetworkSession: Playing as %s against %s - Restoring %d moves",
                        local_player_color.to_string(), opponent_name,
                        (message.moves != null) ? message.moves.size : 0);
