@@ -528,30 +528,8 @@ namespace Draughts {
          * Schedule reconnection attempt with exponential backoff
          */
         private void schedule_reconnect() {
-            if (reconnect_timeout_id != 0) {
-                return; // Already scheduled
-            }
-
-            if (reconnect_attempts >= MAX_RECONNECT_ATTEMPTS) {
-                logger.error("NetworkClient: Max reconnection attempts reached");
-                state = ConnectionState.ERROR;
-                error_occurred("Unable to connect to multiplayer server. The server may be offline.");
-                return;
-            }
-
-            reconnect_attempts++;
-            state = ConnectionState.RECONNECTING;
-
-            // Exponential backoff: 1s, 2s, 4s, 8s, 16s
-            int delay = BASE_RECONNECT_DELAY_MS * (1 << (reconnect_attempts - 1));
-            logger.info("NetworkClient: Scheduling reconnect attempt %d in %d ms", reconnect_attempts, delay);
-
-            reconnect_timeout_id = Timeout.add(delay, () => {
-                reconnect_timeout_id = 0;
-                logger.info("NetworkClient: Attempting reconnect %d/%d", reconnect_attempts, MAX_RECONNECT_ATTEMPTS);
-                connect_async.begin();
-                return Source.REMOVE;
-            });
+            // Reconnection is now handled by Window.vala
+            // This method is kept for backward compatibility but does nothing
         }
 
         /**

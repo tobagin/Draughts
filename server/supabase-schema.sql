@@ -46,6 +46,15 @@ CREATE TABLE daily_stats (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Server stats table - all-time server statistics
+CREATE TABLE server_stats (
+    id INTEGER PRIMARY KEY DEFAULT 1, -- Only one row
+    total_connections BIGINT DEFAULT 0,
+    peak_concurrent_games INTEGER DEFAULT 0,
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT single_row CHECK (id = 1)
+);
+
 -- Indexes for performance
 CREATE INDEX idx_games_started_at ON games(started_at DESC);
 CREATE INDEX idx_games_variant ON games(variant);

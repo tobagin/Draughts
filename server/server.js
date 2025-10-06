@@ -17,15 +17,29 @@ const REQUIRED_VERSION = '2.0.0'; // Minimum client version required
 const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
 
+// Logging utility with timestamps
+function getTimestamp() {
+  const now = new Date();
+  return `[${now.toISOString().substring(11, 23)}]`; // HH:MM:SS.mmm format
+}
+
+function log(...args) {
+  console.log(getTimestamp(), ...args);
+}
+
+function logError(...args) {
+  console.error(getTimestamp(), ...args);
+}
+
 // Initialize Supabase client (optional - gracefully degrades if not configured)
 let supabase = null;
 const ENABLE_SUPABASE = process.env.ENABLE_SUPABASE !== 'false';
 
 if (ENABLE_SUPABASE && process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
   supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-  console.log('✅ Supabase connected - game history and stats will be persisted');
+  log('✅ Supabase connected - game history and stats will be persisted');
 } else {
-  console.log('⚠️  Supabase not configured - running in memory-only mode');
+  log('⚠️  Supabase not configured - running in memory-only mode');
 }
 
 // Game rooms storage
@@ -51,7 +65,9 @@ const stats = {
     timeout: 0
   },
   peakConcurrentGames: 0,
-  totalConnections: 0,
+  peakConcurrentGamesAllTime: 0, // All-time peak (loaded from DB)
+  totalConnections: 0, // Session only
+  totalConnectionsAllTime: 0, // All-time (loaded from DB)
   startTime: Date.now()
 };
 
@@ -93,13 +109,13 @@ async function fetchSupabaseStats() {
       .single();
 
     if (error) {
-      console.error('Failed to fetch stats from Supabase:', error.message);
+      logError('Failed to fetch stats from Supabase:', error.message);
       return null;
     }
 
     return data;
   } catch (err) {
-    console.error('Exception fetching stats from Supabase:', err);
+    logError('Exception fetching stats from Supabase:', err);
     return null;
   }
 }
@@ -111,20 +127,108 @@ async function fetchSupabaseVariantStats() {
   if (!supabase) return null;
 
   try {
-    const { data, error } = await supabase
+    const { data, error} = await supabase
       .from('variant_stats')
       .select('*')
       .order('game_count', { ascending: false });
 
     if (error) {
-      console.error('Failed to fetch variant stats from Supabase:', error.message);
+      logError('Failed to fetch variant stats from Supabase:', error.message);
       return null;
     }
 
     return data;
   } catch (err) {
-    console.error('Exception fetching variant stats from Supabase:', err);
+    logError('Exception fetching variant stats from Supabase:', err);
     return null;
+  }
+}
+
+/**
+ * Load server stats from Supabase (total connections and peak games)
+ */
+async function loadServerStats() {
+  if (!supabase) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('server_stats')
+      .select('*')
+      .eq('id', 1)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+      logError('Failed to load server stats from Supabase:', error.message);
+      return;
+    }
+
+    if (data) {
+      stats.totalConnectionsAllTime = data.total_connections || 0;
+      stats.peakConcurrentGamesAllTime = data.peak_concurrent_games || 0;
+      log(`📊 Loaded stats: ${stats.totalConnectionsAllTime} total connections, ${stats.peakConcurrentGamesAllTime} peak games`);
+    } else {
+      // Initialize the row if it doesn't exist
+      await supabase
+        .from('server_stats')
+        .insert({ id: 1, total_connections: 0, peak_concurrent_games: 0 });
+      log('📊 Initialized server stats in database');
+    }
+  } catch (err) {
+    logError('Exception loading server stats:', err);
+  }
+}
+
+/**
+ * Increment total connections in database
+ */
+async function incrementTotalConnections() {
+  if (!supabase) return;
+
+  try {
+    stats.totalConnectionsAllTime++;
+
+    const { error } = await supabase
+      .from('server_stats')
+      .update({
+        total_connections: stats.totalConnectionsAllTime,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', 1);
+
+    if (error) {
+      logError('Failed to increment total connections:', error.message);
+    }
+  } catch (err) {
+    logError('Exception incrementing total connections:', err);
+  }
+}
+
+/**
+ * Update peak concurrent games if current exceeds stored peak
+ */
+async function updatePeakGames(currentActiveGames) {
+  if (!supabase) return;
+
+  if (currentActiveGames > stats.peakConcurrentGamesAllTime) {
+    try {
+      stats.peakConcurrentGamesAllTime = currentActiveGames;
+
+      const { error } = await supabase
+        .from('server_stats')
+        .update({
+          peak_concurrent_games: stats.peakConcurrentGamesAllTime,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', 1);
+
+      if (error) {
+        logError('Failed to update peak games:', error.message);
+      } else {
+        log(`🔥 New peak! ${stats.peakConcurrentGamesAllTime} concurrent games`);
+      }
+    } catch (err) {
+      logError('Exception updating peak games:', err);
+    }
   }
 }
 
@@ -287,9 +391,10 @@ async function generateStatsHTML() {
       margin: 20px 0;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script>
-    // Auto-refresh every 10 seconds
-    setTimeout(() => location.reload(), 10000);
+    // Auto-refresh every 30 seconds (increased to let charts render)
+    setTimeout(() => location.reload(), 30000);
   </script>
 </head>
 <body>
@@ -317,11 +422,19 @@ async function generateStatsHTML() {
       </div>
       <div class="stat-card">
         <div class="stat-value">${stats.totalConnections}</div>
-        <div class="stat-label">Total Connections (Session)</div>
+        <div class="stat-label">Connections (Session)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.totalConnectionsAllTime.toLocaleString()}</div>
+        <div class="stat-label">Connections (All-Time)</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">${stats.peakConcurrentGames}</div>
         <div class="stat-label">Peak Games (Session)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${stats.peakConcurrentGamesAllTime}</div>
+        <div class="stat-label">Peak Games (All-Time)</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">${uptimeStr}</div>
@@ -333,63 +446,247 @@ async function generateStatsHTML() {
       </div>
     </div>
 
-    <div class="chart-card">
-      <h2>Games by Variant</h2>
-      ${variantRows ? `
-        <table>
-          <thead>
-            <tr>
-              <th>Variant</th>
-              <th>Games</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${variantRows}
-          </tbody>
-        </table>
-      ` : '<p style="text-align: center; color: #999;">No games played yet</p>'}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px; margin-bottom: 20px;">
+      <div class="chart-card">
+        <h2>Games by Variant</h2>
+        ${totalGames > 0 ? '<canvas id="variantChart" style="max-height: 300px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
+      </div>
+
+      <div class="chart-card">
+        <h2>Game Results Distribution</h2>
+        ${totalGames > 0 ? '<canvas id="resultsChart" style="max-height: 300px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
+      </div>
     </div>
 
     <div class="chart-card">
-      <h2>Game Results</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Result</th>
-            <th>Count</th>
-            <th>Percentage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Red Wins</td>
-            <td>${supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins}</td>
-            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins) / totalGames) * 100).toFixed(1) : 0}%</td>
-          </tr>
-          <tr>
-            <td>Black Wins</td>
-            <td>${supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins}</td>
-            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins) / totalGames) * 100).toFixed(1) : 0}%</td>
-          </tr>
-          <tr>
-            <td>Draws</td>
-            <td>${supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw}</td>
-            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw) / totalGames) * 100).toFixed(1) : 0}%</td>
-          </tr>
-          <tr>
-            <td>Resignations</td>
-            <td>${supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation}</td>
-            <td>${totalGames > 0 ? (((supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation) / totalGames) * 100).toFixed(1) : 0}%</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>Win Rate Comparison</h2>
+      ${totalGames > 0 ? '<canvas id="winRateChart" style="max-height: 250px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
+    </div>
+
+    <div class="chart-card">
+      <h2>Connection Statistics</h2>
+      <canvas id="connectionChart" style="max-height: 250px;"></canvas>
     </div>
 
     <div class="footer">
-      <p>Server Version 2.0.0 | Auto-refreshes every 10 seconds</p>
+      <p>Server Version 2.0.0 | Auto-refreshes every 30 seconds</p>
     </div>
   </div>
+
+  <script>
+    // Prepare data
+    const totalGames = ${totalGames};
+    const redWins = ${supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins};
+    const blackWins = ${supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins};
+    const draws = ${supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw};
+    const resignations = ${supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation};
+    const timeouts = ${supabaseStats ? (supabaseStats.timeouts || 0) : (stats.gamesByResult.timeout || 0)};
+
+    // Variant data
+    const variantData = ${JSON.stringify(
+      supabaseVariantStats && supabaseVariantStats.length > 0
+        ? supabaseVariantStats.map(v => ({ variant: v.variant, count: v.game_count }))
+        : Object.entries(stats.gamesByVariant).map(([variant, count]) => ({ variant, count }))
+    )};
+
+    // Chart.js default config
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif';
+    Chart.defaults.responsive = true;
+    Chart.defaults.maintainAspectRatio = true;
+
+    // Color palette
+    const colors = {
+      purple: '#667eea',
+      pink: '#764ba2',
+      blue: '#3b82f6',
+      green: '#10b981',
+      yellow: '#f59e0b',
+      red: '#ef4444',
+      orange: '#f97316',
+      teal: '#14b8a6',
+      indigo: '#6366f1'
+    };
+
+    if (totalGames > 0) {
+      // 1. Variant Distribution (Doughnut Chart)
+      const variantCtx = document.getElementById('variantChart');
+      if (variantCtx) {
+        new Chart(variantCtx, {
+          type: 'doughnut',
+          data: {
+            labels: variantData.map(v => v.variant),
+            datasets: [{
+              data: variantData.map(v => v.count),
+              backgroundColor: [
+                colors.purple,
+                colors.blue,
+                colors.green,
+                colors.yellow,
+                colors.red,
+                colors.orange,
+                colors.teal,
+                colors.indigo
+              ],
+              borderWidth: 2,
+              borderColor: '#fff'
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 12 }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed;
+                    const percentage = ((value / totalGames) * 100).toFixed(1);
+                    return label + ': ' + value + ' (' + percentage + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Game Results Distribution (Pie Chart)
+      const resultsCtx = document.getElementById('resultsChart');
+      if (resultsCtx) {
+        new Chart(resultsCtx, {
+          type: 'pie',
+          data: {
+            labels: ['Red Wins', 'Black Wins', 'Draws', 'Resignations', 'Timeouts'],
+            datasets: [{
+              data: [redWins, blackWins, draws, resignations, timeouts],
+              backgroundColor: [
+                colors.red,
+                '#1f2937',
+                colors.yellow,
+                colors.orange,
+                colors.purple
+              ],
+              borderWidth: 2,
+              borderColor: '#fff'
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: { size: 12 }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed;
+                    const percentage = ((value / totalGames) * 100).toFixed(1);
+                    return label + ': ' + value + ' (' + percentage + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // 3. Win Rate Comparison (Horizontal Bar Chart)
+      const winRateCtx = document.getElementById('winRateChart');
+      if (winRateCtx) {
+        const totalDecisiveGames = redWins + blackWins;
+        const redWinRate = totalDecisiveGames > 0 ? ((redWins / totalDecisiveGames) * 100).toFixed(1) : 0;
+        const blackWinRate = totalDecisiveGames > 0 ? ((blackWins / totalDecisiveGames) * 100).toFixed(1) : 0;
+
+        new Chart(winRateCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Red Win Rate', 'Black Win Rate', 'Draw Rate'],
+            datasets: [{
+              label: 'Percentage',
+              data: [
+                redWinRate,
+                blackWinRate,
+                totalGames > 0 ? ((draws / totalGames) * 100).toFixed(1) : 0
+              ],
+              backgroundColor: [colors.red, '#1f2937', colors.yellow],
+              borderColor: [colors.red, '#1f2937', colors.yellow],
+              borderWidth: 2
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.parsed.x + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // 4. Connection Statistics (Bar Chart)
+    const connectionCtx = document.getElementById('connectionChart');
+    if (connectionCtx) {
+      new Chart(connectionCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Session Connections', 'All-Time Connections', 'Session Peak Games', 'All-Time Peak Games'],
+          datasets: [{
+            label: 'Count',
+            data: [
+              ${stats.totalConnections},
+              ${stats.totalConnectionsAllTime},
+              ${stats.peakConcurrentGames},
+              ${stats.peakConcurrentGamesAllTime}
+            ],
+            backgroundColor: [colors.blue, colors.purple, colors.green, colors.teal],
+            borderColor: [colors.blue, colors.purple, colors.green, colors.teal],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
   `;
@@ -414,23 +711,54 @@ const server = http.createServer((req, res) => {
   }
 });
 
-// Create WebSocket server
-const wss = new WebSocket.Server({ server });
+// Create WebSocket server with keepalive
+const wss = new WebSocket.Server({
+  server,
+  clientTracking: true,
+  perMessageDeflate: false // Disable compression for lower latency
+});
 
-console.log(`🎮 Draughts Multiplayer Server starting...`);
+// WebSocket keepalive - send pings every 25 seconds to keep connection alive
+// (increased from 15s to reduce false timeouts)
+const WEBSOCKET_PING_INTERVAL = 25000;
+const keepaliveInterval = setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (ws.isAlive === false) {
+      log('⚠️  WebSocket connection timed out - no pong received in 25s');
+      return ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.ping();
+  });
+}, WEBSOCKET_PING_INTERVAL);
+
+wss.on('close', () => {
+  clearInterval(keepaliveInterval);
+});
+
+log(`🎮 Draughts Multiplayer Server starting...`);
 
 wss.on('connection', (ws) => {
   let clientId = null;
   let isReconnecting = false;
 
+  // WebSocket-level keepalive
+  ws.isAlive = true;
+  ws.on('pong', () => {
+    ws.isAlive = true;
+    log(`🏓 Pong received from ${clientId || 'unknown'}`);
+  });
+
   // Track total connections
   stats.totalConnections++;
+  incrementTotalConnections(); // Persist to database
 
   // Wait for initial message to get session ID
   const handleFirstMessage = (data) => {
     try {
       const message = JSON.parse(data.toString());
-      console.log(`📨 First message received - Type: ${message.type}, Version: ${message.version || 'not provided'}`);
+      log(`📨 First message received - Type: ${message.type}, Version: ${message.version || 'not provided'}`);
 
       // Check client version
       const clientVersion = message.version || '0.0.0';
@@ -442,7 +770,7 @@ wss.on('connection', (ws) => {
           required_version: REQUIRED_VERSION,
           client_version: clientVersion
         });
-        console.log(`❌ Client rejected due to version mismatch: ${clientVersion} < ${REQUIRED_VERSION}`);
+        log(`❌ Client rejected due to version mismatch: ${clientVersion} < ${REQUIRED_VERSION}`);
         ws.close();
         return;
       }
@@ -454,10 +782,17 @@ wss.on('connection', (ws) => {
           // Reconnecting client
           clientId = message.session_id;
           isReconnecting = true;
+
+          // Close old WebSocket if it exists and is still open
+          if (existingClient.ws && existingClient.ws.readyState === WebSocket.OPEN) {
+            log(`🔌 Closing old WebSocket for ${clientId}`);
+            existingClient.ws.close();
+          }
+
           existingClient.ws = ws;
           existingClient.disconnected = false;
           existingClient.disconnectTime = null;
-          console.log(`🔄 Client reconnected: ${clientId}`);
+          log(`🔄 Client reconnected: ${clientId}`);
 
           // Send reconnection success with current game state
           const room = rooms.get(existingClient.roomCode);
@@ -491,29 +826,46 @@ wss.on('connection', (ws) => {
               // Include all moves in the GAME_STARTED message for proper state restoration
               const movesToRestore = room.moves ? room.moves.map(m => m.move) : [];
 
-              send(ws, {
+              // Prepare reconnection message with timer settings
+              const reconnectMessage = {
                 type: 'game_started',
                 variant: room.variant,
                 your_color: existingClient.playerColor,
                 opponent_name: opponentName,
                 room_code: existingClient.roomCode,
                 moves: movesToRestore  // Include moves for restoration
-              });
+              };
 
-              console.log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} with ${movesToRestore.length} moves`);
+              // Add timer settings if enabled
+              if (room.use_timer) {
+                reconnectMessage.use_timer = true;
+                reconnectMessage.minutes_per_side = room.minutes_per_side;
+                reconnectMessage.increment_seconds = room.increment_seconds;
+                reconnectMessage.clock_type = room.clock_type;
+                // Send current timer state
+                reconnectMessage.red_time_remaining = room.redTimeRemaining;
+                reconnectMessage.black_time_remaining = room.blackTimeRemaining;
+                reconnectMessage.active_player_color = room.activePlayerColor;
+              } else {
+                reconnectMessage.use_timer = false;
+              }
+
+              send(ws, reconnectMessage);
+
+              log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} with ${movesToRestore.length} moves`);
             }
           }
         } else {
           // Session expired or invalid
           clientId = Math.random().toString(36).substring(7);
-          console.log(`✅ Client connected (expired session): ${clientId}`);
+          log(`✅ Client connected (expired session): ${clientId}`);
           clients.set(clientId, { ws, roomCode: null, playerName: null, playerColor: null });
           send(ws, { type: 'connected', session_id: clientId });
         }
       } else {
         // New connection
         clientId = Math.random().toString(36).substring(7);
-        console.log(`✅ Client connected: ${clientId}`);
+        log(`✅ Client connected: ${clientId}`);
         clients.set(clientId, { ws, roomCode: null, playerName: null, playerColor: null });
         send(ws, { type: 'connected', session_id: clientId });
       }
@@ -525,7 +877,7 @@ wss.on('connection', (ws) => {
           const message = JSON.parse(data.toString());
           handleMessage(clientId, message);
         } catch (error) {
-          console.error(`❌ Error parsing message from ${clientId}:`, error);
+          logError(`❌ Error parsing message from ${clientId}:`, error);
           sendError(ws, 'PARSE_ERROR', 'Invalid JSON');
         }
       });
@@ -536,7 +888,7 @@ wss.on('connection', (ws) => {
       }
 
     } catch (error) {
-      console.error(`❌ Error in initial connection:`, error);
+      logError(`❌ Error in initial connection:`, error);
       ws.close();
     }
   };
@@ -545,14 +897,14 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     if (clientId) {
-      console.log(`❌ Client disconnected: ${clientId}`);
+      log(`❌ Client disconnected: ${clientId}`);
       handleDisconnect(clientId);
     }
   });
 
   ws.on('error', (error) => {
     if (clientId) {
-      console.error(`❌ WebSocket error for ${clientId}:`, error);
+      logError(`❌ WebSocket error for ${clientId}:`, error);
     }
   });
 });
@@ -564,7 +916,12 @@ function handleMessage(clientId, message) {
   const { type, timestamp } = message;
   const client = clients.get(clientId);
 
-  console.log(`📨 Message from ${clientId}: ${type}`);
+  if (!client) {
+    log(`⚠️  Received message from unknown client: ${clientId} (${type})`);
+    return;
+  }
+
+  log(`📨 Message from ${clientId}: ${type}`);
 
   switch (type) {
     case 'create_room':
@@ -612,7 +969,7 @@ function handleMessage(clientId, message) {
       break;
 
     default:
-      console.warn(`⚠️  Unknown message type: ${type}`);
+      log(`⚠️  Unknown message type: ${type}`);
       sendError(client.ws, 'UNKNOWN_TYPE', `Unknown message type: ${type}`);
   }
 }
@@ -641,7 +998,12 @@ function handleCreateRoom(clientId, message) {
     gameStarted: false,
     moves: [],
     lastActivityTime: Date.now(),
-    inactivityTimer: null
+    inactivityTimer: null,
+    // Timer state (server-tracked)
+    redTimeRemaining: use_timer ? minutes_per_side * 60 * 1000 : null, // milliseconds
+    blackTimeRemaining: use_timer ? minutes_per_side * 60 * 1000 : null,
+    activePlayerColor: 'red', // Who's timer is running
+    lastMoveTime: null // When the last move was made
   });
 
   client.roomCode = roomCode;
@@ -655,7 +1017,7 @@ function handleCreateRoom(clientId, message) {
     timestamp: Date.now()
   });
 
-  console.log(`🏠 Room created: ${roomCode} by ${player_name}`);
+  log(`🏠 Room created: ${roomCode} by ${player_name}`);
 }
 
 /**
@@ -709,17 +1071,18 @@ function handleJoinRoom(clientId, message) {
 function startGame(room_code) {
   const room = rooms.get(room_code);
   if (!room) {
-    console.error(`❌ Cannot start game: Room ${room_code} not found`);
+    logError(`❌ Cannot start game: Room ${room_code} not found`);
     return;
   }
 
   if (room.gameStarted) {
-    console.warn(`⚠️ Game already started in room ${room_code}`);
+    log(`⚠️ Game already started in room ${room_code}`);
     return;
   }
 
   room.gameStarted = true;
   room.startedAt = Date.now();
+  room.lastMoveTime = Date.now(); // Initialize for timer tracking
 
   // Update stats
   stats.totalGames++;
@@ -732,11 +1095,14 @@ function startGame(room_code) {
     stats.peakConcurrentGames = stats.activeGames;
   }
 
+  // Update all-time peak in database
+  updatePeakGames(stats.activeGames);
+
   const hostClient = clients.get(room.host);
   const guestClient = clients.get(room.guest);
 
   if (!hostClient || !guestClient) {
-    console.error(`❌ Cannot start game: Missing players in room ${room_code}`);
+    logError(`❌ Cannot start game: Missing players in room ${room_code}`);
     return;
   }
 
@@ -753,6 +1119,10 @@ function startGame(room_code) {
     gameStartedMessage.minutes_per_side = room.minutes_per_side;
     gameStartedMessage.increment_seconds = room.increment_seconds;
     gameStartedMessage.clock_type = room.clock_type;
+    // Send current timer state
+    gameStartedMessage.red_time_remaining = room.redTimeRemaining;
+    gameStartedMessage.black_time_remaining = room.blackTimeRemaining;
+    gameStartedMessage.active_player_color = room.activePlayerColor;
   } else {
     gameStartedMessage.use_timer = false;
   }
@@ -772,7 +1142,7 @@ function startGame(room_code) {
   // Start inactivity timer
   startInactivityTimer(room);
 
-  console.log(`🎮 Game started in room ${room_code}: ${room.hostName} vs ${room.guestName}`);
+  log(`🎮 Game started in room ${room_code}: ${room.hostName} vs ${room.guestName}`);
 }
 
 /**
@@ -780,11 +1150,46 @@ function startGame(room_code) {
  */
 function handleMove(clientId, message) {
   const client = clients.get(clientId);
+
+  // Reject moves from disconnected clients
+  if (client.disconnected) {
+    log(`⚠️  Rejected move from disconnected client: ${clientId}`);
+    return;
+  }
+
   const room = rooms.get(client.roomCode);
 
   if (!room) {
     sendError(client.ws, 'NO_ROOM', 'Not in a room');
     return;
+  }
+
+  // Update timer state if enabled
+  if (room.use_timer && room.lastMoveTime) {
+    const now = Date.now();
+    const timeElapsed = now - room.lastMoveTime;
+
+    // Deduct time from the player who just moved
+    const playerColor = (clientId === room.host) ? 'red' : 'black';
+    if (playerColor === 'red') {
+      room.redTimeRemaining -= timeElapsed;
+      // Add increment if using Fischer clock
+      if (room.clock_type === 'Fischer' && room.increment_seconds) {
+        room.redTimeRemaining += room.increment_seconds * 1000;
+      }
+    } else {
+      room.blackTimeRemaining -= timeElapsed;
+      // Add increment if using Fischer clock
+      if (room.clock_type === 'Fischer' && room.increment_seconds) {
+        room.blackTimeRemaining += room.increment_seconds * 1000;
+      }
+    }
+
+    // Switch active player
+    room.activePlayerColor = (playerColor === 'red') ? 'black' : 'red';
+    room.lastMoveTime = now;
+
+    log(`⏱️  Timer update: Red ${Math.floor(room.redTimeRemaining/1000)}s, Black ${Math.floor(room.blackTimeRemaining/1000)}s`);
   }
 
   // Store move
@@ -798,19 +1203,28 @@ function handleMove(clientId, message) {
   room.lastActivityTime = Date.now();
   startInactivityTimer(room);
 
-  // Forward move to opponent
+  // Forward move to opponent with timer state
   const opponentId = (clientId === room.host) ? room.guest : room.host;
   const opponentClient = clients.get(opponentId);
 
   if (opponentClient) {
-    send(opponentClient.ws, {
+    const moveMessage = {
       type: 'move_made',
       move: message.move,
       timestamp: Date.now()
-    });
+    };
+
+    // Add timer state if enabled
+    if (room.use_timer) {
+      moveMessage.red_time_remaining = room.redTimeRemaining;
+      moveMessage.black_time_remaining = room.blackTimeRemaining;
+      moveMessage.active_player_color = room.activePlayerColor;
+    }
+
+    send(opponentClient.ws, moveMessage);
   }
 
-  console.log(`♟️  Move in room ${client.roomCode}`);
+  log(`♟️  Move in room ${client.roomCode} - Move #${room.moves.length} by ${client.playerName} (${client.playerColor}) - Total moves: ${room.moves.length}`);
 }
 
 /**
@@ -818,6 +1232,13 @@ function handleMove(clientId, message) {
  */
 function handleResign(clientId) {
   const client = clients.get(clientId);
+
+  // Reject resignation from disconnected clients
+  if (client.disconnected) {
+    log(`⚠️  Rejected resign from disconnected client: ${clientId}`);
+    return;
+  }
+
   const room = rooms.get(client.roomCode);
 
   if (!room) return;
@@ -851,7 +1272,7 @@ function handleResign(clientId) {
     timestamp: Date.now()
   });
 
-  console.log(`🏳️  ${client.playerName} resigned in room ${client.roomCode}`);
+  log(`🏳️  ${client.playerName} resigned in room ${client.roomCode}`);
   cleanupRoom(room.code);
 }
 
@@ -874,7 +1295,7 @@ function handleOfferDraw(clientId) {
     });
   }
 
-  console.log(`🤝 Draw offered in room ${client.roomCode}`);
+  log(`🤝 Draw offered in room ${client.roomCode}`);
 }
 
 /**
@@ -893,7 +1314,7 @@ function handleAcceptDraw(clientId) {
     timestamp: Date.now()
   });
 
-  console.log(`🤝 Draw accepted in room ${client.roomCode}`);
+  log(`🤝 Draw accepted in room ${client.roomCode}`);
   cleanupRoom(room.code);
 }
 
@@ -917,7 +1338,7 @@ function handleRejectDraw(clientId) {
     });
   }
 
-  console.log(`❌ Draw rejected in room ${client.roomCode}`);
+  log(`❌ Draw rejected in room ${client.roomCode}`);
 }
 
 /**
@@ -964,7 +1385,7 @@ function handleGameEnded(clientId, message) {
     timestamp: Date.now()
   });
 
-  console.log(`🏁 Game ended in room ${client.roomCode}: ${result} (${reason})`);
+  log(`🏁 Game ended in room ${client.roomCode}: ${result} (${reason})`);
   cleanupRoom(room.code);
 }
 
@@ -973,6 +1394,10 @@ function handleGameEnded(clientId, message) {
  */
 function handlePing(clientId, timestamp) {
   const client = clients.get(clientId);
+  if (!client) {
+    log(`⚠️  Received ping from unknown client: ${clientId}`);
+    return;
+  }
   send(client.ws, {
     type: 'pong',
     timestamp: timestamp || Date.now()
@@ -1031,7 +1456,7 @@ function handleDisconnect(clientId) {
     setTimeout(() => {
       const currentClient = clients.get(clientId);
       if (currentClient && currentClient.disconnected) {
-        console.log(`⏱️  Client session expired after ${DISCONNECT_TIMEOUT / 1000}s: ${clientId}`);
+        log(`⏱️  Client session expired after ${DISCONNECT_TIMEOUT / 1000}s: ${clientId}`);
         clients.delete(clientId);
       }
     }, DISCONNECT_TIMEOUT);
@@ -1054,6 +1479,12 @@ function broadcastToRoom(room, message) {
  */
 async function saveGameToSupabase(room, winner, reason) {
   if (!supabase) return; // Skip if Supabase not configured
+  if (room.saved) {
+    log(`⚠️  Game ${room.code} already saved, skipping duplicate save`);
+    return; // Prevent duplicate saves
+  }
+
+  room.saved = true; // Mark as saved
 
   try {
     const gameData = {
@@ -1080,11 +1511,11 @@ async function saveGameToSupabase(room, winner, reason) {
       .single();
 
     if (error) {
-      console.error('❌ Failed to save game to Supabase:', error.message);
+      logError('❌ Failed to save game to Supabase:', error.message);
       return null;
     }
 
-    console.log(`💾 Game saved to Supabase: ${room.code} (ID: ${data.id})`);
+    log(`💾 Game saved to Supabase: ${room.code} (ID: ${data.id})`);
 
     // Optionally save moves for replay
     if (room.moves && room.moves.length > 0) {
@@ -1101,13 +1532,13 @@ async function saveGameToSupabase(room, winner, reason) {
         .insert(movesData);
 
       if (movesError) {
-        console.error('❌ Failed to save moves to Supabase:', movesError.message);
+        logError('❌ Failed to save moves to Supabase:', movesError.message);
       }
     }
 
     return data;
   } catch (err) {
-    console.error('❌ Exception saving game to Supabase:', err);
+    logError('❌ Exception saving game to Supabase:', err);
     return null;
   }
 }
@@ -1119,6 +1550,11 @@ async function saveGameToSupabase(room, winner, reason) {
  * Start or restart inactivity timer for a room
  */
 function startInactivityTimer(room) {
+  // Don't use inactivity timer for games with time controls - they have their own timer
+  if (room.use_timer) {
+    return;
+  }
+
   // Clear existing timer if any
   if (room.inactivityTimer) {
     clearTimeout(room.inactivityTimer);
@@ -1129,7 +1565,7 @@ function startInactivityTimer(room) {
     const timeSinceLastActivity = Date.now() - room.lastActivityTime;
 
     if (timeSinceLastActivity >= GAME_INACTIVITY_TIMEOUT) {
-      console.log(`⏱️  Game in room ${room.code} timed out due to inactivity (${Math.floor(timeSinceLastActivity / 60000)} minutes)`);
+      log(`⏱️  Game in room ${room.code} timed out due to inactivity (${Math.floor(timeSinceLastActivity / 60000)} minutes)`);
 
       // Notify both players
       const hostClient = clients.get(room.host);
@@ -1177,7 +1613,7 @@ function cleanupRoom(roomCode) {
       room.inactivityTimer = null;
     }
 
-    console.log(`🧹 Cleaning up room ${roomCode}`);
+    log(`🧹 Cleaning up room ${roomCode}`);
     rooms.delete(roomCode);
   }
 }
@@ -1212,7 +1648,7 @@ function handleQuickMatch(clientId, message) {
 
   if (!client) return;
 
-  console.log(`🎲 Quick match request from ${player_name} for ${variant}`);
+  log(`🎲 Quick match request from ${player_name} for ${variant}`);
 
   // Check if someone is already waiting for this variant
   if (!quickMatchQueue.has(variant)) {
@@ -1225,7 +1661,7 @@ function handleQuickMatch(clientId, message) {
   const existingIndex = queue.findIndex(entry => entry.clientId === clientId);
   if (existingIndex !== -1) {
     queue.splice(existingIndex, 1);
-    console.log(`🔄 Removed duplicate entry for ${player_name} from queue`);
+    log(`🔄 Removed duplicate entry for ${player_name} from queue`);
   }
 
   if (queue.length > 0) {
@@ -1234,7 +1670,7 @@ function handleQuickMatch(clientId, message) {
 
     // Prevent self-matching
     if (waitingClient.clientId === clientId) {
-      console.log(`⚠️  Prevented self-match for ${player_name}`);
+      log(`⚠️  Prevented self-match for ${player_name}`);
       // Put them back in queue
       queue.push({
         clientId: clientId,
@@ -1244,7 +1680,7 @@ function handleQuickMatch(clientId, message) {
       return;
     }
 
-    console.log(`✅ Match found! ${waitingClient.playerName} vs ${player_name}`);
+    log(`✅ Match found! ${waitingClient.playerName} vs ${player_name}`);
 
     // Create a room for them
     const room_code = generateRoomCode();
@@ -1255,10 +1691,19 @@ function handleQuickMatch(clientId, message) {
       guest: clientId,
       guestName: player_name,
       variant: variant,
+      use_timer: false, // Quick match doesn't support timers yet
+      minutes_per_side: null,
+      increment_seconds: null,
+      clock_type: null,
       gameStarted: false,
       moves: [],
       lastActivityTime: Date.now(),
-      inactivityTimer: null
+      inactivityTimer: null,
+      // Timer state (not used in quick match)
+      redTimeRemaining: null,
+      blackTimeRemaining: null,
+      activePlayerColor: 'red',
+      lastMoveTime: null
     });
 
     // Set room codes and player info for both clients
@@ -1296,7 +1741,7 @@ function handleQuickMatch(clientId, message) {
       ws: client.ws
     });
 
-    console.log(`⏳ ${player_name} added to ${variant} queue (${queue.length} waiting)`);
+    log(`⏳ ${player_name} added to ${variant} queue (${queue.length} waiting)`);
 
     // Notify client they're searching
     send(client.ws, {
@@ -1318,22 +1763,25 @@ function handleCancelQuickMatch(clientId) {
     const index = queue.findIndex(entry => entry.clientId === clientId);
     if (index !== -1) {
       queue.splice(index, 1);
-      console.log(`❌ Client ${clientId} removed from ${variant} quick match queue`);
+      log(`❌ Client ${clientId} removed from ${variant} quick match queue`);
     }
   }
 }
 
 // Start server
-server.listen(PORT, () => {
-  console.log(`🚀 Draughts Multiplayer Server running on port ${PORT}`);
-  console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/health`);
+server.listen(PORT, async () => {
+  log(`🚀 Draughts Multiplayer Server running on port ${PORT}`);
+  log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
+  log(`🏥 Health check: http://localhost:${PORT}/health`);
+
+  // Load all-time stats from database
+  await loadServerStats();
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+  log('SIGTERM signal received: closing HTTP server');
   server.close(() => {
-    console.log('HTTP server closed');
+    log('HTTP server closed');
   });
 });

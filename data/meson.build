@@ -124,7 +124,9 @@ install_data([
   'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-undo-symbolic.svg',
   'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-redo-symbolic.svg',
   'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-chckerboard-symbolic.svg',
-  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-draw-symbolic.svg'
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-draw-symbolic.svg',
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-connected-symbolic.svg',
+  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts-disconnected-symbolic.svg'
 ], install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps')
 
 # Install SVG icon

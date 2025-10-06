@@ -60,7 +60,13 @@ namespace Draughts {
         private unowned Gtk.Button resign_button;
 
         [GtkChild]
+        private unowned Gtk.Image server_status_icon;
+
+        [GtkChild]
         private unowned Gtk.Box pause_overlay;
+
+        [GtkChild]
+        private unowned Gtk.Box disconnect_overlay;
 
         [GtkChild]
         private unowned Adw.HeaderBar bottom_bar;
@@ -97,6 +103,13 @@ namespace Draughts {
         private bool is_paused = false;
         private bool is_navigating = false;
         private bool is_multiplayer_game = false;
+
+        // Server connection management
+        private MultiplayerGameController? server_controller = null;
+        private bool is_server_connected = false;
+        private uint reconnect_timeout_id = 0;
+        private int reconnect_attempts = 0;
+        private uint health_check_timeout_id = 0;
         private bool undo_just_used = false;
 
         public Window(Gtk.Application app) {
@@ -131,6 +144,12 @@ namespace Draughts {
             // Use a delay to ensure widgets are fully realized and sized
             Timeout.add(200, () => {
                 start_game_with_saved_settings();
+                return false;
+            });
+
+            // Auto-connect to multiplayer server
+            Timeout.add(500, () => {
+                connect_to_server_async.begin();
                 return false;
             });
 
@@ -1327,7 +1346,7 @@ namespace Draughts {
         }
 
         private void do_show_play_online_dialog() {
-            var dialog = MultiplayerDialog.show(this);
+            var dialog = MultiplayerDialog.show(this, server_controller);
             dialog.game_ready.connect((controller) => {
                 logger.info("Multiplayer game ready, setting up controller");
                 set_multiplayer_controller(controller);
@@ -1470,15 +1489,24 @@ namespace Draughts {
         private void on_multiplayer_error(string error_message) {
             logger.error("Window: Multiplayer error - %s", error_message);
 
-            // Show error dialog
-            var dialog = new Adw.MessageDialog(this, _("Multiplayer Connection Lost"), error_message);
-            dialog.add_response("ok", _("OK"));
-            dialog.set_default_response("ok");
-            dialog.set_close_response("ok");
-            dialog.response.connect((response) => {
-                dialog.close();
-            });
-            dialog.present();
+            // Update connection status to disconnected
+            update_server_connection_status(false);
+
+            // Start reconnection attempts
+            schedule_reconnect();
+
+            // Only show error dialog if we're actually in a multiplayer game
+            if (is_multiplayer_game) {
+                // Show error dialog
+                var dialog = new Adw.MessageDialog(this, _("Multiplayer Connection Lost"), error_message);
+                dialog.add_response("ok", _("OK"));
+                dialog.set_default_response("ok");
+                dialog.set_close_response("ok");
+                dialog.response.connect((response) => {
+                    dialog.close();
+                });
+                dialog.present();
+            }
         }
 
         /**
@@ -1531,7 +1559,10 @@ namespace Draughts {
          */
         private void on_opponent_disconnected() {
             logger.warning("Window: Opponent disconnected");
-            // Could show a banner or toast here
+            // Show disconnect overlay (similar to pause)
+            disconnect_overlay.visible = true;
+
+            // Also show a toast
             var toast = new Adw.Toast(_("Opponent disconnected. Waiting for reconnection..."));
             toast.set_timeout(5);
             toast_overlay.add_toast(toast);
@@ -1542,6 +1573,10 @@ namespace Draughts {
          */
         private void on_opponent_reconnected() {
             logger.info("Window: Opponent reconnected");
+            // Hide disconnect overlay
+            disconnect_overlay.visible = false;
+
+            // Show reconnection toast
             var toast = new Adw.Toast(_("Opponent reconnected!"));
             toast.set_timeout(3);
             toast_overlay.add_toast(toast);
@@ -2092,6 +2127,165 @@ namespace Draughts {
                 var toast = new Adw.Toast(_("Failed to open file: %s").printf(e.message));
                 toast_overlay.add_toast(toast);
             }
+        }
+
+        /**
+         * Connect to multiplayer server with exponential backoff
+         */
+        private async void connect_to_server_async() {
+            if (server_controller != null && server_controller.is_connected()) {
+                logger.info("Already connected to server");
+                update_server_connection_status(true);
+                return;
+            }
+
+            // Create controller if needed
+            if (server_controller == null) {
+                server_controller = new MultiplayerGameController();
+            }
+
+            logger.info("Attempting to connect to multiplayer server (attempt %d)...", reconnect_attempts + 1);
+
+            bool connected = yield server_controller.connect_to_server();
+
+            if (connected) {
+                logger.info("Successfully connected to multiplayer server");
+
+                // Show reconnection toast if this was a reconnect attempt
+                bool was_reconnecting = reconnect_attempts > 0;
+                reconnect_attempts = 0;
+                update_server_connection_status(true);
+
+                if (was_reconnecting) {
+                    var toast = new Adw.Toast(_("Connected to multiplayer server"));
+                    toast_overlay.add_toast(toast);
+                }
+
+                // Start periodic health check (every 30 seconds)
+                start_health_check();
+            } else {
+                logger.warning("Failed to connect to multiplayer server");
+                update_server_connection_status(false);
+                stop_health_check();
+                schedule_reconnect();
+            }
+        }
+
+        /**
+         * Schedule reconnection attempt with exponential backoff
+         */
+        private void schedule_reconnect() {
+            // Cancel existing timeout if any
+            if (reconnect_timeout_id > 0) {
+                Source.remove(reconnect_timeout_id);
+                reconnect_timeout_id = 0;
+            }
+
+            // Calculate delay with exponential backoff: 5s, 10s, 20s, 40s, 80s, 160s, ...
+            int delay = (int) Math.pow(2, reconnect_attempts) * 5000;
+
+            reconnect_attempts++;
+
+            logger.info("Scheduling reconnect attempt in %d seconds...", delay / 1000);
+
+            reconnect_timeout_id = Timeout.add(delay, () => {
+                reconnect_timeout_id = 0;
+                connect_to_server_async.begin();
+                return false;
+            });
+        }
+
+        /**
+         * Update connection status and enable/disable Play Online action
+         */
+        private void update_server_connection_status(bool connected) {
+            is_server_connected = connected;
+
+            // Enable/disable Play Online action
+            var app = this.get_application();
+            if (app != null) {
+                var action = app.lookup_action("play-online");
+                if (action != null && action is SimpleAction) {
+                    ((SimpleAction) action).set_enabled(connected);
+                }
+            }
+
+            // Update visual status indicator (check if widget is available)
+            if (server_status_icon == null) {
+                return;
+            }
+
+            if (connected) {
+                server_status_icon.set_from_icon_name("io.github.tobagin.Draughts-connected-symbolic");
+                server_status_icon.set_tooltip_text(_("Multiplayer server: Connected"));
+                server_status_icon.set_opacity(1.0);
+                server_status_icon.remove_css_class("error");
+                server_status_icon.add_css_class("success");
+            } else {
+                server_status_icon.set_from_icon_name("io.github.tobagin.Draughts-disconnected-symbolic");
+                server_status_icon.set_tooltip_text(_("Multiplayer server: Offline"));
+                server_status_icon.set_opacity(0.5);
+                server_status_icon.remove_css_class("success");
+                server_status_icon.add_css_class("error");
+            }
+
+            logger.info("Multiplayer server connection status: %s", connected ? "connected" : "disconnected");
+        }
+
+        /**
+         * Start periodic health check to detect server disconnection
+         */
+        private void start_health_check() {
+            stop_health_check();
+
+            // Check connection every 30 seconds
+            health_check_timeout_id = Timeout.add_seconds(30, () => {
+                check_server_health.begin();
+                return true;
+            });
+        }
+
+        /**
+         * Stop health check
+         */
+        private void stop_health_check() {
+            if (health_check_timeout_id > 0) {
+                Source.remove(health_check_timeout_id);
+                health_check_timeout_id = 0;
+            }
+        }
+
+        /**
+         * Check if server is still reachable
+         */
+        private async void check_server_health() {
+            if (server_controller == null || !server_controller.is_connected()) {
+                logger.warning("Health check failed: Server disconnected");
+                update_server_connection_status(false);
+                stop_health_check();
+                schedule_reconnect();
+            }
+        }
+
+        /**
+         * Clean up server connection on window destroy
+         */
+        public override void dispose() {
+            // Cancel reconnect timeout
+            if (reconnect_timeout_id > 0) {
+                Source.remove(reconnect_timeout_id);
+                reconnect_timeout_id = 0;
+            }
+
+            // Stop health check
+            stop_health_check();
+
+            // Disconnect from server
+            if (server_controller != null) {
+                server_controller = null;
+            }
+
+            base.dispose();
         }
     }
 }

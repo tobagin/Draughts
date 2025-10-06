@@ -99,6 +99,13 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
 
     public signal void game_ready(MultiplayerGameController controller);
 
+    public MultiplayerDialog(MultiplayerGameController? existing_controller = null) {
+        Object();
+
+        // Use existing controller if provided, otherwise will create new one
+        this.controller = existing_controller;
+    }
+
     construct {
         logger = Logger.get_default();
         settings_manager = SettingsManager.get_instance();
@@ -135,6 +142,9 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         this.map.connect(() => {
             if (controller == null) {
                 initialize_controller();
+            } else {
+                // Using existing controller - just connect signals
+                setup_controller_signals();
             }
         });
 
@@ -144,14 +154,15 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
     /**
      * Initialize the multiplayer controller
      */
-    private void initialize_controller() {
-        // Get server URL from settings or use default
-        string server_url = settings_manager.get_string("multiplayer-server-url");
-        if (server_url == "") {
-            server_url = "wss://draughts.tobagin.eu"; // Default server
+    private void setup_controller_signals() {
+        if (controller == null) {
+            logger.error("Cannot setup signals: controller is null");
+            return;
         }
 
-        controller = new MultiplayerGameController(server_url);
+        // Reset session state when dialog opens (in case previous game ended)
+        controller.leave_session();
+        logger.info("MultiplayerDialog: Reset session state");
 
         // Connect to controller signals
         controller.room_created.connect(on_room_created);
@@ -177,6 +188,22 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
         client.session_restored.connect((room_code, variant, opponent_name, player_color) => {
             on_session_restored(room_code, variant, opponent_name, player_color);
         });
+
+        // Update UI based on current connection state
+        is_connected = controller.is_connected();
+        enable_multiplayer_buttons(is_connected);
+        update_connection_status(is_connected, is_connected ? "Connected" : "Disconnected");
+    }
+
+    private void initialize_controller() {
+        // Get server URL from settings or use default
+        string server_url = settings_manager.get_string("multiplayer-server-url");
+        if (server_url == "") {
+            server_url = "wss://draughts.tobagin.eu"; // Default server
+        }
+
+        controller = new MultiplayerGameController(server_url);
+        setup_controller_signals();
 
         // Disable buttons until connected
         enable_multiplayer_buttons(false);
@@ -603,8 +630,8 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
     /**
      * Static method to show the dialog
      */
-    public static MultiplayerDialog show(Gtk.Window parent) {
-        var dialog = new MultiplayerDialog();
+    public static MultiplayerDialog show(Gtk.Window parent, MultiplayerGameController? existing_controller = null) {
+        var dialog = new MultiplayerDialog(existing_controller);
         dialog.present(parent);
         return dialog;
     }

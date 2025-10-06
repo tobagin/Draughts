@@ -47,10 +47,24 @@ template $DraughtsWindow : Adw.ApplicationWindow {
       }
 
       [end]
-      Gtk.MenuButton menu_button {
-        icon-name: "open-menu-symbolic";
-        tooltip-text: _("Main Menu");
-        menu-model: primary_menu;
+      Gtk.Box {
+        spacing: 6;
+
+        Gtk.Image server_status_icon {
+          icon-name: "io.github.tobagin.Draughts-disconnected-symbolic";
+          tooltip-text: _("Multiplayer server: Connecting...");
+          pixel-size: 16;
+          visible: true;
+          opacity: 0.5;
+
+          styles ["error"]
+        }
+
+        Gtk.MenuButton menu_button {
+          icon-name: "open-menu-symbolic";
+          tooltip-text: _("Main Menu");
+          menu-model: primary_menu;
+        }
       }
     }
 
