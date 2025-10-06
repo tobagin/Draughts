@@ -522,7 +522,7 @@ public class Draughts.GameReplayDialog : Adw.Dialog {
     private void on_export_game() {
         var file_dialog = new FileDialog();
         file_dialog.title = _("Export Game Replay");
-        file_dialog.set_initial_name(@"$(game_record.id)_replay.pgn");
+        file_dialog.set_initial_name(@"$(game_record.id)_replay.pdn");
 
         file_dialog.save.begin(this.get_root() as Gtk.Window, null, (obj, res) => {
             try {

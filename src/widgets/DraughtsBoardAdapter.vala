@@ -536,6 +536,12 @@ public class Draughts.DraughtsBoardAdapter : Object {
      */
     private void on_engine_state_changed(DraughtsGameState new_state, DraughtsMove? last_move) {
         print("\n#### on_engine_state_changed CALLED - active_player=%s ####\n", new_state.active_player.to_string());
+
+        // Update current_game reference in case it changed (e.g., during reconnection)
+        if (game_controller != null) {
+            current_game = game_controller.get_current_game();
+        }
+
         sync_board_to_game_state();
         game_state_changed(new_state);
         print("#### on_engine_state_changed DONE ####\n\n");
@@ -1237,13 +1243,19 @@ public class Draughts.DraughtsBoardAdapter : Object {
                 multi_capture_position = null;
             }
 
-            // Check if game is over
-            var new_state = game_controller.get_current_state();
-            if (new_state.is_game_over()) {
-                game_finished(new_state.game_status);
+            // Check if game is over (skip for multiplayer - server will notify)
+            if (!(game_controller is MultiplayerGameController)) {
+                var new_state = game_controller.get_current_state();
+                if (new_state.is_game_over()) {
+                    game_finished(new_state.game_status);
+                } else {
+                    // Check if it's now an AI player's turn
+                    check_ai_turn();
+                }
             } else {
-                // Check if it's now an AI player's turn
-                check_ai_turn();
+                // For multiplayer, just check if we need to wait for opponent
+                // Game end will be signaled by the server
+                check_ai_turn(); // This won't do anything for multiplayer, but keeps the logic consistent
             }
         } else {
             logger.warning("Failed to execute move from (%d,%d) to (%d,%d)",
@@ -1263,13 +1275,18 @@ public class Draughts.DraughtsBoardAdapter : Object {
             sync_board_to_game_state();
             move_made(move);
 
-            // Check if game is over
-            var new_state = game_controller.get_current_state();
-            if (new_state.is_game_over()) {
-                game_finished(new_state.game_status);
+            // Check if game is over (skip for multiplayer - server will notify)
+            if (!(game_controller is MultiplayerGameController)) {
+                var new_state = game_controller.get_current_state();
+                if (new_state.is_game_over()) {
+                    game_finished(new_state.game_status);
+                } else {
+                    // Check for another AI turn (in case both players are AI)
+                    check_ai_turn();
+                }
             } else {
-                // Check for another AI turn (in case both players are AI)
-                check_ai_turn();
+                // For multiplayer, game end will be signaled by the server
+                check_ai_turn(); // This won't do anything for multiplayer
             }
         } else {
             logger.warning("AI move rejected by game engine: from (%d,%d) to (%d,%d)",

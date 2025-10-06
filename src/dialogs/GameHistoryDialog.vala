@@ -399,7 +399,7 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
     private void on_export_all() {
         var file_dialog = new FileDialog();
         file_dialog.title = _("Export Game History");
-        file_dialog.set_initial_name("draughts_history.pgn");
+        file_dialog.set_initial_name("draughts_history.pdn");
 
         file_dialog.save.begin(this.get_root() as Gtk.Window, null, (obj, res) => {
             try {
@@ -456,7 +456,7 @@ public class Draughts.GameHistoryDialog : Adw.Dialog {
     private void export_game_pgn(GameHistoryRecord record) {
         var file_dialog = new FileDialog();
         file_dialog.title = _("Export Game");
-        file_dialog.set_initial_name(@"$(record.id).pgn");
+        file_dialog.set_initial_name(@"$(record.id).pdn");
 
         file_dialog.save.begin(this.get_root() as Gtk.Window, null, (obj, res) => {
             try {

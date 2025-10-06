@@ -50,13 +50,13 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if logged into Docker Hub
-if ! docker info | grep -q "Username"; then
+if ! sudo docker info | grep -q "Username"; then
     echo -e "${YELLOW}Warning: Not logged into Docker Hub${NC}"
     echo -e "${YELLOW}Please run: docker login${NC}"
     read -p "Do you want to login now? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        docker login
+        sudo docker login
     else
         exit 1
     fi
@@ -66,7 +66,7 @@ fi
 cd "$(dirname "$0")/../server" || exit 1
 
 echo -e "${BLUE}📦 Building Docker image...${NC}"
-docker build -t ${IMAGE_NAME} .
+sudo docker build -t ${IMAGE_NAME} .
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Docker build failed${NC}"
@@ -78,8 +78,8 @@ echo ""
 
 # Tag image with version and latest
 echo -e "${BLUE}🏷️  Tagging images...${NC}"
-docker tag ${IMAGE_NAME} ${FULL_IMAGE_NAME}:${VERSION}
-docker tag ${IMAGE_NAME} ${FULL_IMAGE_NAME}:latest
+sudo docker tag ${IMAGE_NAME} ${FULL_IMAGE_NAME}:${VERSION}
+sudo docker tag ${IMAGE_NAME} ${FULL_IMAGE_NAME}:latest
 
 echo -e "${GREEN}✅ Tagged: ${FULL_IMAGE_NAME}:${VERSION}${NC}"
 echo -e "${GREEN}✅ Tagged: ${FULL_IMAGE_NAME}:latest${NC}"
@@ -90,7 +90,7 @@ echo -e "${BLUE}🚀 Pushing to Docker Hub...${NC}"
 echo ""
 
 echo -e "${YELLOW}Pushing version ${VERSION}...${NC}"
-docker push ${FULL_IMAGE_NAME}:${VERSION}
+sudo docker push ${FULL_IMAGE_NAME}:${VERSION}
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Failed to push version tag${NC}"
@@ -98,7 +98,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "${YELLOW}Pushing latest...${NC}"
-docker push ${FULL_IMAGE_NAME}:latest
+sudo docker push ${FULL_IMAGE_NAME}:latest
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Failed to push latest tag${NC}"

@@ -57,6 +57,9 @@ namespace Draughts {
         private unowned Gtk.Button pause_button;
 
         [GtkChild]
+        private unowned Gtk.Button resign_button;
+
+        [GtkChild]
         private unowned Gtk.Box pause_overlay;
 
         [GtkChild]
@@ -131,7 +134,25 @@ namespace Draughts {
                 return false;
             });
 
+            // Handle window close request
+            this.close_request.connect(on_close_request);
+
             logger.info("Window created and initialized");
+        }
+
+        private bool on_close_request() {
+            // If in multiplayer game, show resign confirmation
+            if (is_multiplayer_game) {
+                show_resign_confirmation_for_action(() => {
+                    // Actually close the window/quit
+                    var app = get_application();
+                    if (app != null) {
+                        app.quit();
+                    }
+                });
+                return true; // Prevent default close
+            }
+            return false; // Allow default close
         }
 
         private void setup_actions() {
@@ -238,6 +259,9 @@ namespace Draughts {
 
             // Connect pause button
             pause_button.clicked.connect(on_pause_button_clicked);
+
+            // Connect resign button
+            resign_button.clicked.connect(on_resign_button_clicked);
 
             // Connect navigation buttons
             first_move_button.clicked.connect(on_first_move_clicked);
@@ -475,6 +499,10 @@ namespace Draughts {
             string clock_type
         ) {
             is_multiplayer_game = false;  // Reset multiplayer flag for single-player games
+
+            // Hide resign button for single-player
+            resign_button.set_visible(false);
+
             if (adapter != null) {
                 // Configure AI difficulty based on the selection
                 AIDifficulty difficulty;
@@ -729,6 +757,39 @@ namespace Draughts {
             pause_button.tooltip_text = _("Pause Game");
 
             logger.info("Game resumed");
+        }
+
+        private void on_resign_button_clicked() {
+            if (!is_multiplayer_game) {
+                return;
+            }
+
+            // Show confirmation dialog
+            var dialog = new Adw.MessageDialog(
+                this,
+                _("Resign from Game?"),
+                _("Are you sure you want to resign? This will end the game and count as a loss.")
+            );
+
+            dialog.add_response("cancel", _("Cancel"));
+            dialog.add_response("resign", _("Resign"));
+            dialog.set_response_appearance("resign", Adw.ResponseAppearance.DESTRUCTIVE);
+            dialog.set_default_response("cancel");
+            dialog.set_close_response("cancel");
+
+            dialog.response.connect((response) => {
+                if (response == "resign") {
+                    var controller = adapter.get_controller();
+                    if (controller is MultiplayerGameController) {
+                        var multiplayer_controller = (MultiplayerGameController) controller;
+                        multiplayer_controller.resign();
+                        logger.info("Player resigned from multiplayer game");
+                    }
+                }
+                dialog.destroy();
+            });
+
+            dialog.present();
         }
 
         private void update_undo_redo_buttons() {
@@ -1159,6 +1220,15 @@ namespace Draughts {
         // Legacy methods for compatibility
         public void start_new_game() {
             logger.info("start_new_game() called");
+
+            // Check if in multiplayer game - show resign confirmation
+            if (is_multiplayer_game) {
+                show_resign_confirmation_for_action(() => {
+                    show_new_game_dialog();
+                });
+                return;
+            }
+
             show_new_game_dialog();
         }
 
@@ -1205,7 +1275,71 @@ namespace Draughts {
         }
 
         public void reset_game() {
+            // Check if in multiplayer game - show resign confirmation
+            if (is_multiplayer_game) {
+                show_resign_confirmation_for_action(() => {
+                    on_game_reset_requested();
+                });
+                return;
+            }
+
             on_game_reset_requested();
+        }
+
+        public void show_play_online_dialog() {
+            // Check if in multiplayer game - show resign confirmation
+            if (is_multiplayer_game) {
+                show_resign_confirmation_for_action(() => {
+                    do_show_play_online_dialog();
+                });
+                return;
+            }
+
+            do_show_play_online_dialog();
+        }
+
+        private void do_show_play_online_dialog() {
+            var dialog = MultiplayerDialog.show(this);
+            dialog.game_ready.connect((controller) => {
+                logger.info("Multiplayer game ready, setting up controller");
+                set_multiplayer_controller(controller);
+            });
+        }
+
+        /**
+         * Show resign confirmation dialog before performing an action
+         */
+        private delegate void ActionCallback();
+
+        private void show_resign_confirmation_for_action(owned ActionCallback action) {
+            var dialog = new Adw.MessageDialog(
+                this,
+                _("Resign from Current Game?"),
+                _("Starting a new action will resign your current multiplayer game. This will count as a loss. Do you want to resign?")
+            );
+
+            dialog.add_response("cancel", _("Cancel"));
+            dialog.add_response("resign", _("Resign and Continue"));
+            dialog.set_response_appearance("resign", Adw.ResponseAppearance.DESTRUCTIVE);
+            dialog.set_default_response("cancel");
+            dialog.set_close_response("cancel");
+
+            dialog.response.connect((response) => {
+                if (response == "resign") {
+                    // Resign from current game
+                    var controller = adapter.get_controller();
+                    if (controller is MultiplayerGameController) {
+                        var multiplayer_controller = (MultiplayerGameController) controller;
+                        multiplayer_controller.resign();
+                        logger.info("Player resigned from multiplayer game to perform new action");
+                    }
+                    // Perform the action
+                    action();
+                }
+                dialog.destroy();
+            });
+
+            dialog.present();
         }
 
         /**
@@ -1221,6 +1355,9 @@ namespace Draughts {
                 controller.opponent_disconnected.connect(on_opponent_disconnected);
                 controller.opponent_reconnected.connect(on_opponent_reconnected);
                 controller.version_mismatch.connect(on_version_mismatch);
+
+                // Show resign button for multiplayer
+                resign_button.set_visible(true);
 
                 // Update window subtitle with the multiplayer game variant
                 var game = controller.get_current_game();

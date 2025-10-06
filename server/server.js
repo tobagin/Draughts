@@ -708,6 +708,22 @@ function handleResign(clientId) {
 
   const winner = (clientId === room.host) ? 'black_wins' : 'red_wins';
 
+  // Update stats
+  if (room.gameStarted) {
+    stats.activeGames--;
+    stats.completedGames++;
+
+    // Track result type
+    if (winner === 'red_wins') {
+      stats.gamesByResult.red_wins++;
+    } else if (winner === 'black_wins') {
+      stats.gamesByResult.black_wins++;
+    }
+
+    // Track resignation
+    stats.gamesByResult.resignation++;
+  }
+
   // Notify both players
   broadcastToRoom(room, {
     type: 'game_ended',

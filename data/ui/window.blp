@@ -38,10 +38,12 @@ template $DraughtsWindow : Adw.ApplicationWindow {
       }
 
       [start]
-      Gtk.Button disconnect_button {
-        icon-name: "network-offline-symbolic";
-        tooltip-text: _("Disconnect from Multiplayer Game");
+      Gtk.Button resign_button {
+        icon-name: "window-close-symbolic";
+        tooltip-text: _("Resign from Game");
         visible: false;
+
+        styles ["destructive-action"]
       }
 
       [end]

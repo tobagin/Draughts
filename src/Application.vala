@@ -209,11 +209,8 @@ namespace Draughts {
         private void show_multiplayer_dialog() {
             logger.info("Play online action triggered");
             if (main_window != null) {
-                var dialog = MultiplayerDialog.show(main_window);
-                dialog.game_ready.connect((controller) => {
-                    logger.info("Multiplayer game ready, setting up controller");
-                    main_window.set_multiplayer_controller(controller);
-                });
+                // Check if already in multiplayer game - delegate to window to handle resign confirmation
+                main_window.show_play_online_dialog();
             }
         }
 
