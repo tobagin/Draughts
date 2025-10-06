@@ -15,7 +15,11 @@ A comprehensive draughts (checkers) game for GNOME, featuring 16 international v
 - **Online Multiplayer**: Play against opponents worldwide in real-time
   - Room-based matchmaking with 6-character room codes
   - Quick match to find random opponents
-  - Automatic game state restoration on reconnection
+  - Automatic reconnection with session persistence
+  - Visual disconnect overlay when opponent loses connection
+  - Centralized connection management for stability
+  - Real-time game state synchronization
+  - Support for all 16 variants and timer modes
 - **Human vs Human**: Play against a friend on the same computer
 - **Human vs AI**: Challenge the computer with 10 difficulty levels (Beginner to Grandmaster)
 - **AI vs AI**: Watch two AI opponents battle each other
@@ -189,6 +193,11 @@ For detailed rules of each variant, see the in-game rules documentation (Menu â†
 - **Async AI**: AI calculations run on background threads
 - **Smooth Animations**: GTK tick callbacks for fluid motion
 - **WebSocket Multiplayer**: Real-time online gameplay with automatic reconnection
+  - Centralized connection management in main window
+  - WebSocket keepalive (ping/pong every 25 seconds)
+  - Session state restoration after reconnections
+  - Server-side timer state synchronization
+  - Exponential backoff reconnection strategy
 
 ## Contributing
 

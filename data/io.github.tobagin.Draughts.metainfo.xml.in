@@ -138,6 +138,22 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.0.1" date="2025-10-06">
+      <description>
+        <p>Stability and connection improvements for online multiplayer</p>
+        <ul>
+          <li>Fixed: Centralized WebSocket connection management eliminates duplicate connections</li>
+          <li>Fixed: Session state now properly resets when creating new games after finishing one</li>
+          <li>Fixed: "Failed to create room" error after completing a multiplayer game</li>
+          <li>Fixed: "Failed to start quick match" error when trying to play again</li>
+          <li>Improved: WebSocket keepalive increased to 25 seconds for better connection stability</li>
+          <li>Improved: Visual disconnect overlay shows when opponent loses connection</li>
+          <li>Improved: Server-side timer state tracking prevents game desynchronization</li>
+          <li>Improved: Proper cleanup of old WebSocket connections during reconnection</li>
+          <li>Enhanced: Timestamped server logging for better debugging</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.0" date="2025-10-06">
       <description>
         <p>Major update: Online Multiplayer with extensive improvements</p>

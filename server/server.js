@@ -13,7 +13,7 @@ const { createClient } = require('@supabase/supabase-js');
 
 const PORT = process.env.PORT || 8443;
 const ROOM_CODE_LENGTH = 6;
-const REQUIRED_VERSION = '2.0.0'; // Minimum client version required
+const REQUIRED_VERSION = '2.0.1'; // Minimum client version required
 const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
 
