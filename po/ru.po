@@ -1,0 +1,2506 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Draughts package.
+#
+SPDX-FileCopyrightText: 2025 Вячеслав Малышев <ma12@rambler.ru>
+msgid ""
+msgstr ""
+"Project-Id-Version: Draughts 2.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 19:57+0100\n"
+"PO-Revision-Date: 2025-10-09 15:11+0300\n"
+"Last-Translator: Вячеслав Малышев <ma12@rambler.ru>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: data/io.github.tobagin.Draughts.desktop.in:2
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:6
+msgid "@NAME@"
+msgstr "@ИМЯ@"
+
+#: data/io.github.tobagin.Draughts.desktop.in:3
+msgid "A classic draughts game built with GTK4/LibAdwaita"
+msgstr "Классическая игра, построенная с GTK4/Libadwaita"
+
+#: data/io.github.tobagin.Draughts.desktop.in:9
+msgid "draughts;draughts;board;game;strategy;"
+msgstr "draughts;draughts;board;game;strategy;шашки;доска;игра;стратегия;"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:7
+msgid ""
+"Play draughts (checkers) with 16 variants, AI opponents, and online "
+"multiplayer"
+msgstr "Играйте в шашки  16 вариантов,  ИИ противниками  и онлайн игроками"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:9
+msgid ""
+"Draughts is a comprehensive checkers/draughts game featuring 16 international "
+"game variants, multiple AI difficulty levels, online multiplayer, and a "
+"beautiful modern interface built with GTK4 and LibAdwaita. Whether you're a "
+"casual player or a serious competitor, Draughts offers engaging gameplay for "
+"players of all skill levels - play against AI, friends locally, or opponents "
+"online!"
+msgstr ""
+"Draughts - это комплексная игра в шашки, включающая в себя 16 международных "
+"вариантов игры, несколько уровней сложности с искусственным интеллектом, "
+"многопользовательскую онлайн-игру и красивый современный интерфейс, созданный "
+"с использованием GTK4 и LibAdwaita. Являетесь ли вы обычным игроком или "
+"серьезным соперником, Draughts предлагает увлекательный игровой процесс для "
+"игроков любого уровня квалификации - играйте против искусственного "
+"интеллекта, друзей локально или с противниками онлайн!"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:15
+msgid "Game Features:"
+msgstr "Особенности игры:"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:17
+msgid ""
+"16 international draughts variants including American Checkers, International "
+"Draughts, Russian, Brazilian, and more"
+msgstr ""
+"16 вариантов международных шашек, включая американские шашки, международные "
+"шашки, русские, бразильские и другие"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:18
+msgid "10 AI difficulty levels from Beginner to Grandmaster"
+msgstr ""
+"10 уровней сложности искусственного интеллекта от новичка до гроссмейстера"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:19
+msgid ""
+"Online multiplayer with quick match, room hosting, and session persistence"
+msgstr ""
+"Многопользовательская онлайн-игра с быстрой реакцией, размещением в комнате и "
+"сохранением сеанса"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:20
+msgid ""
+"Human vs Human (local and online), Human vs AI, and AI vs AI gameplay modes"
+msgstr ""
+"Режимы игры : Человек против человека (локально и онлайн), Человек против "
+"ИИ , ИИ против ИИ"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:21
+msgid "Complete move history with undo/redo support"
+msgstr "Полная история перемещений с поддержкой отмены / повтора"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:22
+msgid "PDN (Portable Draughts Notation) export for game analysis"
+msgstr "Экспорт PDN (портативной шашечной нотации) для анализа игры"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:23
+msgid ""
+"Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)"
+msgstr ""
+"Различные темы оформления досок и стили элементов (пластик, дерево, металл, "
+"крышки от бутылок)"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:24
+msgid "Timer modes: countdown, Fischer increment, and Bronstein delay"
+msgstr ""
+"Режимы таймера: обратный отсчет, увеличение по Фишеру и задержка по Бронштейну"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:26
+msgid "Accessibility and Polish:"
+msgstr "Доступность и отполированность:"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:28
+msgid "Sound effects for moves, captures, and game events"
+msgstr "Звуковые эффекты для ходов, захватов и игровых событий"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:29
+msgid "Keyboard navigation and screen reader support"
+msgstr "Поддержка навигации с клавиатуры и чтения с экрана"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:30
+msgid "High contrast mode for better visibility"
+msgstr "Режим высокой контрастности для лучшей видимости"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:31
+msgid "Smooth animations and visual feedback"
+msgstr "Плавная анимация и визуальная обратная связь"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:32
+msgid "Game history browser with replay functionality"
+msgstr "Просмотр истории игр с функцией воспроизведения"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:33
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:225
+msgid "Comprehensive rules documentation for each variant"
+msgstr "Подробная документация по правилам для каждого варианта"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:34
+msgid "Adaptive board orientation - your pieces always at the bottom"
+msgstr "Адаптивная ориентация доски - ваши шашки всегда находятся внизу"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:39
+msgid "Main game window with active gameplay"
+msgstr "Главное игровое окно с активным игровым процессом"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:43
+msgid "New game setup dialog with variant selection"
+msgstr "Новое диалоговое окно настройки игры с выбором варианта"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:47
+msgid "Active game with piece movement"
+msgstr "Активная игра с перемещением шашкек"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:51
+msgid "Game paused overlay"
+msgstr "Игра приостановлена"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:55
+msgid "Game history browser with saved games"
+msgstr "Обозреватель истории игр с сохранёнными играми"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:59
+msgid "Replay previous games from history"
+msgstr "Воспроизвести предыдущие игры из истории"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:63
+msgid "Preferences with customization options"
+msgstr "Предпочтения с возможностью настройки"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:67
+msgid "Keyboard shortcuts reference"
+msgstr "Справочник по сочетаниям клавиш"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:71
+msgid "About dialog"
+msgstr "Диалог о программе"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:82
+msgid "Thiago Fernandes"
+msgstr ""
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:98
+msgid "checkers"
+msgstr "шашки"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:99
+msgid "draughts"
+msgstr "шашки"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:100
+msgid "board game"
+msgstr "настольная игра"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:101
+msgid "strategy"
+msgstr "стратегия"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:102
+msgid "dama"
+msgstr ""
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:103
+#: data/ui/dialogs/new-game.blp:99
+msgid "AI"
+msgstr "ИИ"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:104
+msgid "puzzle"
+msgstr "головоломка"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:105
+msgid "international"
+msgstr "международные"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:106
+msgid "american"
+msgstr "американские"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:107
+msgid "russian"
+msgstr "русские"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:108
+msgid "brazilian"
+msgstr "бразильские"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:143
+msgid "Major update: Online Multiplayer with extensive improvements"
+msgstr ""
+"Крупное обновление: Многопользовательская онлайн-игра с обширными улучшениями"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:144
+msgid "NEW: Online Multiplayer Features"
+msgstr "НОВИНКА: Многопользовательские функции  онлайн"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:146
+msgid "Play draughts online against opponents worldwide"
+msgstr "Играть в шашки онлайн против соперников со всего мира"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:147
+msgid "Host private game rooms with unique room codes"
+msgstr "Создать приватные игровые комнаты с уникальными кодами"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:148
+msgid "Quick match system for instant random opponent pairing"
+msgstr "Система быстрого матча для мгновенного случайного подбора соперника"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:149
+msgid "Session persistence - reconnect to games after disconnections"
+msgstr ""
+"Сохранение сессии — повторное подключение к играм после разрывов соединения"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:150
+msgid "Server crash recovery with automatic reconnection"
+msgstr "Восстановление после сбоя сервера с автоматическим переподключением"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:151
+msgid "Support for all 16 game variants in multiplayer"
+msgstr "Поддержка всех 16 вариантов игры в многопользовательском режиме"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:152
+msgid "Timer support in online games (Fischer and Bronstein modes)"
+msgstr "Поддержка таймера в онлайн-играх (режимы Фишера и Бронштейна)"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:153
+msgid "Real-time game synchronization via WebSocket"
+msgstr "Синхронизация игры в реальном времени через WebSocket"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:154
+msgid "Opponent disconnect/reconnect notifications"
+msgstr "Уведомления о отключении/повторном подключении противника"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:156
+msgid "Board and Gameplay Improvements"
+msgstr "Улучшения доски и игрового процесса"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:158
+msgid "Adaptive board orientation - your pieces always appear at the bottom"
+msgstr "Адаптивная ориентация доски - ваши шашки всегда отображаются внизу"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:159
+msgid "Works in single-player (color selection) and multiplayer"
+msgstr ""
+"Работает как в одиночной игре (выбор цвета), так и в многопользовательской"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:160
+msgid "Proper piece highlighting based on current player in multiplayer"
+msgstr ""
+"Правильное выделение шашек в зависимости от текущего игрока в "
+"многопользовательском режиме"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:161
+msgid "Fixed captured pieces synchronization in online games"
+msgstr "Исправлена синхронизация захваченных шашек в онлайн-играх"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:162
+msgid "Improved board perspective transformations"
+msgstr "Улучшенные преобразования перспективы доски"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:164
+msgid "UI/UX Enhancements"
+msgstr "Улучшения ПИ"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:166
+msgid "New multiplayer dialog with modern ViewStack navigation"
+msgstr "Новый многопользовательский диалог с современной навигацией ViewStack"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:167
+msgid "StatusPages with helpful descriptions for all multiplayer screens"
+msgstr ""
+"Страницы статуса с полезными описаниями для всех многопользовательских экранов"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:168
+msgid "Connection status indicators in header bars"
+msgstr "Индикаторы состояния подключения в строках заголовка"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:169
+msgid "Toast notifications for opponent connection events"
+msgstr "Всплывающие уведомления о событиях подключения противника"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:170
+msgid "Pill-shaped action buttons in bottom header bars"
+msgstr "Кнопки действий в форме таблеток в нижних панелях заголовков"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:171
+msgid "Back navigation buttons with arrow icons"
+msgstr "Кнопки для возврата с иконками стрелок"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:172
+msgid "Settings initialized from user preferences in multiplayer"
+msgstr ""
+"Настройки, инициализируемые из пользовательских настроек в "
+"многопользовательской игре"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:173
+msgid "Removed welcome screen for streamlined experience"
+msgstr "Удален экран приветствия для упрощения работы"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:175
+msgid "Bug Fixes"
+msgstr "Исправление ошибок"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:177
+msgid "Fixed duplicate game end dialogs in multiplayer"
+msgstr "Исправлено дублирование диалогов о завершении игры в мультиплеере"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:178
+msgid "Fixed timer not working in multiplayer games"
+msgstr "Исправлено, что таймер не работал в многопользовательских играх"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:179
+msgid "Fixed variant selection bug (Brazilian → American)"
+msgstr "Исправлена ошибка при выборе варианта (бразильский → американский)"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:180
+msgid "Fixed server crash causing application crashes"
+msgstr "Исправлен сбой сервера, приводивший к сбоям приложений"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:181
+msgid "Fixed quick match self-pairing issues"
+msgstr "Исправлены проблемы с самосопряжением быстрого матча"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:182
+msgid "Improved error handling for offline servers"
+msgstr "Улучшена обработка ошибок для автономных серверов"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:184
+msgid "Technical Improvements"
+msgstr "Технические усовершенствования"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:186
+msgid "WebSocket-based multiplayer networking with libsoup-3.0"
+msgstr "Многопользовательская сеть на базе WebSocket с libsoup-3.0"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:187
+msgid "Node.js relay server with room management"
+msgstr "Node.js ретрансляционный сервер с управлением помещением"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:188
+msgid "JSON-based protocol for all multiplayer messages"
+msgstr "Протокол на основе JSON для всех многопользовательских сообщений"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:189
+msgid "Quick match queue system organized by variant"
+msgstr "Система очереди быстрого матча, организованная по варианту"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:190
+msgid "Added node_modules to .gitignore"
+msgstr "Добавлены node_modules в .gitignore"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:196
+msgid "Mobile-friendly update with improved adaptive design and bug fixes"
+msgstr ""
+"Обновление для мобильных устройств с улучшенным адаптивным дизайном и "
+"исправлением ошибок"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:198
+msgid "Full mobile and tablet support with 360px minimum width"
+msgstr ""
+"Полная поддержка мобильных устройств и планшетов с минимальной шириной 360 "
+"пикселей"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:199
+msgid "Adaptive dialogs with breakpoints for narrow screens"
+msgstr "Адаптивные диалоги с контрольными точками для узких экранов"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:200
+msgid "Game History dialog now uses bottom sheet for filters on mobile"
+msgstr ""
+"Диалог истории игр теперь использует нижнюю панель для фильтров на мобильных "
+"устройствах"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:201
+msgid "Game Replay dialog optimized with side panel as bottom sheet"
+msgstr ""
+"Диалог повторного просмотра игры оптимизирован с боковой панелью в виде "
+"нижнего листа"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:202
+msgid "Speed controls moved to overflow menu on mobile devices"
+msgstr ""
+"Элементы управления скоростью перенесены в меню переполнения на мобильных "
+"устройствах"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:203
+msgid "New Game dialog now properly scrollable on small screens"
+msgstr "Диалог новой игры теперь правильно прокручивается на маленьких экранах"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:204
+msgid "Fixed timer expiration crash - game now ends properly when time runs out"
+msgstr ""
+"Исправлен сбой при истечении таймера — теперь игра правильно заканчивается по "
+"истечении времени"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:205
+msgid "Improved touch-friendly margins and spacing on mobile"
+msgstr ""
+"Улучшены удобные для сенсорного управления поля и расстояние на мобильных "
+"устройствах"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:206
+msgid "Better adaptive bottom bar with priority-based element hiding"
+msgstr "Лучше адаптивная нижняя панель с скрытием элементов по приоритету"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:207
+msgid "All dialogs now work seamlessly at mobile screen sizes"
+msgstr ""
+"Все диалоги теперь работают без сбоев на размерах экрана мобильных устройств"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:213
+msgid ""
+"First stable release of Draughts - A comprehensive draughts/checkers game"
+msgstr "Первый стабильный релиз Draughts - полноценная игра в шашки"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:215
+msgid ""
+"16 international game variants: American Checkers, International, Russian, "
+"Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, "
+"Armenian, Gothic, Frisian, and Canadian"
+msgstr ""
+"16 международных вариантов игр: Американские шашки, Международные, Русские, "
+"Бразильские, Итальянские, Испанские, Чешские, Тайские, Немецкие, Шведские, "
+"Пул, Турецкие, Армянские, Готические, Фризские и Канадские"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:216
+msgid ""
+"10 AI difficulty levels from Beginner to Grandmaster with intelligent move "
+"evaluation"
+msgstr ""
+"10 уровней сложности ИИ — от Начинающего до Гроссмейстера с интеллектуальной "
+"оценкой ходов"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:217
+msgid "Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI"
+msgstr ""
+"Три режима игры: человек против человека, человек против ИИ и ИИ против ИИ"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:218
+msgid ""
+"Complete sound effects system with audio feedback for moves, captures, and "
+"game events"
+msgstr "Полная система звуковых эффектов для ходов, захватов и игровых событий"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:219
+msgid "PDN (Portable Draughts Notation) export for game analysis and sharing"
+msgstr ""
+"Экспорт PDN (портативной шашечной нотации) для анализа игры и обмена "
+"информацией"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:220
+msgid "Four piece styles: Plastic, Wood, Metal, and Bottle Cap"
+msgstr "Четыре варианта исполнения: Пластик, дерево, металл и крышка от бутылки"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:221
+msgid "Five board themes: Classic, Wood, Green, Blue, and High Contrast"
+msgstr ""
+"Пять тем оформления доски: Классическая, деревянная, зеленая, синяя и "
+"контрастная"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:222
+msgid "Full move history with unlimited undo/redo support"
+msgstr "Полная история перемещений с неограниченной поддержкой отмены / повтора"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:223
+msgid "Smooth animations and visual feedback for all game actions"
+msgstr "Плавная анимация и визуальная обратная связь для всех игровых действий"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:224
+msgid "Keyboard navigation and screen reader accessibility support"
+msgstr ""
+"Поддержка навигации с клавиатуры и специальных возможностей для чтения с "
+"экрана"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:226
+msgid "Modern GTK4/LibAdwaita interface with adaptive design"
+msgstr "Современный интерфейс GTK4/LibAdwaita с адаптивным дизайном"
+
+#: data/io.github.tobagin.Draughts.metainfo.xml.in:227
+msgid "Dark mode support following system theme"
+msgstr "Поддержка темного режима в соответствии с системной темой"
+
+#: data/ui/window.blp:24
+msgid "Draughts"
+msgstr "Шашки"
+
+#: data/ui/window.blp:25 data/ui/dialogs/multiplayer.blp:118
+#: data/ui/dialogs/multiplayer.blp:300 data/ui/dialogs/new-game.blp:76
+#: src/dialogs/MultiplayerDialog.vala:567 src/dialogs/GameHistoryDialog.vala:91
+msgid "American Checkers"
+msgstr "Американские шашки"
+
+#: data/ui/window.blp:31 data/ui/dialogs/help.blp:236
+msgid "Undo Move"
+msgstr "Отменить перемещение"
+
+#. Update button icon and tooltip
+#: data/ui/window.blp:37 src/Window.vala:729
+msgid "Pause Game"
+msgstr "Приостановить игру"
+
+#: data/ui/window.blp:43
+msgid "Disconnect from Multiplayer Game"
+msgstr "Отключиться от многопользовательской игры"
+
+#: data/ui/window.blp:50
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: data/ui/window.blp:82
+msgid "Paused"
+msgstr "Приостановлено"
+
+#: data/ui/window.blp:89
+msgid "Press Play to resume"
+msgstr "Нажмите Играть, чтобы продолжить"
+
+#: data/ui/window.blp:116
+msgid "Opponent Disconnected"
+msgstr "Противник отключен"
+
+#: data/ui/window.blp:123
+msgid "Waiting for reconnection..."
+msgstr "Жду повторного подключения..."
+
+#: data/ui/window.blp:166
+msgid "First Move"
+msgstr "Первый ход"
+
+#: data/ui/window.blp:173 data/ui/dialogs/game-replay.blp:112
+msgid "Previous Move"
+msgstr "Предыдущий ход"
+
+#: data/ui/window.blp:180 data/ui/dialogs/game-replay.blp:123
+msgid "Next Move"
+msgstr "Следующий ход"
+
+#: data/ui/window.blp:187
+msgid "Last Move"
+msgstr "Последний ход"
+
+#: data/ui/window.blp:196
+msgid "Navigate to move"
+msgstr "Перейдите к ходу"
+
+#. Clear existing items
+#. Add "Game Start"
+#: data/ui/window.blp:221 src/Window.vala:311
+msgid "Game Start"
+msgstr "Старт игры"
+
+#: data/ui/window.blp:227
+msgid "_New Game"
+msgstr "_Новая игра"
+
+#: data/ui/window.blp:233
+msgid "Play _Online"
+msgstr "Игра _онлайн"
+
+#: data/ui/window.blp:239
+msgid "_Reset Game"
+msgstr "_Сброс игры"
+
+#: data/ui/window.blp:246
+msgid "Game _History"
+msgstr "История _игры"
+
+#: data/ui/window.blp:255
+msgid "_Preferences"
+msgstr "_Предпочтения"
+
+#: data/ui/window.blp:263
+msgid "_Help"
+msgstr "_Помощь"
+
+#: data/ui/window.blp:269
+msgid "_Keyboard Shortcuts"
+msgstr "_Клавиатурные сочетания"
+
+#: data/ui/window.blp:275
+msgid "_About Draughts"
+msgstr "_О  Draughts"
+
+#: data/ui/window.blp:282
+msgid "_Quit"
+msgstr "_Выйти"
+
+#: data/ui/dialogs/game-end.blp:5
+msgid "Game Complete!"
+msgstr "Игра завершена!"
+
+#. Add statistics
+#: data/ui/dialogs/game-end.blp:49 data/ui/dialogs/game-replay.blp:255
+#: src/dialogs/GameReplayDialog.vala:706
+msgid "Game Statistics"
+msgstr "Игровая статистика"
+
+#: data/ui/dialogs/game-end.blp:52
+msgid "Total Moves"
+msgstr "Общее количество ходов"
+
+#: data/ui/dialogs/game-end.blp:53
+msgid "Number of moves played in the game"
+msgstr "Количество ходов, сыгранных в игре"
+
+#: data/ui/dialogs/game-end.blp:63 data/ui/dialogs/game-replay.blp:228
+#: src/dialogs/GameReplayDialog.vala:683
+msgid "Game Duration"
+msgstr "Продолжительность игры"
+
+#: data/ui/dialogs/game-end.blp:64
+msgid "Total time played"
+msgstr "Общее количество сыгранного времени"
+
+#: data/ui/dialogs/game-end.blp:76
+msgid "Red Player Statistics"
+msgstr "Статистика красного игрока"
+
+#: data/ui/dialogs/game-end.blp:79 data/ui/dialogs/game-end.blp:127
+msgid "Pieces Captured"
+msgstr "Взятие шашкек"
+
+#: data/ui/dialogs/game-end.blp:80 data/ui/dialogs/game-end.blp:128
+msgid "Enemy pieces captured"
+msgstr "Захвачено вражеских шашкек"
+
+#: data/ui/dialogs/game-end.blp:90 data/ui/dialogs/game-end.blp:138
+msgid "Pieces Promoted"
+msgstr "Продвижение шашкек"
+
+#: data/ui/dialogs/game-end.blp:91 data/ui/dialogs/game-end.blp:139
+msgid "Men promoted to kings"
+msgstr "Фигуры стали королями"
+
+#: data/ui/dialogs/game-end.blp:101 data/ui/dialogs/game-end.blp:149
+msgid "Moves Made"
+msgstr "Сделанные ходы"
+
+#: data/ui/dialogs/game-end.blp:102 data/ui/dialogs/game-end.blp:150
+msgid "Total moves by this player"
+msgstr "Общее количество ходов этого игрока"
+
+#: data/ui/dialogs/game-end.blp:112 data/ui/dialogs/game-end.blp:160
+msgid "Pieces Remaining"
+msgstr "Остаток шашкек"
+
+#: data/ui/dialogs/game-end.blp:113 data/ui/dialogs/game-end.blp:161
+msgid "Pieces left on the board"
+msgstr "Фигуры, оставшиеся на доске"
+
+#: data/ui/dialogs/game-end.blp:124
+msgid "Black Player Statistics"
+msgstr "Статистика черного игрока"
+
+#: data/ui/dialogs/game-end.blp:174 data/ui/dialogs/help.blp:226
+#: data/ui/dialogs/new-game.blp:47
+msgid "New Game"
+msgstr "Новая игра"
+
+#: data/ui/dialogs/game-end.blp:175 src/dialogs/GameHistoryDialog.vala:449
+msgid "Close"
+msgstr "Закрыть"
+
+#: data/ui/dialogs/game-history.blp:5 data/ui/dialogs/game-history.blp:27
+#: data/ui/dialogs/preferences.blp:56
+msgid "Game History"
+msgstr "История игры"
+
+#. Create filter bottom sheet
+#: data/ui/dialogs/game-history.blp:34 data/ui/dialogs/game-history.blp:54
+#: src/dialogs/GameHistoryDialog.vala:536 src/dialogs/GameHistoryDialog.vala:553
+msgid "Filter Games"
+msgstr "Фильтр игр"
+
+#: data/ui/dialogs/game-history.blp:41 src/dialogs/GameHistoryDialog.vala:381
+msgid "Clear History"
+msgstr "Очистить историю"
+
+#: data/ui/dialogs/game-history.blp:61
+msgid "Filter by variant"
+msgstr "Фильтровать по варианту"
+
+#: data/ui/dialogs/game-history.blp:66
+msgid "Filter by result"
+msgstr "Фильтровать по результату"
+
+#: data/ui/dialogs/game-history.blp:71
+msgid "Filter by player type"
+msgstr "Фильтровать по типу игрока"
+
+#: data/ui/dialogs/game-history.blp:108
+msgid "No Games Found"
+msgstr "Игры не найдены"
+
+#: data/ui/dialogs/game-history.blp:109
+msgid "Play some games to see them in your history"
+msgstr "Поиграйте в несколько игр, чтобы увидеть их в своей истории"
+
+#: data/ui/dialogs/game-history.blp:124
+msgid "Watch Replay"
+msgstr "Смотреть повтор"
+
+#: data/ui/dialogs/game-history.blp:135
+msgid "View Details"
+msgstr "Просмотр подробной информации"
+
+#: data/ui/dialogs/game-history.blp:140 data/ui/widgets/move-history.blp:71
+msgid "Export PGN"
+msgstr "Экспорт PGN"
+
+#: data/ui/dialogs/game-history.blp:146 src/dialogs/GameHistoryDialog.vala:483
+msgid "Delete"
+msgstr "Удалить"
+
+#: data/ui/dialogs/game-preferences.blp:5
+msgid "Game Preferences"
+msgstr "Предпочтения игры"
+
+#: data/ui/dialogs/game-preferences.blp:10 data/ui/dialogs/preferences.blp:46
+msgid "General"
+msgstr "Главные"
+
+#: data/ui/dialogs/game-preferences.blp:14 data/ui/dialogs/multiplayer.blp:99
+msgid "Game Settings"
+msgstr "Настройки игры"
+
+#: data/ui/dialogs/game-preferences.blp:17
+msgid "Default Variant"
+msgstr "Вариант по умолчанию"
+
+#: data/ui/dialogs/game-preferences.blp:18
+msgid "Choose the default draughts variant"
+msgstr "Выберите вариант шашек по умолчанию"
+
+#: data/ui/dialogs/game-preferences.blp:22
+msgid "Show Legal Moves"
+msgstr "Показать возможные ходы"
+
+#: data/ui/dialogs/game-preferences.blp:23
+msgid "Highlight possible moves for selected pieces"
+msgstr "Выделить возможные ходы для выбранных шашек"
+
+#: data/ui/dialogs/game-preferences.blp:27
+msgid "Animate Moves"
+msgstr "Анимация ходов"
+
+#: data/ui/dialogs/game-preferences.blp:28
+msgid "Animate piece movements"
+msgstr "Анимация движения шашек"
+
+#: data/ui/dialogs/game-preferences.blp:32 data/ui/dialogs/new-game.blp:170
+msgid "Sound Effects"
+msgstr "Звуковые эффекты"
+
+#: data/ui/dialogs/game-preferences.blp:33
+msgid "Play sounds for moves and captures"
+msgstr "Воспроизводить звук ходов и захватов"
+
+#: data/ui/dialogs/game-preferences.blp:37
+msgid "Interaction Mode"
+msgstr "Режим взаимодействия"
+
+#: data/ui/dialogs/game-preferences.blp:38
+msgid "Choose how to select and move pieces"
+msgstr "Выберите, как выделять и перемещать шашки"
+
+#: data/ui/dialogs/game-preferences.blp:43
+msgid "AI Settings"
+msgstr "Настройки ИИ"
+
+#: data/ui/dialogs/game-preferences.blp:46
+msgid "AI Difficulty"
+msgstr "Сложность с ИИ"
+
+#: data/ui/dialogs/game-preferences.blp:47
+msgid "Set the computer opponent difficulty"
+msgstr "Установить уровень сложности компьютерного противника"
+
+#: data/ui/dialogs/game-preferences.blp:51
+msgid "AI Thinking Time"
+msgstr "Время на обдумывание ИИ"
+
+#: data/ui/dialogs/game-preferences.blp:52
+msgid "Maximum time for AI to think (seconds)"
+msgstr "Максимальное время, затрачиваемое ИИ на обдумывание (секунды)"
+
+#: data/ui/dialogs/game-preferences.blp:63
+msgid "Show AI Thinking"
+msgstr "Показать мышление ИИ"
+
+#: data/ui/dialogs/game-preferences.blp:64
+msgid "Display AI analysis during its turn"
+msgstr "Отображать анализ искусственного интеллекта во время его хода"
+
+#: data/ui/dialogs/game-preferences.blp:68
+msgid "AI Progress Indicator"
+msgstr "Индикатор прогресса искусственного интеллекта"
+
+#: data/ui/dialogs/game-preferences.blp:69
+msgid "Show progress while AI is thinking"
+msgstr "Показывайте прогресс, пока ИИ думает"
+
+#: data/ui/dialogs/game-preferences.blp:75
+msgid "Timers"
+msgstr "Таймер"
+
+#: data/ui/dialogs/game-preferences.blp:79
+msgid "Timer Settings"
+msgstr "Настройки таймера"
+
+#: data/ui/dialogs/game-preferences.blp:82
+msgid "Default Timer Mode"
+msgstr "Режим таймера по умолчанию"
+
+#: data/ui/dialogs/game-preferences.blp:83
+msgid "Choose the default timing method"
+msgstr "Выберать метод таймера по умолчанию"
+
+#: data/ui/dialogs/game-preferences.blp:87
+msgid "Countdown Time"
+msgstr "Обратный отсчет"
+
+#: data/ui/dialogs/game-preferences.blp:88
+msgid "Minutes per player for countdown timer"
+msgstr "Минуты на игрока для таймера обратного отсчёта"
+
+#: data/ui/dialogs/game-preferences.blp:99
+msgid "Fischer Increment"
+msgstr "Приращение Фишера"
+
+#: data/ui/dialogs/game-preferences.blp:100
+msgid "Seconds added per move in Fischer mode"
+msgstr "Секунды добавляются за ход в режиме Фишера"
+
+#: data/ui/dialogs/game-preferences.blp:111
+msgid "Timer Warnings"
+msgstr "Предупреждения таймера"
+
+#: data/ui/dialogs/game-preferences.blp:112
+msgid "Show warnings when time is running low"
+msgstr "Показывать предупреждения, когда время заканчивается"
+
+#: data/ui/dialogs/game-preferences.blp:116
+msgid "Delay Time"
+msgstr "Время задержки"
+
+#: data/ui/dialogs/game-preferences.blp:117
+msgid "Seconds of delay before clock starts"
+msgstr "Секунды задержки перед запуском часов"
+
+#: data/ui/dialogs/game-preferences.blp:128
+msgid "Timer Sounds"
+msgstr "Звуки таймера"
+
+#: data/ui/dialogs/game-preferences.blp:129
+msgid "Play sounds for timer events"
+msgstr "Воспроизводить звуки таймера"
+
+#: data/ui/dialogs/game-preferences.blp:135
+msgid "Display"
+msgstr "Показать"
+
+#: data/ui/dialogs/game-preferences.blp:139 data/ui/dialogs/preferences.blp:8
+msgid "Appearance"
+msgstr "Внешность"
+
+#: data/ui/dialogs/game-preferences.blp:142 data/ui/dialogs/preferences.blp:34
+msgid "Piece Style"
+msgstr "Стиль шашки"
+
+#: data/ui/dialogs/game-preferences.blp:143
+msgid "Choose the visual style for game pieces"
+msgstr "Выбрать стиль игровых фигур"
+
+#: data/ui/dialogs/game-preferences.blp:147
+msgid "Show Coordinates"
+msgstr "Показывать координаты"
+
+#: data/ui/dialogs/game-preferences.blp:148
+msgid "Display board coordinates (A1, B2, etc.)"
+msgstr "Показать координаты на доске (A1, B2 и т.д.)"
+
+#: data/ui/dialogs/game-preferences.blp:152
+msgid "Highlight Last Move"
+msgstr "Выделить последний ход"
+
+#: data/ui/dialogs/game-preferences.blp:153
+msgid "Highlight the most recent move"
+msgstr "Выделить самый последний шаг"
+
+#: data/ui/dialogs/game-preferences.blp:157
+msgid "Show Move History"
+msgstr "Показать историю ходов"
+
+#: data/ui/dialogs/game-preferences.blp:158
+msgid "Display the move history panel"
+msgstr "Отобразить панель истории ходов"
+
+#: data/ui/dialogs/game-preferences.blp:162 data/ui/dialogs/preferences.blp:23
+msgid "Board Theme"
+msgstr "Тема доски"
+
+#: data/ui/dialogs/game-preferences.blp:163
+msgid "Choose the visual style for the game board"
+msgstr "Выберите визуальный стиль для игрового поля"
+
+#: data/ui/dialogs/game-preferences.blp:168
+msgid "Accessibility"
+msgstr "Доступно"
+
+#: data/ui/dialogs/game-preferences.blp:171 data/ui/dialogs/preferences.blp:83
+msgid "High Contrast"
+msgstr "Высокая контрастность"
+
+#: data/ui/dialogs/game-preferences.blp:172
+msgid "Use high contrast colors"
+msgstr "Использовать цвета с высокой контрастностью"
+
+#: data/ui/dialogs/game-preferences.blp:176
+msgid "Large Pieces"
+msgstr "Крупные шашки"
+
+#: data/ui/dialogs/game-preferences.blp:177
+msgid "Use larger piece graphics"
+msgstr "Использовать шашки большего размера"
+
+#: data/ui/dialogs/game-preferences.blp:181
+msgid "Keyboard Navigation"
+msgstr "Навигация с помощью клавиатуры"
+
+#: data/ui/dialogs/game-preferences.blp:182
+msgid "Enable keyboard control of the board"
+msgstr "Включить управление доской с клавиатуры"
+
+#: data/ui/dialogs/game-preferences.blp:186
+msgid "Move Announcements"
+msgstr "Объявления хода"
+
+#: data/ui/dialogs/game-preferences.blp:187
+msgid "Level of move descriptions for screen readers"
+msgstr "Уровень описания ходов для программ чтения с экрана"
+
+#: data/ui/dialogs/game-preferences.blp:191
+msgid "Screen Reader Support"
+msgstr "Поддержка программы чтения с экрана"
+
+#: data/ui/dialogs/game-preferences.blp:192
+msgid "Enhanced support for screen reader software"
+msgstr "Расширенная поддержка программного обеспечения для чтения с экрана"
+
+#. Set default values for display
+#: data/ui/dialogs/game-replay.blp:5 src/dialogs/GameReplayDialog.vala:96
+msgid "Game Replay"
+msgstr "Повтор игры"
+
+#: data/ui/dialogs/game-replay.blp:45
+msgid "Show Game Information"
+msgstr "Показать информацию об игре"
+
+#: data/ui/dialogs/game-replay.blp:52
+msgid "Replay Options"
+msgstr "Параметры повтора"
+
+#: data/ui/dialogs/game-replay.blp:92
+msgid "Loading board..."
+msgstr "Загрузка доски..."
+
+#: data/ui/dialogs/game-replay.blp:107
+msgid "Go to Start"
+msgstr "Перейти к началу"
+
+#: data/ui/dialogs/game-replay.blp:117
+msgid "Play/Pause"
+msgstr "Воспроизвести/Пауза"
+
+#: data/ui/dialogs/game-replay.blp:128
+msgid "Go to End"
+msgstr "Перейти к концу"
+
+#: data/ui/dialogs/game-replay.blp:139 data/ui/dialogs/game-replay.blp:304
+msgid "Playback Speed"
+msgstr "Скорость воспроизведения"
+
+#: data/ui/dialogs/game-replay.blp:150
+msgid "Speed"
+msgstr "Скорость"
+
+#: data/ui/dialogs/game-replay.blp:162
+msgid "Move Position"
+msgstr "Переместить позицию"
+
+#. Create a dialog to show side panel content as a drawer/bottom sheet
+#. Add game info
+#: data/ui/dialogs/game-replay.blp:205 src/dialogs/GameReplayDialog.vala:631
+#: src/dialogs/GameReplayDialog.vala:648 src/dialogs/GameReplayDialog.vala:666
+msgid "Game Information"
+msgstr "Информация об игре"
+
+#: data/ui/dialogs/game-replay.blp:218 data/ui/dialogs/multiplayer.blp:114
+#: data/ui/dialogs/multiplayer.blp:296 data/ui/dialogs/new-game.blp:72
+#: src/dialogs/GameHistoryDialog.vala:570 src/dialogs/GameReplayDialog.vala:676
+msgid "Variant"
+msgstr "Вариант"
+
+#. Add current move info
+#: data/ui/dialogs/game-replay.blp:240 src/dialogs/GameReplayDialog.vala:693
+msgid "Current Move"
+msgstr "Текущий ход"
+
+#: data/ui/dialogs/game-replay.blp:258 data/ui/widgets/timer-display.blp:19
+#: src/dialogs/GameReplayDialog.vala:709
+msgid "Red Player"
+msgstr "Красный игрок"
+
+#: data/ui/dialogs/game-replay.blp:269 data/ui/widgets/timer-display.blp:43
+#: src/dialogs/GameReplayDialog.vala:717
+msgid "Black Player"
+msgstr "Чёрный игрок"
+
+#: data/ui/dialogs/game-replay.blp:282 data/ui/widgets/move-history.blp:12
+msgid "Move History"
+msgstr "История ходов"
+
+#: data/ui/dialogs/game-replay.blp:283
+msgid "Click a move to jump to that position"
+msgstr "Нажмите на ход, чтобы перейти к этой позиции"
+
+#: data/ui/dialogs/game-replay.blp:307
+msgid "0.25× (Very Slow)"
+msgstr "0.25× (очень медленно)"
+
+#: data/ui/dialogs/game-replay.blp:313
+msgid "0.5× (Slow)"
+msgstr "0.5× (мдленно)"
+
+#: data/ui/dialogs/game-replay.blp:319
+msgid "1× (Normal)"
+msgstr "1× (нормально)"
+
+#: data/ui/dialogs/game-replay.blp:325
+msgid "2× (Fast)"
+msgstr "2× (быстро)"
+
+#: data/ui/dialogs/game-replay.blp:331
+msgid "4× (Very Fast)"
+msgstr "4× (очень быстро)"
+
+#: data/ui/dialogs/game-replay.blp:340
+msgid "Export Game (PGN)"
+msgstr "Экспортировать игру (PGN)"
+
+#: data/ui/dialogs/game-replay.blp:345
+msgid "Copy Game Notation"
+msgstr "Скопировать игровую нотацию"
+
+#: data/ui/dialogs/game-replay.blp:352
+msgid "Reset View"
+msgstr "Сбросить вид"
+
+#: data/ui/dialogs/game-replay.blp:357
+msgid "Auto-rotate Board"
+msgstr "Автоповорот доски"
+
+#: data/ui/dialogs/help.blp:13 data/ui/dialogs/help.blp:276
+msgid "Help"
+msgstr "Помощь"
+
+#: data/ui/dialogs/help.blp:20
+msgid "Getting Started"
+msgstr "Приступая к работе"
+
+#: data/ui/dialogs/help.blp:35
+msgid "Getting Started with Draughts"
+msgstr "Начало работы с Draughts"
+
+#: data/ui/dialogs/help.blp:41
+msgid "Welcome to Draughts! This guide will help you start playing."
+msgstr "Добро пожаловать в шашки! Это руководство поможет вам начать играть."
+
+#: data/ui/dialogs/help.blp:47
+msgid "Starting a New Game"
+msgstr "Начало новой игры"
+
+#: data/ui/dialogs/help.blp:53
+msgid ""
+"1. Click the menu button (☰) in the top-right corner\n"
+"2. Select 'New Game'\n"
+"3. Choose your preferred variant (16 available)\n"
+"4. Select game mode (Human vs Human, Human vs AI, or AI vs AI)\n"
+"5. For AI games, choose difficulty level (Beginner to Grandmaster)\n"
+"6. Click 'Start Game'"
+msgstr ""
+"1. Нажмите кнопку меню (☰) в правом верхнем углу\n"
+"2. Выберите 'Новая игра'\n"
+"3. Выберите предпочитаемый вариант (доступно 16 вариантов).\n"
+"4. Выберите режим игры (Человек против человека, Человек против ИИ или ИИ "
+"против ИИ)\n"
+"5. Для игр с искусственным интеллектом выберите уровень сложности (от новичка "
+"до гроссмейстера)\n"
+"6. Нажмите 'Начать игру'"
+
+#: data/ui/dialogs/help.blp:59
+msgid "Basic Rules"
+msgstr "Основные правила"
+
+#: data/ui/dialogs/help.blp:65
+msgid ""
+"• Pieces move diagonally on dark squares\n"
+"• Regular pieces (men) typically move forward only\n"
+"• Capture opponent pieces by jumping over them\n"
+"• Reach the opposite end to promote to a king\n"
+"• Kings can move and capture in more directions\n"
+"• Captures are usually mandatory when available\n"
+"• Win by capturing all opponent pieces or blocking all moves"
+msgstr ""
+"• Шашки перемещаются по диагонали на темных клетках\n"
+"• Обычные шашки перемещаются только вперёд\n"
+"• Захватывайте шашки противника, перепрыгивая через них\n"
+"• Достигайте противоположной стороны доски для получения статуса дамки\n"
+"• Дамки могут передвигаться и захватывать в большем количестве клеток\n"
+"• Захваты обычно обязательны, если они доступны\n"
+"• Вы победили, если захвачены все фигуры противника или блокированы все ходы"
+
+#: data/ui/dialogs/help.blp:71 data/ui/dialogs/help.blp:217
+msgid "Game Controls"
+msgstr "Управление игрой"
+
+#: data/ui/dialogs/help.blp:77
+msgid ""
+"• Click a piece to select it\n"
+"• Click a highlighted square to move\n"
+"• Use Undo/Redo buttons to review moves\n"
+"• Access Preferences to customize appearance\n"
+"• Export games in PDN format for analysis"
+msgstr ""
+"• Нажмите на фигуру, чтобы выбрать ее\n"
+"• Нажмите на выделенный квадрат, чтобы переместить\n"
+"• Используйте кнопки отмены / повтора для просмотра ходов\n"
+"• Откройте настройки для настройки оформления\n"
+"• Экспорт игр в формате PDN для анализа"
+
+#: data/ui/dialogs/help.blp:87
+msgid "Variants"
+msgstr "Варианты"
+
+#: data/ui/dialogs/help.blp:102
+msgid "Game Variants"
+msgstr "Варианты игры"
+
+#: data/ui/dialogs/help.blp:108
+msgid "Draughts includes 16 international variants, each with unique rules:"
+msgstr ""
+"Шашки включают в себя 16 международных разновидностей, каждая из которых "
+"имеет свои правила:"
+
+#: data/ui/dialogs/help.blp:114 src/dialogs/VariantRulesDialog.vala:92
+msgid "American Checkers (8×8)"
+msgstr "Американские шашки (8×8)"
+
+#: data/ui/dialogs/help.blp:119
+msgid ""
+"Most popular in North America. Men move forward only, kings don't fly. "
+"Players choose which capture to make."
+msgstr ""
+"Самый популярный в Северной Америке. Шашки ходят только вперед, дамки не "
+"летают. Игроки сами выбирают, какой захват сделать."
+
+#: data/ui/dialogs/help.blp:125 src/dialogs/VariantRulesDialog.vala:109
+msgid "International Draughts (10×10)"
+msgstr "Международные шашки (10×10)"
+
+#: data/ui/dialogs/help.blp:130
+msgid ""
+"Official world championship variant. Flying kings, longest sequence rule. "
+"Most complex and strategic."
+msgstr ""
+"Официальный вариант чемпионата мира. Летающие дамки, правило самой длинной "
+"последовательности. Самый сложный и стратегический."
+
+#: data/ui/dialogs/help.blp:136 src/dialogs/VariantRulesDialog.vala:126
+msgid "Russian Draughts (8×8)"
+msgstr "Русские шашки (8×8)"
+
+#: data/ui/dialogs/help.blp:141
+msgid ""
+"Similar to International but on 8×8 board. Flying kings with longest sequence "
+"capture rule."
+msgstr ""
+"Похож на международные, но на доске размером 8× 8. Летающие дамки с правилом "
+"захвата самой длинной последовательности."
+
+#: data/ui/dialogs/help.blp:147 src/dialogs/VariantRulesDialog.vala:143
+msgid "Brazilian Draughts (8×8)"
+msgstr "Бразильские шашки (8×8)"
+
+#: data/ui/dialogs/help.blp:152
+msgid ""
+"Same rules as International Draughts but played on 8×8 board. Popular in "
+"South America."
+msgstr ""
+"Правила те же, что и в международных шашках, но играется на доске 8×8. "
+"Популярен в Южной Америке."
+
+#: data/ui/dialogs/help.blp:158 src/dialogs/VariantRulesDialog.vala:160
+msgid "Italian Draughts (8×8)"
+msgstr "Итальянские шашки (8×8)"
+
+#: data/ui/dialogs/help.blp:163
+msgid ""
+"Traditional Italian variant. Must capture maximum pieces. Men cannot capture "
+"kings."
+msgstr ""
+"Традиционный итальянский вариант. Необходимо захватить как можно больше "
+"фигур. Шашки не могут захватить дамок."
+
+#: data/ui/dialogs/help.blp:169 src/dialogs/VariantRulesDialog.vala:177
+msgid "Spanish Draughts (8×8)"
+msgstr "Испанские шашки (8×8)"
+
+#: data/ui/dialogs/help.blp:174
+msgid ""
+"Unique rule: men can capture backwards. Kings don't fly. Popular in Spain and "
+"Latin America."
+msgstr ""
+"Шашки могут делать захваты задом наперед. Дамки не летают. Популярен в "
+"Испании и Латинской Америке."
+
+#: data/ui/dialogs/help.blp:180
+msgid "Other Variants"
+msgstr "Другие варианты"
+
+#: data/ui/dialogs/help.blp:186
+msgid ""
+"• Czech Draughts (8×8) - Flying kings, longest sequence\n"
+"• Thai Draughts (8×8) - Kings don't fly, longest sequence\n"
+"• German Draughts (8×8) - Flying kings, similar to Russian\n"
+"• Swedish Draughts (10×10) - Scandinavian variant\n"
+"• Pool Checkers (8×8) - American variant with optional rules\n"
+"• Turkish Draughts (8×8) - Orthogonal movement variant\n"
+"• Armenian Draughts (8×8) - Middle Eastern variant\n"
+"• Gothic Draughts (8×8) - Medieval European rules\n"
+"• Frisian Draughts (10×10) - Dutch regional variant\n"
+"• Canadian Draughts (12×12) - Largest board variant"
+msgstr ""
+"• Чешские шашки (8×8) - летающие дамки, самая длинная последовательность\n"
+"• Тайские шашки (8×8) - дамки не летают, самая длинная последовательность\n"
+"• Немецкие шашки (8×8) - летающие дамки, похожие на русские\n"
+"• Шведские шашки (10×10) - скандинавский вариант\n"
+"• Бильярдные шашки (8×8) - американский вариант с необязательными правилами\n"
+"• Турецкие Шашки (8×8) - вариант с ортогональным движением\n"
+"• Армянские шашки (8×8) - ближневосточный вариант\n"
+"• Готические шашки (8×8) - средневековые европейские правила\n"
+"• Фризские шашки (10×10) - голландский региональный вариант\n"
+"• Канадские шашки (12×12) - вариант на самой крупной доске"
+
+#: data/ui/dialogs/help.blp:196
+msgid "Keyboard"
+msgstr "Клавиатура"
+
+#: data/ui/dialogs/help.blp:211 data/ui/dialogs/help.blp:266
+msgid "Keyboard Shortcuts"
+msgstr "Клавиатурные сочетания"
+
+#: data/ui/dialogs/help.blp:246
+msgid "Redo Move"
+msgstr "Повторить ход"
+
+#: data/ui/dialogs/help.blp:256 data/ui/dialogs/preferences.blp:5
+msgid "Preferences"
+msgstr "Предпочтения"
+
+#: data/ui/dialogs/help.blp:286
+msgid "Quit"
+msgstr "Выйти"
+
+#: data/ui/dialogs/help.blp:297
+msgid "Window Controls"
+msgstr "Управление окном"
+
+#: data/ui/dialogs/help.blp:306
+msgid "Close Window"
+msgstr "Закрыть окно"
+
+#: data/ui/dialogs/help.blp:321
+msgid "About"
+msgstr "О"
+
+#: data/ui/dialogs/help.blp:337
+msgid "About Draughts"
+msgstr "О Draughts"
+
+#: data/ui/dialogs/help.blp:342
+msgid "A comprehensive draughts/checkers game for GNOME"
+msgstr "Комплексная игра в шашки для GNOME"
+
+#: data/ui/dialogs/help.blp:347
+msgid "Features"
+msgstr "Особенности"
+
+#: data/ui/dialogs/help.blp:353
+msgid ""
+"• 16 international game variants\n"
+"• 10 AI difficulty levels\n"
+"• Multiple game modes\n"
+"• Complete sound effects\n"
+"• PDN game export\n"
+"• Beautiful themes\n"
+"• Accessibility support\n"
+"• Modern GTK4/LibAdwaita interface"
+msgstr ""
+"16 международных вариантов игры\n"
+"• 10 уровней сложности с искусственным интеллектом\n"
+"• Несколько режимов игры\n"
+"• Звуковые эффекты\n"
+"• Экспорт игры по PDN\n"
+"• Красивые темы оформления\n"
+"• Поддержка специальных возможностей\n"
+"• Современный интерфейс GTK4/LibAdwaita"
+
+#: data/ui/dialogs/help.blp:359
+msgid "Version 1.0.0"
+msgstr "Версия 1.0.0"
+
+#: data/ui/dialogs/help.blp:364
+msgid "Licensed under GPL-3.0+"
+msgstr "Лицензировано по GPL-3.0+"
+
+#: data/ui/dialogs/multiplayer.blp:5 data/ui/dialogs/multiplayer.blp:19
+msgid "Play Online"
+msgstr "Игра онлайн"
+
+#: data/ui/dialogs/multiplayer.blp:20
+msgid "Not connected"
+msgstr "Нет подключения"
+
+#: data/ui/dialogs/multiplayer.blp:25
+msgid "Multiplayer"
+msgstr "Многопользовательский"
+
+#: data/ui/dialogs/multiplayer.blp:26
+msgid "Play draughts with opponents online"
+msgstr "Играйте в шашки с противниками онлайн"
+
+#: data/ui/dialogs/multiplayer.blp:44 data/ui/dialogs/multiplayer.blp:86
+msgid "Host Game"
+msgstr "Хост игра"
+
+#: data/ui/dialogs/multiplayer.blp:45
+msgid "Create a new game room"
+msgstr "Создайте новую игровую комнату"
+
+#: data/ui/dialogs/multiplayer.blp:54 data/ui/dialogs/multiplayer.blp:207
+msgid "Join Game"
+msgstr "Присоединяйтесь к игре"
+
+#: data/ui/dialogs/multiplayer.blp:55
+msgid "Join an existing game room"
+msgstr "Присоединяйтесь к существующей игровой комнате"
+
+#: data/ui/dialogs/multiplayer.blp:63 data/ui/dialogs/multiplayer.blp:268
+#: data/ui/dialogs/multiplayer.blp:281
+msgid "Quick Match"
+msgstr "Быстрое совпадение"
+
+#: data/ui/dialogs/multiplayer.blp:64
+msgid "Find a random opponent (coming soon)"
+msgstr "Найти случайного противника (скоро будет)"
+
+#: data/ui/dialogs/multiplayer.blp:87 data/ui/dialogs/multiplayer.blp:208
+#: data/ui/dialogs/multiplayer.blp:269 data/ui/dialogs/multiplayer.blp:350
+#: src/dialogs/MultiplayerDialog.vala:470
+msgid "Connected"
+msgstr "Подключенный"
+
+#: data/ui/dialogs/multiplayer.blp:93 data/ui/dialogs/multiplayer.blp:214
+#: data/ui/dialogs/multiplayer.blp:275
+msgid "Back"
+msgstr "Назад"
+
+#: data/ui/dialogs/multiplayer.blp:100
+msgid "Configure your game settings and create a room"
+msgstr "Настроить игру и создать комнату"
+
+#: data/ui/dialogs/multiplayer.blp:119 data/ui/dialogs/multiplayer.blp:301
+#: data/ui/dialogs/new-game.blp:77 src/dialogs/MultiplayerDialog.vala:568
+#: src/dialogs/MultiplayerDialog.vala:583 src/dialogs/GameHistoryDialog.vala:92
+msgid "International Draughts"
+msgstr "Международные шашки"
+
+#: data/ui/dialogs/multiplayer.blp:120 data/ui/dialogs/multiplayer.blp:302
+#: data/ui/dialogs/new-game.blp:78 src/dialogs/MultiplayerDialog.vala:569
+#: src/dialogs/GameHistoryDialog.vala:93
+msgid "Russian Draughts"
+msgstr "Русские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:121 data/ui/dialogs/multiplayer.blp:303
+#: data/ui/dialogs/new-game.blp:79 src/dialogs/MultiplayerDialog.vala:570
+#: src/dialogs/GameHistoryDialog.vala:94
+msgid "Brazilian Draughts"
+msgstr "Бразильские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:122 data/ui/dialogs/multiplayer.blp:304
+#: data/ui/dialogs/new-game.blp:80 src/dialogs/MultiplayerDialog.vala:571
+#: src/dialogs/GameHistoryDialog.vala:95
+msgid "Italian Draughts"
+msgstr "Итальянские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:123 data/ui/dialogs/multiplayer.blp:305
+#: data/ui/dialogs/new-game.blp:81 src/dialogs/MultiplayerDialog.vala:572
+#: src/dialogs/GameHistoryDialog.vala:96
+msgid "Spanish Draughts"
+msgstr "Испанские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:124 data/ui/dialogs/multiplayer.blp:306
+#: data/ui/dialogs/new-game.blp:82 src/dialogs/MultiplayerDialog.vala:573
+#: src/dialogs/GameHistoryDialog.vala:97
+msgid "Czech Draughts"
+msgstr "Чешские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:125 data/ui/dialogs/multiplayer.blp:307
+#: data/ui/dialogs/new-game.blp:83 src/dialogs/MultiplayerDialog.vala:574
+#: src/dialogs/GameHistoryDialog.vala:98
+msgid "Thai Draughts"
+msgstr "Тайские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:126 data/ui/dialogs/multiplayer.blp:308
+#: data/ui/dialogs/new-game.blp:84 src/dialogs/MultiplayerDialog.vala:575
+#: src/dialogs/GameHistoryDialog.vala:99
+msgid "German Draughts"
+msgstr "Немецкие шашки"
+
+#: data/ui/dialogs/multiplayer.blp:127 data/ui/dialogs/multiplayer.blp:309
+#: data/ui/dialogs/new-game.blp:85 src/dialogs/MultiplayerDialog.vala:576
+#: src/dialogs/GameHistoryDialog.vala:100
+msgid "Swedish Draughts"
+msgstr "Шведские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:128 data/ui/dialogs/multiplayer.blp:310
+#: data/ui/dialogs/new-game.blp:86 src/dialogs/MultiplayerDialog.vala:577
+#: src/dialogs/GameHistoryDialog.vala:101
+msgid "Pool Checkers"
+msgstr "Бильярдные  шашки"
+
+#: data/ui/dialogs/multiplayer.blp:129 data/ui/dialogs/multiplayer.blp:311
+#: data/ui/dialogs/new-game.blp:87 src/dialogs/MultiplayerDialog.vala:578
+#: src/dialogs/GameHistoryDialog.vala:102
+msgid "Turkish Draughts"
+msgstr "Турецкие шашки"
+
+#: data/ui/dialogs/multiplayer.blp:130 data/ui/dialogs/multiplayer.blp:312
+#: data/ui/dialogs/new-game.blp:88 src/dialogs/MultiplayerDialog.vala:579
+#: src/dialogs/GameHistoryDialog.vala:103
+msgid "Armenian Draughts"
+msgstr "Армянские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:131 data/ui/dialogs/multiplayer.blp:313
+#: data/ui/dialogs/new-game.blp:89 src/dialogs/MultiplayerDialog.vala:580
+#: src/dialogs/GameHistoryDialog.vala:104
+msgid "Gothic Draughts"
+msgstr "Готические шашки"
+
+#: data/ui/dialogs/multiplayer.blp:132 data/ui/dialogs/multiplayer.blp:314
+#: data/ui/dialogs/new-game.blp:90 src/dialogs/MultiplayerDialog.vala:581
+#: src/dialogs/GameHistoryDialog.vala:105
+msgid "Frisian Draughts"
+msgstr "Фризские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:133 data/ui/dialogs/multiplayer.blp:315
+#: data/ui/dialogs/new-game.blp:91 src/dialogs/GameHistoryDialog.vala:106
+msgid "Canadian Draughts"
+msgstr "Канадские шашки"
+
+#: data/ui/dialogs/multiplayer.blp:139
+msgid "Use Timer"
+msgstr "Использовать таймер"
+
+#: data/ui/dialogs/multiplayer.blp:140
+msgid "Add time limits to the game"
+msgstr "Добавьте в игру ограничения по времени"
+
+#: data/ui/dialogs/multiplayer.blp:144
+msgid "Minutes per Side"
+msgstr "Минуты на сторону"
+
+#: data/ui/dialogs/multiplayer.blp:155 data/ui/dialogs/new-game.blp:146
+msgid "Increment (seconds)"
+msgstr "Приращение (секунды)"
+
+#: data/ui/dialogs/multiplayer.blp:156
+msgid "Time added after each move"
+msgstr "Время добавляется после каждого хода"
+
+#: data/ui/dialogs/multiplayer.blp:167 data/ui/dialogs/new-game.blp:157
+msgid "Clock Type"
+msgstr "Тип часов"
+
+#: data/ui/dialogs/multiplayer.blp:168
+msgid "Timer mode for the game"
+msgstr "Режим таймера для игры"
+
+#: data/ui/dialogs/multiplayer.blp:172
+msgid "Fischer (add time after move)"
+msgstr "Фишер (добавляет время после хода)"
+
+#: data/ui/dialogs/multiplayer.blp:173
+msgid "Bronstein (delay before countdown)"
+msgstr "Бронштейн (задержка перед обратным отсчетом)"
+
+#: data/ui/dialogs/multiplayer.blp:187
+msgid "Create Room"
+msgstr "Создать комнату"
+
+#: data/ui/dialogs/multiplayer.blp:220
+msgid "Enter Room Code"
+msgstr "Введите код комнаты"
+
+#: data/ui/dialogs/multiplayer.blp:221
+msgid "Ask your friend for their 6-character room code"
+msgstr "Попросите у своего друга его 6-значный код комнаты"
+
+#: data/ui/dialogs/multiplayer.blp:230
+msgid "ABCD12"
+msgstr "ABCD12"
+
+#: data/ui/dialogs/multiplayer.blp:248
+msgid "Join"
+msgstr "Присоединиться"
+
+#: data/ui/dialogs/multiplayer.blp:282
+msgid "You'll be matched with players of the same variant"
+msgstr "Вам будут подобраны игроки того же варианта"
+
+#: data/ui/dialogs/multiplayer.blp:329
+msgid "Find Opponent"
+msgstr "Найти противника"
+
+#: data/ui/dialogs/multiplayer.blp:349
+msgid "Waiting"
+msgstr "Ожидание"
+
+#: data/ui/dialogs/multiplayer.blp:370 src/dialogs/MultiplayerDialog.vala:386
+msgid "Waiting for opponent..."
+msgstr "В ожидании противника..."
+
+#: data/ui/dialogs/multiplayer.blp:384
+msgid "Share this code:"
+msgstr "Поделитесь этим кодом:"
+
+#: data/ui/dialogs/multiplayer.blp:408
+msgid "Copy room code"
+msgstr "Скопировать код комнаты"
+
+#: data/ui/dialogs/multiplayer.blp:426
+msgid "Game variant:"
+msgstr "Вариант игры:"
+
+#: data/ui/dialogs/multiplayer.blp:443 data/ui/dialogs/new-game.blp:36
+#: data/ui/dialogs/variant-selector.blp:20
+#: src/dialogs/GameHistoryDialog.vala:380 src/dialogs/GameHistoryDialog.vala:482
+#: src/utils/ErrorHandler.vala:159
+msgid "Cancel"
+msgstr "Отмена"
+
+#: data/ui/dialogs/new-game.blp:41
+msgid "Start"
+msgstr "Старт"
+
+#: data/ui/dialogs/new-game.blp:69
+msgid "Game Configuration"
+msgstr "Конфигурация игры"
+
+#: data/ui/dialogs/new-game.blp:73
+msgid "Choose which draughts rules to play with"
+msgstr "Выберите, по каким правилам играть в шашки"
+
+#: data/ui/dialogs/new-game.blp:97
+msgid "Opposing Player"
+msgstr "Противник"
+
+#: data/ui/dialogs/new-game.blp:99
+msgid "Human"
+msgstr "Человек"
+
+#: data/ui/dialogs/new-game.blp:104
+msgid "Play as"
+msgstr "Играть как"
+
+#: data/ui/dialogs/new-game.blp:107
+msgid "Red"
+msgstr "Красный"
+
+#: data/ui/dialogs/new-game.blp:107
+msgid "Black"
+msgstr "Чёрный"
+
+#: data/ui/dialogs/new-game.blp:112
+msgid "Difficulty"
+msgstr "Сложность"
+
+#: data/ui/dialogs/new-game.blp:115
+msgid "Beginner"
+msgstr "Начинающий"
+
+#: data/ui/dialogs/new-game.blp:115
+msgid "Intermediate"
+msgstr "Средний"
+
+#: data/ui/dialogs/new-game.blp:115
+msgid "Advanced"
+msgstr "Продвинутый"
+
+#: data/ui/dialogs/new-game.blp:115
+msgid "Expert"
+msgstr "Эксперт"
+
+#: data/ui/dialogs/new-game.blp:115
+msgid "Grandmaster"
+msgstr "Гросмейстер"
+
+#: data/ui/dialogs/new-game.blp:122
+msgid "Time Limit"
+msgstr "Ограничение по времени"
+
+#: data/ui/dialogs/new-game.blp:125
+msgid "Use Time Limit"
+msgstr "Использовать ограничение по времени"
+
+#: data/ui/dialogs/new-game.blp:135
+msgid "Minutes Per Side"
+msgstr "Минут на сторону"
+
+#: data/ui/dialogs/new-game.blp:160
+msgid "Fischer"
+msgstr "Фишер"
+
+#: data/ui/dialogs/new-game.blp:160
+msgid "Bronstein"
+msgstr "Бронштейн"
+
+#: data/ui/dialogs/new-game.blp:167
+msgid "Audio"
+msgstr "Звук"
+
+#: data/ui/dialogs/new-game.blp:171
+msgid "Play audio feedback during gameplay"
+msgstr "Воспроизведение звуковой обратной связи во время игры"
+
+#: data/ui/dialogs/preferences.blp:12
+msgid "Application Theme"
+msgstr "Тема приложения"
+
+#: data/ui/dialogs/preferences.blp:13
+msgid "Choose the color scheme for the application"
+msgstr "Выберите цветовую схему для приложения"
+
+#: data/ui/dialogs/preferences.blp:16
+msgid "Theme"
+msgstr "Тема"
+
+#: data/ui/dialogs/preferences.blp:17
+msgid "Light, dark, or follow system preference"
+msgstr "Светлая, тёмная или системная"
+
+#: data/ui/dialogs/preferences.blp:24
+msgid "Customize the appearance of the game board"
+msgstr "Настроить внешний вид игровой доски"
+
+#: data/ui/dialogs/preferences.blp:27
+msgid "Board Colors"
+msgstr "Цвета доски"
+
+#: data/ui/dialogs/preferences.blp:28
+msgid "Choose the color scheme for the board"
+msgstr "Выберите цветовую схему доски"
+
+#: data/ui/dialogs/preferences.blp:35
+msgid "Customize the appearance of game pieces"
+msgstr "Настроить внешний вид шашек"
+
+#: data/ui/dialogs/preferences.blp:38
+msgid "Piece Design"
+msgstr "Дизайн шашек"
+
+#: data/ui/dialogs/preferences.blp:39
+msgid "Choose the visual style for pieces"
+msgstr "Выберите визуальный стиль шашек"
+
+#: data/ui/dialogs/preferences.blp:57
+msgid "Configure game history tracking and features"
+msgstr "Настроить отслеживание истории игры и функции"
+
+#: data/ui/dialogs/preferences.blp:60
+msgid "Enable Game History"
+msgstr "Включить историю игр"
+
+#: data/ui/dialogs/preferences.blp:61
+msgid "Record game histories and enable history menu"
+msgstr "Записывать историю игр и включить меню истории"
+
+#: data/ui/dialogs/preferences.blp:66
+msgid "Updates"
+msgstr "Обновления"
+
+#: data/ui/dialogs/preferences.blp:67
+msgid "Configure how the application handles updates"
+msgstr "Настройте, как приложение обрабатывает обновления"
+
+#: data/ui/dialogs/preferences.blp:70
+msgid "Show Release Notes"
+msgstr "Показывать примечания к выпуску"
+
+#: data/ui/dialogs/preferences.blp:71
+msgid "Display what's new when the application is updated"
+msgstr "Отображать информацию о новых доступных обновлениях"
+
+#: data/ui/dialogs/preferences.blp:79
+msgid "Classic Brown/Beige"
+msgstr "Классический коричневый/бежевый"
+
+#: data/ui/dialogs/preferences.blp:80
+msgid "Wood Light/Dark"
+msgstr "Дерево светлое/тёмное"
+
+#: data/ui/dialogs/preferences.blp:81
+msgid "Green/White"
+msgstr "Зелёный/Белый"
+
+#: data/ui/dialogs/preferences.blp:82
+msgid "Blue/Gray"
+msgstr "Синий/Серый"
+
+#: data/ui/dialogs/preferences.blp:89
+msgid "Plastic"
+msgstr "Пластик"
+
+#: data/ui/dialogs/preferences.blp:90
+msgid "Wood"
+msgstr "Дерево"
+
+#: data/ui/dialogs/preferences.blp:91
+msgid "Metal"
+msgstr "Метал"
+
+#: data/ui/dialogs/preferences.blp:92
+msgid "Bottle Cap"
+msgstr "Крышка бутылки"
+
+#: data/ui/dialogs/preferences.blp:98
+msgid "Follow System"
+msgstr "В соответствии с системой"
+
+#: data/ui/dialogs/preferences.blp:99
+msgid "Light"
+msgstr "Свтлая"
+
+#: data/ui/dialogs/preferences.blp:100
+msgid "Dark"
+msgstr "Тёмная"
+
+#: data/ui/dialogs/variant-rules.blp:5
+msgid "Game Rules Changed"
+msgstr "Правила игры изменились"
+
+#: data/ui/dialogs/variant-rules.blp:6
+msgid ""
+"You have selected a new draughts variant. Here are the key rules for this "
+"variant:"
+msgstr ""
+"Вы выбрали новую разновидность шашек. Вот основные правила этой разновидности:"
+
+#: data/ui/dialogs/variant-rules.blp:22
+msgid "Variant Information"
+msgstr "Информация о варианте"
+
+#: data/ui/dialogs/variant-rules.blp:25
+msgid "Variant Name"
+msgstr "Название варианта"
+
+#: data/ui/dialogs/variant-rules.blp:29
+msgid "Board Size"
+msgstr "Размер доски"
+
+#: data/ui/dialogs/variant-rules.blp:33
+msgid "Starting Pieces per Player"
+msgstr "Начальные шашки для каждого игрока"
+
+#: data/ui/dialogs/variant-rules.blp:38
+msgid "Movement Rules"
+msgstr "Правила ходов"
+
+#: data/ui/dialogs/variant-rules.blp:41
+msgid "Men Movement"
+msgstr "Ходы пешек"
+
+#: data/ui/dialogs/variant-rules.blp:45
+msgid "Kings Movement"
+msgstr "Ходы дамок"
+
+#: data/ui/dialogs/variant-rules.blp:49
+msgid "Kings Can Fly"
+msgstr "Дамки могут летать"
+
+#: data/ui/dialogs/variant-rules.blp:54
+msgid "Capture Rules"
+msgstr "Правила захвата"
+
+#: data/ui/dialogs/variant-rules.blp:57
+msgid "Men Capture"
+msgstr "Захват пешек"
+
+#: data/ui/dialogs/variant-rules.blp:61
+msgid "Kings Capture"
+msgstr "Захват дамок"
+
+#: data/ui/dialogs/variant-rules.blp:65
+msgid "Mandatory Capture"
+msgstr "Обязательный захват"
+
+#: data/ui/dialogs/variant-rules.blp:69
+msgid "Capture Priority"
+msgstr "Приоритет захвата"
+
+#: data/ui/dialogs/variant-rules.blp:73
+msgid "Multiple Captures"
+msgstr "Множественные захваты"
+
+#: data/ui/dialogs/variant-rules.blp:78
+msgid "Promotion Rules"
+msgstr "Правила ходов"
+
+#: data/ui/dialogs/variant-rules.blp:81
+msgid "Promotion Condition"
+msgstr "Условия ходов"
+
+#: data/ui/dialogs/variant-rules.blp:85
+msgid "Promotion Timing"
+msgstr "Время хода"
+
+#: data/ui/dialogs/variant-rules.blp:92
+msgid "Continue with New Rules"
+msgstr "Продолжить с новыми правилами"
+
+#: data/ui/dialogs/variant-rules.blp:93
+msgid "Keep Current Variant"
+msgstr "Сохранить текущий вариант"
+
+#: data/ui/dialogs/variant-selector.blp:15
+msgid "Select Game Variant"
+msgstr "Выбор варианта игры"
+
+#: data/ui/dialogs/variant-selector.blp:25
+msgid "Select"
+msgstr "Выбор"
+
+#: data/ui/dialogs/variant-selector.blp:48
+msgid "Choose a draughts variant:"
+msgstr "Выберите вариант шашек:"
+
+#: data/ui/dialogs/variant-selector.blp:76
+msgid "Variant Details"
+msgstr "Подробности варианта"
+
+#: data/ui/dialogs/variant-selector.blp:96
+msgid "Select a variant"
+msgstr "Выберите вариант"
+
+#: data/ui/widgets/move-history.blp:19
+msgid "0 moves"
+msgstr "0 ходов"
+
+#: data/ui/widgets/move-history.blp:46
+msgid "Go to first move"
+msgstr "Переход к первому ходу"
+
+#: data/ui/widgets/move-history.blp:51
+msgid "Previous move"
+msgstr "Предыдущий ход"
+
+#: data/ui/widgets/move-history.blp:56
+msgid "Next move"
+msgstr "Следующий ход"
+
+#: data/ui/widgets/move-history.blp:61
+msgid "Go to last move"
+msgstr "Переход к последнему ходу"
+
+#: data/ui/widgets/move-history.blp:72
+msgid "Export game in PGN format"
+msgstr "Экспортировать игру в формат PGN"
+
+#: data/ui/widgets/move-history.blp:76
+msgid "Clear"
+msgstr "Очистка"
+
+#: data/ui/widgets/move-history.blp:77
+msgid "Clear move history"
+msgstr "Очистить историю ходов"
+
+#: data/ui/widgets/timer-display.blp:67
+msgid "Game duration: 0:00"
+msgstr "Продолжительность игры: 0:00"
+
+#: data/ui/widgets/timer-display.blp:73
+msgid "Timer settings"
+msgstr "Настройки таймера"
+
+#. Update button icon and tooltip
+#: src/Window.vala:706
+msgid "Resume Game"
+msgstr "Возобновить игру"
+
+#. Show error dialog
+#: src/Window.vala:1225
+msgid "Multiplayer Connection Lost"
+msgstr "Потеряно многопользовательское соединение"
+
+#: src/Window.vala:1226 src/Window.vala:1789
+#: src/dialogs/MultiplayerDialog.vala:501 src/dialogs/MultiplayerDialog.vala:511
+#: src/utils/ErrorHandler.vala:113 src/utils/ErrorHandler.vala:126
+msgid "OK"
+msgstr "OK"
+
+#. Could show a banner or toast here
+#: src/Window.vala:1241
+msgid "Opponent disconnected. Waiting for reconnection..."
+msgstr "Противник отключился. Ожидание повторного подключения..."
+
+#: src/Window.vala:1251
+msgid "Opponent reconnected!"
+msgstr "Противник снова подключился!"
+
+#. Show a dialog informing the user that PDN import is coming
+#: src/Window.vala:1786
+msgid "PDN Import"
+msgstr "Импорт в PDN"
+
+#: src/Window.vala:1787
+#, c-format
+msgid ""
+"PDN file import functionality will be available in a future version.\n"
+"\n"
+"File: %s"
+msgstr ""
+"Функция импорта файлов PDN будет доступна в будущей версии.\n"
+"\n"
+"Файл: %s"
+
+#: src/Window.vala:1798
+#, c-format
+msgid "Failed to open file: %s"
+msgstr "Не удалось открыть файл: %s"
+
+#. Get variant from selection
+#. Show waiting view
+#: src/dialogs/MultiplayerDialog.vala:253
+msgid "Searching for opponent..."
+msgstr "В поисках противника..."
+
+#. Show waiting view
+#: src/dialogs/MultiplayerDialog.vala:298
+msgid "Creating room..."
+msgstr "Создание комнаты..."
+
+#. Show waiting view
+#: src/dialogs/MultiplayerDialog.vala:329
+msgid "Joining room..."
+msgstr "Присоединение к комнате..."
+
+#: src/dialogs/MultiplayerDialog.vala:473
+msgid "Connecting..."
+msgstr "Соединение ..."
+
+#: src/dialogs/MultiplayerDialog.vala:476
+msgid "Reconnecting..."
+msgstr "Повторное подключение..."
+
+#: src/dialogs/MultiplayerDialog.vala:479
+msgid "Disconnected"
+msgstr "Отключен"
+
+#: src/dialogs/MultiplayerDialog.vala:482
+msgid "Connection error"
+msgstr "Ошибка подключения"
+
+#: src/dialogs/MultiplayerDialog.vala:500 src/utils/ErrorHandler.vala:112
+msgid "Error"
+msgstr "Ошибка"
+
+#: src/dialogs/MultiplayerDialog.vala:510
+msgid "Information"
+msgstr "Информация"
+
+#: src/dialogs/MultiplayerDialog.vala:582
+msgid "Canadian Checkers"
+msgstr "Канадские шашки"
+
+#: src/dialogs/VariantRulesDialog.vala:93
+#: src/dialogs/VariantRulesDialog.vala:127
+#: src/dialogs/VariantRulesDialog.vala:144
+#: src/dialogs/VariantRulesDialog.vala:161
+#: src/dialogs/VariantRulesDialog.vala:178
+#: src/dialogs/VariantRulesDialog.vala:195
+#: src/dialogs/VariantRulesDialog.vala:212
+#: src/dialogs/VariantRulesDialog.vala:229
+#: src/dialogs/VariantRulesDialog.vala:263
+#: src/dialogs/VariantRulesDialog.vala:280
+#: src/dialogs/VariantRulesDialog.vala:297
+#: src/dialogs/VariantRulesDialog.vala:314
+msgid "8×8 board with 64 squares"
+msgstr "Доска размером 8 × 8 на 64 квадрата"
+
+#: src/dialogs/VariantRulesDialog.vala:94
+#: src/dialogs/VariantRulesDialog.vala:128
+#: src/dialogs/VariantRulesDialog.vala:145
+#: src/dialogs/VariantRulesDialog.vala:162
+#: src/dialogs/VariantRulesDialog.vala:179
+#: src/dialogs/VariantRulesDialog.vala:196
+#: src/dialogs/VariantRulesDialog.vala:213
+#: src/dialogs/VariantRulesDialog.vala:230
+#: src/dialogs/VariantRulesDialog.vala:264
+#: src/dialogs/VariantRulesDialog.vala:281
+#: src/dialogs/VariantRulesDialog.vala:298
+#: src/dialogs/VariantRulesDialog.vala:315
+msgid "12 pieces per player"
+msgstr "По 12 фигур на каждого игрока"
+
+#: src/dialogs/VariantRulesDialog.vala:95
+#: src/dialogs/VariantRulesDialog.vala:112
+#: src/dialogs/VariantRulesDialog.vala:129
+#: src/dialogs/VariantRulesDialog.vala:146
+#: src/dialogs/VariantRulesDialog.vala:163
+#: src/dialogs/VariantRulesDialog.vala:180
+#: src/dialogs/VariantRulesDialog.vala:197
+#: src/dialogs/VariantRulesDialog.vala:214
+#: src/dialogs/VariantRulesDialog.vala:231
+#: src/dialogs/VariantRulesDialog.vala:248
+#: src/dialogs/VariantRulesDialog.vala:265
+#: src/dialogs/VariantRulesDialog.vala:282
+#: src/dialogs/VariantRulesDialog.vala:299
+#: src/dialogs/VariantRulesDialog.vala:316
+#: src/dialogs/VariantRulesDialog.vala:333
+#: src/dialogs/VariantRulesDialog.vala:350
+msgid "Diagonally forward only, one square"
+msgstr "Только вперед по диагонали, на один квадрат"
+
+#: src/dialogs/VariantRulesDialog.vala:96
+#: src/dialogs/VariantRulesDialog.vala:164
+#: src/dialogs/VariantRulesDialog.vala:181
+#: src/dialogs/VariantRulesDialog.vala:215
+#: src/dialogs/VariantRulesDialog.vala:266
+#: src/dialogs/VariantRulesDialog.vala:283
+#: src/dialogs/VariantRulesDialog.vala:317
+msgid "Diagonally forward and backward, one square"
+msgstr "По диагонали вперед и назад, на один квадрат"
+
+#: src/dialogs/VariantRulesDialog.vala:97
+#: src/dialogs/VariantRulesDialog.vala:165
+#: src/dialogs/VariantRulesDialog.vala:182
+#: src/dialogs/VariantRulesDialog.vala:216
+#: src/dialogs/VariantRulesDialog.vala:267
+#: src/dialogs/VariantRulesDialog.vala:284
+#: src/dialogs/VariantRulesDialog.vala:318
+msgid "No - kings move one square at a time"
+msgstr "Без дамок ход на одну клетку за раз"
+
+#: src/dialogs/VariantRulesDialog.vala:98
+#: src/dialogs/VariantRulesDialog.vala:115
+#: src/dialogs/VariantRulesDialog.vala:200
+#: src/dialogs/VariantRulesDialog.vala:217
+#: src/dialogs/VariantRulesDialog.vala:234
+#: src/dialogs/VariantRulesDialog.vala:251
+#: src/dialogs/VariantRulesDialog.vala:268
+#: src/dialogs/VariantRulesDialog.vala:285
+#: src/dialogs/VariantRulesDialog.vala:302
+#: src/dialogs/VariantRulesDialog.vala:319
+msgid "Diagonally forward only, must jump over enemy piece"
+msgstr ""
+"Ход только вперед по диагонали, необходимо перепрыгнуть через вражескую шашку"
+
+#: src/dialogs/VariantRulesDialog.vala:99
+#: src/dialogs/VariantRulesDialog.vala:167
+#: src/dialogs/VariantRulesDialog.vala:184
+#: src/dialogs/VariantRulesDialog.vala:218
+#: src/dialogs/VariantRulesDialog.vala:269
+#: src/dialogs/VariantRulesDialog.vala:286
+#: src/dialogs/VariantRulesDialog.vala:320
+msgid "Diagonally in any direction, must jump over enemy piece"
+msgstr ""
+"Ход по диагонали в любом направлении, необходимо перепрыгнуть через вражескую "
+"шашку"
+
+#: src/dialogs/VariantRulesDialog.vala:100
+#: src/dialogs/VariantRulesDialog.vala:117
+#: src/dialogs/VariantRulesDialog.vala:134
+#: src/dialogs/VariantRulesDialog.vala:151
+#: src/dialogs/VariantRulesDialog.vala:168
+#: src/dialogs/VariantRulesDialog.vala:185
+#: src/dialogs/VariantRulesDialog.vala:202
+#: src/dialogs/VariantRulesDialog.vala:219
+#: src/dialogs/VariantRulesDialog.vala:236
+#: src/dialogs/VariantRulesDialog.vala:253
+#: src/dialogs/VariantRulesDialog.vala:270
+#: src/dialogs/VariantRulesDialog.vala:287
+#: src/dialogs/VariantRulesDialog.vala:304
+#: src/dialogs/VariantRulesDialog.vala:321
+#: src/dialogs/VariantRulesDialog.vala:338
+#: src/dialogs/VariantRulesDialog.vala:355
+msgid "Yes - must capture if possible"
+msgstr "Да - необходимо захватить, если это возможно"
+
+#: src/dialogs/VariantRulesDialog.vala:101
+#: src/dialogs/VariantRulesDialog.vala:118
+#: src/dialogs/VariantRulesDialog.vala:135
+#: src/dialogs/VariantRulesDialog.vala:152
+#: src/dialogs/VariantRulesDialog.vala:203
+#: src/dialogs/VariantRulesDialog.vala:220
+#: src/dialogs/VariantRulesDialog.vala:237
+#: src/dialogs/VariantRulesDialog.vala:254
+#: src/dialogs/VariantRulesDialog.vala:288
+#: src/dialogs/VariantRulesDialog.vala:305
+#: src/dialogs/VariantRulesDialog.vala:339
+#: src/dialogs/VariantRulesDialog.vala:356
+msgid "Maximum number of pieces must be captured"
+msgstr "Необходимо захватить максимальное количество шашек"
+
+#: src/dialogs/VariantRulesDialog.vala:102
+#: src/dialogs/VariantRulesDialog.vala:119
+#: src/dialogs/VariantRulesDialog.vala:136
+#: src/dialogs/VariantRulesDialog.vala:153
+#: src/dialogs/VariantRulesDialog.vala:170
+#: src/dialogs/VariantRulesDialog.vala:187
+#: src/dialogs/VariantRulesDialog.vala:204
+#: src/dialogs/VariantRulesDialog.vala:221
+#: src/dialogs/VariantRulesDialog.vala:238
+#: src/dialogs/VariantRulesDialog.vala:255
+#: src/dialogs/VariantRulesDialog.vala:272
+#: src/dialogs/VariantRulesDialog.vala:289
+#: src/dialogs/VariantRulesDialog.vala:306
+#: src/dialogs/VariantRulesDialog.vala:323
+#: src/dialogs/VariantRulesDialog.vala:340
+#: src/dialogs/VariantRulesDialog.vala:357
+msgid "Yes - continue jumping with same piece if possible"
+msgstr "Да - продолжайте прыгать с той же шашкой, если это возможно"
+
+#: src/dialogs/VariantRulesDialog.vala:103
+#: src/dialogs/VariantRulesDialog.vala:120
+#: src/dialogs/VariantRulesDialog.vala:137
+#: src/dialogs/VariantRulesDialog.vala:154
+#: src/dialogs/VariantRulesDialog.vala:171
+#: src/dialogs/VariantRulesDialog.vala:188
+#: src/dialogs/VariantRulesDialog.vala:205
+#: src/dialogs/VariantRulesDialog.vala:222
+#: src/dialogs/VariantRulesDialog.vala:239
+#: src/dialogs/VariantRulesDialog.vala:256
+#: src/dialogs/VariantRulesDialog.vala:273
+#: src/dialogs/VariantRulesDialog.vala:290
+#: src/dialogs/VariantRulesDialog.vala:307
+#: src/dialogs/VariantRulesDialog.vala:324
+#: src/dialogs/VariantRulesDialog.vala:341
+#: src/dialogs/VariantRulesDialog.vala:358
+msgid "Reach opposite end of board"
+msgstr "Доберитесь до противоположного конца доски"
+
+#: src/dialogs/VariantRulesDialog.vala:104
+#: src/dialogs/VariantRulesDialog.vala:121
+#: src/dialogs/VariantRulesDialog.vala:138
+#: src/dialogs/VariantRulesDialog.vala:155
+#: src/dialogs/VariantRulesDialog.vala:172
+#: src/dialogs/VariantRulesDialog.vala:189
+#: src/dialogs/VariantRulesDialog.vala:206
+#: src/dialogs/VariantRulesDialog.vala:223
+#: src/dialogs/VariantRulesDialog.vala:240
+#: src/dialogs/VariantRulesDialog.vala:257
+#: src/dialogs/VariantRulesDialog.vala:274
+#: src/dialogs/VariantRulesDialog.vala:291
+#: src/dialogs/VariantRulesDialog.vala:308
+#: src/dialogs/VariantRulesDialog.vala:325
+#: src/dialogs/VariantRulesDialog.vala:342
+#: src/dialogs/VariantRulesDialog.vala:359
+msgid "Immediately when reaching promotion square"
+msgstr "Сразу же по прибытии на конечный квадрат"
+
+#: src/dialogs/VariantRulesDialog.vala:110
+#: src/dialogs/VariantRulesDialog.vala:246
+#: src/dialogs/VariantRulesDialog.vala:331
+msgid "10×10 board with 100 squares"
+msgstr "Доска размером 10×10 на 100 квадратов"
+
+#: src/dialogs/VariantRulesDialog.vala:111
+#: src/dialogs/VariantRulesDialog.vala:247
+#: src/dialogs/VariantRulesDialog.vala:332
+msgid "20 pieces per player"
+msgstr "По 20 шашек на каждого игрока"
+
+#: src/dialogs/VariantRulesDialog.vala:113
+#: src/dialogs/VariantRulesDialog.vala:130
+#: src/dialogs/VariantRulesDialog.vala:147
+#: src/dialogs/VariantRulesDialog.vala:198
+#: src/dialogs/VariantRulesDialog.vala:232
+#: src/dialogs/VariantRulesDialog.vala:249
+#: src/dialogs/VariantRulesDialog.vala:300
+#: src/dialogs/VariantRulesDialog.vala:334
+#: src/dialogs/VariantRulesDialog.vala:351
+msgid "Diagonally in any direction, any distance"
+msgstr "По диагонали в любом направлении, на любом расстоянии"
+
+#: src/dialogs/VariantRulesDialog.vala:114
+#: src/dialogs/VariantRulesDialog.vala:131
+#: src/dialogs/VariantRulesDialog.vala:148
+#: src/dialogs/VariantRulesDialog.vala:199
+#: src/dialogs/VariantRulesDialog.vala:233
+#: src/dialogs/VariantRulesDialog.vala:250
+#: src/dialogs/VariantRulesDialog.vala:301
+#: src/dialogs/VariantRulesDialog.vala:335
+#: src/dialogs/VariantRulesDialog.vala:352
+msgid "Yes - kings can move multiple squares"
+msgstr "Да - дамки могут ходить на несколько клеток"
+
+#: src/dialogs/VariantRulesDialog.vala:116
+#: src/dialogs/VariantRulesDialog.vala:133
+#: src/dialogs/VariantRulesDialog.vala:150
+#: src/dialogs/VariantRulesDialog.vala:201
+#: src/dialogs/VariantRulesDialog.vala:235
+#: src/dialogs/VariantRulesDialog.vala:252
+#: src/dialogs/VariantRulesDialog.vala:303
+#: src/dialogs/VariantRulesDialog.vala:337
+#: src/dialogs/VariantRulesDialog.vala:354
+msgid "Diagonally in any direction, can land anywhere after jumped piece"
+msgstr ""
+"По диагонали в любом направлении, может остановиться в любом месте после "
+"прыжка"
+
+#: src/dialogs/VariantRulesDialog.vala:132
+#: src/dialogs/VariantRulesDialog.vala:149
+#: src/dialogs/VariantRulesDialog.vala:336
+#: src/dialogs/VariantRulesDialog.vala:353
+msgid "Diagonally forward and backward, must jump over enemy piece"
+msgstr ""
+"Двигаясь по диагонали вперед и назад, необходимо перепрыгивать через "
+"вражескую фигуру"
+
+#: src/dialogs/VariantRulesDialog.vala:166
+msgid "Diagonally forward only, cannot capture kings"
+msgstr "Только вперед по диагонали, нельзя захватывать дамок"
+
+#: src/dialogs/VariantRulesDialog.vala:169
+msgid "Kings have priority over men in captures"
+msgstr "Дамки имеют преимущество перед пешками в захвате"
+
+#: src/dialogs/VariantRulesDialog.vala:183
+msgid "Diagonally forward AND backward - unique to Spanish variant"
+msgstr "По диагонали вперед и назад - только для испанского варианта"
+
+#: src/dialogs/VariantRulesDialog.vala:186
+#: src/dialogs/VariantRulesDialog.vala:271
+#: src/dialogs/VariantRulesDialog.vala:322
+msgid "Player chooses any legal capture"
+msgstr "Игрок выбирает любой доступный захват"
+
+#: src/dialogs/VariantRulesDialog.vala:194
+msgid "Czech Draughts (8×8)"
+msgstr "Чешские шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:211
+msgid "Thai Draughts (8×8)"
+msgstr "Тайские шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:228
+msgid "German Draughts (8×8)"
+msgstr "Немецкие шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:245
+msgid "Swedish Draughts (10×10)"
+msgstr "Шведские шашки (10×10)"
+
+#: src/dialogs/VariantRulesDialog.vala:262
+msgid "Pool Checkers (8×8)"
+msgstr "Бильярдные шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:279
+msgid "Turkish Draughts (8×8)"
+msgstr "Турецкие Шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:296
+msgid "Armenian Draughts (8×8)"
+msgstr "Армянские шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:313
+msgid "Gothic Draughts (8×8)"
+msgstr "Готические шашки (8×8)"
+
+#: src/dialogs/VariantRulesDialog.vala:330
+msgid "Frisian Draughts (10×10)"
+msgstr "Фризские шашки (10×10)"
+
+#: src/dialogs/VariantRulesDialog.vala:347
+msgid "Canadian Draughts (12×12)"
+msgstr "Канадские шашки (12×12)"
+
+#: src/dialogs/VariantRulesDialog.vala:348
+msgid "12×12 board with 144 squares"
+msgstr "Доска размером 12×12 дюймов со 144 квадратами"
+
+#: src/dialogs/VariantRulesDialog.vala:349
+msgid "30 pieces per player"
+msgstr "30 шашек на игрока"
+
+#. Variant filter
+#: src/dialogs/GameHistoryDialog.vala:90
+msgid "All Variants"
+msgstr "Все варианты"
+
+#. Result filter
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "All Results"
+msgstr "Все результаты"
+
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "Red Wins"
+msgstr "Красный победил"
+
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "Black Wins"
+msgstr "Чёрный победил"
+
+#: src/dialogs/GameHistoryDialog.vala:113
+msgid "Draws"
+msgstr "Ничья"
+
+#. Player type filter
+#: src/dialogs/GameHistoryDialog.vala:119
+msgid "All Games"
+msgstr "Все игры"
+
+#: src/dialogs/GameHistoryDialog.vala:119
+msgid "Human vs Human"
+msgstr "Человек против человека"
+
+#: src/dialogs/GameHistoryDialog.vala:119
+msgid "vs Computer"
+msgstr "против компьютера"
+
+#: src/dialogs/GameHistoryDialog.vala:377
+msgid "Clear Game History"
+msgstr "Очистить историю игр"
+
+#: src/dialogs/GameHistoryDialog.vala:378
+msgid ""
+"Are you sure you want to delete all game history? This action cannot be "
+"undone."
+msgstr ""
+"Уверены, что хотите удалить всю историю игр? Это действие не может быть "
+"отменено."
+
+#: src/dialogs/GameHistoryDialog.vala:401
+msgid "Export Game History"
+msgstr "Экспорт истории игры"
+
+#: src/dialogs/GameHistoryDialog.vala:411
+msgid "Game history exported successfully"
+msgstr "История игры успешно экспортирована"
+
+#: src/dialogs/GameHistoryDialog.vala:415
+msgid "Failed to export game history"
+msgstr "Не удалось экспортировать историю игр"
+
+#: src/dialogs/GameHistoryDialog.vala:458
+msgid "Export Game"
+msgstr "Экспортировать игру"
+
+#: src/dialogs/GameHistoryDialog.vala:466
+msgid "Game exported successfully"
+msgstr "Игра успешно экспортирована"
+
+#: src/dialogs/GameHistoryDialog.vala:470
+msgid "Failed to export game"
+msgstr "Не удалось экспортировать игру"
+
+#: src/dialogs/GameHistoryDialog.vala:479
+msgid "Delete Game"
+msgstr "Удалить игру"
+
+#: src/dialogs/GameHistoryDialog.vala:492
+msgid "Game deleted"
+msgstr "Игра удалена"
+
+#: src/dialogs/GameHistoryDialog.vala:546 src/dialogs/GameReplayDialog.vala:641
+msgid "Done"
+msgstr "Готово"
+
+#. Variant filter
+#: src/dialogs/GameHistoryDialog.vala:567
+msgid "Game Variant"
+msgstr "Вариант игры"
+
+#. Result filter
+#: src/dialogs/GameHistoryDialog.vala:581
+msgid "Game Result"
+msgstr "Результат игры"
+
+#: src/dialogs/GameHistoryDialog.vala:584
+msgid "Result"
+msgstr "Результат"
+
+#. Player type filter
+#: src/dialogs/GameHistoryDialog.vala:595
+msgid "Player Type"
+msgstr "Тип игрока"
+
+#: src/dialogs/GameHistoryDialog.vala:598
+msgid "Players"
+msgstr "Игроки"
+
+#: src/dialogs/GameReplayDialog.vala:97
+msgid "No game data available"
+msgstr "Нет доступных игровых данных"
+
+#: src/dialogs/GameReplayDialog.vala:463
+msgid "Pause"
+msgstr "Пауза"
+
+#: src/dialogs/GameReplayDialog.vala:480
+msgid "Play"
+msgstr "Играть"
+
+#: src/dialogs/GameReplayDialog.vala:524
+msgid "Export Game Replay"
+msgstr "Экспортировать повтор игры"
+
+#: src/dialogs/GameEndDialog.vala:96
+msgid "Red Player Wins!"
+msgstr "Красный игрок побелил!"
+
+#: src/dialogs/GameEndDialog.vala:97 src/dialogs/GameEndDialog.vala:104
+msgid "Congratulations on your victory!"
+msgstr "Поздравляем вас с победой!"
+
+#: src/dialogs/GameEndDialog.vala:103
+msgid "Black Player Wins!"
+msgstr "Черный игрок победил!"
+
+#: src/dialogs/GameEndDialog.vala:110
+msgid "Game Drawn!"
+msgstr "Игра сыграна вничью!"
+
+#: src/dialogs/GameEndDialog.vala:111
+msgid "Well played by both sides!"
+msgstr "Хорошая игра с обеих сторон!"
+
+#: src/dialogs/GameEndDialog.vala:117
+msgid "Game Ended"
+msgstr "Игра окончена"
+
+#: src/dialogs/GameEndDialog.vala:118
+msgid "Thanks for playing!"
+msgstr "Спасибо за игру!"
+
+#: src/utils/ErrorHandler.vala:125
+msgid "Critical Error"
+msgstr "Критическая ошибка"
+
+#: src/utils/ErrorHandler.vala:127
+msgid "Quit Application"
+msgstr "Выйти из приложения"
+
+#: src/utils/ErrorHandler.vala:160
+msgid "Confirm"
+msgstr "Подтвердить"
