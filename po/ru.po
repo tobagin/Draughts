@@ -1,13 +1,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Draughts package.
 #
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 SPDX-FileCopyrightText :
-# SPDX-FileCopyrightText: 2025 Вячеслав Малышев <ma12@rambler.ru>
+SPDX-FileCopyrightText: 2025 Вячеслав Малышев <ma12@rambler.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: Draughts 2.0.0\n"
@@ -830,7 +824,7 @@ msgstr "Максимальное время, затрачиваемое ИИ н�
 
 #: data/ui/dialogs/game-preferences.blp:63
 msgid "Show AI Thinking"
-msgstr "Покаpfnm мышление искусственного интеллекта"
+msgstr "Показать мышление ИИ"
 
 #: data/ui/dialogs/game-preferences.blp:64
 msgid "Display AI analysis during its turn"
@@ -1495,7 +1489,7 @@ msgstr "Турецкие шашки"
 #: data/ui/dialogs/new-game.blp:88 src/dialogs/MultiplayerDialog.vala:579
 #: src/dialogs/GameHistoryDialog.vala:103
 msgid "Armenian Draughts"
-msgstr "Американские шашки"
+msgstr "Армянские шашки"
 
 #: data/ui/dialogs/multiplayer.blp:131 data/ui/dialogs/multiplayer.blp:313
 #: data/ui/dialogs/new-game.blp:89 src/dialogs/MultiplayerDialog.vala:580
