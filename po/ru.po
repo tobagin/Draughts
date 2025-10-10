@@ -29,7 +29,7 @@ msgstr "Классическая игра, построенная с GTK4/Libadw
 
 #: data/io.github.tobagin.Draughts.desktop.in:9
 msgid "draughts;draughts;board;game;strategy;"
-msgstr ""
+msgstr "draughts;draughts;board;game;strategy;шашки;доска;игра;стратегия;"
 
 #: data/io.github.tobagin.Draughts.metainfo.xml.in:7
 msgid ""
@@ -1558,7 +1558,7 @@ msgstr "Попросите у своего друга его 6-значный к
 
 #: data/ui/dialogs/multiplayer.blp:230
 msgid "ABCD12"
-msgstr ""
+msgstr "ABCD12"
 
 #: data/ui/dialogs/multiplayer.blp:248
 msgid "Join"
@@ -1956,7 +1956,7 @@ msgstr "Потеряно многопользовательское соедин
 #: src/dialogs/MultiplayerDialog.vala:501 src/dialogs/MultiplayerDialog.vala:511
 #: src/utils/ErrorHandler.vala:113 src/utils/ErrorHandler.vala:126
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. Could show a banner or toast here
 #: src/Window.vala:1241
