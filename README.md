@@ -1,14 +1,16 @@
 # Draughts
 
-A comprehensive draughts (checkers) game for GNOME, featuring 16 international variants, AI opponents, and a beautiful modern interface.
+A comprehensive draughts (checkers) game for GNOME, featuring 16 international variants, AI opponents, online multiplayer, and a beautiful modern interface.
 
 ![Main Window](data/screenshots/main-window.png)
+
+**Current Version**: 2.0.1 | **Latest Update**: October 2025
 
 ## Features
 
 ### Game Variants
 - **16 International Variants**: American Checkers, International Draughts, Russian, Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, Armenian, Gothic, Frisian, and Canadian
-- **Different Board Sizes**: From 8x8 to 10x10 boards depending on variant
+- **Different Board Sizes**: From 8×8 to 12×12 boards depending on variant
 - **Authentic Rules**: Each variant implements official rules including forced captures, flying kings, and variant-specific move patterns
 
 ### Gameplay Modes
@@ -62,9 +64,10 @@ A comprehensive draughts (checkers) game for GNOME, featuring 16 international v
 
 ### Game Management
 - **Game History**: Automatic saving of completed games
-- **Statistics Tracking**: Win/loss records and game statistics
-- **PDN Export**: Export games in Portable Draughts Notation format
+- **Statistics Tracking**: Win/loss records and game statistics (including resignation tracking)
+- **PDN Export**: Export games in Portable Draughts Notation (.pdn) format
 - **Game Replay**: Replay any saved game move by move
+- **Server Statistics**: Real-time multiplayer statistics dashboard
 
 ## Screenshots
 
@@ -175,6 +178,17 @@ View and replay your past games:
 
 For detailed rules of each variant, see the in-game rules documentation (Menu → Variant Rules).
 
+## What's New in 2.0.1
+
+### Recent Updates
+- **High-Resolution SVG Icon**: Modern scalable icon with improved visual quality
+- **Enhanced Resignation System**: Complete tracking of game resignations with proper statistics
+- **Improved User Confirmations**: Added safety confirmations for New Game, Play Online, Reset, and Quit actions
+- **Better Multiplayer Stability**: Enhanced board state synchronization and reconnection handling
+- **Correct File Format**: PDN exports now use proper `.pdn` extension (previously used `.pgn`)
+- **Statistics Dashboard**: Server-side statistics endpoint for real-time multiplayer metrics
+- **Supabase Integration**: Enhanced server infrastructure for better performance and reliability
+
 ## Technical Details
 
 ### Built With
@@ -186,6 +200,7 @@ For detailed rules of each variant, see the in-game rules documentation (Menu �
 - **Flatpak** - Application packaging
 - **WebSocket** - Real-time multiplayer communication
 - **Node.js** - Multiplayer server (optional, for self-hosting)
+- **Supabase** - Backend infrastructure for multiplayer features
 
 ### Architecture
 - **MVC Pattern**: Clean separation of game logic and UI
@@ -245,11 +260,25 @@ This project is licensed under the GNU General Public License v3.0 or later. See
 - **Vala Team** - For the elegant programming language
 - **International Draughts Community** - For rules documentation and variants
 
+## Roadmap
+
+### Planned Features
+- Game analysis tools
+- Opening book integration
+- Endgame tablebases
+- Tournament mode
+- Enhanced AI training modes
+
 ## Support
 
 - **Bug Reports**: [GitHub Issues](https://github.com/tobagin/Dama/issues)
 - **Documentation**: [Wiki](https://github.com/tobagin/Dama/wiki)
 - **Source Code**: [GitHub](https://github.com/tobagin/Dama)
+- **Multiplayer Stats**: Available at server `/stats` endpoint
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed version history.
 
 ---
 
