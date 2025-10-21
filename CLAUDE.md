@@ -1,3 +1,22 @@
+<!-- OPENSPEC:START -->
+# OpenSpec Instructions
+
+These instructions are for AI assistants working in this project.
+
+Always open `@/openspec/AGENTS.md` when the request:
+- Mentions planning or proposals (words like proposal, spec, change, plan)
+- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
+- Sounds ambiguous and you need the authoritative spec before coding
+
+Use `@/openspec/AGENTS.md` to learn:
+- How to create and apply change proposals
+- Spec format and conventions
+- Project structure and guidelines
+
+Keep this managed block so 'openspec update' can refresh the instructions.
+
+<!-- OPENSPEC:END -->
+
 # Claude Code Context: GNOME Application Template Project
 
 ## Project Overview
@@ -76,9 +95,9 @@ Each generated project must:
 ## Development Workflow
 1.  Feature specification (complete)
 2. = Implementation planning (in progress)
-3. ó Task generation (/tasks command)
-4. ó Implementation
-5. ó Testing and validation
+3. ï¿½ Task generation (/tasks command)
+4. ï¿½ Implementation
+5. ï¿½ Testing and validation
 
 ## Recent Changes
 - 001-implement-the-ruleset: Added Vala (compiles to C) with GTK4 and LibAdwaita + GTK4, LibAdwaita, GLib, GSettings, ATK (accessibility)

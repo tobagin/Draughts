@@ -138,6 +138,15 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.0.2" date="2025-10-21">
+      <description>
+        <p>Cleanup and maintenance release</p>
+        <ul>
+          <li>Removed .specify/ directory with project specification tools</li>
+          <li>Code cleanup and maintenance</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.1" date="2025-10-06">
       <description>
         <p>Stability and connection improvements for online multiplayer</p>
