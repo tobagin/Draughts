@@ -58,7 +58,7 @@ public class DraughtsAboutDialog : GLib.Object {
         about.add_acknowledgement_section("Special Thanks", acknowledgements);
 
         // Set translator credits
-        about.set_translator_credits("Thiago Fernandes");
+        about.set_translator_credits("Thiago Fernandes\nVladislav https://github.com/ma12vlad");
         
         // Add Source link
         about.add_link("Source", "https://github.com/tobagin/draughts");

@@ -1,5 +1,5 @@
 project('draughts', 'vala', 'c',
-  version : '2.0.2',
+  version : '2.0.3',
   license : 'GPL-3.0+',
   meson_version : '>= 1.9.0'
 )

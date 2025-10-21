@@ -138,6 +138,15 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.0.3" date="2025-10-21">
+      <description>
+        <p>Translation and contributor update</p>
+        <ul>
+          <li>Added Russian translation (thanks to Vladislav)</li>
+          <li>Updated translator credits in About dialog</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.2" date="2025-10-21">
       <description>
         <p>Cleanup and maintenance release</p>
