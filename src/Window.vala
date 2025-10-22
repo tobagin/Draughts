@@ -2110,17 +2110,46 @@ namespace Draughts {
 
                 logger.debug("PDN file loaded, content length: %d", pdn_content.length);
 
-                // Show a dialog informing the user that PDN import is coming
-                var dialog = new Adw.AlertDialog(
-                    _("PDN Import"),
-                    _("PDN file import functionality will be available in a future version.\n\nFile: %s").printf(file.get_basename())
-                );
-                dialog.add_response("ok", _("OK"));
-                dialog.set_default_response("ok");
-                dialog.set_close_response("ok");
-                dialog.present(this);
+                // Parse the PDN content
+                var parser = new PDNParser();
+                var game_data = parser.parse(pdn_content);
 
-                // TODO: Parse PDN and load game into replay dialog
+                if (game_data == null) {
+                    var error_dialog = new Adw.AlertDialog(
+                        _("PDN Parse Error"),
+                        _("Failed to parse PDN file. The file may be corrupted or in an unsupported format.")
+                    );
+                    error_dialog.add_response("ok", _("OK"));
+                    error_dialog.set_default_response("ok");
+                    error_dialog.set_close_response("ok");
+                    error_dialog.present(this);
+                    return;
+                }
+
+                logger.info("PDN parsed successfully: %s", game_data.to_string());
+
+                // Show dialog with game information
+                var info_dialog = new Adw.AlertDialog(
+                    _("PDN Game Loaded"),
+                    _("Game: %s\nPlayers: %s vs %s\nVariant: %s\nMoves: %d\n\nNote: Full game replay from PDN will be available in a future version.").printf(
+                        game_data.event,
+                        game_data.red_player,
+                        game_data.black_player,
+                        game_data.variant,
+                        game_data.moves_notation.length
+                    )
+                );
+                info_dialog.add_response("ok", _("OK"));
+                info_dialog.set_default_response("ok");
+                info_dialog.set_close_response("ok");
+                info_dialog.present(this);
+
+                // TODO: Convert parsed moves to DraughtsMove objects and load into replay dialog
+                // This would require:
+                // 1. Creating a new game with the correct variant
+                // 2. Converting algebraic notation to DraughtsMove objects
+                // 3. Applying moves to build game state
+                // 4. Loading into GameReplayDialog
 
             } catch (Error e) {
                 logger.error("Failed to open PDN file: %s", e.message);
