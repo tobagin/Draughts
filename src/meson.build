@@ -9,6 +9,7 @@ draughts_sources = [
   'utils/ResourceManager.vala',
   'utils/KeyboardNavigationHandler.vala',
   'utils/AccessibilityAnnouncer.vala',
+  'utils/PDNParser.vala',
   'managers/SettingsManager.vala',
   'managers/SoundManager.vala',
   'managers/MoveHistoryManager.vala',
@@ -35,6 +36,12 @@ draughts_sources = [
   'widgets/TimerDisplay.vala',
   'widgets/MoveHistory.vala',
 
+  # Draughts adapters
+  'adapters/BoardSynchronizer.vala',
+  'adapters/MoveHandler.vala',
+  'adapters/AnimationController.vala',
+  'adapters/AIGameController.vala',
+
   # Draughts game models
   'models/draughts/DraughtsConstants.vala',
   'models/draughts/BoardPosition.vala',
@@ -56,6 +63,7 @@ draughts_sources = [
   'services/draughts/PositionEvaluator.vala',
   'services/draughts/MinimaxAI.vala',
   'services/draughts/AIDifficultyManager.vala',
+  'services/draughts/OpeningBook.vala',
   'services/draughts/IGameController.vala',
   'services/draughts/GameController.vala',
   'services/draughts/TimerController.vala',
@@ -90,6 +98,7 @@ draughts_exe = executable('draughts',
     libsoup_dep,
     dependency('json-glib-1.0'),
     dependency('gstreamer-1.0'),
+    dependency('sqlite3'),
     declare_dependency(link_args: ['-lm']),
   ],
   install: true,
