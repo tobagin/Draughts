@@ -271,9 +271,9 @@ This project is licensed under the GNU General Public License v3.0 or later. See
 
 ## Support
 
-- **Bug Reports**: [GitHub Issues](https://github.com/tobagin/Dama/issues)
-- **Documentation**: [Wiki](https://github.com/tobagin/Dama/wiki)
-- **Source Code**: [GitHub](https://github.com/tobagin/Dama)
+- **Bug Reports**: [GitHub Issues](https://github.com/tobagin/Draughts/issues)
+- **Documentation**: [Wiki](https://github.com/tobagin/Draughts/wiki)
+- **Source Code**: [GitHub](https://github.com/tobagin/Draughts)
 - **Multiplayer Stats**: Available at server `/stats` endpoint
 
 ## Changelog

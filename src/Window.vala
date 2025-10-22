@@ -1540,7 +1540,7 @@ namespace Draughts {
 
                         // Fallback to GitHub releases page
                         try {
-                            Gtk.show_uri(this, "https://github.com/tobagin/Dama/releases", Gdk.CURRENT_TIME);
+                            Gtk.show_uri(this, "https://github.com/tobagin/Draughts/releases", Gdk.CURRENT_TIME);
                         } catch (Error e2) {
                             logger.error("Failed to open update URL: %s", e2.message);
                         }
