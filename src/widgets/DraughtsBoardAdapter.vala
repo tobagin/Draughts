@@ -14,16 +14,14 @@ public class Draughts.DraughtsBoardAdapter : Object {
     private IGameController? game_controller;
     private GameVariant? current_variant;
     private Logger logger;
-    private bool ai_move_in_progress = false;
     private bool is_viewing_history = false;  // Track if we're viewing history
     private int current_view_position = -1;   // Track which position we're viewing
 
-    // Animation state
-    private bool is_animating = false;
-    private DraughtsMove? pending_move = null;
-    private bool pending_move_is_ai = false;
-    private DraughtsMove[]? multi_jump_sequence = null;
-    private int multi_jump_index = 0;
+    // New architecture components
+    private BoardSynchronizer board_sync;
+    private MoveHandler move_handler;
+    private AnimationController animation_controller;
+    private AIGameController ai_controller;
 
     // Signal for game events
     public signal void game_state_changed(DraughtsGameState new_state);
@@ -39,6 +37,12 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Create game controller
         this.game_controller = new GameController();
+
+        // Initialize new architecture components
+        this.board_sync = new BoardSynchronizer(board_widget);
+        this.animation_controller = new AnimationController(board_widget);
+        this.move_handler = new MoveHandler(game_controller, board_sync);
+        this.ai_controller = new AIGameController(game_controller, animation_controller);
 
         // Set board widget to external mode so we handle moves
         board_widget.set_external_mode(true);
@@ -56,7 +60,17 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Connect board widget signals for user interactions
         board_widget.square_clicked.connect(on_board_square_clicked);
-        board_widget.animation_completed.connect(on_animation_completed);
+
+        // Connect new component signals
+        move_handler.move_selected.connect(on_move_selected_by_user);
+        animation_controller.animation_completed.connect(on_animation_completed);
+        ai_controller.ai_move_ready.connect(on_ai_move_ready);
+        ai_controller.ai_thinking_started.connect(() => {
+            logger.debug("AI started thinking");
+        });
+        ai_controller.ai_thinking_finished.connect(() => {
+            logger.debug("AI finished thinking");
+        });
     }
 
     /**
@@ -255,8 +269,8 @@ public class Draughts.DraughtsBoardAdapter : Object {
                 return false;
             }
 
-            // Start animation and store move for completion after animation
-            start_move_animation(matching_move);
+            // Animate the move using AnimationController
+            animation_controller.animate_move(matching_move, current_state);
             return true;
 
         } catch (Error e) {
@@ -275,39 +289,11 @@ public class Draughts.DraughtsBoardAdapter : Object {
         }
 
         var current_state = game_controller.get_current_state();
-        print("\n==== ADAPTER: sync_board_to_game_state called ====\n");
-        print("Active player: %s\n", current_state.active_player.to_string());
-        print("Pieces (showing piece 12 only):\n");
-        foreach (var piece in current_state.pieces) {
-            if (piece.id == 12) {
-                print("  Piece ID %d %s at (%d,%d)\n", piece.id, piece.color.to_string(),
-                      piece.position.row, piece.position.col);
-            }
-        }
-        print("====================================\n\n");
 
-        // Clear the board widget's state
-        board_widget.clear_board();
-
-        // Set each piece from our comprehensive system to the widget's format
-        foreach (var piece in current_state.pieces) {
-            var widget_piece_type = convert_piece_to_widget_type(piece);
-            board_widget.set_piece_at(piece.position.row, piece.position.col, widget_piece_type);
-        }
-
-        // Update current player
-        var current_player = convert_color_to_player(current_state.active_player);
-        board_widget.set_current_player(current_player);
-
-        // Update game state
-        var widget_game_state = convert_game_status_to_widget_state(current_state.game_status);
-        board_widget.set_game_state(widget_game_state);
-
-        // Trigger the board widget to redraw
-        board_widget.update_board_display();
+        // Use BoardSynchronizer to sync state
+        board_sync.sync_to_state(current_state);
 
         // Highlight playable pieces for the current player
-        // Use a small delay to ensure the board is fully updated
         Idle.add(() => {
             highlight_playable_pieces();
             return false;
@@ -375,66 +361,30 @@ public class Draughts.DraughtsBoardAdapter : Object {
     /**
      * Handle animation completion
      */
-    private void on_animation_completed() {
-        logger.debug("Animation completed");
-        is_animating = false;
+    private void on_animation_completed(DraughtsMove move) {
+        logger.debug("Animation completed for move: %s", move.to_algebraic_notation());
 
-        // Check if we're in a multi-jump sequence
-        if (multi_jump_sequence != null) {
-            multi_jump_index++;
+        // Apply the move to game state
+        try {
+            game_controller.make_move(move);
+            move_made(move);
 
-            // If there are more segments to animate, continue
-            if (multi_jump_index < multi_jump_sequence.length) {
-                is_animating = true;
-                animate_next_jump_segment();
-                return;
+            // Check if AI should move now
+            if (current_game != null) {
+                var current_state = game_controller.get_current_state();
+                ai_controller.check_and_process_ai_turn.begin(current_game, current_state);
             }
-
-            // All segments animated, clear the sequence and proceed with move completion
-            logger.debug("Multi-jump animation complete");
-            multi_jump_sequence = null;
-            multi_jump_index = 0;
-        }
-
-        // If we have a pending move, complete it now
-        if (pending_move != null) {
-            var move = pending_move;
-            bool was_ai_move = pending_move_is_ai;
-            pending_move = null;
-            pending_move_is_ai = false;
-
-            if (was_ai_move) {
-                complete_ai_move_execution(move);
-            } else {
-                complete_move_execution(move);
-            }
+        } catch (Error e) {
+            logger.error("Failed to complete move: %s", e.message);
         }
     }
 
     /**
      * Handle clicks from the board widget
      */
-    private Position? selected_square = null;
-    private BoardPosition? multi_capture_position = null;  // Position of piece that must continue capturing
-    private int64 last_click_time = 0;
-    private int last_click_row = -1;
-    private int last_click_col = -1;
-
     private void on_board_square_clicked(int row, int col) {
-
-        // Debounce duplicate clicks - ignore clicks on same square within 100ms
-        int64 current_time = get_monotonic_time();
-        if (last_click_row == row && last_click_col == col &&
-            (current_time - last_click_time) < 100000) { // 100ms in microseconds
-            return;
-        }
-
-        last_click_time = current_time;
-        last_click_row = row;
-        last_click_col = col;
-
         // Block clicks during animation
-        if (is_animating) {
+        if (animation_controller.is_animation_in_progress()) {
             logger.debug("Ignoring click while animation in progress");
             return;
         }
@@ -449,86 +399,27 @@ public class Draughts.DraughtsBoardAdapter : Object {
             return; // Ignore clicks during AI turn
         }
 
-        var clicked_pos = new BoardPosition(row, col, current_variant.board_size);
-
-        if (selected_square == null) {
-            // First click - try to select a piece
-            var current_state = game_controller.get_current_state();
-            var piece = find_piece_at_position(current_state, clicked_pos);
-
-            // Check if we're in a multi-capture sequence
-            if (multi_capture_position != null) {
-                // Only allow selecting the piece that must continue capturing
-                if (clicked_pos.equals(multi_capture_position)) {
-                    selected_square = Position(row, col);
-                    highlight_capture_moves(row, col);
-                    logger.debug("Multi-capture mode: selected capturing piece at (%d,%d)", row, col);
-                } else {
-                    logger.debug("Multi-capture mode: can only select piece at (%d,%d)",
-                          multi_capture_position.row, multi_capture_position.col);
-                }
-            } else if (piece != null && piece.color == current_state.active_player) {
-                // Normal piece selection
-                selected_square = Position(row, col);
-                highlight_possible_moves(row, col);
-            } else {
-                // Invalid piece selection
-            }
-        } else {
-            // Second click - check if it's the same square (deselect) or different square (move)
-            if (selected_square.row == row && selected_square.col == col) {
-                // Clicking on the same square - deselect the piece
-                selected_square = null;
-                clear_highlights();
-                return;
-            }
-
-            // Second click on different square - try to execute move
-            bool move_executed = handle_board_move(selected_square.row, selected_square.col, row, col);
-
-            if (move_executed) {
-                // Check if we're in a multi-capture sequence
-                if (multi_capture_position != null) {
-                    // Multi-capture continues - keep the piece selected at its new position
-                    selected_square = Position(multi_capture_position.row, multi_capture_position.col);
-                    highlight_capture_moves(multi_capture_position.row, multi_capture_position.col);
-                    logger.debug("Multi-capture continues: piece now at (%d,%d) must capture again",
-                          multi_capture_position.row, multi_capture_position.col);
-                } else {
-                    // Normal move or multi-capture sequence ended - clear selection
-                    selected_square = null;
-                    clear_highlights();
-
-                    // Process AI turn if it's now the AI's turn
-                    process_ai_turn.begin();
-                }
-            } else {
-                // Try to select a new piece
-                var current_state = game_controller.get_current_state();
-                var piece = find_piece_at_position(current_state, clicked_pos);
-
-                if (piece != null && piece.color == current_state.active_player) {
-                    // Valid new piece selection
-                    selected_square = Position(row, col);
-                    highlight_possible_moves(row, col);
-                } else {
-                    // Invalid click - clear selection
-                    selected_square = null;
-                    clear_highlights();
-                }
-            }
-        }
+        // Delegate to MoveHandler
+        var current_state = game_controller.get_current_state();
+        move_handler.handle_square_click(row, col, current_state);
     }
 
-    // Helper struct for compatibility with existing code
-    private struct Position {
-        public int row;
-        public int col;
+    /**
+     * Handle move selection from MoveHandler
+     */
+    private void on_move_selected_by_user(DraughtsMove move) {
+        // Animate the selected move
+        var current_state = game_controller.get_current_state();
+        animation_controller.animate_move(move, current_state);
+    }
 
-        public Position(int row, int col) {
-            this.row = row;
-            this.col = col;
-        }
+    /**
+     * Handle AI move ready
+     */
+    private void on_ai_move_ready(DraughtsMove move) {
+        // Animate AI move
+        var current_state = game_controller.get_current_state();
+        animation_controller.animate_move(move, current_state);
     }
 
     /**
@@ -973,10 +864,9 @@ public class Draughts.DraughtsBoardAdapter : Object {
             return;
         }
 
-        // AI move processing is handled by check_ai_turn() which calls make_ai_move()
-        // This method is kept for API compatibility but the actual AI logic
-        // is in check_ai_turn() to ensure immediate response to game events
-        check_ai_turn();
+        // AI move processing is handled by AIGameController
+        var current_state = game_controller.get_current_state();
+        yield ai_controller.check_and_process_ai_turn(current_game, current_state);
     }
 
     /**
@@ -1070,778 +960,6 @@ public class Draughts.DraughtsBoardAdapter : Object {
     }
 
     /**
-     * Start animation for a player move
-     */
-    private void start_move_animation(DraughtsMove move) {
-        is_animating = true;
-        pending_move = move;
-        pending_move_is_ai = false;
-
-        // Check if this is a multi-jump that needs to be animated in segments
-        if (move.is_multi_capture()) {
-            // Calculate all jump segments
-            var segments = calculate_jump_segments(move);
-            if (segments.length > 1) {
-                multi_jump_sequence = segments;
-                multi_jump_index = 0;
-                animate_next_jump_segment();
-                return;
-            }
-        }
-
-        // Single jump or simple move - animate directly
-        animate_single_move(move.from_position.row, move.from_position.col,
-                           move.to_position.row, move.to_position.col, move);
-    }
-
-    /**
-     * Calculate individual jump segments for multi-jump moves
-     */
-    private DraughtsMove[] calculate_jump_segments(DraughtsMove move) {
-        var segments = new Gee.ArrayList<DraughtsMove>();
-
-        int from_row = move.from_position.row;
-        int from_col = move.from_position.col;
-        int to_row = move.to_position.row;
-        int to_col = move.to_position.col;
-
-        // Calculate direction
-        int row_dir = to_row > from_row ? 1 : -1;
-        int col_dir = to_col > from_col ? 1 : -1;
-
-        // Calculate number of jumps (each jump is 2 squares)
-        int row_dist = (to_row - from_row).abs();
-        int num_jumps = row_dist / 2;
-
-        // Create a segment for each jump
-        int current_row = from_row;
-        int current_col = from_col;
-
-        for (int i = 0; i < num_jumps; i++) {
-            int next_row = current_row + (row_dir * 2);
-            int next_col = current_col + (col_dir * 2);
-
-            var from_pos = new BoardPosition(current_row, current_col, current_variant.board_size);
-            var to_pos = new BoardPosition(next_row, next_col, current_variant.board_size);
-
-            // Create a simple capture move for this segment
-            var segment = new DraughtsMove.with_captures(move.piece_id, from_pos, to_pos, new int[1]);
-            segments.add(segment);
-
-            current_row = next_row;
-            current_col = next_col;
-        }
-
-        return segments.to_array();
-    }
-
-    /**
-     * Animate the next segment in a multi-jump sequence
-     */
-    private void animate_next_jump_segment() {
-        if (multi_jump_sequence == null || multi_jump_index >= multi_jump_sequence.length) {
-            multi_jump_sequence = null;
-            multi_jump_index = 0;
-            return;
-        }
-
-        var segment = multi_jump_sequence[multi_jump_index];
-        animate_single_move(segment.from_position.row, segment.from_position.col,
-                           segment.to_position.row, segment.to_position.col, segment);
-    }
-
-    /**
-     * Animate a single move or jump segment
-     */
-    private void animate_single_move(int from_row, int from_col, int to_row, int to_col, DraughtsMove move) {
-        // Collect captured pieces positions
-        // For captures, the captured piece is between from and to position
-        Draughts.Position[]? captured_positions = null;
-        if (move.is_capture()) {
-            // Calculate position of captured piece (middle point between from and to)
-            int row_dir = to_row > from_row ? 1 : -1;
-            int col_dir = to_col > from_col ? 1 : -1;
-            int cap_row = from_row + row_dir;
-            int cap_col = from_col + col_dir;
-
-            captured_positions = new Draughts.Position[1];
-            captured_positions[0] = Draughts.Position(cap_row, cap_col);
-        }
-
-        // Start the animation
-        board_widget.animate_move(from_row, from_col, to_row, to_col, captured_positions);
-    }
-
-    /**
-     * Start animation for an AI move
-     */
-    private void start_ai_move_animation(DraughtsMove move) {
-        is_animating = true;
-        pending_move = move;
-        pending_move_is_ai = true;
-
-        // Check if this is a multi-jump that needs to be animated in segments
-        if (move.is_multi_capture()) {
-            // Calculate all jump segments
-            var segments = calculate_jump_segments(move);
-            if (segments.length > 1) {
-                multi_jump_sequence = segments;
-                multi_jump_index = 0;
-                animate_next_jump_segment();
-                return;
-            }
-        }
-
-        // Single jump or simple move - animate directly
-        animate_single_move(move.from_position.row, move.from_position.col,
-                           move.to_position.row, move.to_position.col, move);
-    }
-
-    /**
-     * Complete player move execution after animation finishes
-     */
-    private void complete_move_execution(DraughtsMove move) {
-        // Execute the move in the game engine
-        bool success = game_controller.make_move(move);
-
-        if (success) {
-            sync_board_to_game_state();
-            move_made(move);
-
-            // Check for sequential multi-capture after a capture move
-            if (move.is_capture()) {
-                // Check if the move resulted in promotion by examining the piece after the move
-                var new_state = game_controller.get_current_state();
-                var moved_piece = new_state.get_piece_at(move.to_position);
-                bool piece_was_promoted = move.promoted ||
-                                         (moved_piece != null && moved_piece.piece_type == DraughtsPieceType.KING);
-
-                // If the move resulted in promotion, the turn ends immediately
-                if (piece_was_promoted) {
-                    multi_capture_position = null;
-                    logger.debug("UI: Piece promoted during capture - turn ends");
-                } else {
-                    if (moved_piece != null) {
-                        // Check if this piece can capture more from its new position
-                        var additional_captures = get_capture_moves_for_piece_position(move.to_position);
-                        if (additional_captures.length > 0) {
-                            multi_capture_position = move.to_position;
-                            logger.debug("UI: Sequential capture detected - keeping piece selected at (%d,%d)",
-                                  move.to_position.row, move.to_position.col);
-
-                            // Automatically highlight the piece and its possible next captures
-                            selected_square = Position(move.to_position.row, move.to_position.col);
-                            highlight_capture_moves(move.to_position.row, move.to_position.col);
-                        } else {
-                            multi_capture_position = null;
-                        }
-                    } else {
-                        multi_capture_position = null;
-                    }
-                }
-            } else {
-                multi_capture_position = null;
-            }
-
-            // Check if game is over (skip for multiplayer - server will notify)
-            if (!(game_controller is MultiplayerGameController)) {
-                var new_state = game_controller.get_current_state();
-                if (new_state.is_game_over()) {
-                    game_finished(new_state.game_status);
-                } else {
-                    // Check if it's now an AI player's turn
-                    check_ai_turn();
-                }
-            } else {
-                // For multiplayer, just check if we need to wait for opponent
-                // Game end will be signaled by the server
-                check_ai_turn(); // This won't do anything for multiplayer, but keeps the logic consistent
-            }
-        } else {
-            logger.warning("Failed to execute move from (%d,%d) to (%d,%d)",
-                move.from_position.row, move.from_position.col,
-                move.to_position.row, move.to_position.col);
-        }
-    }
-
-    /**
-     * Complete AI move execution after animation finishes
-     */
-    private void complete_ai_move_execution(DraughtsMove move) {
-        // Execute the move in the game engine
-        bool success = game_controller.make_move(move);
-
-        if (success) {
-            sync_board_to_game_state();
-            move_made(move);
-
-            // Check if game is over (skip for multiplayer - server will notify)
-            if (!(game_controller is MultiplayerGameController)) {
-                var new_state = game_controller.get_current_state();
-                if (new_state.is_game_over()) {
-                    game_finished(new_state.game_status);
-                } else {
-                    // Check for another AI turn (in case both players are AI)
-                    check_ai_turn();
-                }
-            } else {
-                // For multiplayer, game end will be signaled by the server
-                check_ai_turn(); // This won't do anything for multiplayer
-            }
-        } else {
-            logger.warning("AI move rejected by game engine: from (%d,%d) to (%d,%d)",
-                move.from_position.row, move.from_position.col,
-                move.to_position.row, move.to_position.col);
-            // Reset AI flag and sync to restore correct state
-            ai_move_in_progress = false;
-            sync_board_to_game_state();
-        }
-    }
-
-    /**
-     * Check if it's an AI player's turn and make their move
-     */
-    private void check_ai_turn() {
-        if (current_game == null || ai_move_in_progress) {
-            return;
-        }
-
-        var current_state = game_controller.get_current_state();
-        var active_player = current_state.active_player;
-
-        // Get the current player object
-        GamePlayer current_player_obj = null;
-        if (active_player == PieceColor.RED) {
-            current_player_obj = current_game.red_player;
-        } else {
-            current_player_obj = current_game.black_player;
-        }
-
-        // If current player is AI, make their move
-        if (current_player_obj != null && current_player_obj.is_ai()) {
-            ai_move_in_progress = true;
-
-            // Run AI thinking in a background thread
-            make_ai_move_async.begin();
-        }
-    }
-
-    /**
-     * Make an AI move asynchronously on a background thread
-     */
-    private async void make_ai_move_async() {
-        if (current_game == null) {
-            ai_move_in_progress = false;
-            return;
-        }
-
-        // Capture all needed data for the background thread
-        var current_state = game_controller.get_current_state();
-        var game = game_controller.get_current_game();
-        var rule_engine = game.variant.create_rule_engine();
-        var legal_moves = rule_engine.generate_legal_moves(current_state);
-
-        if (legal_moves.length == 0) {
-            ai_move_in_progress = false;
-            return;
-        }
-
-        // Get the AI player and their difficulty
-        var active_player = current_state.active_player;
-        GamePlayer? ai_player = null;
-        if (active_player == PieceColor.RED) {
-            ai_player = current_game.red_player;
-        } else {
-            ai_player = current_game.black_player;
-        }
-
-        AIDifficulty difficulty = AIDifficulty.MEDIUM;
-        if (ai_player != null && ai_player.is_ai()) {
-            difficulty = ai_player.ai_difficulty;
-        }
-
-        // Move the AI thinking to a background thread
-        DraughtsMove? selected_move = null;
-        SourceFunc callback = make_ai_move_async.callback;
-
-        new Thread<void*>(null, () => {
-            // This runs in a background thread - no UI operations allowed here
-            selected_move = select_ai_move_by_difficulty(legal_moves, current_state, rule_engine, difficulty);
-            Idle.add((owned) callback);
-            return null;
-        });
-
-        yield;
-
-        // Back on main thread now
-        if (selected_move == null) {
-            // Fallback to random if something went wrong
-            var random_index = Random.int_range(0, legal_moves.length);
-            selected_move = legal_moves[random_index];
-        }
-
-        // Reset the flag
-        ai_move_in_progress = false;
-
-        // Start animation for AI move
-        start_ai_move_animation(selected_move);
-    }
-
-    /**
-     * Select an AI move based on difficulty level
-     */
-    private DraughtsMove select_ai_move_by_difficulty(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine, AIDifficulty difficulty) {
-        switch (difficulty) {
-            case AIDifficulty.BEGINNER:
-                return select_beginner_move(legal_moves);
-
-            case AIDifficulty.EASY:
-                return select_easy_move(legal_moves, state);
-
-            case AIDifficulty.MEDIUM:
-                return select_medium_move(legal_moves, state);
-
-            case AIDifficulty.NOVICE:
-                return select_novice_move(legal_moves, state);
-
-            case AIDifficulty.INTERMEDIATE:
-                return select_intermediate_move(legal_moves, state, rule_engine);
-
-            case AIDifficulty.HARD:
-                return select_hard_move(legal_moves, state, rule_engine);
-
-            case AIDifficulty.ADVANCED:
-                return select_advanced_move(legal_moves, state, rule_engine);
-
-            case AIDifficulty.EXPERT:
-                return select_expert_move(legal_moves, state, rule_engine);
-
-            case AIDifficulty.MASTER:
-                return select_master_move(legal_moves, state, rule_engine);
-
-            case AIDifficulty.GRANDMASTER:
-                return select_grandmaster_move(legal_moves, state, rule_engine);
-
-            default:
-                return select_medium_move(legal_moves, state);
-        }
-    }
-
-    /**
-     * BEGINNER (Level 1): Completely random moves
-     */
-    private DraughtsMove select_beginner_move(DraughtsMove[] legal_moves) {
-        var random_index = Random.int_range(0, legal_moves.length);
-        return legal_moves[random_index];
-    }
-
-    /**
-     * EASY (Level 2): Prefer captures if available, otherwise random
-     */
-    private DraughtsMove select_easy_move(DraughtsMove[] legal_moves, DraughtsGameState state) {
-        var capture_moves = new Gee.ArrayList<DraughtsMove>();
-
-        foreach (var move in legal_moves) {
-            if (move.is_capture()) {
-                capture_moves.add(move);
-            }
-        }
-
-        if (capture_moves.size > 0) {
-            var random_index = Random.int_range(0, capture_moves.size);
-            return capture_moves[random_index];
-        } else {
-            return select_beginner_move(legal_moves);
-        }
-    }
-
-    /**
-     * MEDIUM (Level 3): Prefer captures, avoid obvious traps
-     */
-    private DraughtsMove select_medium_move(DraughtsMove[] legal_moves, DraughtsGameState state) {
-        var capture_moves = new Gee.ArrayList<DraughtsMove>();
-        var safe_moves = new Gee.ArrayList<DraughtsMove>();
-
-        foreach (var move in legal_moves) {
-            if (move.is_capture()) {
-                capture_moves.add(move);
-            }
-
-            // Simple safety check: avoid moves to edge if possible
-            if (move.to_position.row != 0 && move.to_position.row != 7 &&
-                move.to_position.col != 0 && move.to_position.col != 7) {
-                safe_moves.add(move);
-            }
-        }
-
-        // Prefer captures first
-        if (capture_moves.size > 0) {
-            var random_index = Random.int_range(0, capture_moves.size);
-            return capture_moves[random_index];
-        }
-
-        // Then prefer safe moves
-        if (safe_moves.size > 0) {
-            var random_index = Random.int_range(0, safe_moves.size);
-            return safe_moves[random_index];
-        }
-
-        return select_beginner_move(legal_moves);
-    }
-
-    /**
-     * NOVICE (Level 4): Basic positional awareness
-     */
-    private DraughtsMove select_novice_move(DraughtsMove[] legal_moves, DraughtsGameState state) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-
-        foreach (var move in legal_moves) {
-            int score = 0;
-
-            // Prioritize captures
-            if (move.is_capture()) {
-                score += 100;
-            }
-
-            // Advance pieces toward promotion
-            if (state.active_player == PieceColor.RED) {
-                if (move.to_position.row > move.from_position.row) {
-                    score += 10;
-                }
-            } else {
-                if (move.to_position.row < move.from_position.row) {
-                    score += 10;
-                }
-            }
-
-            // Prefer center control
-            var center_distance = calculate_center_distance(move.to_position);
-            score += (8 - center_distance);
-
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * INTERMEDIATE (Level 5): Look ahead 1 move
-     */
-    private DraughtsMove select_intermediate_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 1, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * HARD (Level 6): Look ahead 2 moves
-     */
-    private DraughtsMove select_hard_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 2, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * ADVANCED (Level 7): Look ahead 3 moves
-     */
-    private DraughtsMove select_advanced_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 3, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * EXPERT (Level 8): Look ahead 4 moves with position evaluation
-     */
-    private DraughtsMove select_expert_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 4, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * MASTER (Level 9): Look ahead 5 moves with advanced evaluation
-     */
-    private DraughtsMove select_master_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 5, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * GRANDMASTER (Level 10): Look ahead 7+ moves with comprehensive evaluation
-     */
-    private DraughtsMove select_grandmaster_move(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine) {
-        var scored_moves = new Gee.ArrayList<ScoredMove?>();
-        var ai_color = state.active_player;
-
-        foreach (var move in legal_moves) {
-            int score = evaluate_move_with_lookahead(move, state, rule_engine, 7, ai_color);
-            scored_moves.add(ScoredMove() { move = move, score = score });
-        }
-
-        return select_best_scored_move(scored_moves);
-    }
-
-    /**
-     * Helper struct for scoring moves
-     */
-    private struct ScoredMove {
-        DraughtsMove move;
-        int score;
-    }
-
-    /**
-     * Calculate distance from center of board
-     */
-    private int calculate_center_distance(BoardPosition pos) {
-        int center = current_variant.board_size / 2;
-        int dx = (pos.row - center).abs();
-        int dy = (pos.col - center).abs();
-        return dx + dy;
-    }
-
-    /**
-     * Select the best move from scored moves (with some randomness for same scores)
-     */
-    private DraughtsMove select_best_scored_move(Gee.ArrayList<ScoredMove?> scored_moves) {
-        // This method should never be called with empty moves
-        // but let's handle it gracefully
-        if (scored_moves.size == 0) {
-            logger.debug("Error: No moves to select from! This should not happen.");
-            // Return the first element anyway (will cause error, but at least it's explicit)
-            assert(false); // This will fail in debug mode
-        }
-
-        // Find the highest score
-        int max_score = int.MIN;
-        foreach (var scored_move in scored_moves) {
-            if (scored_move.score > max_score) {
-                max_score = scored_move.score;
-            }
-        }
-
-        // Collect all moves with the highest score
-        var best_moves = new Gee.ArrayList<DraughtsMove>();
-        foreach (var scored_move in scored_moves) {
-            if (scored_move.score == max_score) {
-                best_moves.add(scored_move.move);
-            }
-        }
-
-        // Randomly select among the best moves to add some variety
-        var random_index = Random.int_range(0, best_moves.size);
-        return best_moves[random_index];
-    }
-
-    /**
-     * Evaluate a move with lookahead using minimax algorithm
-     */
-    private int evaluate_move_with_lookahead(DraughtsMove move, DraughtsGameState state, IRuleEngine rule_engine, int depth, PieceColor ai_color) {
-        if (depth == 0) {
-            // Simple evaluation for low depths
-            return evaluate_simple_move(move, state, rule_engine, ai_color);
-        }
-
-        // Apply the move to get new state
-        var new_state = state.apply_move(move);
-
-        // Use minimax to evaluate this position
-        int score = minimax(new_state, rule_engine, depth - 1, int.MIN, int.MAX, false, ai_color);
-
-        return score;
-    }
-
-    /**
-     * Minimax algorithm with alpha-beta pruning
-     */
-    private int minimax(DraughtsGameState state, IRuleEngine rule_engine, int depth, int alpha, int beta, bool maximizing, PieceColor ai_color) {
-        // Terminal conditions
-        if (depth == 0 || state.is_game_over()) {
-            return evaluate_position(state, ai_color);
-        }
-
-        var legal_moves = rule_engine.generate_legal_moves(state);
-
-        if (legal_moves.length == 0) {
-            // No moves available - game over
-            return evaluate_position(state, ai_color);
-        }
-
-        if (maximizing) {
-            int max_eval = int.MIN;
-            foreach (var move in legal_moves) {
-                var new_state = state.apply_move(move);
-                int eval = minimax(new_state, rule_engine, depth - 1, alpha, beta, false, ai_color);
-                max_eval = int.max(max_eval, eval);
-                alpha = int.max(alpha, eval);
-                if (beta <= alpha) {
-                    break; // Alpha-beta pruning
-                }
-            }
-            return max_eval;
-        } else {
-            int min_eval = int.MAX;
-            foreach (var move in legal_moves) {
-                var new_state = state.apply_move(move);
-                int eval = minimax(new_state, rule_engine, depth - 1, alpha, beta, true, ai_color);
-                min_eval = int.min(min_eval, eval);
-                beta = int.min(beta, eval);
-                if (beta <= alpha) {
-                    break; // Alpha-beta pruning
-                }
-            }
-            return min_eval;
-        }
-    }
-
-    /**
-     * Simple move evaluation without lookahead
-     */
-    private int evaluate_simple_move(DraughtsMove move, DraughtsGameState state, IRuleEngine rule_engine, PieceColor ai_color) {
-        int base_score = evaluate_position(state, ai_color);
-        int move_score = 0;
-
-        if (move.is_capture()) {
-            move_score += 100;
-        }
-
-        // Promotion bonus
-        if (move.promoted) {
-            move_score += 50;
-        }
-
-        // Advance toward promotion
-        if (state.active_player == PieceColor.RED) {
-            move_score += (move.to_position.row - move.from_position.row) * 5;
-        } else {
-            move_score += (move.from_position.row - move.to_position.row) * 5;
-        }
-
-        // Center control bonus
-        var center_distance = calculate_center_distance(move.to_position);
-        move_score += (8 - center_distance) * 2;
-
-        return base_score + move_score;
-    }
-
-
-    /**
-     * Evaluate the current position with advanced heuristics from AI's perspective
-     */
-    private int evaluate_position(DraughtsGameState state, PieceColor ai_color) {
-        int score = 0;
-        int my_pieces = 0;
-        int enemy_pieces = 0;
-        int my_kings = 0;
-        int enemy_kings = 0;
-        int my_back_row = 0;
-        int enemy_back_row = 0;
-
-        foreach (var piece in state.pieces) {
-            if (piece.color == ai_color) {
-                my_pieces++;
-                if (piece.piece_type == DraughtsPieceType.KING) {
-                    my_kings++;
-                    // Kings get bonus for mobility
-                    score += 50;
-                } else {
-                    // Regular pieces get bonus for advancement
-                    int advancement = (ai_color == PieceColor.RED)
-                        ? piece.position.row
-                        : (current_variant.board_size - 1 - piece.position.row);
-                    score += advancement * 3;
-
-                    // Bonus for being close to promotion
-                    if (advancement >= current_variant.board_size - 2) {
-                        score += 20;
-                    }
-                }
-
-                // Back row defense (important in endgame)
-                if ((ai_color == PieceColor.RED && piece.position.row == 0) ||
-                    (ai_color == PieceColor.BLACK && piece.position.row == current_variant.board_size - 1)) {
-                    my_back_row++;
-                }
-
-                // Center control bonus
-                int center_dist = calculate_center_distance(piece.position);
-                if (center_dist <= 2) {
-                    score += (3 - center_dist) * 2;
-                }
-            } else {
-                enemy_pieces++;
-                if (piece.piece_type == DraughtsPieceType.KING) {
-                    enemy_kings++;
-                    score -= 50;
-                } else {
-                    int advancement = (piece.color == PieceColor.RED)
-                        ? piece.position.row
-                        : (current_variant.board_size - 1 - piece.position.row);
-                    score -= advancement * 3;
-
-                    if (advancement >= current_variant.board_size - 2) {
-                        score -= 20;
-                    }
-                }
-
-                if ((piece.color == PieceColor.RED && piece.position.row == 0) ||
-                    (piece.color == PieceColor.BLACK && piece.position.row == current_variant.board_size - 1)) {
-                    enemy_back_row++;
-                }
-            }
-        }
-
-        // Material evaluation (piece count is most important)
-        score += (my_pieces - enemy_pieces) * 100;
-        score += (my_kings - enemy_kings) * 150;
-
-        // Back row defense bonus
-        score += (my_back_row - enemy_back_row) * 10;
-
-        // Win/loss detection
-        if (enemy_pieces == 0) {
-            return 100000; // Winning position
-        }
-        if (my_pieces == 0) {
-            return -100000; // Losing position
-        }
-
-        return score;
-    }
-
-    /**
      * View history at a specific position (read-only, doesn't modify game state)
      * Position -1 = game start, 0+ = after that move
      */
@@ -1901,7 +1019,8 @@ public class Draughts.DraughtsBoardAdapter : Object {
      * Check if it's currently AI's turn or AI is thinking
      */
     public bool is_ai_turn() {
-        if (ai_move_in_progress) {
+        // Check if AI is currently thinking
+        if (ai_controller.is_ai_thinking()) {
             return true;
         }
 
