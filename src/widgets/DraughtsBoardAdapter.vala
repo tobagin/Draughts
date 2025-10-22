@@ -140,7 +140,10 @@ public class Draughts.DraughtsBoardAdapter : Object {
         board_widget.set_player_perspective(Player.RED);
 
         // Check if the first player (red) is AI and should make the opening move
-        check_ai_turn();
+        if (current_game != null) {
+            var current_state = game_controller.get_current_state();
+            ai_controller.check_and_process_ai_turn.begin(current_game, current_state);
+        }
     }
 
     /**
@@ -219,7 +222,10 @@ public class Draughts.DraughtsBoardAdapter : Object {
         }
 
         // Check if the first player (red) is AI and should make the opening move
-        check_ai_turn();
+        if (current_game != null) {
+            var current_state = game_controller.get_current_state();
+            ai_controller.check_and_process_ai_turn.begin(current_game, current_state);
+        }
     }
 
     /**
