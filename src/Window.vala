@@ -2128,28 +2128,35 @@ namespace Draughts {
 
                 logger.info("PDN parsed successfully: %s", game_data.to_string());
 
-                // Show dialog with game information
-                var info_dialog = new Adw.AlertDialog(
-                    _("PDN Game Loaded"),
-                    _("Game: %s\nPlayers: %s vs %s\nVariant: %s\nMoves: %d\n\nNote: Full game replay from PDN will be available in a future version.").printf(
-                        game_data.event,
-                        game_data.red_player,
-                        game_data.black_player,
-                        game_data.variant,
-                        game_data.moves_notation.length
-                    )
-                );
-                info_dialog.add_response("ok", _("OK"));
-                info_dialog.set_default_response("ok");
-                info_dialog.set_close_response("ok");
-                info_dialog.present(this);
+                // Convert PDN to game record
+                var converter = new PDNConverter();
+                var game_record = converter.convert_pdn_to_game_record(pdn_content);
 
-                // TODO: Convert parsed moves to DraughtsMove objects and load into replay dialog
-                // This would require:
-                // 1. Creating a new game with the correct variant
-                // 2. Converting algebraic notation to DraughtsMove objects
-                // 3. Applying moves to build game state
-                // 4. Loading into GameReplayDialog
+                if (game_record == null) {
+                    var error_dialog = new Adw.AlertDialog(
+                        _("PDN Conversion Error"),
+                        _("Failed to convert PDN moves to game format. The notation may be invalid or use an unsupported variant.")
+                    );
+                    error_dialog.add_response("ok", _("OK"));
+                    error_dialog.set_default_response("ok");
+                    error_dialog.set_close_response("ok");
+                    error_dialog.present(this);
+                    return;
+                }
+
+                logger.info("PDN converted successfully: %d moves", game_record.total_moves);
+
+                // Open replay dialog with the loaded game
+                var replay_dialog = new GameReplayDialog(this, game_record);
+                replay_dialog.present(this);
+
+                // Show success toast
+                var toast = new Adw.Toast(_("PDN game loaded: %s vs %s (%d moves)").printf(
+                    game_record.red_player_name,
+                    game_record.black_player_name,
+                    game_record.total_moves
+                ));
+                toast_overlay.add_toast(toast);
 
             } catch (Error e) {
                 logger.error("Failed to open PDN file: %s", e.message);

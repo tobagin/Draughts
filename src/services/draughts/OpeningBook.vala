@@ -393,18 +393,152 @@ public class Draughts.OpeningBook : Object {
      * Add American Checkers common openings
      */
     private void add_american_openings() {
-        // This is a simplified example - a real implementation would load from PDN files
-        // For demonstration, we'll add a few common opening patterns
+        logger.info("Populating American Checkers openings...");
 
-        // Example: The popular "11-15" opening is handled by the initial state
-        logger.debug("Added American Checkers opening patterns");
+        var variant = DraughtsVariant.AMERICAN;
+        var initial_state = DraughtsGameState.create_initial_state(variant);
+        var rule_engine = new UnifiedRuleEngine(variant);
+
+        // Opening 1: Single Corner (11-15, 23-19)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "d6-e5"  // Common response
+        });
+
+        // Opening 2: Double Corner (11-15, 22-18, 15x22, 25x18, 8-11)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "c6-d5"
+        });
+
+        // Opening 3: Cross (11-15, 24-19)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "e6-d5"
+        });
+
+        // Opening 4: Denny (11-15, 23-18)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "b6-c5"
+        });
+
+        // Opening 5: Old Fourteenth (11-15, 22-17)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "a6-b5"
+        });
+
+        // Opening 6: Edinburgh (11-15, 24-20)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "e6-f5"
+        });
+
+        // Opening 7: Souter (11-15, 21-17)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "a7-b6"
+        });
+
+        // Opening 8: Will o' the Wisp (11-16)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-d4", "d6-e5"
+        });
+
+        // Opening 9: Bristol (11-16, 22-18)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-d4", "c6-d5"
+        });
+
+        // Opening 10: Defiance (10-15)
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "c3-d4", "d6-e5"
+        });
+
+        logger.info("Added 10 American Checkers opening patterns");
     }
 
     /**
      * Add International Draughts common openings
      */
     private void add_international_openings() {
-        logger.debug("Added International Draughts opening patterns");
+        logger.info("Populating International Draughts openings...");
+
+        var variant = DraughtsVariant.INTERNATIONAL;
+        var initial_state = DraughtsGameState.create_initial_state(variant);
+        var rule_engine = new UnifiedRuleEngine(variant);
+
+        // Opening 1: Coup Turc
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "d6-e5"
+        });
+
+        // Opening 2: Napoleon
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "f6-e5"
+        });
+
+        // Opening 3: Long Diagonal
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "f3-e4", "d6-e5"
+        });
+
+        // Opening 4: Symmetric
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "e3-f4", "e6-d5"
+        });
+
+        // Opening 5: Wagram
+        add_opening_sequence(initial_state, rule_engine, new string[] {
+            "g3-f4", "d6-e5"
+        });
+
+        logger.info("Added 5 International Draughts opening patterns");
+    }
+
+    /**
+     * Add an opening sequence to the database
+     */
+    private void add_opening_sequence(
+        DraughtsGameState initial_state,
+        IRuleEngine rule_engine,
+        string[] move_notations
+    ) {
+        var current_state = initial_state;
+        var parser = new PDNParser();
+
+        foreach (var notation in move_notations) {
+            // Find the move from notation
+            var legal_moves = rule_engine.generate_legal_moves(current_state);
+            DraughtsMove? found_move = null;
+
+            // Parse notation
+            string separator = "-";
+            if (notation.contains("x")) separator = "x";
+            else if (notation.contains(":")) separator = ":";
+
+            string[] parts = notation.split(separator);
+            if (parts.length != 2) continue;
+
+            var from_pos = parser.parse_position(parts[0].strip(), current_state.variant.board_size);
+            var to_pos = parser.parse_position(parts[1].strip(), current_state.variant.board_size);
+
+            if (from_pos == null || to_pos == null) continue;
+
+            // Find matching legal move
+            foreach (var legal_move in legal_moves) {
+                if (legal_move.from_position.equals(from_pos) &&
+                    legal_move.to_position.equals(to_pos)) {
+                    found_move = legal_move;
+                    break;
+                }
+            }
+
+            if (found_move == null) {
+                logger.warning("Could not find move: %s", notation);
+                break;
+            }
+
+            // Add to opening book
+            add_opening(current_state, found_move);
+
+            // Apply move to get next state
+            current_state = current_state.apply_move(found_move);
+        }
     }
 
     /**

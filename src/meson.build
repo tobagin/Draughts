@@ -10,6 +10,7 @@ draughts_sources = [
   'utils/KeyboardNavigationHandler.vala',
   'utils/AccessibilityAnnouncer.vala',
   'utils/PDNParser.vala',
+  'utils/PDNConverter.vala',
   'managers/SettingsManager.vala',
   'managers/SoundManager.vala',
   'managers/MoveHistoryManager.vala',
