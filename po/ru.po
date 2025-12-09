@@ -1,7 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Draughts package.
 #
-SPDX-FileCopyrightText: 2025 Вячеслав Малышев <ma12@rambler.ru>
 msgid ""
 msgstr ""
 "Project-Id-Version: Draughts 2.0.0\n"

@@ -80,6 +80,7 @@ configure_file(
 )
 
 # Subdirectories
+subdir('po')
 subdir('data')
 subdir('src')
 subdir('help')
