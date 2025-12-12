@@ -4,7 +4,7 @@ A comprehensive draughts (checkers) game for GNOME, featuring 16 international v
 
 ![Main Window](data/screenshots/main-window.png)
 
-**Current Version**: 2.0.3 | **Latest Update**: October 2025
+**Current Version**: 2.0.4 | **Latest Update**: December 2025
 
 ## Features
 
