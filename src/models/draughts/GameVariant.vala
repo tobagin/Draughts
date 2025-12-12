@@ -44,7 +44,7 @@ public class Draughts.GameVariant : Object {
                 break;
 
             case DraughtsVariant.INTERNATIONAL:
-                men_can_capture_backwards = false;
+                men_can_capture_backwards = true;
                 kings_can_fly = true;
                 mandatory_capture = true;
                 capture_priority = CapturePriority.LONGEST_SEQUENCE;
