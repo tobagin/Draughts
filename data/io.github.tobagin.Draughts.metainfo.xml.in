@@ -142,10 +142,10 @@
       <description>
         <p>AI Revolution Update</p>
         <ul>
-          <li><strong>Position Evaluator:</strong> Sophisticated board evaluation considering material, center control, and piece safety</li>
-          <li><strong>Opening Book:</strong> AI now uses standard openings (e.g., "Old Faithful") for stronger early game play</li>
-          <li><strong>New Icons:</strong> Fresh new application icons (Thanks to @oiimrosabel)</li>
-          <li><strong>Build Fixes:</strong> Resolved deprecation warnings and compilation issues</li>
+          <li>Position Evaluator: Sophisticated board evaluation considering material, center control, and piece safety</li>
+          <li>Opening Book: AI now uses standard openings (e.g., "Old Faithful") for stronger early game play</li>
+          <li>New Icons: Fresh new application icons (Thanks to @oiimrosabel)</li>
+          <li>Build Fixes: Resolved deprecation warnings and compilation issues</li>
         </ul>
       </description>
     </release>
