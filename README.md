@@ -80,15 +80,9 @@ For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md)
 
 ### Flatpak (Recommended)
 
-```bash
-# Install from Flathub (coming soon)
-flatpak install flathub io.github.tobagin.Draughts
+[![Get it on Flathub](https://flathub.org/api/badge)](https://flathub.org/en/apps/io.github.tobagin.Draughts)
 
-# Run the application
-flatpak run io.github.tobagin.Draughts
-```
-
-### Building from Source
+### From Source
 
 #### Requirements
 - Vala >= 0.56
