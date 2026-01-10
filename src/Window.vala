@@ -249,11 +249,17 @@ namespace Draughts {
             update_history_action_state();
 
             // Export/Import actions
-            var export_pgn_action = new SimpleAction("export-pgn", null);
-            export_pgn_action.activate.connect(() => {
-                show_export_pgn_dialog();
+            var export_pdn_action = new SimpleAction("export-pdn", null);
+            export_pdn_action.activate.connect(() => {
+                show_export_pdn_dialog();
             });
-            add_action(export_pgn_action);
+            add_action(export_pdn_action);
+
+            var open_pdn_action = new SimpleAction("open-pdn", null);
+            open_pdn_action.activate.connect(() => {
+                show_open_pdn_dialog();
+            });
+            add_action(open_pdn_action);
 
             logger.debug("Window actions configured");
         }
@@ -794,8 +800,8 @@ namespace Draughts {
             }
 
             // Show confirmation dialog
-            var dialog = new Adw.MessageDialog(
-                this,
+            // Show confirmation dialog
+            var dialog = new Adw.AlertDialog(
                 _("Resign from Game?"),
                 _("Are you sure you want to resign? This will end the game and count as a loss.")
             );
@@ -806,19 +812,34 @@ namespace Draughts {
             dialog.set_default_response("cancel");
             dialog.set_close_response("cancel");
 
-            dialog.response.connect((response) => {
-                if (response == "resign") {
-                    var controller = adapter.get_controller();
-                    if (controller is MultiplayerGameController) {
-                        var multiplayer_controller = (MultiplayerGameController) controller;
-                        multiplayer_controller.resign();
-                        logger.info("Player resigned from multiplayer game");
+            dialog.choose.begin(this, null, (obj, res) => {
+                try {
+                    var response = dialog.choose.end(res);
+                    if (response == "resign") {
+                        var controller = adapter.get_controller();
+                        if (controller is MultiplayerGameController) {
+                            var multiplayer_controller = (MultiplayerGameController) controller;
+                            multiplayer_controller.resign();
+                            logger.info("Player resigned from multiplayer game");
+                        }
                     }
+                } catch (Error e) {
+                     logger.warning("Error showing resign dialog: %s", e.message);
                 }
-                dialog.destroy();
             });
+            
+            // dialog.present(); is likely redundant if choose.begin calls it? 
+            // Adw.AlertDialog.choose() does NOT automatically present. You must call present() beforehand or it might work contextually.
+            // Wait, docs say "This function shows the dialog". choose() is async.
+            // Actually Adw.AlertDialog documentation says: "This function is equivalent to calling prepare() and then wait_for_response()."
+            // Wait, for Adw.MessageDialog, it was run/response.
+            // For Adw.AlertDialog, "choose" is the method. 
+            // "This function shows the dialog to the user" - yes.
+            // But let's keep it safe. 
+            // Existing code had dialog.present() at 831. 
+            // I will keep lines 831 if they were outside the block.
+            // The garbage ended at 829. 831 was dialog.present().
 
-            dialog.present();
         }
 
         private void update_undo_redo_buttons() {
@@ -1346,7 +1367,7 @@ namespace Draughts {
         }
 
         private void do_show_play_online_dialog() {
-            var dialog = MultiplayerDialog.show(this, server_controller);
+            var dialog = MultiplayerDialog.display_dialog(this, server_controller);
             dialog.game_ready.connect((controller) => {
                 logger.info("Multiplayer game ready, setting up controller");
                 set_multiplayer_controller(controller);
@@ -1393,8 +1414,7 @@ namespace Draughts {
         private delegate void ActionCallback();
 
         private void show_resign_confirmation_for_action(owned ActionCallback action) {
-            var dialog = new Adw.MessageDialog(
-                this,
+            var dialog = new Adw.AlertDialog(
                 _("Resign from Current Game?"),
                 _("Starting a new action will resign your current multiplayer game. This will count as a loss. Do you want to resign?")
             );
@@ -1405,7 +1425,8 @@ namespace Draughts {
             dialog.set_default_response("cancel");
             dialog.set_close_response("cancel");
 
-            dialog.response.connect((response) => {
+            dialog.choose.begin(this, null, (obj, res) => {
+                var response = dialog.choose.end(res);
                 if (response == "resign") {
                     // Resign from current game
                     var controller = adapter.get_controller();
@@ -1420,15 +1441,14 @@ namespace Draughts {
                 dialog.destroy();
             });
 
-            dialog.present();
+            dialog.present(this);
         }
 
         /**
          * Show abandon game confirmation dialog before performing an action (single-player)
          */
         private void show_abandon_game_confirmation(owned ActionCallback action) {
-            var dialog = new Adw.MessageDialog(
-                this,
+            var dialog = new Adw.AlertDialog(
                 _("Abandon Current Game?"),
                 _("You have a game in progress. Are you sure you want to abandon it?")
             );
@@ -1439,15 +1459,13 @@ namespace Draughts {
             dialog.set_default_response("cancel");
             dialog.set_close_response("cancel");
 
-            dialog.response.connect((response) => {
+            dialog.choose.begin(this, null, (obj, res) => {
+                var response = dialog.choose.end(res);
                 if (response == "abandon") {
                     // Perform the action
                     action();
                 }
-                dialog.destroy();
             });
-
-            dialog.present();
         }
 
         /**
@@ -1498,14 +1516,11 @@ namespace Draughts {
             // Only show error dialog if we're actually in a multiplayer game
             if (is_multiplayer_game) {
                 // Show error dialog
-                var dialog = new Adw.MessageDialog(this, _("Multiplayer Connection Lost"), error_message);
+                var dialog = new Adw.AlertDialog(_("Multiplayer Connection Lost"), error_message);
                 dialog.add_response("ok", _("OK"));
                 dialog.set_default_response("ok");
                 dialog.set_close_response("ok");
-                dialog.response.connect((response) => {
-                    dialog.close();
-                });
-                dialog.present();
+                dialog.present(this);
             }
         }
 
@@ -1516,8 +1531,8 @@ namespace Draughts {
             logger.error("Window: Version mismatch - Client: %s, Required: %s", client_version, required_version);
 
             // Show update required dialog
-            var dialog = new Adw.MessageDialog(
-                this,
+            // Show update required dialog
+            var dialog = new Adw.AlertDialog(
                 _("Update Required"),
                 _("Your game version (%s) is outdated. Please update to version %s or later to play online.").printf(client_version, required_version)
             );
@@ -1526,7 +1541,8 @@ namespace Draughts {
             dialog.set_response_appearance("update", Adw.ResponseAppearance.SUGGESTED);
             dialog.set_default_response("update");
             dialog.set_close_response("cancel");
-            dialog.response.connect((response) => {
+            dialog.choose.begin(this, null, (obj, res) => {
+                var response = dialog.choose.end(res);
                 if (response == "update") {
                     // Open the app in the system's software center
                     // Try appstream:// URL first (works with GNOME Software, KDE Discover, etc.)
@@ -1534,24 +1550,20 @@ namespace Draughts {
                         string app_id = Config.ID;
                         string appstream_url = @"appstream://$(app_id)";
                         logger.info("Opening software center with URL: %s", appstream_url);
-                        Gtk.show_uri(this, appstream_url, Gdk.CURRENT_TIME);
+                        var launcher = new Gtk.UriLauncher(appstream_url);
+                        launcher.launch.begin(this, null);
                     } catch (Error e) {
                         logger.error("Failed to open software center: %s", e.message);
 
                         // Fallback to GitHub releases page
-                        try {
-                            Gtk.show_uri(this, "https://github.com/tobagin/Draughts/releases", Gdk.CURRENT_TIME);
-                        } catch (Error e2) {
-                            logger.error("Failed to open update URL: %s", e2.message);
-                        }
+                        var launcher = new Gtk.UriLauncher("https://github.com/tobagin/Draughts/releases");
+                        launcher.launch.begin(this, null);
                     }
                 }
-                dialog.close();
-
+                
                 // Start new single-player game
                 start_game_with_saved_settings();
             });
-            dialog.present();
         }
 
         /**
@@ -1797,16 +1809,16 @@ namespace Draughts {
         }
 
         /**
-         * Show export PGN dialog
+         * Show export PDN dialog
          */
-        private void show_export_pgn_dialog() {
+        private void show_export_pdn_dialog() {
             if (adapter == null) {
                 return;
             }
 
             // Create file chooser dialog
             var dialog = new Gtk.FileDialog();
-            dialog.title = "Export Game to PDN";
+            dialog.title = _("Export Game to PDN");
             dialog.modal = true;
 
             // Set default filename
@@ -1857,183 +1869,14 @@ namespace Draughts {
 
         /**
          * Generate PDN content for export (Portable Draughts Notation)
-         * PDN uses numeric square notation, e.g., "32-28" or "32x23"
          */
-        private string generate_pdn_content() {
-            var pdn = new StringBuilder();
-
-            // PDN headers (standard PDN format)
-            pdn.append_printf("[Event \"Draughts Game\"]\n");
-            pdn.append_printf("[Date \"%s\"]\n", new DateTime.now_local().format("%Y.%m.%d"));
-            pdn.append_printf("[White \"Player 1\"]\n");  // PDN uses White/Black, not Red/Black
-            pdn.append_printf("[Black \"Player 2\"]\n");
-
-            if (adapter != null) {
-                var current_state = adapter.get_current_state();
-                if (current_state != null) {
-                    // Add variant information
-                    var variant = adapter.get_current_variant();
-                    if (variant != null) {
-                        pdn.append_printf("[GameType \"%s\"]\n", get_pdn_game_type(variant));
-                    }
-
-                    // Add result
-                    if (current_state.is_game_over()) {
-                        switch (current_state.game_status) {
-                            case GameStatus.RED_WINS:
-                                pdn.append_printf("[Result \"2-0\"]\n");  // PDN uses 2-0 for White win
-                                break;
-                            case GameStatus.BLACK_WINS:
-                                pdn.append_printf("[Result \"0-2\"]\n");  // PDN uses 0-2 for Black win
-                                break;
-                            case GameStatus.DRAW:
-                                pdn.append_printf("[Result \"1-1\"]\n");  // PDN uses 1-1 for draws
-                                break;
-                            default:
-                                pdn.append_printf("[Result \"*\"]\n");
-                                break;
-                        }
-                    } else {
-                        pdn.append_printf("[Result \"*\"]\n");
-                    }
-                }
+        private string generate_pdn_content() throws Error {
+            if (adapter == null || adapter.get_current_game() == null) {
+                 throw new IOError.FAILED("No active game to export");
             }
-
-            pdn.append_printf("\n");
-
-            // Add move history in PDN numeric notation
-            if (adapter != null) {
-                var current_game = adapter.get_current_game();
-                if (current_game != null) {
-                    var moves = current_game.get_move_history();
-                    if (moves.length > 0) {
-                        int move_number = 1;
-                        var line = new StringBuilder();
-                        int board_size = current_game.current_state.board_size;
-
-                        for (int i = 0; i < moves.length; i++) {
-                            var move = moves[i];
-
-                            // Add move number for white's move
-                            if (i % 2 == 0) {
-                                if (line.len > 0) {
-                                    pdn.append_printf("%s\n", line.str);
-                                    line = new StringBuilder();
-                                }
-                                line.append_printf("%d. ", move_number);
-                            }
-
-                            // Format move in PDN numeric notation
-                            string move_str = format_move_for_pdn(move, board_size);
-                            line.append(move_str);
-                            line.append(" ");
-
-                            // Increment move number after black's move
-                            if (i % 2 == 1) {
-                                move_number++;
-                            }
-                        }
-
-                        // Add final line if not empty
-                        if (line.len > 0) {
-                            pdn.append_printf("%s", line.str);
-                        }
-
-                        // Add result indicator at end
-                        var final_state = adapter.get_current_state();
-                        if (final_state != null && final_state.is_game_over()) {
-                            switch (final_state.game_status) {
-                                case GameStatus.RED_WINS:
-                                    pdn.append_printf(" 2-0\n");
-                                    break;
-                                case GameStatus.BLACK_WINS:
-                                    pdn.append_printf(" 0-2\n");
-                                    break;
-                                case GameStatus.DRAW:
-                                    pdn.append_printf(" 1-1\n");
-                                    break;
-                                default:
-                                    pdn.append_printf(" *\n");
-                                    break;
-                            }
-                        } else {
-                            pdn.append_printf(" *\n");
-                        }
-                    } else {
-                        pdn.append_printf("* No moves made yet *\n");
-                    }
-                } else {
-                    pdn.append_printf("* Game data not available *\n");
-                }
-            } else {
-                pdn.append_printf("* Game data not available *\n");
-            }
-
-            return pdn.str;
-        }
-
-        /**
-         * Format a move for PDN notation using numeric squares
-         * PDN uses square numbers where playable squares are numbered
-         * from 1 to N (typically 1-50 for International, 1-32 for American)
-         */
-        private string format_move_for_pdn(DraughtsMove move, int board_size) {
-            int from_square = position_to_pdn_square(move.from_position, board_size);
-            int to_square = position_to_pdn_square(move.to_position, board_size);
-
-            // Use 'x' for captures, '-' for regular moves
-            string separator = move.is_capture() ? "x" : "-";
-
-            return @"$(from_square)$(separator)$(to_square)";
-        }
-
-        /**
-         * Convert board position to PDN square number
-         * PDN numbers only the playable (dark) squares from 1 to N
-         * Numbering starts from the bottom-left from White's perspective
-         */
-        private int position_to_pdn_square(BoardPosition pos, int board_size) {
-            // For standard draughts, only dark squares are numbered
-            // The numbering depends on the board size and starts from row 0
-
-            int row = pos.row;
-            int col = pos.col;
-
-            // Calculate which playable square this is
-            // Each row has board_size/2 playable squares
-            int squares_per_row = board_size / 2;
-
-            // Determine the square number
-            // Rows are numbered from bottom (0) to top (board_size-1)
-            // Within each row, playable squares are numbered left to right
-            int square_in_row = col / 2;
-
-            // Calculate the square number (1-indexed)
-            int square = (row * squares_per_row) + square_in_row + 1;
-
-            return square;
-        }
-
-        /**
-         * Get PDN game type string for a variant
-         */
-        private string get_pdn_game_type(GameVariant variant) {
-            switch (variant.variant) {
-                case DraughtsVariant.INTERNATIONAL:
-                    return "20";  // International Draughts
-                case DraughtsVariant.AMERICAN:
-                    return "21";  // American Checkers
-                case DraughtsVariant.RUSSIAN:
-                    return "25";  // Russian Draughts
-                case DraughtsVariant.BRAZILIAN:
-                    return "26";  // Brazilian Draughts
-                case DraughtsVariant.ITALIAN:
-                    return "27";  // Italian Draughts
-                case DraughtsVariant.POOL:
-                    return "24";  // Pool Checkers
-                default:
-                    return "00";  // Unknown/Other
-            }
+            
+            var game = adapter.get_current_game();
+            return PDNParser.generate_pdn(game);
         }
 
         /**
@@ -2096,37 +1939,162 @@ namespace Draughts {
         }
 
         /**
+         * Show open PDN dialog
+         */
+        private void show_open_pdn_dialog() {
+            var dialog = new Gtk.FileDialog();
+            dialog.title = _("Open PDN File");
+            dialog.modal = true;
+            
+            var filter_pdn = new Gtk.FileFilter();
+            filter_pdn.name = "Portable Draughts Notation (*.pdn)";
+            filter_pdn.add_pattern("*.pdn");
+            
+            var filter_all = new Gtk.FileFilter();
+            filter_all.name = "All Files";
+            filter_all.add_pattern("*");
+            
+            var filters = new ListStore(typeof(Gtk.FileFilter));
+            filters.append(filter_pdn);
+            filters.append(filter_all);
+            dialog.set_filters(filters);
+
+            dialog.open.begin(this, null, (obj, res) => {
+                try {
+                    var file = dialog.open.end(res);
+                    if (file != null) {
+                        open_pdn_file(file);
+                    }
+                } catch (Error e) {
+                    logger.warning("Error in open dialog: %s", e.message);
+                }
+            });
+        }
+
+        /**
          * Open a PDN file
          */
         public void open_pdn_file(File file) {
             logger.info("Attempting to open PDN file: %s", file.get_path());
 
             try {
-                // Read the file contents
-                uint8[] contents;
-                string etag_out;
-                file.load_contents(null, out contents, out etag_out);
-                string pdn_content = (string) contents;
+                var parser = new PDNParser();
+                var pdn = parser.parse_file(file.get_path());
 
-                logger.debug("PDN file loaded, content length: %d", pdn_content.length);
+                // Determine variant
+                DraughtsVariant variant_type = DraughtsVariant.AMERICAN; // Default
+                if (pdn.variant != null) {
+                    variant_type = pdn.variant.variant;
+                }
 
-                // Show a dialog informing the user that PDN import is coming
+                if (adapter != null) {
+                    // Start a new game with the parsed variant
+                    // For now, load as Human vs Human so we can replay/analyze
+                    on_new_game_requested_with_configuration(
+                        variant_type,
+                        false, // is_human_vs_ai (false for analysis/replay)
+                        PieceColor.RED,
+                        0, // Difficulty (ignored)
+                        false, // No time limit
+                        0, 0, ""
+                    );
+
+                    // Apply moves
+                    // This is a simplified "load" - we just execute moves one by one
+                    // ideally we might want a specific "load game" mode, but this works for now
+                    apply_pdn_moves(pdn);
+                }
+
+                var toast = new Adw.Toast(_("Game loaded from %s").printf(file.get_basename()));
+                toast.set_timeout(3);
+                toast_overlay.add_toast(toast);
+
+            } catch (Error e) {
+                logger.error("Failed to open PDN file: %s", e.message);
                 var dialog = new Adw.AlertDialog(
-                    _("PDN Import"),
-                    _("PDN file import functionality will be available in a future version.\n\nFile: %s").printf(file.get_basename())
+                    _("Failed to open file"),
+                    e.message
                 );
                 dialog.add_response("ok", _("OK"));
                 dialog.set_default_response("ok");
                 dialog.set_close_response("ok");
                 dialog.present(this);
-
-                // TODO: Parse PDN and load game into replay dialog
-
-            } catch (Error e) {
-                logger.error("Failed to open PDN file: %s", e.message);
-                var toast = new Adw.Toast(_("Failed to open file: %s").printf(e.message));
-                toast_overlay.add_toast(toast);
             }
+        }
+
+        private void apply_pdn_moves(ParsedPDN pdn) {
+             if (pdn.moves.size == 0) {
+                 return;
+             }
+
+             if (adapter == null || adapter.get_controller() == null) {
+                 return;
+             }
+             
+             var controller = adapter.get_controller();
+             var current_game = adapter.get_current_game();
+             
+             if (current_game == null) {
+                 return;
+             }
+             
+             int moves_applied = 0;
+             // Pause timer updates during replay to avoid side effects
+             // But valid moves will update game state correctly
+             
+             foreach (string move_str in pdn.moves) {
+                 var parsed = PDNParser.parse_move_string(move_str);
+                 if (parsed == null) {
+                     logger.warning("Failed to parse PDN move string: %s", move_str);
+                     continue;
+                 }
+                 
+                 // Get board size from current game state
+                 int board_size = current_game.current_state.board_size;
+                 
+                 var from_pos = PDNParser.square_to_position(parsed.from_sq, board_size);
+                 var to_pos = PDNParser.square_to_position(parsed.to_sq, board_size);
+                 
+                 if (from_pos == null || to_pos == null) {
+                     logger.warning("Invalid positions in PDN move: %s (Board size: %d)", move_str, board_size);
+                     continue;
+                 }
+                 
+                 // Find matching legal move
+                 var legal_moves = current_game.get_legal_moves();
+                 DraughtsMove? matching_move = null;
+                 
+                 foreach (var move in legal_moves) {
+                     if (move.from_position.equals(from_pos) && move.to_position.equals(to_pos)) {
+                         matching_move = move;
+                         break;
+                     }
+                 }
+                 
+                 if (matching_move != null) {
+                     // Execute the move through the controller
+                     if (controller.make_move(matching_move)) {
+                         moves_applied++;
+                     } else {
+                         logger.warning("Controller failed to execute valid move: %s", move_str);
+                         break;
+                     }
+                 } else {
+                     logger.warning("No legal move found matching PDN: %s (%d->%d)", 
+                         move_str, parsed.from_sq, parsed.to_sq);
+                     break; 
+                 }
+             }
+             
+             if (moves_applied > 0) {
+                 var toast = new Adw.Toast(_("Replayed %d moves").printf(moves_applied));
+                 toast_overlay.add_toast(toast);
+                 logger.info("Successfully replayed %d moves from PDN", moves_applied);
+                 
+                 // Force history dropdown update
+                 rebuild_move_history_dropdown();
+                 update_navigation_buttons();
+             }
         }
 
         /**

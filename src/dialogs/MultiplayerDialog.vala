@@ -630,7 +630,7 @@ public class Draughts.MultiplayerDialog : Adw.Dialog {
     /**
      * Static method to show the dialog
      */
-    public static MultiplayerDialog show(Gtk.Window parent, MultiplayerGameController? existing_controller = null) {
+    public static MultiplayerDialog display_dialog(Gtk.Window parent, MultiplayerGameController? existing_controller = null) {
         var dialog = new MultiplayerDialog(existing_controller);
         dialog.present(parent);
         return dialog;

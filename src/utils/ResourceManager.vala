@@ -473,7 +473,7 @@ namespace Draughts {
             }
         }
 
-        private Gdk.Pixbuf generate_fallback_piece(PieceColor color, DraughtsPieceType piece_type, int size) {
+        private Gdk.Pixbuf? generate_fallback_piece(PieceColor color, DraughtsPieceType piece_type, int size) {
             // Generate a simple colored circle as fallback
             var surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, size, size);
             var cr = new Cairo.Context(surface);
@@ -516,7 +516,22 @@ namespace Draughts {
             }
 
             try {
-                return Gdk.pixbuf_get_from_surface(surface, 0, 0, size, size);
+                // Use intermediate PNG stream to convert Cairo Surface to Gdk.Pixbuf
+                // This avoids deprecated gdk_pixbuf_get_from_surface
+                var output_stream = new MemoryOutputStream (null, GLib.realloc, GLib.free);
+                surface.write_to_png_stream ((data) => {
+                    try {
+                        output_stream.write_all (data, null);
+                        return Cairo.Status.SUCCESS;
+                    } catch (Error e) {
+                        return Cairo.Status.WRITE_ERROR;
+                    }
+                });
+                output_stream.close();
+
+                var bytes = output_stream.steal_as_bytes();
+                var input_stream = new MemoryInputStream.from_bytes(bytes);
+                return new Gdk.Pixbuf.from_stream(input_stream, null);
             } catch (Error e) {
                 logger.error("Failed to generate fallback piece: %s", e.message);
                 return null;

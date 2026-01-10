@@ -130,8 +130,14 @@ install_data([
 ], install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps')
 
 # Install SVG application icon
+if get_option('profile') == 'development'
+  app_icon = 'icons/hicolor/scalable/apps/io.github.tobagin.Draughts.Devel.svg'
+else
+  app_icon = 'icons/hicolor/scalable/apps/io.github.tobagin.Draughts.svg'
+endif
+
 install_data(
-  'icons/hicolor/scalable/apps/io.github.tobagin.Draughts.svg',
+  app_icon,
   install_dir: get_option('datadir') / 'icons/hicolor/scalable/apps',
   rename: '@0@.svg'.format(project_id)
 )

@@ -24,6 +24,8 @@ public class Draughts.DraughtsBoardAdapter : Object {
     private bool pending_move_is_ai = false;
     private DraughtsMove[]? multi_jump_sequence = null;
     private int multi_jump_index = 0;
+    private PositionEvaluator ai_evaluator;
+    private OpeningBook opening_book;
 
     // Signal for game events
     public signal void game_state_changed(DraughtsGameState new_state);
@@ -39,6 +41,8 @@ public class Draughts.DraughtsBoardAdapter : Object {
 
         // Create game controller
         this.game_controller = new GameController();
+        this.ai_evaluator = new PositionEvaluator();
+        this.opening_book = new OpeningBook();
 
         // Set board widget to external mode so we handle moves
         board_widget.set_external_mode(true);
@@ -58,6 +62,8 @@ public class Draughts.DraughtsBoardAdapter : Object {
         board_widget.square_clicked.connect(on_board_square_clicked);
         board_widget.animation_completed.connect(on_animation_completed);
     }
+
+
 
     /**
      * Start a new game with the specified variant
@@ -1391,6 +1397,20 @@ public class Draughts.DraughtsBoardAdapter : Object {
      * Select an AI move based on difficulty level
      */
     private DraughtsMove select_ai_move_by_difficulty(DraughtsMove[] legal_moves, DraughtsGameState state, IRuleEngine rule_engine, AIDifficulty difficulty) {
+        // Check opening book for non-beginner levels
+        if (difficulty != AIDifficulty.BEGINNER) {
+             var opening_move = opening_book.get_move(state);
+             if (opening_move != null) {
+                 foreach (var move in legal_moves) {
+                     if (move.from_position.equals(opening_move.from_position) && 
+                         move.to_position.equals(opening_move.to_position)) {
+                         logger.debug("AI playing opening book move: %s".printf(move.to_string()));
+                         return move;
+                     }
+                 }
+             }
+        }
+
         switch (difficulty) {
             case AIDifficulty.BEGINNER:
                 return select_beginner_move(legal_moves);
@@ -1760,85 +1780,15 @@ public class Draughts.DraughtsBoardAdapter : Object {
     /**
      * Evaluate the current position with advanced heuristics from AI's perspective
      */
+    /**
+     * Evaluate the advantage of the AI player in the given board state
+     * A positive score means the AI is winning
+     */
     private int evaluate_position(DraughtsGameState state, PieceColor ai_color) {
-        int score = 0;
-        int my_pieces = 0;
-        int enemy_pieces = 0;
-        int my_kings = 0;
-        int enemy_kings = 0;
-        int my_back_row = 0;
-        int enemy_back_row = 0;
-
-        foreach (var piece in state.pieces) {
-            if (piece.color == ai_color) {
-                my_pieces++;
-                if (piece.piece_type == DraughtsPieceType.KING) {
-                    my_kings++;
-                    // Kings get bonus for mobility
-                    score += 50;
-                } else {
-                    // Regular pieces get bonus for advancement
-                    int advancement = (ai_color == PieceColor.RED)
-                        ? piece.position.row
-                        : (current_variant.board_size - 1 - piece.position.row);
-                    score += advancement * 3;
-
-                    // Bonus for being close to promotion
-                    if (advancement >= current_variant.board_size - 2) {
-                        score += 20;
-                    }
-                }
-
-                // Back row defense (important in endgame)
-                if ((ai_color == PieceColor.RED && piece.position.row == 0) ||
-                    (ai_color == PieceColor.BLACK && piece.position.row == current_variant.board_size - 1)) {
-                    my_back_row++;
-                }
-
-                // Center control bonus
-                int center_dist = calculate_center_distance(piece.position);
-                if (center_dist <= 2) {
-                    score += (3 - center_dist) * 2;
-                }
-            } else {
-                enemy_pieces++;
-                if (piece.piece_type == DraughtsPieceType.KING) {
-                    enemy_kings++;
-                    score -= 50;
-                } else {
-                    int advancement = (piece.color == PieceColor.RED)
-                        ? piece.position.row
-                        : (current_variant.board_size - 1 - piece.position.row);
-                    score -= advancement * 3;
-
-                    if (advancement >= current_variant.board_size - 2) {
-                        score -= 20;
-                    }
-                }
-
-                if ((piece.color == PieceColor.RED && piece.position.row == 0) ||
-                    (piece.color == PieceColor.BLACK && piece.position.row == current_variant.board_size - 1)) {
-                    enemy_back_row++;
-                }
-            }
-        }
-
-        // Material evaluation (piece count is most important)
-        score += (my_pieces - enemy_pieces) * 100;
-        score += (my_kings - enemy_kings) * 150;
-
-        // Back row defense bonus
-        score += (my_back_row - enemy_back_row) * 10;
-
-        // Win/loss detection
-        if (enemy_pieces == 0) {
-            return 100000; // Winning position
-        }
-        if (my_pieces == 0) {
-            return -100000; // Losing position
-        }
-
-        return score;
+        // Use the new PositionEvaluator service
+        // Convert the double score to int for compatibility with existing minimax
+        // Multiplier helps maintain precision when converting to int
+        return (int) (ai_evaluator.evaluate(state, ai_color) * 100);
     }
 
     /**

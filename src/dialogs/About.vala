@@ -20,7 +20,7 @@ public class DraughtsAboutDialog : GLib.Object {
         
         var developers = new string[] { "Thiago Fernandes", null };
         var designers = new string[] { "Thiago Fernandes", null };
-        var artists = new string[] { "Thiago Fernandes", null };
+        var artists = new string[] { "Thiago Fernandes", "oiimrosabel", null };
         
         string comments = "A modern, native GTK4/LibAdwaita App Template";
         if (Config.ID.contains("Devel")) {

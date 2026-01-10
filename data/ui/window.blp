@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $DraughtsWindow : Adw.ApplicationWindow {
+template $DraughtsWindow: Adw.ApplicationWindow {
   // Mobile breakpoint for narrow screens
   Adw.Breakpoint {
     condition ("max-width: 550px")
@@ -43,7 +43,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
         tooltip-text: _("Resign from Game");
         visible: false;
 
-        styles ["destructive-action"]
+        styles [
+          "destructive-action",
+        ]
       }
 
       [end]
@@ -57,7 +59,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
           visible: true;
           opacity: 0.5;
 
-          styles ["error"]
+          styles [
+            "error",
+          ]
         }
 
         Gtk.MenuButton menu_button {
@@ -84,7 +88,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
           vexpand: true;
           visible: false;
 
-          styles ["pause-overlay"]
+          styles [
+            "pause-overlay",
+          ]
 
           Gtk.Box {
             orientation: vertical;
@@ -98,13 +104,19 @@ template $DraughtsWindow : Adw.ApplicationWindow {
               label: _("Paused");
               halign: center;
               valign: center;
-              styles ["paused-text"]
+
+              styles [
+                "paused-text",
+              ]
             }
 
             Gtk.Label {
               label: _("Press Play to resume");
               halign: center;
-              styles ["pause-subtitle"]
+
+              styles [
+                "pause-subtitle",
+              ]
             }
           }
         }
@@ -118,7 +130,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
           vexpand: true;
           visible: false;
 
-          styles ["pause-overlay"]
+          styles [
+            "pause-overlay",
+          ]
 
           Gtk.Box {
             orientation: vertical;
@@ -132,19 +146,28 @@ template $DraughtsWindow : Adw.ApplicationWindow {
               label: _("Opponent Disconnected");
               halign: center;
               valign: center;
-              styles ["paused-text"]
+
+              styles [
+                "paused-text",
+              ]
             }
 
             Gtk.Label disconnect_message {
               label: _("Waiting for reconnection...");
               halign: center;
-              styles ["pause-subtitle"]
+
+              styles [
+                "pause-subtitle",
+              ]
             }
 
             Gtk.Label disconnect_countdown {
               label: "30";
               halign: center;
-              styles ["disconnect-countdown"]
+
+              styles [
+                "disconnect-countdown",
+              ]
             }
           }
         }
@@ -160,7 +183,6 @@ template $DraughtsWindow : Adw.ApplicationWindow {
           valign: fill;
           hexpand: true;
           vexpand: true;
-
         }
       };
     }
@@ -175,7 +197,9 @@ template $DraughtsWindow : Adw.ApplicationWindow {
         halign: end;
         hexpand: true;
 
-        styles ["linked"]
+        styles [
+          "linked",
+        ]
 
         Gtk.Button first_move_button {
           icon-name: "go-first-symbolic";
@@ -221,12 +245,20 @@ template $DraughtsWindow : Adw.ApplicationWindow {
 
         Gtk.Label red_timer_display {
           label: "5:00";
-          styles ["timer-display", "timer-red"]
+
+          styles [
+            "timer-display",
+            "timer-red",
+          ]
         }
 
         Gtk.Label black_timer_display {
           label: "5:00";
-          styles ["timer-display", "timer-black"]
+
+          styles [
+            "timer-display",
+            "timer-black",
+          ]
         }
       }
     }
@@ -234,7 +266,10 @@ template $DraughtsWindow : Adw.ApplicationWindow {
 }
 
 Gtk.StringList move_history_model {
-  strings [_("Game Start")]
+  strings [
+    _("Game Start")
+    ,
+  ]
 }
 
 menu primary_menu {
@@ -257,14 +292,26 @@ menu primary_menu {
       accel: "<primary>r";
     }
   }
+
   section {
     item {
       label: _("Game _History");
       action: "win.show-history";
       accel: "<primary>h";
     }
-  }
 
+    item {
+      label: _("_Open Game...");
+      action: "win.open-pdn";
+      accel: "<primary>o";
+    }
+
+    item {
+      label: _("_Export Game...");
+      action: "win.export-pdn";
+      accel: "<primary>e";
+    }
+  }
 
   section {
     item {
