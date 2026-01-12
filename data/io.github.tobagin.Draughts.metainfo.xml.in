@@ -4,72 +4,65 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>@NAME@</name>
-  <summary>Play draughts (checkers) with 16 variants, AI opponents, and online multiplayer</summary>
+  <summary>Play 16 draughts variants online</summary>
+  <branding>
+    <color type="primary" scheme_preference="light">#f0d9b5</color>
+    <color type="primary" scheme_preference="dark">#8B4513</color>
+  </branding>
   <description>
     <p>
-      Draughts is a comprehensive checkers/draughts game featuring 16 international game variants,
-      multiple AI difficulty levels, online multiplayer, and a beautiful modern interface built with GTK4 and LibAdwaita.
-      Whether you're a casual player or a serious competitor, Draughts offers engaging gameplay
-      for players of all skill levels - play against AI, friends locally, or opponents online!
+      Draughts is a comprehensive game featuring 16 international game variants,
+      multiple AI difficulty levels, online multiplayer, and a modern interface.
+      It offers engaging gameplay for players of all skill levels with support for local and
+      online matches against friends or AI.
     </p>
     <p>Game Features:</p>
     <ul>
-      <li>16 international draughts variants including American Checkers, International Draughts, Russian, Brazilian, and more</li>
+      <li>16 international variants including American, Russian, Brazilian, and Frisian</li>
       <li>10 AI difficulty levels from Beginner to Grandmaster</li>
-      <li>Online multiplayer with quick match, room hosting, and session persistence</li>
-      <li>Human vs Human (local and online), Human vs AI, and AI vs AI gameplay modes</li>
-      <li>Complete move history with undo/redo support</li>
-      <li>PDN (Portable Draughts Notation) export for game analysis</li>
-      <li>Multiple board themes and piece styles (plastic, wood, metal, bottle-cap)</li>
-      <li>Timer modes: countdown, Fischer increment, and Bronstein delay</li>
+      <li>Online multiplayer with quick match, private rooms, and session persistence</li>
+      <li>Multiple board themes and piece styles</li>
+      <li>Complete move history with undo/redo and PDN export</li>
     </ul>
-    <p>Accessibility and Polish:</p>
-    <ul>
-      <li>Sound effects for moves, captures, and game events</li>
-      <li>Keyboard navigation and screen reader support</li>
-      <li>High contrast mode for better visibility</li>
-      <li>Smooth animations and visual feedback</li>
-      <li>Game history browser with replay functionality</li>
-      <li>Comprehensive rules documentation for each variant</li>
-      <li>Adaptive board orientation - your pieces always at the bottom</li>
-    </ul>
+    <p>
+      The game ensures a polished experience with sound effects, keyboard navigation,
+      high contrast modes, smooth animations, and game history replay. It also
+      includes comprehensive rules documentation for every variant and adaptive
+      board orientation.
+    </p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>Main game window with active gameplay</caption>
+      <caption>Main game window</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/main-window.png</image>
     </screenshot>
     <screenshot>
-      <caption>New game setup dialog with variant selection</caption>
+      <caption>New game setup</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/new-game.png</image>
     </screenshot>
     <screenshot>
-      <caption>Active game with piece movement</caption>
-      <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/game-playing.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Game paused overlay</caption>
+      <caption>Paused game overlay</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/game-paused.png</image>
     </screenshot>
     <screenshot>
-      <caption>Game history browser with saved games</caption>
+      <caption>Game history</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/game-history.png</image>
     </screenshot>
     <screenshot>
-      <caption>Replay previous games from history</caption>
-      <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/replay-game-history.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Preferences with customization options</caption>
+      <caption>Preferences</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/preferences.png</image>
     </screenshot>
     <screenshot>
-      <caption>Keyboard shortcuts reference</caption>
+      <caption>Keyboard shortcuts</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/keyboard-shortcuts.png</image>
     </screenshot>
     <screenshot>
       <caption>About dialog</caption>
       <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/about.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Abandon game confirmation</caption>
+      <image>https://raw.githubusercontent.com/tobagin/Draughts/master/data/screenshots/abandon-game.png</image>
     </screenshot>
   </screenshots>
   <url type="homepage">https://github.com/tobagin/Draughts</url>
@@ -138,195 +131,53 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.1.1" date="2026-01-12">
+      <description>
+        <p>Metadata improvements: Updated summary and description for better clarity and compliance.</p>
+        <p>This release also includes updated store screenshots to reflect the current UI.</p>
+      </description>
+    </release>
     <release version="2.1.0" date="2026-01-10">
       <description>
-        <p>AI Revolution Update</p>
-        <ul>
-          <li>Position Evaluator: Sophisticated board evaluation considering material, center control, and piece safety</li>
-          <li>Opening Book: AI now uses standard openings (e.g., "Old Faithful") for stronger early game play</li>
-          <li>New Icons: Fresh new application icons (Thanks to @oiimrosabel)</li>
-          <li>Build Fixes: Resolved deprecation warnings and compilation issues</li>
-        </ul>
+        <p>This major update introduces a sophisticated Position Evaluator which considers material, center control, and piece safety for stronger gameplay. The AI now utilizes an extensive Opening Book with standard openings like "Old Faithful".</p>
+        <p>We've also added fresh new application icons (thanks to @oiimrosabel) and resolved various deprecation warnings and compilation issues.</p>
       </description>
     </release>
     <release version="2.0.4" date="2025-12-12">
       <description>
-        <p>Bug fixes and documentation improvements</p>
-        <ul>
-          <li>Fix: Enable backward capture for International draughts variant</li>
-          <li>Fix: Resolved missing translations in Flatpak</li>
-          <li>Documentation improvements</li>
-        </ul>
+        <p>This release fixes backward capture for the International draughts variant and resolves missing translations in Flatpak.</p>
       </description>
     </release>
     <release version="2.0.3" date="2025-10-21">
       <description>
-        <p>Translation and contributor update</p>
-        <ul>
-          <li>Added Russian translation (thanks to Vladislav)</li>
-          <li>Updated translator credits in About dialog</li>
-        </ul>
+        <p>Added Russian translation (thanks to Vladislav) and updated contributor credits.</p>
       </description>
     </release>
     <release version="2.0.2" date="2025-10-21">
       <description>
-        <p>Cleanup and maintenance release</p>
-        <ul>
-          <li>Removed .specify/ directory with project specification tools</li>
-          <li>Code cleanup and maintenance</li>
-        </ul>
+        <p>Cleanup and maintenance release, removing unused tools and tidying up the codebase.</p>
       </description>
     </release>
     <release version="2.0.1" date="2025-10-06">
       <description>
-        <p>Stability and connection improvements for online multiplayer</p>
-        <ul>
-          <li>Fixed: Centralized WebSocket connection management eliminates duplicate connections</li>
-          <li>Fixed: Session state now properly resets when creating new games after finishing one</li>
-          <li>Fixed: "Failed to create room" error after completing a multiplayer game</li>
-          <li>Fixed: "Failed to start quick match" error when trying to play again</li>
-          <li>Improved: WebSocket keepalive increased to 25 seconds for better connection stability</li>
-          <li>Improved: Visual disconnect overlay shows when opponent loses connection</li>
-          <li>Improved: Server-side timer state tracking prevents game desynchronization</li>
-          <li>Improved: Proper cleanup of old WebSocket connections during reconnection</li>
-          <li>Enhanced: Timestamped server logging for better debugging</li>
-        </ul>
+        <p>Stability and connection improvements for online multiplayer, including centralized WebSocket management, session state fixes, and better error handling for rooms.</p>
       </description>
     </release>
     <release version="2.0.0" date="2025-10-06">
       <description>
-        <p>Major update: Online Multiplayer with extensive improvements</p>
-        <p>NEW: Online Multiplayer Features</p>
-        <ul>
-          <li>Play draughts online against opponents worldwide in real-time</li>
-          <li>Host private game rooms with unique 6-character room codes</li>
-          <li>Quick match system for instant random opponent pairing</li>
-          <li>Automatic session persistence - seamlessly reconnect to games after disconnections</li>
-          <li>Game state restoration - board updates to correct position when reconnecting</li>
-          <li>Resign functionality with confirmation dialogs</li>
-          <li>Version checking - ensures client compatibility with server</li>
-          <li>Support for all 16 game variants in multiplayer</li>
-          <li>Timer support in online games (Fischer and Bronstein modes)</li>
-          <li>Real-time game synchronization via WebSocket</li>
-          <li>Opponent disconnect/reconnect notifications with toasts</li>
-          <li>Game end notifications delivered to both winner and loser</li>
-          <li>Statistics dashboard at /stats showing server metrics</li>
-        </ul>
-        <p>Resignation &amp; Game Management</p>
-        <ul>
-          <li>Resign button in multiplayer games (red destructive style)</li>
-          <li>Resign confirmation when starting new game during multiplayer</li>
-          <li>Resign confirmation when trying to play online during active game</li>
-          <li>Resign confirmation when resetting game during multiplayer</li>
-          <li>Resign confirmation when closing application during multiplayer</li>
-          <li>Post-game options: "Play Again" to rejoin queue or "Exit to Menu"</li>
-          <li>Server properly tracks resignation statistics</li>
-        </ul>
-        <p>Board and Gameplay Improvements</p>
-        <ul>
-          <li>Adaptive board orientation - your pieces always appear at the bottom</li>
-          <li>Fixed board not updating after reconnection when opponent made moves</li>
-          <li>Fixed duplicate game end dialogs in multiplayer</li>
-          <li>Proper piece highlighting based on current player in multiplayer</li>
-          <li>Fixed captured pieces synchronization in online games</li>
-          <li>Board state correctly restored with all opponent moves after reconnection</li>
-          <li>Improved board perspective transformations</li>
-        </ul>
-        <p>UI/UX Enhancements</p>
-        <ul>
-          <li>New multiplayer dialog with modern ViewStack navigation</li>
-          <li>Game end dialogs show "You Win!" or "Opponent Wins!" based on result</li>
-          <li>StatusPages with helpful descriptions for all multiplayer screens</li>
-          <li>Connection status indicators in header bars</li>
-          <li>Toast notifications for opponent connection events</li>
-          <li>Updated keyboard shortcuts dialog with Ctrl+M for Play Online</li>
-          <li>Pill-shaped action buttons in bottom header bars</li>
-          <li>Back navigation buttons with arrow icons</li>
-          <li>Settings initialized from user preferences in multiplayer</li>
-          <li>Removed welcome screen for streamlined experience</li>
-          <li>Removed disconnect button - only resign option remains</li>
-        </ul>
-        <p>Export and History</p>
-        <ul>
-          <li>Changed game export format from PGN to PDN (Portable Draughts Notation)</li>
-          <li>All game exports now use .pdn file extension</li>
-          <li>Game history exports with correct PDN format</li>
-          <li>Game replay exports with PDN format</li>
-        </ul>
-        <p>Server Features</p>
-        <ul>
-          <li>Real-time statistics dashboard at /stats endpoint</li>
-          <li>Track total games, active games, completed games</li>
-          <li>Games by variant with percentages</li>
-          <li>Game results breakdown (wins, draws, resignations)</li>
-          <li>Peak concurrent games and server uptime tracking</li>
-          <li>Auto-refresh dashboard every 10 seconds</li>
-          <li>Version checking prevents outdated clients from connecting</li>
-          <li>Health check endpoint for monitoring</li>
-          <li>Docker container support with proper healthcheck</li>
-          <li>Server IP: draughts.tobagin.eu (Cloudflare proxied)</li>
-        </ul>
-        <p>Bug Fixes</p>
-        <ul>
-          <li>Fixed duplicate game end dialogs in multiplayer games</li>
-          <li>Fixed board not updating after reconnection with opponent moves</li>
-          <li>Fixed loser not receiving game end dialog</li>
-          <li>Fixed resignation not updating game statistics</li>
-          <li>Fixed timer not working in multiplayer games</li>
-          <li>Fixed variant selection bug (Brazilian → American)</li>
-          <li>Fixed server crash causing application crashes</li>
-          <li>Fixed quick match self-pairing issues</li>
-          <li>Improved error handling for offline servers</li>
-        </ul>
-        <p>Technical Improvements</p>
-        <ul>
-          <li>WebSocket-based multiplayer networking with libsoup-3.0</li>
-          <li>Node.js relay server with room management</li>
-          <li>Docker containerization with health checks</li>
-          <li>Automated Docker publishing script (publish-server.sh)</li>
-          <li>JSON-based protocol for all multiplayer messages</li>
-          <li>Quick match queue system organized by variant</li>
-          <li>Game state serialization and restoration</li>
-          <li>Move replay system for reconnection</li>
-          <li>Semantic versioning compatibility checking</li>
-        </ul>
+        <p>Major update: Online Multiplayer with extensive improvements.</p>
+        <p>Play draughts online against opponents worldwide in real-time with quick matches or private rooms. Features include automatic session persistence, game state restoration, and resignation functionality.</p>
+        <p>This release also brings UI enhancements like adaptive board orientation, new multiplayer dialogs, and a statistics dashboard.</p>
       </description>
     </release>
     <release version="1.0.1" date="2025-10-03">
       <description>
-        <p>Mobile-friendly update with improved adaptive design and bug fixes</p>
-        <ul>
-          <li>Full mobile and tablet support with 360px minimum width</li>
-          <li>Adaptive dialogs with breakpoints for narrow screens</li>
-          <li>Game History dialog now uses bottom sheet for filters on mobile</li>
-          <li>Game Replay dialog optimized with side panel as bottom sheet</li>
-          <li>Speed controls moved to overflow menu on mobile devices</li>
-          <li>New Game dialog now properly scrollable on small screens</li>
-          <li>Fixed timer expiration crash - game now ends properly when time runs out</li>
-          <li>Improved touch-friendly margins and spacing on mobile</li>
-          <li>Better adaptive bottom bar with priority-based element hiding</li>
-          <li>All dialogs now work seamlessly at mobile screen sizes</li>
-        </ul>
+        <p>Mobile-friendly update with improved adaptive design. Features full mobile support, adaptive dialogs, optimized game replay, and better cheat controls on small screens.</p>
       </description>
     </release>
     <release version="1.0.0" date="2025-10-02">
       <description>
-        <p>First stable release of Draughts - A comprehensive draughts/checkers game</p>
-        <ul>
-          <li>16 international game variants: American Checkers, International, Russian, Brazilian, Italian, Spanish, Czech, Thai, German, Swedish, Pool, Turkish, Armenian, Gothic, Frisian, and Canadian</li>
-          <li>10 AI difficulty levels from Beginner to Grandmaster with intelligent move evaluation</li>
-          <li>Three gameplay modes: Human vs Human, Human vs AI, and AI vs AI</li>
-          <li>Complete sound effects system with audio feedback for moves, captures, and game events</li>
-          <li>PDN (Portable Draughts Notation) export for game analysis and sharing</li>
-          <li>Four piece styles: Plastic, Wood, Metal, and Bottle Cap</li>
-          <li>Five board themes: Classic, Wood, Green, Blue, and High Contrast</li>
-          <li>Full move history with unlimited undo/redo support</li>
-          <li>Smooth animations and visual feedback for all game actions</li>
-          <li>Keyboard navigation and screen reader accessibility support</li>
-          <li>Comprehensive rules documentation for each variant</li>
-          <li>Modern GTK4/LibAdwaita interface with adaptive design</li>
-          <li>Dark mode support following system theme</li>
-        </ul>
+        <p>First stable release featuring 16 international game variants, 10 AI difficulty levels, diverse piece styles and board themes, and comprehensive accessibility support.</p>
       </description>
     </release>
   </releases>
