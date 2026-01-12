@@ -7,7 +7,7 @@ A comprehensive draughts (checkers) game for GNOME.
 ![Draughts Application](data/screenshots/main-window.png)
 
 <a href="https://flathub.org/apps/io.github.tobagin.Draughts"><img src="https://flathub.org/api/badge" height="110" alt="Get it on Flathub"></a>
-<a href="https://ko-fi.com/tobagin"><img src="https://ko-fi.com/img/githubbutton_sm.svg" height="82" alt="Support me on Ko-Fi"></a>
+<a href="https://ko-fi.com/tobagin"><img src="data/kofi_button.png" height="82" alt="Support me on Ko-Fi"></a>
 
 </div>
 
