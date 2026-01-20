@@ -8,17 +8,22 @@ template $DraughtsWindow: Adw.ApplicationWindow {
 
     setters {
       // On narrow screens, hide less important bottom bar elements
-      navigation_buttons.visible: false;
+      // navigation_buttons.visible: false; // Removed to keep nav accessible
       board_container.margin-start: 6;
       board_container.margin-end: 6;
       board_container.margin-top: 6;
       board_container.margin-bottom: 6;
+
+      // Switch to label view on mobile
+      bottom_title_stack.visible-child-name: "label";
+      
+      // Hide server status on mobile
+      server_status_icon.visible: false;
     }
   }
 
-  Gtk.Box {
-    orientation: vertical;
-
+  Adw.ToolbarView {
+    [top]
     Adw.HeaderBar header_bar {
       title-widget: Adw.WindowTitle window_title {
         title: _("Draughts");
@@ -72,7 +77,7 @@ template $DraughtsWindow: Adw.ApplicationWindow {
       }
     }
 
-    Adw.ToastOverlay toast_overlay {
+    content: Adw.ToastOverlay toast_overlay {
       vexpand: true;
 
       child: Gtk.Overlay game_overlay {
@@ -185,8 +190,9 @@ template $DraughtsWindow: Adw.ApplicationWindow {
           vexpand: true;
         }
       };
-    }
+    };
 
+    [bottom]
     Adw.HeaderBar bottom_bar {
       show-end-title-buttons: false;
 
@@ -230,17 +236,33 @@ template $DraughtsWindow: Adw.ApplicationWindow {
         }
       }
 
-      title-widget: Gtk.DropDown move_history_dropdown {
-        model: move_history_model;
-        enable-search: false;
-        tooltip-text: _("Navigate to move");
-        hexpand: true;
+      title-widget: Gtk.Stack bottom_title_stack {
+        hhomogeneous: false;
+        vhomogeneous: false;
+        
+        Gtk.StackPage {
+            name: "dropdown";
+            child: Gtk.DropDown move_history_dropdown {
+                model: move_history_model;
+                enable-search: false;
+                tooltip-text: _("Navigate to move");
+                hexpand: true;
+            };
+        }
+
+        Gtk.StackPage {
+            name: "label";
+            child: Gtk.Label mobile_move_label {
+                label: _("Game Start");
+                styles ["title-4"]
+            };
+        }
       };
 
       [end]
       Gtk.Box timer_box {
         orientation: horizontal;
-        spacing: 12;
+        spacing: 6;
         halign: end;
 
         Gtk.Label red_timer_display {

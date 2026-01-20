@@ -238,13 +238,13 @@ label.disconnect-countdown {
 /* Timer display styles for bottom bar */
 label.timer-display {
   font-family: monospace;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 8px 16px;
+  padding: 4px 8px;
   border-radius: 6px;
-  min-width: 60px;
-  margin-left: 4px;  /* Changed from margin-start */
-  margin-right: 4px; /* Changed from margin-end */
+  min-width: 50px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 label.timer-red {

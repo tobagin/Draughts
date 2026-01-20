@@ -89,6 +89,9 @@ namespace Draughts {
         [GtkChild]
         private unowned Gtk.Button last_move_button;
 
+        [GtkChild]
+        private unowned Gtk.Label mobile_move_label;
+
         private DraughtsBoard draughts_board;
         private DraughtsBoardAdapter adapter;
         private BoardRenderer renderer;
@@ -400,6 +403,47 @@ namespace Draughts {
             }
 
             is_navigating = false;
+            
+            // Update mobile label
+            update_mobile_move_label(current_position);
+        }
+
+        private void update_mobile_move_label(int current_index) {
+            if (mobile_move_label == null) return;
+
+            if (current_index <= 0) {
+                mobile_move_label.label = _("Game Start");
+                return;
+            }
+
+            // Calculate actual move number
+            // Each index > 0 represents a half-move (ply)
+            // Index 1 = 1. Red ...
+            // Index 2 = 1. ... Black
+            // Index 3 = 2. Red ...
+            
+            int move_num = ((current_index - 1) / 2) + 1;
+            bool is_white = ((current_index - 1) % 2) != 0; // Index 1 is Black? No wait.
+            // Index 1 (first move) is Red (White in engine terms usually, but here Red/Black).
+            // Let's check format_move_for_dropdown loop:
+            // for (int i = 0; i < moves.length; i++)
+            // move_number = (i / 2) + 1
+            // is_white_move = (i % 2) == 0 -> This implies 0 is White?
+            
+            // Let's re-verify `format_move_for_dropdown` logic in the file view.
+            // Line 380: bool is_white_move = (i % 2) == 0; 
+            // This suggests the first move (i=0) is considered "White" (or Red).
+            
+            // So for current_index (which is dropdown index):
+            // Dropdown index 0 = "Game Start"
+            // Dropdown index 1 corresponds to moves[0] (i=0)
+            
+            int move_idx = current_index - 1;
+            int move_number = (move_idx / 2) + 1;
+            bool is_second_player = (move_idx % 2) != 0;
+            
+            string suffix = is_second_player ? "b" : "a";
+            mobile_move_label.label = _("Move %d%s").printf(move_number, suffix);
         }
 
         private string format_move_for_dropdown(DraughtsMove move, int move_number, bool is_white_move) {
