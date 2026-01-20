@@ -11,16 +11,16 @@ A comprehensive draughts (checkers) game for GNOME.
 
 </div>
 
-## 🎉 Version 2.1.1 - Polish & Refinement
+## 🎉 Version 2.2.0 - Mobile Refinement
 
-**Draughts 2.1.1** focuses on polishing the documentation and presentation, following the major AI update.
+**Draughts 2.2.0** brings significant improvements to the mobile experience and visual polish.
 
 ### ✨ Key Features
 
-- **🧠 Smarter AI**: The new Position Evaluator understands strategy, material value, and center control.
-- **📚 Opening Knowledge**: The AI now plays standard openings like "Old Faithful" for a realistic challenge.
-- **🎨 Fresh Look**: Beautiful new application icons (Thanks to @oiimrosabel).
-- **🛠️ Stability**: Improved build reliability and performance.
+- **📱 Mobile Improvements**: Better layout and navigation on smaller screens with Adw.ToolbarView.
+- **⏱️ Enhanced Timers**: Improved readability for game timers.
+- **🎨 Visual Polish**: Refined spacing and UI elements for a cleaner look.
+- **🛠️ Stability**: Layout adjustments for better responsiveness.
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 

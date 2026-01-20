@@ -131,6 +131,17 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.2.0" date="2026-01-20">
+      <description>
+        <p>This release focuses on improving the mobile experience and visual polish:</p>
+        <ul>
+          <li>Improved layout for mobile devices with Adw.ToolbarView</li>
+          <li>Enhanced timer readability with updated fonts and styling</li>
+          <li>Cleaner move history navigation on smaller screens</li>
+          <li>Fixed Ko-fi badge styling and other UI details</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.1.1" date="2026-01-12">
       <description>
         <p>Metadata improvements: Updated summary and description for better clarity and compliance.</p>

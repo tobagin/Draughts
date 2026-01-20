@@ -5,6 +5,17 @@ All notable changes to Draughts will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-01-20
+
+### ✨ Key Features
+- **Mobile Experience**: Improved layout for mobile devices with Adw.ToolbarView, refined spacing, and better navigation.
+- **Timer Display**: Enhanced timer readability with updated fonts and styling.
+- **Move History**: Replaced redundant buttons with a cleaner stack view for move history navigation on mobile.
+
+### 🛠️ Fixed
+- **UI Details**: Fixed Ko-fi badge styling to match other badges.
+- **Layout**: Adjusted navigation button visibility and spacing for better responsiveness.
+
 ## [2.1.1] - 2026-01-12
 
 ### 📝 Changed
