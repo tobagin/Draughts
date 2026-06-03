@@ -131,6 +131,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.3.0" date="2026-06-03">
+      <description>
+        <p>This release updates the runtime and core dependencies:</p>
+        <ul>
+          <li>Updated Flatpak runtime from GNOME 49 to GNOME 50</li>
+          <li>Raised minimum dependency versions: GTK 4.22, libadwaita 1.9, GLib 2.88, libsoup 3.6, json-glib 1.10</li>
+          <li>Updated Vala build target to GLib 2.88</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.2.0" date="2026-01-20">
       <description>
         <p>This release focuses on improving the mobile experience and visual polish:</p>

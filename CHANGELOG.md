@@ -5,6 +5,13 @@ All notable changes to Draughts will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-06-03
+
+### 🔧 Changed
+- **GNOME 50 Runtime**: Updated Flatpak runtime from GNOME 49 to GNOME 50.
+- **Dependency Bumps**: Raised minimum versions — GTK 4.22, libadwaita 1.9, GLib/GIO 2.88, libsoup 3.6, json-glib 1.10.
+- **Build Target**: Updated Vala `--target-glib` to 2.88.
+
 ## [2.2.0] - 2026-01-20
 
 ### ✨ Key Features
