@@ -51,6 +51,11 @@ namespace Draughts {
         private string? session_id = null;
         private SettingsManager settings;
 
+        // Number of moves the current game has already applied locally. Sent on
+        // reconnect so the server can return only the moves we are missing
+        // instead of replaying the entire game history.
+        private int applied_move_count = 0;
+
         // Ping/pong for connection monitoring
         private uint ping_timeout_id = 0;
         private const int PING_INTERVAL_MS = 30000; // 30 seconds
@@ -141,6 +146,8 @@ namespace Draughts {
                     reconnect_msg.add_string_value(session_id);
                     reconnect_msg.set_member_name("version");
                     reconnect_msg.add_string_value(Config.VERSION);
+                    reconnect_msg.set_member_name("applied_move_count");
+                    reconnect_msg.add_int_value(applied_move_count);
                     reconnect_msg.end_object();
 
                     var gen = new Json.Generator();
@@ -390,6 +397,13 @@ namespace Draughts {
                         if (root.has_member("clock_type")) {
                             msg.clock_type = root.get_string_member("clock_type");
                         }
+                        // Incremental reconnection metadata
+                        if (root.has_member("base_move_count")) {
+                            msg.base_move_count = (int) root.get_int_member("base_move_count");
+                        }
+                        if (root.has_member("total_move_count")) {
+                            msg.total_move_count = (int) root.get_int_member("total_move_count");
+                        }
                         // Parse moves array for game restoration
                         if (root.has_member("moves")) {
                             var moves_array = root.get_array_member("moves");
@@ -549,6 +563,14 @@ namespace Draughts {
          */
         public int get_latency() {
             return latency_ms;
+        }
+
+        /**
+         * Record how many moves the active game has applied locally. Used to
+         * request only the missing moves when reconnecting after a blip.
+         */
+        public void set_applied_move_count(int count) {
+            applied_move_count = (count >= 0) ? count : 0;
         }
 
         /**

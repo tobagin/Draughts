@@ -21,6 +21,11 @@ namespace Draughts {
         private bool is_paused = false;
         private PieceColor local_player_color;
 
+        // Number of moves applied to the current game (local + remote). Kept in
+        // sync with the server's move log so a reconnect can fetch only the
+        // missing moves instead of replaying the whole game.
+        private int applied_move_count = 0;
+
         /**
          * Get the local player's color (for board orientation)
          */
@@ -161,6 +166,7 @@ namespace Draughts {
             if (success) {
                 // Send move to server
                 session.make_move(move);
+                bump_applied_move_count();
 
                 // Emit signal for UI update
                 game_state_changed(current_game.current_state, move);
@@ -394,10 +400,34 @@ namespace Draughts {
          * Handle game started event
          */
         private void on_game_started(DraughtsVariant variant, PieceColor your_color,
-                                     string opponent_name, Gee.ArrayList<DraughtsMove>? moves) {
-            logger.info("MultiplayerGameController: Game started - Variant: %s, Your color: %s, Opponent: %s, Moves to restore: %d",
+                                     string opponent_name, Gee.ArrayList<DraughtsMove>? moves,
+                                     int base_move_count) {
+            logger.info("MultiplayerGameController: Game started - Variant: %s, Your color: %s, Opponent: %s, Moves to restore: %d (from #%d)",
                        variant.to_string(), your_color.to_string(), opponent_name,
-                       (moves != null) ? moves.size : 0);
+                       (moves != null) ? moves.size : 0, base_move_count);
+
+            // Incremental reconnect: if the server is sending a delta (base > 0)
+            // and our existing game is already at that point, apply only the
+            // delta on top of the live game instead of rebuilding from scratch.
+            if (base_move_count > 0 && current_game != null &&
+                applied_move_count == base_move_count && !current_game.is_game_over()) {
+                logger.info("MultiplayerGameController: Incremental restore - applying %d missing moves on top of move #%d",
+                           (moves != null) ? moves.size : 0, base_move_count);
+                if (moves != null) {
+                    foreach (var move in moves) {
+                        if (current_game.make_move(move)) {
+                            bump_applied_move_count();
+                        } else {
+                            logger.error("MultiplayerGameController: Failed to apply delta move during incremental restore");
+                        }
+                    }
+                }
+                multiplayer_game_started(variant, your_color, opponent_name);
+                if (current_game != null) {
+                    game_state_changed(current_game.current_state, null);
+                }
+                return;
+            }
 
             local_player_color = your_color;
 
@@ -436,17 +466,20 @@ namespace Draughts {
             GamePlayer black_player = (your_color == PieceColor.BLACK) ? local_player : remote_player;
 
             start_new_game(game_variant, red_player, black_player, timer);
+            applied_move_count = 0;
 
             // Replay moves to restore game state
             if (moves != null && moves.size > 0) {
                 logger.info("MultiplayerGameController: Replaying %d moves to restore game state", moves.size);
                 foreach (var move in moves) {
                     bool success = current_game.make_move(move);
-                    if (!success) {
+                    if (success) {
+                        bump_applied_move_count();
+                    } else {
                         logger.error("MultiplayerGameController: Failed to replay move during restoration");
                     }
                 }
-                logger.info("MultiplayerGameController: Game state restored to move %d", moves.size);
+                logger.info("MultiplayerGameController: Game state restored to move %d", applied_move_count);
             }
 
             // Emit game started signal
@@ -476,10 +509,12 @@ namespace Draughts {
                 return;
             }
 
-            // Apply the opponent's move
+            // Apply the opponent's move. make_move runs the move through the rule
+            // engine, so an illegal move from the network is rejected here.
             bool success = current_game.make_move(move);
 
             if (success) {
+                bump_applied_move_count();
                 logger.debug("MultiplayerGameController: Opponent move applied successfully");
 
                 // Emit signal for UI update
@@ -488,8 +523,21 @@ namespace Draughts {
                 // Don't check for game end locally - wait for server to send GAME_ENDED message
                 // This prevents duplicate game_finished signals
             } else {
-                logger.error("MultiplayerGameController: Failed to apply opponent move - game may be desynced!");
+                // The opponent sent a move our rule engine rejected. Rather than
+                // silently continuing in a corrupt/desynced state, surface it so
+                // the player knows the game can no longer be trusted.
+                logger.error("MultiplayerGameController: Rejected illegal opponent move - game is desynced!");
+                multiplayer_error(_("The game has become out of sync with your opponent and cannot continue safely."));
             }
+        }
+
+        /**
+         * Increment the applied move counter and report it to the session so an
+         * incremental reconnect can fetch only the moves we are missing.
+         */
+        private void bump_applied_move_count() {
+            applied_move_count++;
+            session.set_applied_move_count(applied_move_count);
         }
 
         /**

@@ -11,12 +11,17 @@ const WebSocket = require('ws');
 const http = require('http');
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const { renderDashboard } = require('./dashboard');
 
 const PORT = process.env.PORT || 8443;
 const ROOM_CODE_LENGTH = 6;
 const REQUIRED_VERSION = '2.0.1'; // Minimum client version required
 const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
+const MOVE_MIN_INTERVAL_MS = 50; // Minimum spacing between moves from one client (anti-flood)
+const MOVE_BURST_ALLOWANCE = 4; // Tolerate short bursts (e.g. rapid multi-capture steps)
+const SERVER_VERSION = require('./package.json').version; // Single source of truth
+const STATS_CACHE_TTL_MS = 5000; // Cache the dashboard HTML briefly to shield Supabase from refresh/abuse
 
 // Logging utility with timestamps
 function getTimestamp() {
@@ -130,6 +135,33 @@ function isValidMovePayload(move) {
   }
 
   return true;
+}
+
+/**
+ * Sanitize a player-supplied display name: coerce to string, strip control
+ * characters (prevents log injection), and cap the length so a malicious
+ * client cannot exhaust memory or break logs/storage.
+ */
+function sanitizeName(value, fallback) {
+  if (typeof value !== 'string') return fallback;
+  // Drop control characters (prevents log injection) and cap length
+  const cleaned = Array.from(value)
+    .filter(ch => { const c = ch.charCodeAt(0); return c >= 0x20 && c !== 0x7F; })
+    .join('')
+    .trim()
+    .slice(0, 40);
+  return cleaned.length > 0 ? cleaned : fallback;
+}
+
+/**
+ * Sanitize a variant identifier. Variants are short slugs (e.g. "international",
+ * "graeco-turkish"); anything outside that shape is rejected so it can never be
+ * persisted and rendered on the dashboard.
+ */
+function sanitizeVariant(value) {
+  if (typeof value !== 'string') return null;
+  const cleaned = value.trim().slice(0, 32);
+  return /^[A-Za-z0-9 _-]+$/.test(cleaned) ? cleaned : null;
 }
 
 /**
@@ -268,481 +300,80 @@ async function updatePeakGames(currentActiveGames) {
   }
 }
 
-// Generate stats dashboard HTML
+/**
+ * Gather the live data and hand it to the (presentation-only) dashboard
+ * renderer. Keeps Supabase access here in the server, rendering in dashboard.js.
+ */
 async function generateStatsHTML() {
-  const uptime = Math.floor((Date.now() - stats.startTime) / 1000);
-  const days = Math.floor(uptime / 86400);
-  const hours = Math.floor((uptime % 86400) / 3600);
-  const minutes = Math.floor((uptime % 3600) / 60);
-  const uptimeStr = `${days}d ${hours}h ${minutes}m`;
+  const [supabaseStats, supabaseVariantStats] = await Promise.all([
+    fetchSupabaseStats(),
+    fetchSupabaseVariantStats()
+  ]);
 
-  // Fetch Supabase stats if available
-  const supabaseStats = await fetchSupabaseStats();
-  const supabaseVariantStats = await fetchSupabaseVariantStats();
-
-  // Use Supabase stats if available, otherwise use in-memory stats
-  const displayStats = supabaseStats || stats;
-  const totalGames = supabaseStats ? (supabaseStats.total_games || 0) : stats.totalGames;
-
-  // Generate variant rows
-  let variantRows = '';
-  if (supabaseVariantStats && supabaseVariantStats.length > 0) {
-    variantRows = supabaseVariantStats.map(row => `
-      <tr>
-        <td>${row.variant}</td>
-        <td>${row.game_count}</td>
-        <td>${totalGames > 0 ? ((row.game_count / totalGames) * 100).toFixed(1) : 0}%</td>
-      </tr>
-    `).join('');
-  } else {
-    variantRows = Object.entries(stats.gamesByVariant)
-      .sort((a, b) => b[1] - a[1])
-      .map(([variant, count]) => `
-        <tr>
-          <td>${variant}</td>
-          <td>${count}</td>
-          <td>${stats.totalGames > 0 ? ((count / stats.totalGames) * 100).toFixed(1) : 0}%</td>
-        </tr>
-      `).join('');
-  }
-
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Draughts Server Statistics</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #333;
-      padding: 20px;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    h1 {
-      color: white;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .stat-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
-    }
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #667eea;
-      margin-bottom: 5px;
-    }
-    .stat-label {
-      color: #666;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .chart-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-    th {
-      background: #f8f9fa;
-      color: #667eea;
-      font-weight: 600;
-    }
-    tr:hover {
-      background: #f8f9fa;
-    }
-    .info-banner {
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      padding: 15px 25px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: 500;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .status-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      margin-right: 8px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    .footer {
-      text-align: center;
-      color: white;
-      margin-top: 30px;
-      opacity: 0.8;
-    }
-    .pie-chart {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script>
-    // Auto-refresh every 30 seconds (increased to let charts render)
-    setTimeout(() => location.reload(), 30000);
-  </script>
-</head>
-<body>
-  <div class="container">
-    <h1><span class="status-indicator"></span>Draughts Multiplayer Server</h1>
-
-    ${supabase ? '<div class="info-banner">📊 Stats powered by Supabase (all-time data)</div>' : '<div class="info-banner">⚠️ In-memory stats only (current session)</div>'}
-
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value">${totalGames}</div>
-        <div class="stat-label">Total Games</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${stats.activeGames}</div>
-        <div class="stat-label">Active Games</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${supabaseStats ? totalGames - stats.activeGames : stats.completedGames}</div>
-        <div class="stat-label">Completed Games</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${clients.size}</div>
-        <div class="stat-label">Connected Players</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${stats.totalConnections}</div>
-        <div class="stat-label">Connections (Session)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${stats.totalConnectionsAllTime.toLocaleString()}</div>
-        <div class="stat-label">Connections (All-Time)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${stats.peakConcurrentGames}</div>
-        <div class="stat-label">Peak Games (Session)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${stats.peakConcurrentGamesAllTime}</div>
-        <div class="stat-label">Peak Games (All-Time)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${uptimeStr}</div>
-        <div class="stat-label">Uptime</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${rooms.size}</div>
-        <div class="stat-label">Active Rooms</div>
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px; margin-bottom: 20px;">
-      <div class="chart-card">
-        <h2>Games by Variant</h2>
-        ${totalGames > 0 ? '<canvas id="variantChart" style="max-height: 300px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
-      </div>
-
-      <div class="chart-card">
-        <h2>Game Results Distribution</h2>
-        ${totalGames > 0 ? '<canvas id="resultsChart" style="max-height: 300px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <h2>Win Rate Comparison</h2>
-      ${totalGames > 0 ? '<canvas id="winRateChart" style="max-height: 250px;"></canvas>' : '<p style="text-align: center; color: #999;">No games played yet</p>'}
-    </div>
-
-    <div class="chart-card">
-      <h2>Connection Statistics</h2>
-      <canvas id="connectionChart" style="max-height: 250px;"></canvas>
-    </div>
-
-    <div class="footer">
-      <p>Server Version 2.0.0 | Auto-refreshes every 30 seconds</p>
-    </div>
-  </div>
-
-  <script>
-    // Prepare data
-    const totalGames = ${totalGames};
-    const redWins = ${supabaseStats ? (supabaseStats.red_wins || 0) : stats.gamesByResult.red_wins};
-    const blackWins = ${supabaseStats ? (supabaseStats.black_wins || 0) : stats.gamesByResult.black_wins};
-    const draws = ${supabaseStats ? (supabaseStats.draws || 0) : stats.gamesByResult.draw};
-    const resignations = ${supabaseStats ? (supabaseStats.resignations || 0) : stats.gamesByResult.resignation};
-    const timeouts = ${supabaseStats ? (supabaseStats.timeouts || 0) : (stats.gamesByResult.timeout || 0)};
-
-    // Variant data
-    const variantData = ${JSON.stringify(
-      supabaseVariantStats && supabaseVariantStats.length > 0
-        ? supabaseVariantStats.map(v => ({ variant: v.variant, count: v.game_count }))
-        : Object.entries(stats.gamesByVariant).map(([variant, count]) => ({ variant, count }))
-    )};
-
-    // Chart.js default config
-    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif';
-    Chart.defaults.responsive = true;
-    Chart.defaults.maintainAspectRatio = true;
-
-    // Color palette
-    const colors = {
-      purple: '#667eea',
-      pink: '#764ba2',
-      blue: '#3b82f6',
-      green: '#10b981',
-      yellow: '#f59e0b',
-      red: '#ef4444',
-      orange: '#f97316',
-      teal: '#14b8a6',
-      indigo: '#6366f1'
-    };
-
-    if (totalGames > 0) {
-      // 1. Variant Distribution (Doughnut Chart)
-      const variantCtx = document.getElementById('variantChart');
-      if (variantCtx) {
-        new Chart(variantCtx, {
-          type: 'doughnut',
-          data: {
-            labels: variantData.map(v => v.variant),
-            datasets: [{
-              data: variantData.map(v => v.count),
-              backgroundColor: [
-                colors.purple,
-                colors.blue,
-                colors.green,
-                colors.yellow,
-                colors.red,
-                colors.orange,
-                colors.teal,
-                colors.indigo
-              ],
-              borderWidth: 2,
-              borderColor: '#fff'
-            }]
-          },
-          options: {
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  padding: 15,
-                  font: { size: 12 }
-                }
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    const label = context.label || '';
-                    const value = context.parsed;
-                    const percentage = ((value / totalGames) * 100).toFixed(1);
-                    return label + ': ' + value + ' (' + percentage + '%)';
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // 2. Game Results Distribution (Pie Chart)
-      const resultsCtx = document.getElementById('resultsChart');
-      if (resultsCtx) {
-        new Chart(resultsCtx, {
-          type: 'pie',
-          data: {
-            labels: ['Red Wins', 'Black Wins', 'Draws', 'Resignations', 'Timeouts'],
-            datasets: [{
-              data: [redWins, blackWins, draws, resignations, timeouts],
-              backgroundColor: [
-                colors.red,
-                '#1f2937',
-                colors.yellow,
-                colors.orange,
-                colors.purple
-              ],
-              borderWidth: 2,
-              borderColor: '#fff'
-            }]
-          },
-          options: {
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  padding: 15,
-                  font: { size: 12 }
-                }
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    const label = context.label || '';
-                    const value = context.parsed;
-                    const percentage = ((value / totalGames) * 100).toFixed(1);
-                    return label + ': ' + value + ' (' + percentage + '%)';
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
-
-      // 3. Win Rate Comparison (Horizontal Bar Chart)
-      const winRateCtx = document.getElementById('winRateChart');
-      if (winRateCtx) {
-        const totalDecisiveGames = redWins + blackWins;
-        const redWinRate = totalDecisiveGames > 0 ? ((redWins / totalDecisiveGames) * 100).toFixed(1) : 0;
-        const blackWinRate = totalDecisiveGames > 0 ? ((blackWins / totalDecisiveGames) * 100).toFixed(1) : 0;
-
-        new Chart(winRateCtx, {
-          type: 'bar',
-          data: {
-            labels: ['Red Win Rate', 'Black Win Rate', 'Draw Rate'],
-            datasets: [{
-              label: 'Percentage',
-              data: [
-                redWinRate,
-                blackWinRate,
-                totalGames > 0 ? ((draws / totalGames) * 100).toFixed(1) : 0
-              ],
-              backgroundColor: [colors.red, '#1f2937', colors.yellow],
-              borderColor: [colors.red, '#1f2937', colors.yellow],
-              borderWidth: 2
-            }]
-          },
-          options: {
-            indexAxis: 'y',
-            scales: {
-              x: {
-                beginAtZero: true,
-                max: 100,
-                ticks: {
-                  callback: function(value) {
-                    return value + '%';
-                  }
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    return context.parsed.x + '%';
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
-    }
-
-    // 4. Connection Statistics (Bar Chart)
-    const connectionCtx = document.getElementById('connectionChart');
-    if (connectionCtx) {
-      new Chart(connectionCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Session Connections', 'All-Time Connections', 'Session Peak Games', 'All-Time Peak Games'],
-          datasets: [{
-            label: 'Count',
-            data: [
-              ${stats.totalConnections},
-              ${stats.totalConnectionsAllTime},
-              ${stats.peakConcurrentGames},
-              ${stats.peakConcurrentGamesAllTime}
-            ],
-            backgroundColor: [colors.blue, colors.purple, colors.green, colors.teal],
-            borderColor: [colors.blue, colors.purple, colors.green, colors.teal],
-            borderWidth: 2
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          },
-          plugins: {
-            legend: {
-              display: false
-            }
-          }
-        }
-      });
-    }
-  </script>
-</body>
-</html>
-  `;
+  return renderDashboard({
+    stats,
+    supabaseEnabled: !!supabase,
+    clientsCount: clients.size,
+    roomsCount: rooms.size,
+    serverVersion: SERVER_VERSION,
+    supabaseStats,
+    supabaseVariantStats
+  });
 }
 
 // Create HTTP server
+// Short-lived cache for the rendered dashboard so repeated loads (the page
+// auto-refreshes every 30s) don't hit Supabase on every request.
+let statsCache = { html: null, expires: 0 };
+
+// Security headers applied to every HTTP response
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'no-referrer'
+};
+
 const server = http.createServer((req, res) => {
-  if (req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+  // Only GET/HEAD are meaningful for the read-only endpoints
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { ...SECURITY_HEADERS, 'Allow': 'GET, HEAD' });
+    res.end('Method not allowed');
+    return;
+  }
+
+  // Ignore any query string when matching routes
+  const path = req.url.split('?')[0];
+
+  if (path === '/health') {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       status: 'ok',
+      version: SERVER_VERSION,
       rooms: rooms.size,
       clients: clients.size,
       uptime: process.uptime()
     }));
-  } else if (req.url === '/stats') {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    generateStatsHTML().then(html => res.end(html));
+  } else if (path === '/stats') {
+    const now = Date.now();
+    if (statsCache.html && statsCache.expires > now) {
+      res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(statsCache.html);
+      return;
+    }
+    generateStatsHTML()
+      .then(html => {
+        statsCache = { html, expires: Date.now() + STATS_CACHE_TTL_MS };
+        res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(html);
+      })
+      .catch(err => {
+        // Without this catch a Supabase failure would leave the request hanging
+        logError('Failed to render stats dashboard:', err);
+        res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain' });
+        res.end('Internal server error');
+      });
   } else {
-    res.writeHead(404);
+    res.writeHead(404, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain' });
     res.end('Not found');
   }
 });
@@ -859,8 +490,17 @@ wss.on('connection', (ws) => {
             if (room.gameStarted) {
               const opponentName = (clientId === room.host) ? room.guestName : room.hostName;
 
-              // Include all moves in the GAME_STARTED message for proper state restoration
-              const movesToRestore = room.moves ? room.moves.map(m => m.move) : [];
+              const allMoves = room.moves ? room.moves.map(m => m.move) : [];
+
+              // Incremental restore: if the client still holds game state from
+              // before the blip (it reports how many moves it has already
+              // applied), only send the moves it is missing instead of the
+              // entire history. Falls back to a full replay on a fresh start.
+              let appliedCount = Number.isInteger(message.applied_move_count) ? message.applied_move_count : 0;
+              if (appliedCount < 0 || appliedCount > allMoves.length) {
+                appliedCount = 0; // Out of range - safest to resend everything
+              }
+              const movesToRestore = allMoves.slice(appliedCount);
 
               // Prepare reconnection message with timer settings
               const reconnectMessage = {
@@ -869,7 +509,9 @@ wss.on('connection', (ws) => {
                 your_color: existingClient.playerColor,
                 opponent_name: opponentName,
                 room_code: existingClient.roomCode,
-                moves: movesToRestore  // Include moves for restoration
+                moves: movesToRestore,            // Only the moves the client is missing
+                base_move_count: appliedCount,    // Index the delta starts at (0 = full replay)
+                total_move_count: allMoves.length // Where the client should end up
               };
 
               // Add timer settings if enabled
@@ -888,7 +530,7 @@ wss.on('connection', (ws) => {
 
               send(ws, reconnectMessage);
 
-              log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} with ${movesToRestore.length} moves`);
+              log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} (sent ${movesToRestore.length} of ${allMoves.length} moves, from #${appliedCount})`);
             }
           }
         } else {
@@ -918,8 +560,9 @@ wss.on('connection', (ws) => {
         }
       });
 
-      // If not a reconnect message, handle it normally
-      if (message.type !== 'reconnect') {
+      // 'connect' and 'reconnect' are handshake messages fully handled above;
+      // anything else that arrived as the first message is a real request.
+      if (message.type !== 'reconnect' && message.type !== 'connect') {
         handleMessage(clientId, message);
       }
 
@@ -1023,7 +666,16 @@ function handleMessage(clientId, message) {
  */
 function handleCreateRoom(clientId, message) {
   const client = clients.get(clientId);
-  const { variant, use_timer, minutes_per_side, increment_seconds, clock_type, player_name } = message;
+  if (!client) return;
+  const { use_timer, minutes_per_side, increment_seconds, clock_type } = message;
+
+  // Sanitize client-supplied values before storing/persisting them
+  const variant = sanitizeVariant(message.variant);
+  if (!variant) {
+    sendError(client.ws, 'INVALID_VARIANT', 'Unknown or malformed game variant');
+    return;
+  }
+  const hostName = sanitizeName(message.player_name, 'Host');
 
   const roomCode = generateRoomCode();
   const playerColor = 'Red'; // Host is always Red
@@ -1037,7 +689,7 @@ function handleCreateRoom(clientId, message) {
     minutes_per_side,
     increment_seconds,
     clock_type,
-    hostName: player_name || 'Host',
+    hostName,
     guestName: null,
     gameStarted: false,
     moves: [],
@@ -1051,7 +703,7 @@ function handleCreateRoom(clientId, message) {
   });
 
   client.roomCode = roomCode;
-  client.playerName = player_name;
+  client.playerName = hostName;
   client.playerColor = playerColor;
 
   send(client.ws, {
@@ -1061,7 +713,7 @@ function handleCreateRoom(clientId, message) {
     timestamp: Date.now()
   });
 
-  log(`🏠 Room created: ${roomCode} by ${player_name}`);
+  log(`🏠 Room created: ${roomCode} by ${hostName}`);
 }
 
 /**
@@ -1069,7 +721,9 @@ function handleCreateRoom(clientId, message) {
  */
 function handleJoinRoom(clientId, message) {
   const client = clients.get(clientId);
-  const { room_code, player_name } = message;
+  if (!client) return;
+  const { room_code } = message;
+  const guestName = sanitizeName(message.player_name, 'Guest');
 
   const room = rooms.get(room_code);
 
@@ -1090,9 +744,9 @@ function handleJoinRoom(clientId, message) {
 
   // Add guest to room
   room.guest = clientId;
-  room.guestName = player_name || 'Guest';
+  room.guestName = guestName;
   client.roomCode = room_code;
-  client.playerName = player_name;
+  client.playerName = guestName;
   client.playerColor = 'Black'; // Guest is always Black
 
   // Notify host that opponent joined
@@ -1100,7 +754,7 @@ function handleJoinRoom(clientId, message) {
   if (hostClient) {
     send(hostClient.ws, {
       type: 'opponent_joined',
-      opponent_name: player_name,
+      opponent_name: guestName,
       timestamp: Date.now()
     });
   }
@@ -1208,6 +862,25 @@ function handleMove(clientId, message) {
     sendError(client.ws, 'INVALID_MOVE', 'Malformed move payload');
     return;
   }
+
+  // Rate limit move submissions to prevent a malicious client from flooding
+  // the opponent or exhausting server memory. A small burst budget absorbs
+  // legitimate rapid input (e.g. a multi-capture played in quick succession).
+  const nowTs = Date.now();
+  if (client.lastMoveAt !== undefined) {
+    const sinceLast = nowTs - client.lastMoveAt;
+    if (sinceLast < MOVE_MIN_INTERVAL_MS) {
+      client.moveBurst = (client.moveBurst || 0) + 1;
+      if (client.moveBurst > MOVE_BURST_ALLOWANCE) {
+        log(`⚠️  Rate-limited move flood from client: ${clientId}`);
+        sendError(client.ws, 'RATE_LIMITED', 'Too many moves too quickly');
+        return;
+      }
+    } else {
+      client.moveBurst = 0;
+    }
+  }
+  client.lastMoveAt = nowTs;
 
   const room = rooms.get(client.roomCode);
 
@@ -1697,10 +1370,15 @@ function sendError(ws, code, description) {
  * Handle quick match request
  */
 function handleQuickMatch(clientId, message) {
-  const { variant, player_name } = message;
   const client = clients.get(clientId);
-
   if (!client) return;
+
+  const variant = sanitizeVariant(message.variant);
+  if (!variant) {
+    sendError(client.ws, 'INVALID_VARIANT', 'Unknown or malformed game variant');
+    return;
+  }
+  const player_name = sanitizeName(message.player_name, 'Player');
 
   log(`🎲 Quick match request from ${player_name} for ${variant}`);
 
@@ -1824,7 +1502,7 @@ function handleCancelQuickMatch(clientId) {
 
 // Start server
 server.listen(PORT, async () => {
-  log(`🚀 Draughts Multiplayer Server running on port ${PORT}`);
+  log(`🚀 Draughts Multiplayer Server v${SERVER_VERSION} running on port ${PORT}`);
   log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
   log(`🏥 Health check: http://localhost:${PORT}/health`);
 
@@ -1832,10 +1510,42 @@ server.listen(PORT, async () => {
   await loadServerStats();
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  log('SIGTERM signal received: closing HTTP server');
+// Graceful shutdown - close client sockets and the HTTP server, then exit.
+let shuttingDown = false;
+function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  log(`${signal} received: shutting down gracefully`);
+
+  // Notify and close all connected clients
+  for (const ws of wss.clients) {
+    try {
+      send(ws, { type: 'server_shutdown', timestamp: Date.now() });
+      ws.close(1001, 'Server shutting down');
+    } catch (err) {
+      logError('Error closing client during shutdown:', err);
+    }
+  }
+
   server.close(() => {
-    log('HTTP server closed');
+    log('HTTP server closed - exiting');
+    process.exit(0);
   });
+
+  // Force exit if connections don't drain in time
+  setTimeout(() => {
+    logError('Shutdown timed out - forcing exit');
+    process.exit(1);
+  }, 10000).unref();
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
+// Last-resort safety nets so one bad message can't silently wedge the server
+process.on('unhandledRejection', (reason) => {
+  logError('Unhandled promise rejection:', reason);
+});
+process.on('uncaughtException', (err) => {
+  logError('Uncaught exception:', err);
 });

@@ -110,6 +110,7 @@ namespace Draughts {
         // Server connection management
         private MultiplayerGameController? server_controller = null;
         private bool is_server_connected = false;
+        private bool version_mismatch_shown = false;
         private uint reconnect_timeout_id = 0;
         private int reconnect_attempts = 0;
         private uint health_check_timeout_id = 0;
@@ -1574,7 +1575,13 @@ namespace Draughts {
         private void on_version_mismatch(string required_version, string client_version) {
             logger.error("Window: Version mismatch - Client: %s, Required: %s", client_version, required_version);
 
-            // Show update required dialog
+            // The signal can arrive from both the background connection and an
+            // in-game controller; only present the update dialog once.
+            if (version_mismatch_shown) {
+                return;
+            }
+            version_mismatch_shown = true;
+
             // Show update required dialog
             var dialog = new Adw.AlertDialog(
                 _("Update Required"),
@@ -2154,6 +2161,9 @@ namespace Draughts {
             // Create controller if needed
             if (server_controller == null) {
                 server_controller = new MultiplayerGameController();
+                // Catch version mismatches on the background connection too, not
+                // just once an in-game controller is wired up
+                server_controller.version_mismatch.connect(on_version_mismatch);
             }
 
             logger.info("Attempting to connect to multiplayer server (attempt %d)...", reconnect_attempts + 1);

@@ -90,7 +90,7 @@ namespace Draughts {
         public signal void state_changed(SessionState new_state);
         public signal void room_created(string room_code, PieceColor your_color);
         public signal void opponent_joined(string opponent_name);
-        public signal void game_started(DraughtsVariant variant, PieceColor your_color, string opponent_name, Gee.ArrayList<DraughtsMove>? moves);
+        public signal void game_started(DraughtsVariant variant, PieceColor your_color, string opponent_name, Gee.ArrayList<DraughtsMove>? moves, int base_move_count);
         public signal void move_received(DraughtsMove move);
         public signal void game_ended(GameStatus result, string reason);
         public signal void opponent_disconnected();
@@ -239,6 +239,14 @@ namespace Draughts {
             logger.debug("NetworkSession: Sending move to server");
             var message = new MakeMoveMessage(move);
             return client.send_message(message);
+        }
+
+        /**
+         * Report how many moves the active game has applied locally so the
+         * client can request an incremental restore on reconnect.
+         */
+        public void set_applied_move_count(int count) {
+            client.set_applied_move_count(count);
         }
 
         /**
@@ -430,10 +438,10 @@ namespace Draughts {
                 logger.info("NetworkSession: Timer disabled");
             }
 
-            logger.info("NetworkSession: Playing as %s against %s - Restoring %d moves",
+            logger.info("NetworkSession: Playing as %s against %s - Restoring %d moves (from #%d)",
                        local_player_color.to_string(), opponent_name,
-                       (message.moves != null) ? message.moves.size : 0);
-            game_started(game_variant, local_player_color, opponent_name, message.moves);
+                       (message.moves != null) ? message.moves.size : 0, message.base_move_count);
+            game_started(game_variant, local_player_color, opponent_name, message.moves, message.base_move_count);
         }
 
         /**
