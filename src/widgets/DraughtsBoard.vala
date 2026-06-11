@@ -81,6 +81,15 @@ namespace Draughts {
         private Cairo.Surface? red_king_surface;
         private Cairo.Surface? black_king_surface;
 
+        // Pre-scaled surfaces cached at the current piece display size.
+        // Downscaling the 1024px artwork once with a high-quality filter is both
+        // sharper and much faster than rescaling it on every frame.
+        private Cairo.Surface? scaled_red_checker_surface;
+        private Cairo.Surface? scaled_black_checker_surface;
+        private Cairo.Surface? scaled_red_king_surface;
+        private Cairo.Surface? scaled_black_king_surface;
+        private int scaled_surface_size = 0;
+
         // Game state
         private Player current_player;
         private GameState game_state;
@@ -271,6 +280,7 @@ namespace Draughts {
             black_checker_surface = null;
             red_king_surface = null;
             black_king_surface = null;
+            invalidate_scaled_surfaces();
 
             // Load new themed images
             load_piece_images();
@@ -306,6 +316,71 @@ namespace Draughts {
             }
 
             return surface;
+        }
+
+        /**
+         * Drop the cached pre-scaled piece surfaces so they get regenerated
+         */
+        private void invalidate_scaled_surfaces() {
+            scaled_red_checker_surface = null;
+            scaled_black_checker_surface = null;
+            scaled_red_king_surface = null;
+            scaled_black_king_surface = null;
+            scaled_surface_size = 0;
+        }
+
+        /**
+         * Downscale a full-resolution piece surface to the given size using
+         * Cairo's highest-quality filter. Done once per size change, then reused.
+         */
+        private Cairo.Surface? create_scaled_surface(Cairo.Surface? source, int size) {
+            if (source == null || size <= 0) {
+                return null;
+            }
+
+            var src = (Cairo.ImageSurface) source;
+            var scaled = new Cairo.ImageSurface(Cairo.Format.ARGB32, size, size);
+            var cr = new Cairo.Context(scaled);
+
+            cr.scale((double) size / src.get_width(), (double) size / src.get_height());
+            cr.set_source_surface(src, 0, 0);
+            cr.get_source().set_filter(Cairo.Filter.BEST);
+            cr.paint();
+
+            return scaled;
+        }
+
+        /**
+         * Make sure the pre-scaled piece surfaces match the current display size
+         */
+        private void ensure_scaled_surfaces(int target_size) {
+            if (target_size <= 0 || scaled_surface_size == target_size) {
+                return;
+            }
+
+            scaled_red_checker_surface = create_scaled_surface(red_checker_surface, target_size);
+            scaled_black_checker_surface = create_scaled_surface(black_checker_surface, target_size);
+            scaled_red_king_surface = create_scaled_surface(red_king_surface, target_size);
+            scaled_black_king_surface = create_scaled_surface(black_king_surface, target_size);
+            scaled_surface_size = target_size;
+        }
+
+        /**
+         * Get the cached pre-scaled surface for a piece type
+         */
+        private Cairo.Surface? get_scaled_surface(PieceType piece) {
+            switch (piece) {
+                case PieceType.RED_REGULAR:
+                    return scaled_red_checker_surface;
+                case PieceType.RED_KING:
+                    return scaled_red_king_surface;
+                case PieceType.BLACK_REGULAR:
+                    return scaled_black_checker_surface;
+                case PieceType.BLACK_KING:
+                    return scaled_black_king_surface;
+                default:
+                    return null;
+            }
         }
 
         private void initialize_default_colors() {
@@ -473,10 +548,10 @@ namespace Draughts {
                 }
             }
 
-            // Draw dragged piece (only if pieces are visible)
+            // Draw dragged piece (only if pieces are visible) - fully lifted
             if (is_dragging && pieces_visible) {
                 var piece = board_state[drag_start_row, drag_start_col];
-                draw_piece(cr, piece, drag_current_x, drag_current_y, square_size * 0.4);
+                draw_piece(cr, piece, drag_current_x, drag_current_y, square_size * 0.4, 1.0);
             }
 
             // Draw animating piece (only if pieces are visible)
@@ -496,146 +571,144 @@ namespace Draughts {
                 double current_x = from_x + (to_x - from_x) * anim_progress;
                 double current_y = from_y + (to_y - from_y) * anim_progress;
 
-                draw_piece(cr, anim_piece_type, current_x, current_y, square_size * 0.4);
+                // Lift the piece mid-flight for a natural pick-up/put-down arc
+                double lift = Math.sin(Math.PI * anim_progress);
+                draw_piece(cr, anim_piece_type, current_x, current_y, square_size * 0.4, lift);
             }
         }
 
         /**
-         * Draw a single piece at the given position
+         * Draw a soft drop shadow beneath a piece to ground it on the board.
+         * @param lift 0.0 = resting on the board, 1.0 = fully lifted (dragged)
          */
-        private void draw_piece(Cairo.Context cr, PieceType piece, double cx, double cy, double radius) {
-            Cairo.Surface? surface = null;
+        private void draw_piece_shadow(Cairo.Context cr, double cx, double cy, double radius, double lift, double alpha) {
+            // Lifted pieces cast a larger, softer, more offset shadow
+            double offset_y = radius * (0.10 + 0.22 * lift);
+            double offset_x = radius * (0.04 + 0.08 * lift);
+            double shadow_radius = radius * (1.12 + 0.18 * lift);
+            double shadow_alpha = (0.30 - 0.10 * lift) * alpha;
 
-            switch (piece) {
-                case PieceType.RED_REGULAR:
-                    surface = red_checker_surface;
-                    break;
-                case PieceType.RED_KING:
-                    surface = red_king_surface;
-                    break;
-                case PieceType.BLACK_REGULAR:
-                    surface = black_checker_surface;
-                    break;
-                case PieceType.BLACK_KING:
-                    surface = black_king_surface;
-                    break;
+            var gradient = new Cairo.Pattern.radial(
+                cx + offset_x, cy + offset_y, shadow_radius * 0.55,
+                cx + offset_x, cy + offset_y, shadow_radius);
+            gradient.add_color_stop_rgba(0.0, 0, 0, 0, shadow_alpha);
+            gradient.add_color_stop_rgba(1.0, 0, 0, 0, 0);
+
+            cr.save();
+            cr.set_source(gradient);
+            cr.arc(cx + offset_x, cy + offset_y, shadow_radius, 0, 2 * Math.PI);
+            cr.fill();
+            cr.restore();
+        }
+
+        /**
+         * Draw a single piece at the given position
+         * @param lift 0.0 = resting on the board, 1.0 = fully lifted (slightly enlarged with offset shadow)
+         * @param alpha overall opacity (used for translucent previews)
+         */
+        private void draw_piece(Cairo.Context cr, PieceType piece, double cx, double cy, double radius, double lift = 0.0, double alpha = 1.0) {
+            // Calculate piece size - larger pieces (radius is 40% of square, so multiply by 2.75 for ~110%)
+            double piece_size = radius * 2.75;
+            int target_size = (int) Math.round(piece_size);
+
+            ensure_scaled_surfaces(target_size);
+            Cairo.Surface? surface = get_scaled_surface(piece);
+
+            // Soft drop shadow beneath the piece (skip for faint previews)
+            if (alpha > 0.6) {
+                draw_piece_shadow(cr, cx, cy, radius, lift, alpha);
             }
 
             if (surface != null) {
-                // Calculate piece size - larger pieces (radius is 40% of square, so multiply by 2.75 for ~110%)
-                double piece_size = radius * 2.75;
+                // Lifted pieces are drawn slightly enlarged for a pick-up effect
+                double scale = 1.0 + 0.08 * lift;
 
                 cr.save();
+                cr.translate(cx, cy);
+                cr.scale(scale, scale);
 
-                // Translate to center position and offset by half piece size to center the image
-                cr.translate(cx - piece_size / 2, cy - piece_size / 2);
-
-                // Calculate scale factor to fit the image into the desired size
-                double scale_x = piece_size / ((Cairo.ImageSurface)surface).get_width();
-                double scale_y = piece_size / ((Cairo.ImageSurface)surface).get_height();
-                cr.scale(scale_x, scale_y);
-
-                // Draw the cached surface directly - much faster than snapshot
-                cr.set_source_surface(surface, 0, 0);
-                cr.paint();
+                // Pre-scaled surface is drawn 1:1 - crisp and fast
+                cr.set_source_surface(surface, -target_size / 2.0, -target_size / 2.0);
+                if (alpha >= 1.0) {
+                    cr.paint();
+                } else {
+                    cr.paint_with_alpha(alpha);
+                }
 
                 cr.restore();
             } else {
-                // Fallback to simple circles if images aren't loaded
-                bool is_red = (piece == PieceType.RED_REGULAR || piece == PieceType.RED_KING);
-                bool is_king = (piece == PieceType.RED_KING || piece == PieceType.BLACK_KING);
-
-                cr.save();
-                if (is_red) {
-                    cr.set_source_rgb(0.8, 0.2, 0.2); // Red
-                } else {
-                    cr.set_source_rgb(0.2, 0.2, 0.2); // Black
-                }
-                cr.arc(cx, cy, radius * 0.8, 0, 2 * Math.PI);
-                cr.fill();
-
-                // Draw border
-                cr.set_source_rgb(0.1, 0.1, 0.1);
-                cr.set_line_width(2.0);
-                cr.arc(cx, cy, radius * 0.8, 0, 2 * Math.PI);
-                cr.stroke();
-
-                // Draw king crown
-                if (is_king) {
-                    cr.set_source_rgb(1.0, 0.84, 0.0); // Gold
-                    cr.set_font_size(radius);
-                    cr.move_to(cx - radius * 0.3, cy + radius * 0.3);
-                    cr.show_text("♔");
-                }
-
-                cr.restore();
+                draw_fallback_piece(cr, piece, cx, cy, radius * (1.0 + 0.08 * lift), alpha);
             }
+        }
+
+        /**
+         * Vector fallback rendering used when the piece images fail to load
+         */
+        private void draw_fallback_piece(Cairo.Context cr, PieceType piece, double cx, double cy, double radius, double alpha) {
+            bool is_red = (piece == PieceType.RED_REGULAR || piece == PieceType.RED_KING);
+            bool is_king = (piece == PieceType.RED_KING || piece == PieceType.BLACK_KING);
+            double disc_radius = radius * 0.95;
+
+            cr.save();
+
+            // Shaded disc with an off-center highlight for a 3D look
+            var body = new Cairo.Pattern.radial(
+                cx - disc_radius * 0.35, cy - disc_radius * 0.35, disc_radius * 0.1,
+                cx, cy, disc_radius * 1.2);
+            if (is_red) {
+                body.add_color_stop_rgba(0.0, 0.95, 0.38, 0.32, alpha);
+                body.add_color_stop_rgba(0.7, 0.72, 0.16, 0.14, alpha);
+                body.add_color_stop_rgba(1.0, 0.50, 0.08, 0.07, alpha);
+            } else {
+                body.add_color_stop_rgba(0.0, 0.40, 0.40, 0.42, alpha);
+                body.add_color_stop_rgba(0.7, 0.16, 0.16, 0.18, alpha);
+                body.add_color_stop_rgba(1.0, 0.05, 0.05, 0.06, alpha);
+            }
+            cr.set_source(body);
+            cr.arc(cx, cy, disc_radius, 0, 2 * Math.PI);
+            cr.fill();
+
+            // Rim
+            cr.set_source_rgba(0, 0, 0, 0.55 * alpha);
+            cr.set_line_width(disc_radius * 0.06);
+            cr.arc(cx, cy, disc_radius, 0, 2 * Math.PI);
+            cr.stroke();
+
+            // Inner ridge ring, like a real checker
+            cr.set_source_rgba(is_red ? 0.35 : 0.55, is_red ? 0.08 : 0.55, is_red ? 0.07 : 0.58, 0.5 * alpha);
+            cr.set_line_width(disc_radius * 0.045);
+            cr.arc(cx, cy, disc_radius * 0.78, 0, 2 * Math.PI);
+            cr.stroke();
+
+            // King crown drawn as a real shape (text glyphs depend on font availability)
+            if (is_king) {
+                double w = disc_radius * 0.9;
+                double h = disc_radius * 0.62;
+
+                cr.move_to(cx - w / 2, cy + h * 0.35);          // bottom-left
+                cr.line_to(cx - w / 2, cy - h * 0.25);          // left peak
+                cr.line_to(cx - w * 0.25, cy + h * 0.02);       // valley
+                cr.line_to(cx, cy - h * 0.45);                  // center peak
+                cr.line_to(cx + w * 0.25, cy + h * 0.02);       // valley
+                cr.line_to(cx + w / 2, cy - h * 0.25);          // right peak
+                cr.line_to(cx + w / 2, cy + h * 0.35);          // bottom-right
+                cr.close_path();
+
+                cr.set_source_rgba(1.0, 0.84, 0.0, alpha);      // Gold
+                cr.fill_preserve();
+                cr.set_source_rgba(0.45, 0.32, 0.0, 0.8 * alpha);
+                cr.set_line_width(disc_radius * 0.04);
+                cr.stroke();
+            }
+
+            cr.restore();
         }
 
         /**
          * Draw a translucent piece preview at the given position
          */
         private void draw_piece_translucent(Cairo.Context cr, PieceType piece, double cx, double cy, double radius, double alpha) {
-            Cairo.Surface? surface = null;
-
-            switch (piece) {
-                case PieceType.RED_REGULAR:
-                    surface = red_checker_surface;
-                    break;
-                case PieceType.RED_KING:
-                    surface = red_king_surface;
-                    break;
-                case PieceType.BLACK_REGULAR:
-                    surface = black_checker_surface;
-                    break;
-                case PieceType.BLACK_KING:
-                    surface = black_king_surface;
-                    break;
-            }
-
-            if (surface != null) {
-                // Calculate piece size
-                double piece_size = radius * 2.75;
-
-                cr.save();
-
-                // Translate to center position
-                cr.translate(cx - piece_size / 2, cy - piece_size / 2);
-
-                // Calculate scale factor
-                double scale_x = piece_size / ((Cairo.ImageSurface)surface).get_width();
-                double scale_y = piece_size / ((Cairo.ImageSurface)surface).get_height();
-                cr.scale(scale_x, scale_y);
-
-                // Draw with transparency
-                cr.set_source_surface(surface, 0, 0);
-                cr.paint_with_alpha(alpha);
-
-                cr.restore();
-            } else {
-                // Fallback to simple circles with transparency
-                bool is_red = (piece == PieceType.RED_REGULAR || piece == PieceType.RED_KING);
-                bool is_king = (piece == PieceType.RED_KING || piece == PieceType.BLACK_KING);
-
-                cr.save();
-                if (is_red) {
-                    cr.set_source_rgba(0.8, 0.2, 0.2, alpha);
-                } else {
-                    cr.set_source_rgba(0.2, 0.2, 0.2, alpha);
-                }
-                cr.arc(cx, cy, radius * 0.8, 0, 2 * Math.PI);
-                cr.fill();
-
-                // Draw king crown if applicable
-                if (is_king) {
-                    cr.set_source_rgba(1.0, 0.84, 0.0, alpha);
-                    cr.set_font_size(radius);
-                    cr.move_to(cx - radius * 0.3, cy + radius * 0.3);
-                    cr.show_text("♔");
-                }
-
-                cr.restore();
-            }
+            draw_piece(cr, piece, cx, cy, radius, 0.0, alpha);
         }
 
         /**

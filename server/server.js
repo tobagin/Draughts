@@ -9,6 +9,7 @@
 
 const WebSocket = require('ws');
 const http = require('http');
+const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 
 const PORT = process.env.PORT || 8443;
@@ -85,15 +86,50 @@ function isVersionCompatible(clientVersion, requiredVersion) {
   return true; // Versions are equal
 }
 
-// Room code generator
+// Room code generator (cryptographically secure randomness)
 function generateRoomCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = '';
-  for (let i = 0; i < ROOM_CODE_LENGTH; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  let code;
+  do {
+    code = '';
+    const bytes = crypto.randomBytes(ROOM_CODE_LENGTH);
+    for (let i = 0; i < ROOM_CODE_LENGTH; i++) {
+      code += chars.charAt(bytes[i] % chars.length);
+    }
+  } while (rooms.has(code)); // Ensure code is unique
+  return code;
+}
+
+// Session ID generator (cryptographically secure, unguessable)
+function generateSessionId() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
+/**
+ * Validate the structure of an incoming move payload.
+ * The server is a relay, but basic sanity checks prevent malformed or
+ * malicious payloads (out-of-bounds coordinates, oversized capture arrays)
+ * from being stored and forwarded to the opponent.
+ */
+function isValidMovePayload(move) {
+  if (!move || typeof move !== 'object') return false;
+
+  const MAX_BOARD = 12; // Largest supported board (Canadian draughts)
+  const coords = [move.from_row, move.from_col, move.to_row, move.to_col];
+  for (const c of coords) {
+    if (!Number.isInteger(c) || c < 0 || c >= MAX_BOARD) return false;
   }
-  // Ensure code is unique
-  return rooms.has(code) ? generateRoomCode() : code;
+
+  if (!Number.isInteger(move.piece_id)) return false;
+
+  if (move.captured_pieces !== undefined) {
+    if (!Array.isArray(move.captured_pieces)) return false;
+    // A capture chain can never exceed the opponent's piece count (max 30 on 12x12)
+    if (move.captured_pieces.length > 30) return false;
+    if (!move.captured_pieces.every(Number.isInteger)) return false;
+  }
+
+  return true;
 }
 
 /**
@@ -857,14 +893,14 @@ wss.on('connection', (ws) => {
           }
         } else {
           // Session expired or invalid
-          clientId = Math.random().toString(36).substring(7);
+          clientId = generateSessionId();
           log(`✅ Client connected (expired session): ${clientId}`);
           clients.set(clientId, { ws, roomCode: null, playerName: null, playerColor: null });
           send(ws, { type: 'connected', session_id: clientId });
         }
       } else {
         // New connection
-        clientId = Math.random().toString(36).substring(7);
+        clientId = generateSessionId();
         log(`✅ Client connected: ${clientId}`);
         clients.set(clientId, { ws, roomCode: null, playerName: null, playerColor: null });
         send(ws, { type: 'connected', session_id: clientId });
@@ -897,6 +933,14 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     if (clientId) {
+      // Ignore close events from a stale socket that was replaced by a
+      // reconnection - otherwise the old socket's close would mark the
+      // freshly reconnected client as disconnected
+      const client = clients.get(clientId);
+      if (client && client.ws !== ws) {
+        log(`🔌 Stale socket closed for ${clientId} (already reconnected)`);
+        return;
+      }
       log(`❌ Client disconnected: ${clientId}`);
       handleDisconnect(clientId);
     }
@@ -1150,10 +1194,18 @@ function startGame(room_code) {
  */
 function handleMove(clientId, message) {
   const client = clients.get(clientId);
+  if (!client) return;
 
   // Reject moves from disconnected clients
   if (client.disconnected) {
     log(`⚠️  Rejected move from disconnected client: ${clientId}`);
+    return;
+  }
+
+  // Reject malformed or out-of-bounds move payloads before storing/forwarding
+  if (!isValidMovePayload(message.move)) {
+    log(`⚠️  Rejected invalid move payload from client: ${clientId}`);
+    sendError(client.ws, 'INVALID_MOVE', 'Malformed move payload');
     return;
   }
 
@@ -1172,13 +1224,13 @@ function handleMove(clientId, message) {
     // Deduct time from the player who just moved
     const playerColor = (clientId === room.host) ? 'red' : 'black';
     if (playerColor === 'red') {
-      room.redTimeRemaining -= timeElapsed;
+      room.redTimeRemaining = Math.max(0, room.redTimeRemaining - timeElapsed);
       // Add increment if using Fischer clock
       if (room.clock_type === 'Fischer' && room.increment_seconds) {
         room.redTimeRemaining += room.increment_seconds * 1000;
       }
     } else {
-      room.blackTimeRemaining -= timeElapsed;
+      room.blackTimeRemaining = Math.max(0, room.blackTimeRemaining - timeElapsed);
       // Add increment if using Fischer clock
       if (room.clock_type === 'Fischer' && room.increment_seconds) {
         room.blackTimeRemaining += room.increment_seconds * 1000;
@@ -1346,6 +1398,8 @@ function handleRejectDraw(clientId) {
  */
 function handleGameEnded(clientId, message) {
   const client = clients.get(clientId);
+  if (!client || !client.roomCode) return;
+
   const room = rooms.get(client.roomCode);
 
   if (!room) return;
