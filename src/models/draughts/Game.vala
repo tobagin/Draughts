@@ -171,14 +171,7 @@ public class Draughts.Game : Object {
 
         // Log the state we're about to save
         var move_logger = Logger.get_default();
-        print("\n==== STORING MOVE TO HISTORY ====\n");
-        print("Move piece_id=%d from (%d,%d) to (%d,%d)\n",
-              move.piece_id, move.from_position.row, move.from_position.col,
-              move.to_position.row, move.to_position.col);
-        print("active_player_BEFORE=%s, active_player_AFTER=%s\n",
-              previous_state.active_player.to_string(),
-              current_state.active_player.to_string());
-        move_logger.info("Game.make_move: Saving move to history - piece_id=%d from (%d,%d) to (%d,%d), active_player_BEFORE=%s, active_player_AFTER=%s",
+        move_logger.debug("Game.make_move: Saving move to history - piece_id=%d from (%d,%d) to (%d,%d), active_player_BEFORE=%s, active_player_AFTER=%s",
                    move.piece_id, move.from_position.row, move.from_position.col,
                    move.to_position.row, move.to_position.col,
                    previous_state.active_player.to_string(),
@@ -316,15 +309,6 @@ public class Draughts.Game : Object {
         current_state = undo_result.board_state.clone();
         log.info("Game: Set current_state, active_player=%s, piece_count=%d",
                 current_state.active_player.to_string(), current_state.pieces.size);
-
-        print("\n==== GAME.VALA: After setting current_state ====\n");
-        print("Active player: %s\n", current_state.active_player.to_string());
-        print("Pieces:\n");
-        foreach (var piece in current_state.pieces) {
-            print("  Piece ID %d %s at (%d,%d)\n", piece.id, piece.color.to_string(),
-                  piece.position.row, piece.position.col);
-        }
-        print("====================================\n\n");
 
         // Update the state history - remove exactly 2 states (player move + AI move)
         int removed_count = 0;

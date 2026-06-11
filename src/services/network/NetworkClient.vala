@@ -295,7 +295,8 @@ namespace Draughts {
                     }
 
                     // Check if there's an active room to restore
-                    if (root.has_member("room") && !root.get_null_member("room")) {
+                    if (root.has_member("room") && !root.get_null_member("room") &&
+                        root.get_object_member("room") != null) {
                         var room_obj = root.get_object_member("room");
                         string room_code = root.get_string_member("room_code");
                         string variant = room_obj.get_string_member("variant");
@@ -562,6 +563,15 @@ namespace Draughts {
                 int to_col = (int) move_obj.get_int_member("to_col");
                 bool promoted = move_obj.get_boolean_member("promoted");
 
+                // Validate coordinates from the network before using them -
+                // a malicious or buggy peer must not be able to corrupt our state
+                if (from_row < 0 || from_row >= board_size || from_col < 0 || from_col >= board_size ||
+                    to_row < 0 || to_row >= board_size || to_col < 0 || to_col >= board_size) {
+                    logger.warning("NetworkClient: Rejected move with out-of-bounds coordinates (%d,%d)->(%d,%d) for board size %d",
+                                   from_row, from_col, to_row, to_col, board_size);
+                    return null;
+                }
+
                 var from_pos = new BoardPosition(from_row, from_col, board_size);
                 var to_pos = new BoardPosition(to_row, to_col, board_size);
 
@@ -569,6 +579,12 @@ namespace Draughts {
                 DraughtsMove move;
                 if (move_obj.has_member("captured_pieces")) {
                     var captured_array = move_obj.get_array_member("captured_pieces");
+                    // Sanity-check the array: a capture chain can never exceed
+                    // the opponent's piece count (max 30 on a 12x12 board)
+                    if (captured_array == null || captured_array.get_length() > 30) {
+                        logger.warning("NetworkClient: Rejected move with invalid captured_pieces array");
+                        return null;
+                    }
                     int[] captured_ids = new int[captured_array.get_length()];
                     for (uint i = 0; i < captured_array.get_length(); i++) {
                         captured_ids[i] = (int) captured_array.get_int_element(i);
