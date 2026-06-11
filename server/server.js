@@ -19,6 +19,8 @@ const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
 const MOVE_MIN_INTERVAL_MS = 50; // Minimum spacing between moves from one client (anti-flood)
 const MOVE_BURST_ALLOWANCE = 4; // Tolerate short bursts (e.g. rapid multi-capture steps)
+const SERVER_VERSION = require('./package.json').version; // Single source of truth
+const STATS_CACHE_TTL_MS = 5000; // Cache the dashboard HTML briefly to shield Supabase from refresh/abuse
 
 // Logging utility with timestamps
 function getTimestamp() {
@@ -132,6 +134,59 @@ function isValidMovePayload(move) {
   }
 
   return true;
+}
+
+/**
+ * Serialize a value for safe embedding inside an inline <script> block.
+ * JSON.stringify alone does not neutralize "</script>" or the JS line
+ * separators U+2028/U+2029, so escape those code points too.
+ */
+function jsonForScript(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
+/**
+ * Escape a value for safe interpolation into HTML (dashboard output).
+ * Defends against stored XSS from client-supplied variant/player names.
+ */
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Sanitize a player-supplied display name: coerce to string, strip control
+ * characters (prevents log injection), and cap the length so a malicious
+ * client cannot exhaust memory or break logs/storage.
+ */
+function sanitizeName(value, fallback) {
+  if (typeof value !== 'string') return fallback;
+  // Drop control characters (prevents log injection) and cap length
+  const cleaned = Array.from(value)
+    .filter(ch => { const c = ch.charCodeAt(0); return c >= 0x20 && c !== 0x7F; })
+    .join('')
+    .trim()
+    .slice(0, 40);
+  return cleaned.length > 0 ? cleaned : fallback;
+}
+
+/**
+ * Sanitize a variant identifier. Variants are short slugs (e.g. "international",
+ * "graeco-turkish"); anything outside that shape is rejected so it can never be
+ * persisted and rendered on the dashboard.
+ */
+function sanitizeVariant(value) {
+  if (typeof value !== 'string') return null;
+  const cleaned = value.trim().slice(0, 32);
+  return /^[A-Za-z0-9 _-]+$/.test(cleaned) ? cleaned : null;
 }
 
 /**
@@ -291,8 +346,8 @@ async function generateStatsHTML() {
   if (supabaseVariantStats && supabaseVariantStats.length > 0) {
     variantRows = supabaseVariantStats.map(row => `
       <tr>
-        <td>${row.variant}</td>
-        <td>${row.game_count}</td>
+        <td>${escapeHtml(row.variant)}</td>
+        <td>${escapeHtml(row.game_count)}</td>
         <td>${totalGames > 0 ? ((row.game_count / totalGames) * 100).toFixed(1) : 0}%</td>
       </tr>
     `).join('');
@@ -301,8 +356,8 @@ async function generateStatsHTML() {
       .sort((a, b) => b[1] - a[1])
       .map(([variant, count]) => `
         <tr>
-          <td>${variant}</td>
-          <td>${count}</td>
+          <td>${escapeHtml(variant)}</td>
+          <td>${escapeHtml(count)}</td>
           <td>${stats.totalGames > 0 ? ((count / stats.totalGames) * 100).toFixed(1) : 0}%</td>
         </tr>
       `).join('');
@@ -507,7 +562,7 @@ async function generateStatsHTML() {
     </div>
 
     <div class="footer">
-      <p>Server Version 2.0.0 | Auto-refreshes every 30 seconds</p>
+      <p>Server Version ${escapeHtml(SERVER_VERSION)} | Auto-refreshes every 30 seconds</p>
     </div>
   </div>
 
@@ -521,7 +576,7 @@ async function generateStatsHTML() {
     const timeouts = ${supabaseStats ? (supabaseStats.timeouts || 0) : (stats.gamesByResult.timeout || 0)};
 
     // Variant data
-    const variantData = ${JSON.stringify(
+    const variantData = ${jsonForScript(
       supabaseVariantStats && supabaseVariantStats.length > 0
         ? supabaseVariantStats.map(v => ({ variant: v.variant, count: v.game_count }))
         : Object.entries(stats.gamesByVariant).map(([variant, count]) => ({ variant, count }))
@@ -731,20 +786,58 @@ async function generateStatsHTML() {
 }
 
 // Create HTTP server
+// Short-lived cache for the rendered dashboard so repeated loads (the page
+// auto-refreshes every 30s) don't hit Supabase on every request.
+let statsCache = { html: null, expires: 0 };
+
+// Security headers applied to every HTTP response
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'no-referrer'
+};
+
 const server = http.createServer((req, res) => {
-  if (req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+  // Only GET/HEAD are meaningful for the read-only endpoints
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { ...SECURITY_HEADERS, 'Allow': 'GET, HEAD' });
+    res.end('Method not allowed');
+    return;
+  }
+
+  // Ignore any query string when matching routes
+  const path = req.url.split('?')[0];
+
+  if (path === '/health') {
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       status: 'ok',
+      version: SERVER_VERSION,
       rooms: rooms.size,
       clients: clients.size,
       uptime: process.uptime()
     }));
-  } else if (req.url === '/stats') {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    generateStatsHTML().then(html => res.end(html));
+  } else if (path === '/stats') {
+    const now = Date.now();
+    if (statsCache.html && statsCache.expires > now) {
+      res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(statsCache.html);
+      return;
+    }
+    generateStatsHTML()
+      .then(html => {
+        statsCache = { html, expires: Date.now() + STATS_CACHE_TTL_MS };
+        res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(html);
+      })
+      .catch(err => {
+        // Without this catch a Supabase failure would leave the request hanging
+        logError('Failed to render stats dashboard:', err);
+        res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain' });
+        res.end('Internal server error');
+      });
   } else {
-    res.writeHead(404);
+    res.writeHead(404, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain' });
     res.end('Not found');
   }
 });
@@ -931,8 +1024,9 @@ wss.on('connection', (ws) => {
         }
       });
 
-      // If not a reconnect message, handle it normally
-      if (message.type !== 'reconnect') {
+      // 'connect' and 'reconnect' are handshake messages fully handled above;
+      // anything else that arrived as the first message is a real request.
+      if (message.type !== 'reconnect' && message.type !== 'connect') {
         handleMessage(clientId, message);
       }
 
@@ -1036,7 +1130,16 @@ function handleMessage(clientId, message) {
  */
 function handleCreateRoom(clientId, message) {
   const client = clients.get(clientId);
-  const { variant, use_timer, minutes_per_side, increment_seconds, clock_type, player_name } = message;
+  if (!client) return;
+  const { use_timer, minutes_per_side, increment_seconds, clock_type } = message;
+
+  // Sanitize client-supplied values before storing/persisting them
+  const variant = sanitizeVariant(message.variant);
+  if (!variant) {
+    sendError(client.ws, 'INVALID_VARIANT', 'Unknown or malformed game variant');
+    return;
+  }
+  const hostName = sanitizeName(message.player_name, 'Host');
 
   const roomCode = generateRoomCode();
   const playerColor = 'Red'; // Host is always Red
@@ -1050,7 +1153,7 @@ function handleCreateRoom(clientId, message) {
     minutes_per_side,
     increment_seconds,
     clock_type,
-    hostName: player_name || 'Host',
+    hostName,
     guestName: null,
     gameStarted: false,
     moves: [],
@@ -1064,7 +1167,7 @@ function handleCreateRoom(clientId, message) {
   });
 
   client.roomCode = roomCode;
-  client.playerName = player_name;
+  client.playerName = hostName;
   client.playerColor = playerColor;
 
   send(client.ws, {
@@ -1074,7 +1177,7 @@ function handleCreateRoom(clientId, message) {
     timestamp: Date.now()
   });
 
-  log(`🏠 Room created: ${roomCode} by ${player_name}`);
+  log(`🏠 Room created: ${roomCode} by ${hostName}`);
 }
 
 /**
@@ -1082,7 +1185,9 @@ function handleCreateRoom(clientId, message) {
  */
 function handleJoinRoom(clientId, message) {
   const client = clients.get(clientId);
-  const { room_code, player_name } = message;
+  if (!client) return;
+  const { room_code } = message;
+  const guestName = sanitizeName(message.player_name, 'Guest');
 
   const room = rooms.get(room_code);
 
@@ -1103,9 +1208,9 @@ function handleJoinRoom(clientId, message) {
 
   // Add guest to room
   room.guest = clientId;
-  room.guestName = player_name || 'Guest';
+  room.guestName = guestName;
   client.roomCode = room_code;
-  client.playerName = player_name;
+  client.playerName = guestName;
   client.playerColor = 'Black'; // Guest is always Black
 
   // Notify host that opponent joined
@@ -1113,7 +1218,7 @@ function handleJoinRoom(clientId, message) {
   if (hostClient) {
     send(hostClient.ws, {
       type: 'opponent_joined',
-      opponent_name: player_name,
+      opponent_name: guestName,
       timestamp: Date.now()
     });
   }
@@ -1729,10 +1834,15 @@ function sendError(ws, code, description) {
  * Handle quick match request
  */
 function handleQuickMatch(clientId, message) {
-  const { variant, player_name } = message;
   const client = clients.get(clientId);
-
   if (!client) return;
+
+  const variant = sanitizeVariant(message.variant);
+  if (!variant) {
+    sendError(client.ws, 'INVALID_VARIANT', 'Unknown or malformed game variant');
+    return;
+  }
+  const player_name = sanitizeName(message.player_name, 'Player');
 
   log(`🎲 Quick match request from ${player_name} for ${variant}`);
 
@@ -1856,7 +1966,7 @@ function handleCancelQuickMatch(clientId) {
 
 // Start server
 server.listen(PORT, async () => {
-  log(`🚀 Draughts Multiplayer Server running on port ${PORT}`);
+  log(`🚀 Draughts Multiplayer Server v${SERVER_VERSION} running on port ${PORT}`);
   log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
   log(`🏥 Health check: http://localhost:${PORT}/health`);
 
@@ -1864,10 +1974,42 @@ server.listen(PORT, async () => {
   await loadServerStats();
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  log('SIGTERM signal received: closing HTTP server');
+// Graceful shutdown - close client sockets and the HTTP server, then exit.
+let shuttingDown = false;
+function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  log(`${signal} received: shutting down gracefully`);
+
+  // Notify and close all connected clients
+  for (const ws of wss.clients) {
+    try {
+      send(ws, { type: 'server_shutdown', timestamp: Date.now() });
+      ws.close(1001, 'Server shutting down');
+    } catch (err) {
+      logError('Error closing client during shutdown:', err);
+    }
+  }
+
   server.close(() => {
-    log('HTTP server closed');
+    log('HTTP server closed - exiting');
+    process.exit(0);
   });
+
+  // Force exit if connections don't drain in time
+  setTimeout(() => {
+    logError('Shutdown timed out - forcing exit');
+    process.exit(1);
+  }, 10000).unref();
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
+// Last-resort safety nets so one bad message can't silently wedge the server
+process.on('unhandledRejection', (reason) => {
+  logError('Unhandled promise rejection:', reason);
+});
+process.on('uncaughtException', (err) => {
+  logError('Uncaught exception:', err);
 });
