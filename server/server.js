@@ -17,6 +17,8 @@ const ROOM_CODE_LENGTH = 6;
 const REQUIRED_VERSION = '2.0.1'; // Minimum client version required
 const GAME_INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 const DISCONNECT_TIMEOUT = 60 * 1000; // 60 seconds to reconnect
+const MOVE_MIN_INTERVAL_MS = 50; // Minimum spacing between moves from one client (anti-flood)
+const MOVE_BURST_ALLOWANCE = 4; // Tolerate short bursts (e.g. rapid multi-capture steps)
 
 // Logging utility with timestamps
 function getTimestamp() {
@@ -859,8 +861,17 @@ wss.on('connection', (ws) => {
             if (room.gameStarted) {
               const opponentName = (clientId === room.host) ? room.guestName : room.hostName;
 
-              // Include all moves in the GAME_STARTED message for proper state restoration
-              const movesToRestore = room.moves ? room.moves.map(m => m.move) : [];
+              const allMoves = room.moves ? room.moves.map(m => m.move) : [];
+
+              // Incremental restore: if the client still holds game state from
+              // before the blip (it reports how many moves it has already
+              // applied), only send the moves it is missing instead of the
+              // entire history. Falls back to a full replay on a fresh start.
+              let appliedCount = Number.isInteger(message.applied_move_count) ? message.applied_move_count : 0;
+              if (appliedCount < 0 || appliedCount > allMoves.length) {
+                appliedCount = 0; // Out of range - safest to resend everything
+              }
+              const movesToRestore = allMoves.slice(appliedCount);
 
               // Prepare reconnection message with timer settings
               const reconnectMessage = {
@@ -869,7 +880,9 @@ wss.on('connection', (ws) => {
                 your_color: existingClient.playerColor,
                 opponent_name: opponentName,
                 room_code: existingClient.roomCode,
-                moves: movesToRestore  // Include moves for restoration
+                moves: movesToRestore,            // Only the moves the client is missing
+                base_move_count: appliedCount,    // Index the delta starts at (0 = full replay)
+                total_move_count: allMoves.length // Where the client should end up
               };
 
               // Add timer settings if enabled
@@ -888,7 +901,7 @@ wss.on('connection', (ws) => {
 
               send(ws, reconnectMessage);
 
-              log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} with ${movesToRestore.length} moves`);
+              log(`🎮 Restored game session for ${clientId} - ${room.variant} as ${existingClient.playerColor} (sent ${movesToRestore.length} of ${allMoves.length} moves, from #${appliedCount})`);
             }
           }
         } else {
@@ -1208,6 +1221,25 @@ function handleMove(clientId, message) {
     sendError(client.ws, 'INVALID_MOVE', 'Malformed move payload');
     return;
   }
+
+  // Rate limit move submissions to prevent a malicious client from flooding
+  // the opponent or exhausting server memory. A small burst budget absorbs
+  // legitimate rapid input (e.g. a multi-capture played in quick succession).
+  const nowTs = Date.now();
+  if (client.lastMoveAt !== undefined) {
+    const sinceLast = nowTs - client.lastMoveAt;
+    if (sinceLast < MOVE_MIN_INTERVAL_MS) {
+      client.moveBurst = (client.moveBurst || 0) + 1;
+      if (client.moveBurst > MOVE_BURST_ALLOWANCE) {
+        log(`⚠️  Rate-limited move flood from client: ${clientId}`);
+        sendError(client.ws, 'RATE_LIMITED', 'Too many moves too quickly');
+        return;
+      }
+    } else {
+      client.moveBurst = 0;
+    }
+  }
+  client.lastMoveAt = nowTs;
 
   const room = rooms.get(client.roomCode);
 

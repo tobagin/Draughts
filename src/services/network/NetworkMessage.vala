@@ -385,6 +385,11 @@ namespace Draughts {
         public DraughtsVariant variant { get; set; }
         public string opponent_name { get; set; }
         public Gee.ArrayList<DraughtsMove>? moves { get; set; default = null; }
+        // For incremental reconnection: the move index `moves` starts at (0 = full
+        // replay from the initial position) and the total move count the client
+        // should reach after applying them.
+        public int base_move_count { get; set; default = 0; }
+        public int total_move_count { get; set; default = -1; }
         public bool use_timer { get; set; default = false; }
         public int minutes_per_side { get; set; default = 5; }
         public int increment_seconds { get; set; default = 0; }
