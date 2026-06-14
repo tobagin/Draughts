@@ -16,22 +16,22 @@
     <file alias="widgets/timer-display.ui">timer-display.ui</file>
     <file alias="widgets/move-history.ui">move-history.ui</file>
     <file>style.css</file>
-    <file>red-checker.png</file>
-    <file>red-king.png</file>
-    <file>black-checker.png</file>
-    <file>black-king.png</file>
-    <file>red-checker-metal.png</file>
-    <file>red-king-metal.png</file>
-    <file>black-checker-metal.png</file>
-    <file>black-king-metal.png</file>
-    <file>red-checker-wood.png</file>
-    <file>red-king-wood.png</file>
-    <file>black-checker-wood.png</file>
-    <file>black-king-wood.png</file>
-    <file>red-checker-bottle-cap.png</file>
-    <file>red-king-bottle-cap.png</file>
-    <file>black-checker-bottle-cap.png</file>
-    <file>black-king-bottle-cap.png</file>
+    <file>red-checker.svg</file>
+    <file>red-king.svg</file>
+    <file>black-checker.svg</file>
+    <file>black-king.svg</file>
+    <file>red-checker-metal.svg</file>
+    <file>red-king-metal.svg</file>
+    <file>black-checker-metal.svg</file>
+    <file>black-king-metal.svg</file>
+    <file>red-checker-wood.svg</file>
+    <file>red-king-wood.svg</file>
+    <file>black-checker-wood.svg</file>
+    <file>black-king-wood.svg</file>
+    <file>red-checker-bottle-cap.svg</file>
+    <file>red-king-bottle-cap.svg</file>
+    <file>black-checker-bottle-cap.svg</file>
+    <file>black-king-bottle-cap.svg</file>
     <file>sounds/move.ogg</file>
     <file>sounds/capture.ogg</file>
     <file>sounds/king.ogg</file>

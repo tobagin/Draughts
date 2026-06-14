@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="18"/>
+  </filter>
+</defs>
+<circle cx="522" cy="534" r="430" fill="#000" opacity="0.35" filter="url(#shadow)"/>
+<defs>
+  <radialGradient id="rim" cx="0.42" cy="0.36" r="0.85">
+    <stop offset="0" stop-color="#a01225"/>
+    <stop offset="0.82" stop-color="#a01225"/>
+    <stop offset="1" stop-color="#4e0510"/>
+  </radialGradient>
+  <radialGradient id="top" cx="0.38" cy="0.32" r="0.85">
+    <stop offset="0" stop-color="#d8344c"/>
+    <stop offset="0.55" stop-color="#c8102e"/>
+    <stop offset="1" stop-color="#8c0a1f"/>
+  </radialGradient>
+</defs>
+<path d="M 512.0 82.0 Q 567.7 142.2 638.7 101.1 Q 674.3 175.0 754.2 156.7 Q 766.4 237.8 848.2 243.9 Q 835.9 325.0 912.3 354.9 Q 876.6 428.8 940.8 479.9 Q 885.0 539.9 931.2 607.7 Q 860.1 648.6 884.4 727.0 Q 804.4 745.2 804.5 827.2 Q 722.7 821.0 698.6 899.4 Q 622.2 869.4 576.1 937.2 Q 512.0 886.0 447.9 937.2 Q 401.8 869.4 325.4 899.4 Q 301.3 821.0 219.5 827.2 Q 219.6 745.2 139.6 727.0 Q 163.9 648.6 92.8 607.7 Q 139.0 539.9 83.2 479.9 Q 147.4 428.8 111.7 354.9 Q 188.1 325.0 175.8 243.9 Q 257.6 237.8 269.8 156.7 Q 349.7 175.0 385.3 101.1 Q 456.3 142.2 512.0 82.0 Z" fill="url(#rim)"/>
+<line x1="568.6" y1="136.2" x2="574.3" y2="98.7" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="540.7" y1="129.1" x2="542.9" y2="99.2" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="676.9" y1="169.6" x2="693.4" y2="135.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="652.3" y1="154.5" x2="663.3" y2="126.6" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="770.5" y1="233.4" x2="796.3" y2="205.6" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="751.4" y1="211.8" x2="770.1" y2="188.3" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="841.1" y1="322.0" x2="874.0" y2="303.0" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="829.3" y1="295.7" x2="854.1" y2="278.8" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="882.5" y1="427.4" x2="919.5" y2="419.0" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="878.9" y1="398.8" x2="907.6" y2="390.0" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="890.9" y1="540.4" x2="928.8" y2="543.2" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="896.0" y1="512.0" x2="926.0" y2="512.0" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="865.7" y1="650.8" x2="901.1" y2="664.7" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="878.9" y1="625.2" x2="907.6" y2="634.0" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="809.1" y1="748.9" x2="838.8" y2="772.6" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="829.3" y1="728.3" x2="854.1" y2="745.2" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="726.1" y1="826.0" x2="747.5" y2="857.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="751.4" y1="812.2" x2="770.1" y2="835.7" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="624.0" y1="875.1" x2="635.2" y2="911.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="652.3" y1="869.5" x2="663.3" y2="897.4" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="512.0" y1="892.0" x2="512.0" y2="930.0" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="540.7" y1="894.9" x2="542.9" y2="924.8" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="400.0" y1="875.1" x2="388.8" y2="911.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="426.6" y1="886.4" x2="419.9" y2="915.6" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="297.9" y1="826.0" x2="276.5" y2="857.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="320.0" y1="844.6" x2="305.0" y2="870.5" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="214.9" y1="748.9" x2="185.2" y2="772.6" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="230.5" y1="773.2" x2="208.5" y2="793.6" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="158.3" y1="650.8" x2="122.9" y2="664.7" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="166.0" y1="678.6" x2="139.0" y2="691.6" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="133.1" y1="540.4" x2="95.2" y2="543.2" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="132.3" y1="569.2" x2="102.6" y2="573.7" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="141.5" y1="427.4" x2="104.5" y2="419.0" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="132.3" y1="454.8" x2="102.6" y2="450.3" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="182.9" y1="322.0" x2="150.0" y2="303.0" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="166.0" y1="345.4" x2="139.0" y2="332.4" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="253.5" y1="233.4" x2="227.7" y2="205.6" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="230.5" y1="250.8" x2="208.5" y2="230.4" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="347.1" y1="169.6" x2="330.6" y2="135.4" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="320.0" y1="179.4" x2="305.0" y2="153.5" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<line x1="455.4" y1="136.2" x2="449.7" y2="98.7" stroke="#000" stroke-opacity="0.18" stroke-width="10" stroke-linecap="round"/>
+<line x1="426.6" y1="137.6" x2="419.9" y2="108.4" stroke="#fff" stroke-opacity="0.20" stroke-width="7" stroke-linecap="round"/>
+<circle cx="512" cy="512" r="368" fill="url(#top)"/>
+<circle cx="512" cy="512" r="368" fill="none" stroke="#000" stroke-width="6" stroke-opacity="0.35"/>
+<circle cx="512" cy="512" r="330" fill="none" stroke="#fff" stroke-width="4" stroke-opacity="0.25"/>
+<defs>
+  <radialGradient id="gloss" cx="0.36" cy="0.28" r="0.55">
+    <stop offset="0" stop-color="#fff" stop-opacity="0.4"/>
+    <stop offset="0.55" stop-color="#fff" stop-opacity="0.13999999999999999"/>
+    <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="512" cy="512" r="400" fill="url(#gloss)"/>
+<defs>
+  <filter id="cresblur" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+</defs>
+<path d="M 212 360 A 362 362 0 0 1 476 179"
+      fill="none" stroke="#fff" stroke-opacity="0.5" stroke-width="22"
+      stroke-linecap="round" filter="url(#cresblur)"/>
+<defs>
+  <linearGradient id="gold" x1="0" y1="0.3" x2="0" y2="1">
+    <stop offset="0" stop-color="#f6dd8d"/>
+    <stop offset="0.45" stop-color="#d9b545"/>
+    <stop offset="1" stop-color="#8f6f1c"/>
+  </linearGradient>
+  <filter id="crownshadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="8"/>
+  </filter>
+</defs>
+<g transform="translate(0,6)" opacity="0.4" filter="url(#crownshadow)">
+  <path d="M 372 614 L 348 462 L 442 540 L 512 432 L 582 540 L 676 462 L 652 614 Z" fill="#000"/>
+</g>
+<g stroke="#6e5512" stroke-width="6" stroke-linejoin="round">
+  <path d="M 372 614 L 348 462 L 442 540 L 512 432 L 582 540 L 676 462 L 652 614 Z" fill="url(#gold)"/>
+  <rect x="366" y="614" width="292" height="42" rx="12" fill="url(#gold)"/>
+  <circle cx="348" cy="444" r="20" fill="url(#gold)"/>
+  <circle cx="512" cy="412" r="23" fill="url(#gold)"/>
+  <circle cx="676" cy="444" r="20" fill="url(#gold)"/>
+</g>
+<path d="M 388 600 L 370 492" stroke="#fff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round"/>
+<rect x="380" y="622" width="120" height="10" rx="5" fill="#fff" opacity="0.3"/>
+</svg>

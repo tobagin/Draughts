@@ -88,22 +88,22 @@ meson.add_install_script('glib-compile-schemas', get_option('prefix') / get_opti
 
 # Install piece images for development
 install_data([
-  'red-checker.png',
-  'red-king.png',
-  'black-checker.png',
-  'black-king.png',
-  'red-checker-metal.png',
-  'red-king-metal.png',
-  'black-checker-metal.png',
-  'black-king-metal.png',
-  'red-checker-wood.png',
-  'red-king-wood.png',
-  'black-checker-wood.png',
-  'black-king-wood.png',
-  'red-checker-bottle-cap.png',
-  'red-king-bottle-cap.png',
-  'black-checker-bottle-cap.png',
-  'black-king-bottle-cap.png'
+  'red-checker.svg',
+  'red-king.svg',
+  'black-checker.svg',
+  'black-king.svg',
+  'red-checker-metal.svg',
+  'red-king-metal.svg',
+  'black-checker-metal.svg',
+  'black-king-metal.svg',
+  'red-checker-wood.svg',
+  'red-king-wood.svg',
+  'black-checker-wood.svg',
+  'black-king-wood.svg',
+  'red-checker-bottle-cap.svg',
+  'red-king-bottle-cap.svg',
+  'black-checker-bottle-cap.svg',
+  'black-king-bottle-cap.svg'
 ], install_dir: get_option('datadir') / 'draughts')
 
 # Install sound effects

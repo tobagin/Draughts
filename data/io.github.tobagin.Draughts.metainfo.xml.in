@@ -131,6 +131,15 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.3.1" date="2026-06-14">
+      <description>
+        <p>This release improves the piece graphics and fixes a move-preview bug:</p>
+        <ul>
+          <li>Redrew all 16 piece assets as crisp, resolution-independent SVGs across the plastic, wood, metal, and bottle-cap styles</li>
+          <li>Fixed king move previews incorrectly showing a regular piece instead of a king</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.3.0" date="2026-06-03">
       <description>
         <p>This release updates the runtime and core dependencies:</p>

@@ -5,6 +5,14 @@ All notable changes to Draughts will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-06-14
+
+### 🐛 Fixed
+- **King Move Previews**: Selecting a king now shows king-shaped move previews instead of regular pieces.
+
+### 🔧 Changed
+- **Vector Piece Assets**: Replaced all 16 piece PNGs with resolution-independent SVGs (plastic, wood, metal, bottle-cap styles), sharper at every board size and ~15 MB smaller.
+
 ## [2.3.0] - 2026-06-03
 
 ### 🔧 Changed

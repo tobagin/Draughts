@@ -25,7 +25,7 @@ grid.draughts-board {
 }
 
 button.draughts-red-piece {
-  background-image: url("red-checker.png");
+  background-image: url("red-checker.svg");
   background-size: 80% 80%;
   background-repeat: no-repeat;
   background-position: center;
@@ -36,7 +36,7 @@ button.draughts-red-piece {
 }
 
 button.draughts-black-piece {
-  background-image: url("black-checker.png");
+  background-image: url("black-checker.svg");
   background-size: 80% 80%;
   background-repeat: no-repeat;
   background-position: center;
@@ -47,7 +47,7 @@ button.draughts-black-piece {
 }
 
 button.draughts-red-king {
-  background-image: url("red-king.png");
+  background-image: url("red-king.svg");
   background-size: 80% 80%;
   background-repeat: no-repeat;
   background-position: center;
@@ -58,7 +58,7 @@ button.draughts-red-king {
 }
 
 button.draughts-black-king {
-  background-image: url("black-king.png");
+  background-image: url("black-king.svg");
   background-size: 80% 80%;
   background-repeat: no-repeat;
   background-position: center;

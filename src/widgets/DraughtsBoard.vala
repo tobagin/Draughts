@@ -208,16 +208,16 @@ namespace Draughts {
 
                 if (piece_style == "plastic") {
                     // Use default plastic images (no suffix)
-                    red_checker_path = @"$(resource_base)/red-checker.png";
-                    black_checker_path = @"$(resource_base)/black-checker.png";
-                    red_king_path = @"$(resource_base)/red-king.png";
-                    black_king_path = @"$(resource_base)/black-king.png";
+                    red_checker_path = @"$(resource_base)/red-checker.svg";
+                    black_checker_path = @"$(resource_base)/black-checker.svg";
+                    red_king_path = @"$(resource_base)/red-king.svg";
+                    black_king_path = @"$(resource_base)/black-king.svg";
                 } else {
                     // Use themed images with suffix
-                    red_checker_path = @"$(resource_base)/red-checker-$(piece_style).png";
-                    black_checker_path = @"$(resource_base)/black-checker-$(piece_style).png";
-                    red_king_path = @"$(resource_base)/red-king-$(piece_style).png";
-                    black_king_path = @"$(resource_base)/black-king-$(piece_style).png";
+                    red_checker_path = @"$(resource_base)/red-checker-$(piece_style).svg";
+                    black_checker_path = @"$(resource_base)/black-checker-$(piece_style).svg";
+                    red_king_path = @"$(resource_base)/red-king-$(piece_style).svg";
+                    black_king_path = @"$(resource_base)/black-king-$(piece_style).svg";
                 }
 
                 logger.info("Loading textures from paths:");
@@ -243,10 +243,10 @@ namespace Draughts {
                 // Fall back to default plastic images
                 try {
                     string resource_base = "/" + Config.ID.replace(".", "/");
-                    red_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/red-checker.png");
-                    black_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/black-checker.png");
-                    red_king_image = Gdk.Texture.from_resource(@"$(resource_base)/red-king.png");
-                    black_king_image = Gdk.Texture.from_resource(@"$(resource_base)/black-king.png");
+                    red_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/red-checker.svg");
+                    black_checker_image = Gdk.Texture.from_resource(@"$(resource_base)/black-checker.svg");
+                    red_king_image = Gdk.Texture.from_resource(@"$(resource_base)/red-king.svg");
+                    black_king_image = Gdk.Texture.from_resource(@"$(resource_base)/black-king.svg");
 
                     // Convert to Cairo surfaces for fast rendering
                     red_checker_surface = texture_to_cairo_surface(red_checker_image as Gdk.Texture);

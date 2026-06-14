@@ -770,10 +770,12 @@ public class Draughts.DraughtsBoardAdapter : Object {
             // Determine which piece type to show (regular or king)
             PieceType preview_type;
 
-            // Check if this move will promote the piece
-            bool will_promote = move.promoted || will_promote_at_position(moving_piece, move.to_position);
+            // Show king preview if the piece is already a king, or this move promotes it
+            bool show_king = moving_piece.piece_type == DraughtsPieceType.KING
+                || move.promoted
+                || will_promote_at_position(moving_piece, move.to_position);
 
-            if (will_promote) {
+            if (show_king) {
                 // Show king preview
                 preview_type = moving_piece.color == PieceColor.RED ?
                     PieceType.RED_KING : PieceType.BLACK_KING;
@@ -849,10 +851,12 @@ public class Draughts.DraughtsBoardAdapter : Object {
             // Determine which piece type to show (regular or king)
             PieceType preview_type;
 
-            // Check if this move will promote the piece
-            bool will_promote = move.promoted || will_promote_at_position(moving_piece, move.to_position);
+            // Show king preview if the piece is already a king, or this move promotes it
+            bool show_king = moving_piece.piece_type == DraughtsPieceType.KING
+                || move.promoted
+                || will_promote_at_position(moving_piece, move.to_position);
 
-            if (will_promote) {
+            if (show_king) {
                 // Show king preview
                 preview_type = moving_piece.color == PieceColor.RED ?
                     PieceType.RED_KING : PieceType.BLACK_KING;
