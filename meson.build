@@ -1,5 +1,5 @@
 project('draughts', 'vala', 'c',
-  version : '2.3.1',
+  version : '2.4.0',
   license : 'GPL-3.0+',
   meson_version : '>= 1.8.0'
 )
@@ -19,12 +19,12 @@ else
 endif
 
 # Dependencies
-gtk4_dep = dependency('gtk4', version: '>= 4.22')
-libadwaita_dep = dependency('libadwaita-1', version: '>= 1.9')
-glib_dep = dependency('glib-2.0', version: '>= 2.88')
-gio_dep = dependency('gio-2.0', version: '>= 2.88')
+gtk4_dep = dependency('gtk4', version: '>= 4.24')
+libadwaita_dep = dependency('libadwaita-1', version: '>= 1.10')
+glib_dep = dependency('glib-2.0', version: '>= 2.90')
+gio_dep = dependency('gio-2.0', version: '>= 2.90')
 gee_dep = dependency('gee-0.8', version: '>= 0.8')
-libsoup_dep = dependency('libsoup-3.0', version: '>= 3.6')
+libsoup_dep = dependency('libsoup-3.0', version: '>= 3.7')
 json_glib_dep = dependency('json-glib-1.0', version: '>= 1.10')
 
 # Vala compiler requirements
@@ -35,7 +35,7 @@ endif
 
 # Vala arguments
 vala_args = [
-    '--target-glib=2.88',
+    '--target-glib=2.90',
     '--pkg=posix',
 ]
 

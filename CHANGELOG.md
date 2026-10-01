@@ -5,6 +5,14 @@ All notable changes to Draughts will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-10-01
+
+### 🔧 Changed
+- **GNOME 51 Runtime**: Updated Flatpak runtime from GNOME 50 to GNOME 51.
+- **Dependency Bumps**: Raised minimum versions — GTK 4.24, libadwaita 1.10, GLib/GIO 2.90, libsoup 3.7.
+- **Build Target**: Updated Vala `--target-glib` to 2.90.
+- **Multiplayer Server**: Updated server dependencies (ws 8.22, supabase-js 2.117, nodemon 3.1) and Node base image to 22 LTS (minimum Node 20).
+
 ## [2.3.1] - 2026-06-14
 
 ### 🐛 Fixed

@@ -1,6 +1,6 @@
 app-id: io.github.tobagin.Draughts
 runtime: org.gnome.Platform
-runtime-version: '50'
+runtime-version: '51'
 sdk: org.gnome.Sdk
 command: draughts
 
@@ -35,4 +35,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/tobagin/Draughts.git
-        tag: v2.3.0
+        tag: v2.4.0

@@ -131,6 +131,17 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.4.0" date="2026-10-01">
+      <description>
+        <p>This release updates the runtime and core dependencies:</p>
+        <ul>
+          <li>Updated Flatpak runtime from GNOME 50 to GNOME 51</li>
+          <li>Raised minimum dependency versions: GTK 4.24, libadwaita 1.10, GLib 2.90, libsoup 3.7</li>
+          <li>Updated Vala build target to GLib 2.90</li>
+          <li>Refreshed multiplayer server dependencies and Node runtime</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.3.1" date="2026-06-14">
       <description>
         <p>This release improves the piece graphics and fixes a move-preview bug:</p>
