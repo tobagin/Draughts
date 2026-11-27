@@ -11,15 +11,15 @@ A comprehensive draughts (checkers) game for GNOME.
 
 </div>
 
-## 🎉 Version 2.3.0 - GNOME 50
+## 🎉 Version 2.4.1 - Italian Draughts Fix & Dependency Updates
 
-**Draughts 2.3.0** updates to the GNOME 50 runtime and refreshes core dependencies.
+**Draughts 2.4.1** fixes Italian Draughts king-capture rules and refreshes multiplayer server and build dependencies on the GNOME 51 runtime.
 
 ### ✨ Key Changes
 
-- **🆕 GNOME 50 Runtime**: Updated Flatpak runtime from GNOME 49 to GNOME 50.
-- **📦 Dependency Bumps**: GTK 4.22, libadwaita 1.9, GLib/GIO 2.88, libsoup 3.6, json-glib 1.10.
-- **🛠️ Build Target**: Vala `--target-glib` updated to 2.88.
+- **🐛 Italian Draughts Rule Fix**: Men can no longer capture kings; only kings can capture other kings (for both players and AI).
+- **📦 Server & CI Updates**: Refreshed multiplayer server packages (`ws` 8.23, `supabase-js` 2.119, Chart.js 4.6), updated Docker base image to Node 26 LTS, and fixed the Docker build to include `dashboard.js`.
+- **🛠️ GNOME 51 Runtime**: Built on GNOME 51 with GTK 4.24, libadwaita 1.10, and GLib 2.90.
 
 For detailed release notes and version history, see [CHANGELOG.md](CHANGELOG.md).
 

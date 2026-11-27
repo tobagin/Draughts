@@ -13,6 +13,7 @@ public class Draughts.GameVariant : Object {
     public string display_name { get; private set; }
     public int board_size { get; private set; }
     public bool men_can_capture_backwards { get; private set; }
+    public bool men_can_capture_kings { get; private set; }
     public bool kings_can_fly { get; private set; }
     public bool mandatory_capture { get; private set; }
     public CapturePriority capture_priority { get; private set; }
@@ -35,6 +36,8 @@ public class Draughts.GameVariant : Object {
      * Configure rules specific to each variant
      */
     private void configure_variant_rules() {
+        men_can_capture_kings = true;
+
         switch (variant) {
             case DraughtsVariant.AMERICAN:
                 men_can_capture_backwards = false;
@@ -66,6 +69,7 @@ public class Draughts.GameVariant : Object {
 
             case DraughtsVariant.ITALIAN:
                 men_can_capture_backwards = false;
+                men_can_capture_kings = false;
                 kings_can_fly = false;
                 mandatory_capture = true;
                 capture_priority = CapturePriority.MOST_PIECES;
@@ -300,6 +304,7 @@ public class Draughts.GameVariant : Object {
         desc.append(@"• Board size: $board_size×$board_size\n");
         desc.append(@"• Kings can fly: $(kings_can_fly ? "Yes" : "No")\n");
         desc.append(@"• Men can capture backwards: $(men_can_capture_backwards ? "Yes" : "No")\n");
+        desc.append(@"• Men can capture kings: $(men_can_capture_kings ? "Yes" : "No")\n");
         desc.append(@"• Mandatory capture: $(mandatory_capture ? "Yes" : "No")\n");
         desc.append(@"• Capture priority: $(capture_priority.to_string())\n");
 
@@ -327,6 +332,13 @@ public class Draughts.GameVariant : Object {
      */
     public bool allows_backward_captures() {
         return men_can_capture_backwards;
+    }
+
+    /**
+     * Check if men can capture kings in this variant
+     */
+    public bool allows_men_capturing_kings() {
+        return men_can_capture_kings;
     }
 
     /**

@@ -5,6 +5,16 @@ All notable changes to Draughts will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.1] - 2026-11-27
+
+### 🐛 Fixed
+- **Italian Draughts**: Enforced the rule that men cannot capture kings (only kings can capture other kings) across player moves, multi-captures, and AI search (#9).
+- **Multiplayer Server Docker Image**: Included `dashboard.js` in the Docker image copy step so the stats dashboard module loads properly in containerized deployments.
+
+### 🔧 Changed
+- **Multiplayer Server**: Updated `ws` to 8.23.1, `@supabase/supabase-js` to 2.119.2, Chart.js dashboard CDN to 4.6.2, Node minimum engine to `>=22.0.0`, and Docker base image to `node:26-alpine` (with `npm ci --omit=dev`).
+- **Build & CI**: Reused the versioned `json_glib_dep` in `src/meson.build` and bumped `actions/checkout` to `v7` in the Flathub workflow.
+
 ## [2.4.0] - 2026-10-01
 
 ### 🔧 Changed

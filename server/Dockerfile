@@ -1,5 +1,5 @@
 # Use official Node.js LTS image
-FROM node:22-alpine
+FROM node:26-alpine
 
 # Set working directory
 WORKDIR /app
@@ -8,10 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy server code
-COPY server.js ./
+COPY server.js dashboard.js ./
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \

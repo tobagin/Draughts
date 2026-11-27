@@ -176,7 +176,7 @@ function renderDashboard(context) {
       margin: 20px 0;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.2/dist/chart.umd.min.js"></script>
   <script>
     // Auto-refresh every 30 seconds (increased to let charts render)
     setTimeout(() => location.reload(), 30000);

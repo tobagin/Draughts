@@ -90,9 +90,14 @@ public class Draughts.UnifiedRuleEngine : BaseRuleEngine {
             return false;
         }
 
-        // Can't capture own pieces
+        // Can't capture own pieces (and in variants like Italian, men cannot capture kings)
         foreach (var captured in captured_pieces) {
             if (captured.color == piece.color) {
+                return false;
+            }
+            if (piece.piece_type == DraughtsPieceType.MAN &&
+                !variant.men_can_capture_kings &&
+                captured.piece_type == DraughtsPieceType.KING) {
                 return false;
             }
         }

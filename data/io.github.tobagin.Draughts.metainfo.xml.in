@@ -131,6 +131,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="2.4.1" date="2026-11-27">
+      <description>
+        <p>This release fixes an Italian Draughts rule bug and refreshes dependencies:</p>
+        <ul>
+          <li>Fixed Italian Draughts so men can no longer capture kings</li>
+          <li>Updated multiplayer server libraries, dashboard Chart.js, and Node 26 LTS Docker image</li>
+          <li>Fixed missing dashboard module in the multiplayer server Dockerfile</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.4.0" date="2026-10-01">
       <description>
         <p>This release updates the runtime and core dependencies:</p>
